@@ -172,7 +172,7 @@ function OnPlayerXPAdded(INT XP, class<KFPerk> PerkClass)
 	AwardXP(XP);
 }
 
-function AddSmallRadiusKill( byte Difficulty )
+function AddSmallRadiusKill( byte Difficulty, class<KFPerk> PerkClass )
 {
 	AwardXP(class'KFPerk_Berserker'.static.GetSmallRadiusKillXP(Difficulty));
 }

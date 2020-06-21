@@ -1307,6 +1307,7 @@ defaultproperties
 	
 	DefaultInventory.Empty()
 	DefaultInventory.Add(class'ExtWeap_Pistol_9mm')
+	// DefaultInventory.Add(class'KFWeap_Pistol_9mm')
 	DefaultInventory.Add(class'KFWeap_Healer_Syringe')
 	DefaultInventory.Add(class'KFWeap_Welder')
 	DefaultInventory.Add(class'KFInventory_Money')

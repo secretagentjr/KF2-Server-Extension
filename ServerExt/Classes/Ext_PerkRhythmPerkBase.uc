@@ -42,9 +42,11 @@ final function UpdateDmgScale( bool bUp )
 }
 function UpdatePerkHeadShots( ImpactInfo Impact, class<DamageType> DamageType, int NumHit )
 {
-   	local int HitZoneIdx;
+	local int HitZoneIdx;
    	local KFPawn_Monster KFPM;
  	
+	// `log("RACKEMUP" @ GetScriptTrace());
+
 	if( MaxRhythmCombo<=0 )
 		return;
    	KFPM = KFPawn_Monster(Impact.HitActor);
@@ -58,7 +60,12 @@ function UpdatePerkHeadShots( ImpactInfo Impact, class<DamageType> DamageType, i
    	HitZoneIdx = KFPM.HitZones.Find('ZoneName', Impact.HitInfo.BoneName);
    	if( HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell() )
 	{
-		if( class<KFDamageType>(DamageType)!=None && class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0 )
+		if( class<KFDamageType>(DamageType)!=None
+			&& (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0
+				|| DamageType == class'ExtDT_Ballistic_9mm'
+				|| DamageType == class'ExtDT_Ballistic_Pistol_Medic'
+				|| DamageType == class'KFDT_Ballistic_9mm'
+				|| DamageType == class'KFDT_Ballistic_Pistol_Medic'))
 			UpdateDmgScale(true);
 		else if( HeadShotComboCount>0 )
 			UpdateDmgScale(false);
