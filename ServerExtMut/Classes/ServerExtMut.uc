@@ -357,21 +357,91 @@ function AddMutator(Mutator M)
 		else Super.AddMutator(M);
 	}
 }
+
+function bool IsFromMod(Object O)
+{
+    local string PackageName;
+    
+    if( O == None )
+        return false;
+    
+    PackageName = string(O.GetPackageName());
+    if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
+    {
+        PackageName = string(O);
+        if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
+            return false;
+    }
+        
+    return true;
+}
+
 function ScoreKill(Controller Killer, Controller Killed)
 {
+	local KFPawn_Monster KFM;
+    local int i, j;
+    local KFPlayerReplicationInfo DamagerKFPRI;
+    local float XP;
+    local KFPerk InstigatorPerk;
+    local bool cont;
+	
 	local KFPlayerController KFPC;
 	local ExtPerkManager KillersPerk;
 	
 	if( bRespawnCheck && Killed.bIsPlayer )
 		CheckRespawn(Killed);
-	if( KFPawn_Monster(Killed.Pawn)!=None && Killed.GetTeamNum()!=0 && Killer.bIsPlayer && Killer.GetTeamNum()==0 )
+	KFM = KFPawn_Monster(Killed.Pawn);
+	if( KFM!=None && Killed.GetTeamNum()!=0 && Killer.bIsPlayer && Killer.GetTeamNum()==0 )
 	{
 		if( ExtPlayerController(Killer)!=None && ExtPlayerController(Killer).ActivePerkManager!=None )
 			ExtPlayerController(Killer).ActivePerkManager.PlayerKilled(KFPawn_Monster(Killed.Pawn),LastKillDamageType);
 		if( bKillMessages && Killer.PlayerReplicationInfo!=None )
 			BroadcastKillMessage(Killed.Pawn,Killer);
-		//else if( Killer!=None && Killer!=Killed && Killer.GetTeamNum()==0 && Ext_T_MonsterPRI(Killer.PlayerReplicationInfo)!=None )
-		//	BroadcastKillMessage(Killed.Pawn,Ext_T_MonsterPRI(Killer.PlayerReplicationInfo).OwnerController);
+		if( KFM.DamageHistory.Length > 0 )
+        {
+            for( i = 0; i<KFM.DamageHistory.Length; i++ )
+            {
+                DamagerKFPRI = KFPlayerReplicationInfo(KFM.DamageHistory[i].DamagerPRI);
+                if( DamagerKFPRI != None )
+                {
+                    if( KFM.DamageHistory[i].DamagePerks.Length <= 0 )
+                    {
+                        continue;
+                    }
+
+                    cont = true;
+                    for(j=0;j<KFM.DamageHistory[i].DamageCausers.Length;j++)
+                    {
+                        if(IsFromMod(KFM.DamageHistory[i].DamageCausers[j]) || IsFromMod(KFM.DamageHistory[i].DamageTypes[j]))
+                        {
+                            cont = false;
+                            break;
+                        }
+                    }
+                    if(cont && !IsFromMod(KFM))
+                        continue;
+
+                    // Distribute experience points
+                    KFPC = KFPlayerController(DamagerKFPRI.Owner);
+                    if( KFPC != none )
+                    {
+                        InstigatorPerk = KFPC.GetPerk();
+                        if( InstigatorPerk.ShouldGetAllTheXP() )
+                        {
+                            KFPC.OnPlayerXPAdded(KFM.static.GetXPValue(MyKFGI.GameDifficulty), InstigatorPerk.Class);
+                            continue;
+                        }
+
+                        XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty) / KFM.DamageHistory[i].DamagePerks.Length;
+
+                        for( j = 0; j < KFM.DamageHistory[i].DamagePerks.Length; j++ )
+                        {
+                            KFPC.OnPlayerXPAdded(FCeil(XP), KFM.DamageHistory[i].DamagePerks[j]);
+                        }
+                    }
+                }
+            }
+        }
 	}
 	if ( MyKFGI != None && MyKFGI.IsZedTimeActive() && KFPawn_Monster(Killed.Pawn) != None )
 	{
@@ -390,6 +460,8 @@ function ScoreKill(Controller Killer, Controller Killed)
 		CheckPerkChange(ExtPlayerController(Killed));
 	if (NextMutator != None)
 		NextMutator.ScoreKill(Killer, Killed);
+	else
+		Super.ScoreKill(Killer, Killed);
 }
 function bool PreventDeath(Pawn Killed, Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
@@ -429,8 +501,9 @@ final function GT_PlayerKilled( Controller Killer, Controller Killed, class<Dama
 		//Chris: We have to do it earlier here because we need a damage type
 		KFPC.AddZedKill( MonsterPawn.class, KFG.GameDifficulty, damageType, false );
 
-		if( KFPC.ActivePerkManager!=none && KFPC.ActivePerkManager.CanEarnSmallRadiusKillXP(damageType) )
-			KFG.CheckForBerserkerSmallRadiusKill( MonsterPawn, KFPC );
+		// Not support in v1096: KFGameInfo.CheckForBerserkerSmallRadiusKill
+		//if( KFPC.ActivePerkManager!=none && KFPC.ActivePerkManager.CanEarnSmallRadiusKillXP(damageType) )
+		//	KFG.CheckForBerserkerSmallRadiusKill( MonsterPawn, KFPC );
 	}
 }
 final function bool CheckPreventDeath( KFPawn_Human Victim, Controller Killer, class<DamageType> damageType )
