@@ -429,8 +429,9 @@ final function GT_PlayerKilled( Controller Killer, Controller Killed, class<Dama
 		//Chris: We have to do it earlier here because we need a damage type
 		KFPC.AddZedKill( MonsterPawn.class, KFG.GameDifficulty, damageType, false );
 
-		if( KFPC.ActivePerkManager!=none && KFPC.ActivePerkManager.CanEarnSmallRadiusKillXP(damageType) )
-			KFG.CheckForBerserkerSmallRadiusKill( MonsterPawn, KFPC );
+		// No longer aviable since v1096: KFGameInfo.CheckForBerserkerSmallRadiusKill
+		//if( KFPC.ActivePerkManager!=none && KFPC.ActivePerkManager.CanEarnSmallRadiusKillXP(damageType) )
+		//	KFG.CheckForBerserkerSmallRadiusKill( MonsterPawn, KFPC );
 	}
 }
 final function bool CheckPreventDeath( KFPawn_Human Victim, Controller Killer, class<DamageType> damageType )
