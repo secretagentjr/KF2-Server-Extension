@@ -1,0 +1,3 @@
+class ExtDT_Ballistic_Pistol_Medic extends KFDT_Ballistic_Pistol_Medic
+	abstract
+	hidedropdown;
