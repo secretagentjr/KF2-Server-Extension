@@ -228,7 +228,7 @@ function Destroyed()
 
 function EarnedEXP( int EXP, optional byte Mode )
 {
-	`log("EarnedEXP" @ GetScriptTrace());
+	// `log("EarnedEXP" @ GetScriptTrace());
 	if( CurrentPerk!=None )
 	{
 		// Limit how much EXP we got for healing and welding.
