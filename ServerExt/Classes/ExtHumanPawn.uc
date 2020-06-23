@@ -1337,3 +1337,8 @@ defaultproperties
 	End Object
 	FPBodyMesh=FP_BodyComp
 }
+
+simulated function bool CanBeHealed()
+{
+	return true;
+}

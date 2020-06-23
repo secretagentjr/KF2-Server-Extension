@@ -236,20 +236,21 @@ simulated reliable client function ClientAddTraderItem( int Index, FCustomTrader
 
 	if( CustomList==None )
 	{
-		CustomList = CreateNewList(KFGameInfo(WorldInfo.Game).MyKFGRI.TraderItems);
+		CustomList = CreateNewList();
 		RecheckGRI();
 	}
 	CustomItems.AddItem(Item);
 	SetWeaponInfo(false,Index,Item,CustomList);
 }
-simulated static final function KFGFxObject_TraderItems CreateNewList(KFGFxObject_TraderItems B)
+
+simulated static final function KFGFxObject_TraderItems CreateNewList()
 {
 	local KFGFxObject_TraderItems L;
 	
-	L = new(B) class'KFGFxObject_TraderItems'; // Make clone of list.
-	L.SaleItems = B.SaleItems;
-	L.ArmorPrice = B.ArmorPrice;
-	L.GrenadePrice = B.GrenadePrice;
+	L = new class'KFGFxObject_TraderItems';
+	L.SaleItems = L.Default.SaleItems;
+	L.ArmorPrice = L.Default.ArmorPrice;
+	L.GrenadePrice = L.Default.GrenadePrice;
 
 	return L;
 }

@@ -38,7 +38,7 @@ var Object BonusGameFXObj;
 var array<FCustomTraderItem> CustomItemList;
 var KFGFxObject_TraderItems CustomTrader;
 
-const SettingsTagVer=12;
+const SettingsTagVer=13;
 var KFGameReplicationInfo KF;
 var config int SettingsInit;
 var config int ForcedMaxPlayers,PlayerRespawnTime,LargeMonsterHP,StatAutoSaveWaves,MinUnloadPerkLevel,PostGameRespawnCost,MaxTopPlayers;
@@ -50,6 +50,10 @@ var ExtSpawnPointHelper SpawnPointer;
 var bool bRespawnCheck,bSpecialSpawn,bGameHasEnded,bIsPostGame;
 var config bool bKillMessages,bDamageMessages,bEnableMapVote,bNoAdminCommands,bNoWebAdmin,bNoBoomstickJumping,bDumpXMLStats,bRagdollFromFall,bRagdollFromMomentum,bRagdollFromBackhit,bAddCountryTags;
 var config bool bServerPerksMode;
+var config bool bDLCWeaponsForFree;
+var config bool bDontUseOriginalWeaponry;
+var config bool bAllowStandartPistolUpgrade;
+var config bool bDisableCustomTrader;
 
 function PostBeginPlay()
 {
@@ -91,8 +95,12 @@ function PostBeginPlay()
 	KFGameInfo(WorldInfo.Game).CustomizationPawnClass = class'ExtPawn_Customization';
 	KFGameInfo(WorldInfo.Game).KFGFxManagerClass = class'ExtMoviePlayer_Manager';
 
-	// Replace standart 9mm and medpistol from trader + additional custom items from WebAdmin
-	SetTimer(0.001, false, 'EditTraiderItems');
+	// trader things
+	if(!bDisableCustomTrader && CustomTrader==None )
+	{
+		CustomTrader = class'ExtPlayerReplicationInfo'.Static.CreateNewList();
+		SetTimer(0.001, false, 'EditTraiderItems');
+	}
 
 	if( ServerMOTD=="" )
 		ServerMOTD = "Message of the Day";
@@ -149,6 +157,13 @@ function PostBeginPlay()
 		}
 		if( SettingsInit<9 )
 			MaxTopPlayers = 50;
+
+		if(SettingsInit < 13)
+		{
+			bDLCWeaponsForFree = True;
+			bAllowStandartPistolUpgrade = True;
+			bDisableCustomTrader = False;
+		}
 		SettingsInit = SettingsTagVer;
 		SaveConfig();
 	}
@@ -246,66 +261,112 @@ function PostBeginPlay()
 function EditTraiderItems()
 {
 	local int i;
-	local FCustomTraderItem CI;
+	local KFGFxObject_TraderItems Trad;
+	// local FCustomTraderItem CI;
 	// local STraderItem SI;
+	// var config bool bDLCWeaponsForFree;
+	// var config bool bDontUseOriginalWeaponry;
 
-	// Remove dual 9mm, 9mm and medpistol
-	for(i=0;i<MyKFGI.MyKFGRI.TraderItems.SaleItems.Length;i++)
+	if(!bDontUseOriginalWeaponry)
 	{
-		if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Dual9mm")
+		Trad = KFGameReplicationInfo(WorldInfo.GRI).TraderItems;
+		// Remove dual 9mm, 9mm, medpistol and DLC weapons
+		for(i=0;i<Trad.SaleItems.Length;i++)
 		{
-			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
-			i--;
-		}
-		else if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Medic")
-		{
-			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
-			i--;
-		}
-		else if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_9mm")
-		{
-			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
-			i--;
+			if(string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Dual9mm"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Medic"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_9mm")
+			{
+				// Remove pistols
+				continue;
+			}
+
+			if(bDLCWeaponsForFree)
+			{
+				// DLC Weapons
+				if(string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Blunderbuss"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Blunt_ChainBat"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_ChiappaRhino"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_ChiappaRhinoDual"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Bow_CompoundBow"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Ice_FreezeThrower"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Edged_IonThruster"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Rifle_MosinNagant"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_AssaultRifle_LazerCutter"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_SMG_G18"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_DualG18")
+				{
+					continue;
+				}
+			}
+
+			// Adding original weapon
+			AddCIToTraderEx(Trad.SaleItems[i].WeaponDef);
 		}
 	}
 
 	// Reinfo and resorting items
-	MyKFGI.MyKFGRI.TraderItems.SetItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
-	MyKFGI.MyKFGRI.TraderItems.SortItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
+	// MyKFGI.MyKFGRI.TraderItems.SetItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
+	// MyKFGI.MyKFGRI.TraderItems.SortItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
 
-	// Creating custom trader
-	if( CustomTrader==None )
+	if(bAllowStandartPistolUpgrade)
 	{
-		CustomTrader = class'ExtPlayerReplicationInfo'.Static.CreateNewList(MyKFGI.MyKFGRI.TraderItems);
-		SetTimer(0.1,false,'InitGRIList');
+		// Add custom 9mm for upgrades
+		AddCIToTrader("ServerExt.ExtWeapDef_9mm");
+		
+		// Add custom medpistol for upgrades
+		AddCIToTrader("ServerExt.ExtWeapDef_MedicPistol");
 	}
 
-	// Add custom 9mm for upgrades
-	CI.WeaponDef = class'ServerExt.ExtWeapDef_9mm';
-	CI.WeaponClass = class'ServerExt.ExtWeap_Pistol_9mm';
-	CustomItemList.AddItem(CI);
-	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
-
-	// Add custom medpistol for upgrades
-	CI.WeaponDef = class'ServerExt.ExtWeapDef_MedicPistol';
-	CI.WeaponClass = class'ServerExt.ExtWeap_Pistol_MedicS';
-	CustomItemList.AddItem(CI);
-	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+	//Add DLCs weapons for free
+	if(bDLCWeaponsForFree)
+	{
+		AddCIToTrader("ServerExt.DLCWeapDef_Blunderbuss");
+		AddCIToTrader("ServerExt.DLCWeapDef_ChainBat");
+		AddCIToTrader("ServerExt.DLCWeapDef_ChiappaRhino");
+		AddCIToTrader("ServerExt.DLCWeapDef_ChiappaRhinoDual");
+		AddCIToTrader("ServerExt.DLCWeapDef_CompoundBow");
+		AddCIToTrader("ServerExt.DLCWeapDef_FreezeThrower");
+		AddCIToTrader("ServerExt.DLCWeapDef_IonThruster");
+		AddCIToTrader("ServerExt.DLCWeapDef_G18");
+		AddCIToTrader("ServerExt.DLCWeapDef_MosinNagant");
+		AddCIToTrader("ServerExt.DLCWeapDef_LazerCutter");
+		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_DualG18");
+		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_G18C");
+	}
 
 	// Add custom items from WebAdmin
 	for( i=0; i<CustomItems.Length; ++i )
 	{
-		CI.WeaponDef = class<KFWeaponDefinition>(DynamicLoadObject(CustomItems[i],class'Class'));
-		if( CI.WeaponDef==None )
-			continue;
-		CI.WeaponClass = class<KFWeapon>(DynamicLoadObject(CI.WeaponDef.Default.WeaponClassPath,class'Class'));
-		if( CI.WeaponClass==None )
-			continue;
-		
-		CustomItemList.AddItem(CI);
-
-		class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+		AddCIToTrader(CustomItems[i]);
 	}
+	InitGRIList();
+}
+
+function AddCIToTrader(string weapdef)
+{
+	local FCustomTraderItem CI;
+	CI.WeaponDef = class<KFWeaponDefinition>(DynamicLoadObject(weapdef,class'Class'));
+	if(CI.WeaponDef == None)
+		return;
+	CI.WeaponClass = class<KFWeapon>(DynamicLoadObject(CI.WeaponDef.Default.WeaponClassPath,class'Class'));
+	if(CI.WeaponClass == None)
+		return;
+	CustomItemList.AddItem(CI);
+	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+}
+
+function AddCIToTraderEx(class<KFWeaponDefinition> weapdef)
+{
+	local FCustomTraderItem CI;
+	CI.WeaponDef = weapdef;
+	if(CI.WeaponDef == None)
+		return;
+	CI.WeaponClass = class<KFWeapon>(DynamicLoadObject(CI.WeaponDef.Default.WeaponClassPath,class'Class'));
+	if(CI.WeaponClass == None)
+		return;
+	CustomItemList.AddItem(CI);
+	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
 }
 
 static final function string GetStatFile( const out UniqueNetId UID )
@@ -1567,7 +1628,7 @@ function bool GetNextItem( ExtPlayerReplicationInfo PRI, int RepIndex )
 {
 	if( RepIndex>=CustomItemList.Length )
 		return false;
-	PRI.ClientAddTraderItem(class'KFGameReplicationInfo'.Default.TraderItems.SaleItems.Length+RepIndex,CustomItemList[RepIndex]);
+	PRI.ClientAddTraderItem(RepIndex,CustomItemList[RepIndex]);
 	return true;
 }
 
@@ -1619,6 +1680,14 @@ function string WebAdminGetValue( name PropName, int ElementIndex )
 		return string(MaxTopPlayers);
 	case 'MinUnloadPerkLevel':
 		return string(MinUnloadPerkLevel);
+	case 'bDontUseOriginalWeaponry':
+		return string(bDontUseOriginalWeaponry);
+	case 'bDisableCustomTrader':
+		return string(bDisableCustomTrader);
+	case 'bAllowStandartPistolUpgrade':
+		return string(bAllowStandartPistolUpgrade);
+	case 'bDLCWeaponsForFree':
+		return string(bDLCWeaponsForFree);
 	case 'UnloadPerkExpCost':
 		return string(UnloadPerkExpCost);
 	case 'PerkClasses':
@@ -1686,6 +1755,14 @@ function WebAdminSetValue( name PropName, int ElementIndex, string Value )
 		bRagdollFromMomentum = bool(Value);	break;
 	case 'bRagdollFromBackhit':
 		bRagdollFromBackhit = bool(Value);	break;
+	case 'bDontUseOriginalWeaponry':
+		bDontUseOriginalWeaponry = bool(Value);	break;
+	case 'bDisableCustomTrader':
+		bDisableCustomTrader = bool(Value);	break;
+	case 'bAllowStandartPistolUpgrade':
+		bAllowStandartPistolUpgrade = bool(Value);	break;
+	case 'bDLCWeaponsForFree':
+		bDLCWeaponsForFree = bool(Value);	break;
 	case 'bAddCountryTags':
 		bAddCountryTags = bool(Value);		break;
 	case 'MaxTopPlayers':
@@ -1714,6 +1791,7 @@ defaultproperties
 {
 	DevList.Add("0x0110000100E8984E")
 	DevList.Add("0x01100001023DF8A8")
+
 	WebConfigs.Add((PropType=0,PropName="StatFileDir",UIName="Stat File Dir",UIDesc="Location of the stat files on the HDD (%s = unique player ID)"))
 	WebConfigs.Add((PropType=0,PropName="ForcedMaxPlayers",UIName="Server Max Players",UIDesc="A forced max players value of the server (0 = use standard KF2 setting)"))
 	WebConfigs.Add((PropType=0,PropName="PlayerRespawnTime",UIName="Respawn Time",UIDesc="Players respawn time in seconds after they die (0 = no respawning)"))
@@ -1736,8 +1814,13 @@ defaultproperties
 	WebConfigs.Add((PropType=2,PropName="PerkClasses",UIName="Perk Classes",UIDesc="List of RPG perks players can play as (careful with removing them, because any perks removed will permanently delete the gained XP for every player for that perk)!",NumElements=-1))
 	WebConfigs.Add((PropType=2,PropName="CustomChars",UIName="Custom Chars",UIDesc="List of custom characters for this server (prefix with * to mark as admin character).",NumElements=-1))
 	WebConfigs.Add((PropType=2,PropName="AdminCommands",UIName="Admin Commands",UIDesc="List of Admin commands to show on scoreboard UI for admins (use : to split actual command with display name for the command)",NumElements=-1))
-	WebConfigs.Add((PropType=2,PropName="CustomItems",UIName="Custom Inventory",UIDesc="List of custom inventory to add to trader (must be KFWeaponDefinition class).",NumElements=-1))
 	WebConfigs.Add((PropType=3,PropName="ServerMOTD",UIName="MOTD",UIDesc="Message of the Day"))
 	WebConfigs.Add((PropType=2,PropName="BonusGameSongs",UIName="Bonus Game Songs",UIDesc="List of custom musics to play during level change pong game.",NumElements=-1))
 	WebConfigs.Add((PropType=2,PropName="BonusGameFX",UIName="Bonus Game FX",UIDesc="List of custom FX to play on pong game.",NumElements=-1))
+
+	WebConfigs.Add((PropType=1,PropName="bDisableCustomTrader",UIName="Disable custom trader",UIDesc="Warning! That option will disable all settings below"))
+	WebConfigs.Add((PropType=2,PropName="CustomItems",UIName="Custom Inventory",UIDesc="List of custom inventory to add to trader (must be KFWeaponDefinition class).",NumElements=-1))
+	WebConfigs.Add((PropType=1,PropName="bDontUseOriginalWeaponry",UIName="Disable original weapons",UIDesc="Allows to buy default weapons"))
+	WebConfigs.Add((PropType=1,PropName="bDLCWeaponsForFree",UIName="Free DLC weapons",UIDesc="Allows to buy DLC weapons"))
+	WebConfigs.Add((PropType=1,PropName="bAllowStandartPistolUpgrade",UIName="Standard pistol upgrades",UIDesc="Allows to upgrade standard pistol"))
 }

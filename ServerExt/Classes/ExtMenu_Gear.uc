@@ -2,7 +2,7 @@ class ExtMenu_Gear extends KFGFxObject_Menu;
 
 var ExtPlayerReplicationInfo ExtPRI;
 
-var KFGFxObject_TraderItems TraderItems;
+// var KFGFxObject_TraderItems TraderItems;
 var KFGFxGearContainer_PerksSelection PerkSelectionContainer;
 var KFCharacterInfo_Human CurrentCharInfo;
 var string CharInfoPath;
@@ -19,7 +19,7 @@ function InitializeMenu( KFGFxMoviePlayer_Manager InManager )
     LocalizeText();
     EmoteList = class'ExtEmoteList'.static.GetEmoteArray();
     InitCharacterMenu();
-    TraderItems = KFGameReplicationInfo( GetPC().WorldInfo.GRI ).TraderItems;
+    // TraderItems = KFGameReplicationInfo( GetPC().WorldInfo.GRI ).TraderItems;
 }
 function InitCharacterMenu()
 {
