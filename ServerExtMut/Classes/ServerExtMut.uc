@@ -61,8 +61,8 @@ function PostBeginPlay()
 	local ObjectReferencer OR;
 	local Object O;
 	local string S;
-	local FCustomTraderItem CI;
 	local bool bLock;
+	local KFPickupFactory_Item ItemFactory;
 
 	Super.PostBeginPlay();
 	if( WorldInfo.Game.BaseMutator==None )
@@ -90,6 +90,9 @@ function PostBeginPlay()
 	WorldInfo.Game.DefaultPawnClass = class'ExtHumanPawn';
 	KFGameInfo(WorldInfo.Game).CustomizationPawnClass = class'ExtPawn_Customization';
 	KFGameInfo(WorldInfo.Game).KFGFxManagerClass = class'ExtMoviePlayer_Manager';
+
+	// Replace standart 9mm and medpistol from trader + additional custom items from WebAdmin
+	SetTimer(0.001, false, 'EditTraiderItems');
 
 	if( ServerMOTD=="" )
 		ServerMOTD = "Message of the Day";
@@ -202,24 +205,6 @@ function PostBeginPlay()
 			BonusGameFXObj = None;
 	}
 
-	for( i=0; i<CustomItems.Length; ++i )
-	{
-		CI.WeaponDef = class<KFWeaponDefinition>(DynamicLoadObject(CustomItems[i],class'Class'));
-		if( CI.WeaponDef==None )
-			continue;
-		CI.WeaponClass = class<KFWeapon>(DynamicLoadObject(CI.WeaponDef.Default.WeaponClassPath,class'Class'));
-		if( CI.WeaponClass==None )
-			continue;
-		
-		CustomItemList.AddItem(CI);
-
-		if( CustomTrader==None )
-		{
-			CustomTrader = class'ExtPlayerReplicationInfo'.Static.CreateNewList();
-			SetTimer(0.1,false,'InitGRIList');
-		}
-		class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
-	}
 	if( ForcedMaxPlayers>0 )
 	{
 		SetMaxPlayers();
@@ -242,7 +227,87 @@ function PostBeginPlay()
 
 	if( bDumpXMLStats )
 		FileOutput = Spawn(class'ExtXMLOutput');
+
+	// Disable 9mm and medpistol in all PickupFactories
+	foreach AllActors(class'KFPickupFactory_Item', ItemFactory)
+	{
+		for(i=0;i<ItemFactory.ItemPickups.Length;i++)
+		{
+			if(ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_9mm'
+				|| ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_Medic')
+			{
+				ItemFactory.ItemPickups.Remove(i, 1);
+				break;
+			}
+		}
+	}
 }
+
+function EditTraiderItems()
+{
+	local int i;
+	local FCustomTraderItem CI;
+	// local STraderItem SI;
+
+	// Remove dual 9mm, 9mm and medpistol
+	for(i=0;i<MyKFGI.MyKFGRI.TraderItems.SaleItems.Length;i++)
+	{
+		if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Dual9mm")
+		{
+			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
+			i--;
+		}
+		else if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Medic")
+		{
+			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
+			i--;
+		}
+		else if(string(MyKFGI.MyKFGRI.TraderItems.SaleItems[i].ClassName) ~= "KFWeap_Pistol_9mm")
+		{
+			MyKFGI.MyKFGRI.TraderItems.SaleItems.Remove(i,1);
+			i--;
+		}
+	}
+
+	// Reinfo and resorting items
+	MyKFGI.MyKFGRI.TraderItems.SetItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
+	MyKFGI.MyKFGRI.TraderItems.SortItemsInfo(MyKFGI.MyKFGRI.TraderItems.SaleItems);
+
+	// Creating custom trader
+	if( CustomTrader==None )
+	{
+		CustomTrader = class'ExtPlayerReplicationInfo'.Static.CreateNewList(MyKFGI.MyKFGRI.TraderItems);
+		SetTimer(0.1,false,'InitGRIList');
+	}
+
+	// Add custom 9mm for upgrades
+	CI.WeaponDef = class'ServerExt.ExtWeapDef_9mm';
+	CI.WeaponClass = class'ServerExt.ExtWeap_Pistol_9mm';
+	CustomItemList.AddItem(CI);
+	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+
+	// Add custom medpistol for upgrades
+	CI.WeaponDef = class'ServerExt.ExtWeapDef_MedicPistol';
+	CI.WeaponClass = class'ServerExt.ExtWeap_Pistol_MedicS';
+	CustomItemList.AddItem(CI);
+	class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+
+	// Add custom items from WebAdmin
+	for( i=0; i<CustomItems.Length; ++i )
+	{
+		CI.WeaponDef = class<KFWeaponDefinition>(DynamicLoadObject(CustomItems[i],class'Class'));
+		if( CI.WeaponDef==None )
+			continue;
+		CI.WeaponClass = class<KFWeapon>(DynamicLoadObject(CI.WeaponDef.Default.WeaponClassPath,class'Class'));
+		if( CI.WeaponClass==None )
+			continue;
+		
+		CustomItemList.AddItem(CI);
+
+		class'ExtPlayerReplicationInfo'.Static.SetWeaponInfo(WorldInfo.NetMode==NM_DedicatedServer,CustomTrader.SaleItems.Length,CI,CustomTrader);
+	}
+}
+
 static final function string GetStatFile( const out UniqueNetId UID )
 {
 	return Repl(Default.StatFileDir,"%s","U_"$class'OnlineSubsystem'.Static.UniqueNetIdToString(UID));

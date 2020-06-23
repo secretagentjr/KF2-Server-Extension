@@ -6,9 +6,11 @@ defaultproperties
 	
 	SpareAmmoCapacity[0]=-1
 	InitialSpareMags[0]=0
-	
 	bInfiniteSpareAmmo=True
 
+	// Remove weight bcs of replacing 9mm
+	InventorySize=0
+	
 	InstantHitDamageTypes(DEFAULT_FIREMODE)=class'ExtDT_Ballistic_Pistol_Medic'
 }
 
@@ -29,4 +31,11 @@ simulated static event class<KFPerk> GetWeaponPerkClass( class<KFPerk> Instigato
 		return InstigatorPerkClass;
 
 	return default.AssociatedPerkClasses[0];
+}
+
+simulated function KFPerk GetPerk()
+{
+	if(KFPlayer != None)
+		return KFPlayer.GetPerk();
+	return super.GetPerk();
 }

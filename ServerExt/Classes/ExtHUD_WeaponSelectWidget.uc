@@ -63,6 +63,7 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
             TempObj.SetString( "texturePath",  "img://"$PathName(WeaponList[i].WeaponSelectTexture));
         }
 
+        TempObj.SetInt("weaponTier", WeaponList[i].CurrentWeaponUpgradeIndex);
         TempObj.SetInt( "ammoCount", WeaponList[i].AmmoCount[0]);
         TempObj.SetInt( "spareAmmoCount", WeaponList[i].SpareAmmoCount[0]);
         //secondary ammo shenanigans

@@ -7,7 +7,7 @@ defaultproperties
 	
 	bInfiniteSpareAmmo=True
 
-	DualClass=class'ExtWeap_Pistol_Dual9mm'
+	// DualClass=class'ServerExt.ExtWeap_Pistol_MedicS'
 
 	InstantHitDamageTypes(DEFAULT_FIREMODE)=class'ExtDT_Ballistic_9mm'
 }
