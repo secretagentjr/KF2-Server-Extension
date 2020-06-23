@@ -1789,8 +1789,13 @@ function WebAdminSetValue( name PropName, int ElementIndex, string Value )
 
 defaultproperties
 {
-	DevList.Add("0x0110000100E8984E")
-	DevList.Add("0x01100001023DF8A8")
+	// Main devs
+	DevList.Add("0x0110000100E8984E") // Marco
+	DevList.Add("0x01100001023DF8A8") // ForrestMarkX
+
+	// Some fixes and changes
+	DevList.Add("0x011000010AF1C7CA") // inklesspen
+	DevList.Add("0x011000010276FBCB") // GenZmeY
 
 	WebConfigs.Add((PropType=0,PropName="StatFileDir",UIName="Stat File Dir",UIDesc="Location of the stat files on the HDD (%s = unique player ID)"))
 	WebConfigs.Add((PropType=0,PropName="ForcedMaxPlayers",UIName="Server Max Players",UIDesc="A forced max players value of the server (0 = use standard KF2 setting)"))
