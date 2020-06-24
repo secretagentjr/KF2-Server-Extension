@@ -1,0 +1,56 @@
+[h1]Description:[/h1]
+This mod replaces current perk system in KF2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
+
+[h1]Usage (Single player):[/h1]
+1. Subscribe to this mutator;
+2. Start KF2; 
+3. Open console (`) and input:
+[code]open KF-BioticsLab?Mutator=ServerExtMut.ServerExtMut[/code]
+(You can add some options or replace KF-BioticsLab with the map you want)
+
+[h1]Usage (Server):[/h1]
+1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
+2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
+[code]ServerSubscribedWorkshopItems=2085786712[/code]
+3. Start the server and wait while the mutator is downloading;
+4. Add [b]?Mutator=ServerExtMut.ServerExtMut[/b] above to launchup URL and restart server.
+
+[h1]Mutator Setup[/h1]
+[url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/]Look here[/url] 
+
+[h1]Is it possible to make the game harder?[/h1]
+Hmm... You can try to adjust skills and abilities, so that would be more difficult.
+Look here: WebAdmin → Settings → ExtServer Mod
+
+But it will be more efficient to use RPG Mod together with other mutators (which add new zeds or game modes).
+You can use [url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359647296750/]my experience[/url] or come up with something of your own.
+
+[h1]If not working[/h1]
+Older versions of Server-Ext have the same file names - this can cause conflicts if you subscribe to them. Therefore:
+1. Check your subscriptions. If you are subscribed to old versions of the mutator, cancel them.
+2. Clear the cache (the game doesn't clear it). It's here:
+[code]
+Client:
+C:\Users\<YOUR_USERNAME>\Documents\My Games\KillingFloor2\KFGame\Cache\
+
+Server:
+<KF2_DIR>/Binaries/Win64/steamapps/workshop/content/232090/
+<KF2_DIR>/KFGame/Cache/
+[/code]
+If it’s not a problem for you to download all subscriptions again, you can simply clear this folder(s). Your subscriptions are downloaded the next time you start the game/server.
+If you do not want to download the subscriptions again, delete only those folders that contain the files:
+[code]
+ServerExt.u
+ServerExtMut.u
+[/code]
+3. Reinstall RPG and try again.
+
+[h1]Credits:[/h1]
+[url=https://steamcommunity.com/profiles/76561197975509070]Marco[/url] - creating a mutator;
+[url=https://steamcommunity.com/profiles/76561197997881512]ForrestMarkX[/url] - mutator updates;
+[url=https://steamcommunity.com/profiles/76561198143883210]inklesspen[/url] - mutator updates, fixes, features;
+[url=https://steamcommunity.com/profiles/76561198001617867]GenZmeY[/url] - mutator description, instructions;
+[url=https://www.deviantart.com/cottonvalent]CottonValent[/url] - artist who created gorgeous cat on the preview (I don’t know why he is here, it happened).
+
+[h1]Links:[/h1]
+[url=https://github.com/inklesspen1scripter/KF2-Server-Extension]Sources[/url]
