@@ -98,7 +98,7 @@ function upload ()
 	PackageDir=$(mktemp -d -u -p "$KFDoc")
 	prepare_package_dir "$PackageDir"
 	generate_wsinfo "$PackageDir"
-	CMD //C $(unixpath2win "$KFWorkshop") "$MutWsInfo"
+	CMD //C $(unixpath2win "$KFWorkshop") "$MutWsInfoName"
 	rm -rf "$PackageDir"
 	rm -f "$MutWsInfo"
 }
@@ -141,7 +141,8 @@ MutPublish="$KFDoc/KFGame/Published"
 MutBinUnpublish="$MutUnpublish/BrewedPC/Script"
 MutBinPublish="$MutPublish/BrewedPC/Script"
 MutTestingIni="$MutSource/testing.ini"
-MutWsInfo="$KFDoc/wsinfo_serverext.txt"
+MutWsInfoName="wsinfo_serverext.txt"
+MutWsInfo="$KFDoc/$MutWsInfoName"
 MutPubContent="$MutSource/PublicationContent"
 
 if [[ $# -eq 0 ]]; then show_help; exit 0; fi
