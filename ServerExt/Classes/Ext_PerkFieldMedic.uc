@@ -178,6 +178,7 @@ defaultproperties
 	DefTraitList.Add(class'Ext_TraitMedShield')
 	DefTraitList.Add(class'Ext_TraitZedative')
 	DefTraitList.Add(class'Ext_TraitAirborneAgent')
+	DefTraitList.Add(class'Ext_TraitArmorRep')
 	BasePerk=class'KFPerk_FieldMedic'
 	HealExpUpNum=3
 	
