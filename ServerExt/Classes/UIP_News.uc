@@ -23,7 +23,7 @@ function ShowMenu()
 	if( !WebsiteButton.bDisabled )
 	{
 		WebsiteURL = GRI.ServerAdInfo.WebsiteLink;
-		WebsiteButton.ChangeToolTip("Visit the server website at: "$WebsiteURL);
+		WebsiteButton.ChangeToolTip("Visit the server website at: "$WebsiteURL); // TODO: localize
 	}
 }
 function Timer()

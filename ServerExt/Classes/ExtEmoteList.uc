@@ -67,6 +67,7 @@ static final function name GetEmoteFromIndex(byte EmoteIndex)
 
 defaultproperties
 {
+	// TODO: localize
 	Emotes.Add((Id=4515, ItemName = "LetsGetCrazy", 		AnimName="Emote_01_LetsGetCrazy", 		IconPath="EMOTE_TEX.Emote_LetsGoCrazy_512"))
 	Emotes.Add((Id=4516, ItemName = "ThunderClap", 			AnimName="Emote_02_ThunderClap", 		IconPath="EMOTE_TEX.Emote_Thunderclap_512"))
 	Emotes.Add((Id=4517, ItemName = "UncleCharlie", 		AnimName="Emote_03_UncleCharlie", 		IconPath="EMOTE_TEX.Emote_UncleCharlie_512"))

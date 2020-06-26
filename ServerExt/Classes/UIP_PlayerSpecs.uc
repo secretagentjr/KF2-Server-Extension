@@ -166,6 +166,7 @@ function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick 
 
 defaultproperties
 {
+	// TODO: localize
 	Begin Object Class=KFGUI_Button Name=B_ShowStats
 		ButtonText="Show Stats"
 		Tooltip="Show the stats of the current players in server"

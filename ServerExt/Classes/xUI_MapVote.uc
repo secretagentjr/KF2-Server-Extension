@@ -148,6 +148,7 @@ defaultproperties
 	XSize=0.6
 	YSize=0.8
 	
+	// TODO: localize
 	Begin Object Class=KFGUI_ColumnList Name=CurrentVotesList
 		XPosition=0.015
 		YPosition=0.075

@@ -30,7 +30,7 @@ function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick 
 {
 	if( bRight || bDblClick )
 	{
-		PlayerContext.ItemRows[0].Text = "-- EDIT: "$Item.Columns[0];
+		PlayerContext.ItemRows[0].Text = "-- EDIT: "$Item.Columns[0]; // TODO: localize?
 		SelectedID = Item.Value;
 		PlayerContext.OpenMenu(Self);
 	}
@@ -56,6 +56,7 @@ function ButtonClicked( KFGUI_Button Sender )
 
 defaultproperties
 {
+	// TODO: localize
 	Begin Object Class=KFGUI_RightClickMenu Name=PlayerContextMenu
 		ItemRows.Add((Text="",Value=-1))
 		ItemRows.Add((Text="Show Debug Info",Value=9))

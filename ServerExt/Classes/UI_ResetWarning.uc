@@ -12,7 +12,7 @@ function InitMenu()
 function SetupTo( Ext_PerkBase P )
 {
 	PerkToReset = P.Class;
-	WindowTitle = "WARNING: Reset "$P.PerkName;
+	WindowTitle = "WARNING: Reset "$P.PerkName; // TODO: localize
 }
 function ButtonClicked( KFGUI_Button Sender )
 {
@@ -38,6 +38,7 @@ defaultproperties
 	bAlwaysTop=true
 	bOnlyThisFocus=true
 	
+	// TODO: localize
 	Begin Object Class=KFGUI_TextField Name=WarningLabel
 		ID="Info"
 		XPosition=0.01

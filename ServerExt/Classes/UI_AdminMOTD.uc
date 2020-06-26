@@ -50,6 +50,7 @@ function MOTDEdited( KFGUI_EditBox Sender )
 
 defaultproperties
 {
+	// TODO: localize
 	WindowTitle="Edit MOTD line"
 	XPosition=0.25
 	YPosition=0.2

@@ -110,6 +110,7 @@ function NotifyMousePaused()
 
 defaultproperties
 {
+	// TODO: localize
 	Columns.Add((Text="Trait name",Width=0.6))
 	Columns.Add((Text="Level",Width=0.2))
 	Columns.Add((Text="Cost",Width=0.2))

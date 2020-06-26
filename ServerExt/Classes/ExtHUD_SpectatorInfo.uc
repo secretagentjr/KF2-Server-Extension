@@ -8,6 +8,7 @@ function LocalizeText()
 	local GFxObject TempObject;
 	TempObject = CreateObject("Object");
 
+	// TODO: localize?
     TempObject.SetString("prevPlayer", "FREE CAMERA");
     TempObject.SetString("nextPlayer", PrevPlayerString);
     TempObject.SetString("changeCamera", ChangeCameraString);

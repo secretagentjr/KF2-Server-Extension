@@ -26,6 +26,7 @@ defaultproperties
 {
 	ForumURL="forums.tripwireinteractive.com/showthread.php?t=106926"
 
+	// TODO: localize
 	Begin Object Class=KFGUI_TextField Name=AboutText
 		XPosition=0.025
 		YPosition=0.025

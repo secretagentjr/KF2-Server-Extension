@@ -106,6 +106,7 @@ final function string ChopExtraDigits( float Value )
 
 defaultproperties
 {
+	// TODO: localize
 	Begin Object Class=KFGUI_TextLable Name=InfoLable
 		ID="Info"
 		XPosition=0

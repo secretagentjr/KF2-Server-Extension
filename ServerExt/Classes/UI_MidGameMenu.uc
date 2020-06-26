@@ -16,6 +16,8 @@ function InitMenu()
 
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
+	
+	// TODO: localize
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
 	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
@@ -43,8 +45,8 @@ function Timer()
 	{
 		bInitSpectate = true;
 		bOldSpectate = PRI.bOnlySpectator;
-		SpectateButton.ButtonText = (bOldSpectate ? "Join" : "Spectate");
-		SpectateButton.ChangeToolTip(bOldSpectate ? "Click to become an active player" : "Click to become a spectator");
+		SpectateButton.ButtonText = (bOldSpectate ? "Join" : "Spectate"); // TODO: localize
+		SpectateButton.ChangeToolTip(bOldSpectate ? "Click to become an active player" : "Click to become a spectator"); // TODO: localize
 	}
 }
 
@@ -128,7 +130,7 @@ final function KFGUI_Button AddMenuButton( name ButtonID, string Text, optional 
 
 defaultproperties
 {
-	WindowTitle="Killing Floor 2 - Survival"
+	WindowTitle="Killing Floor 2 - Survival" // TODO: wtf?
 	XPosition=0.1
 	YPosition=0.1
 	XSize=0.8

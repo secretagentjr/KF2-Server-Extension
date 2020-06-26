@@ -23,10 +23,10 @@ final function InitPage( int UserID, byte Mode )
 	}
 	if( ExtPlayerReplicationInfo(PRI)==None )
 	{
-		WindowTitle = Mode==1 ? "Set level" : "Set prestige level";
+		WindowTitle = Mode==1 ? "Set level" : "Set prestige level"; // TODO: localize
 		return;
 	}
-	WindowTitle = (Mode==1 ? "Set level of " : "Set prestige level of ")$PRI.GetHumanReadableName();
+	WindowTitle = (Mode==1 ? "Set level of " : "Set prestige level of ")$PRI.GetHumanReadableName(); // TODO: localize
 	LevelBox.ChangeValue(string(Mode==1 ? ExtPlayerReplicationInfo(PRI).ECurrentPerkLevel : ExtPlayerReplicationInfo(PRI).ECurrentPerkPrestige));
 	BaseValue = (Mode==1 ? 100 : 100000);
 }
@@ -53,6 +53,7 @@ defaultproperties
 	bAlwaysTop=true
 	bOnlyThisFocus=true
 
+	// TODO: localize
 	Begin Object Class=KFGUI_Button Name=YesButten
 		ID="Yes"
 		ButtonText="Submit"

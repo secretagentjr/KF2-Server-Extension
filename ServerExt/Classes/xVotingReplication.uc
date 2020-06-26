@@ -115,13 +115,13 @@ reliable client simulated function ClientReady( int CurGame )
 {
 	ClientCurrentGame = CurGame;
 	bAllReceived = true;
-	MapVoteMsg("Maplist successfully received.");
+	MapVoteMsg("Maplist successfully received."); // TODO: localize
 }
 
 simulated final function MapVoteMsg( string S )
 {
 	if( S!="" )
-		GetPlayer().ClientMessage("MapVote: "$S);
+		GetPlayer().ClientMessage("MapVote: "$S); // TODO: localize
 }
 reliable client simulated function ClientNotifyVote( PlayerReplicationInfo PRI, int GameIndex, int MapIndex )
 {
@@ -133,15 +133,15 @@ reliable client simulated function ClientNotifyVote( PlayerReplicationInfo PRI, 
 reliable client simulated function ClientNotifyVoteTime( int Time )
 {
 	if( Time==0 )
-		MapVoteMsg("Initializing mid-game mapvote...");
+		MapVoteMsg("Initializing mid-game mapvote..."); // TODO: localize
 	if( Time<=10 )
 		MapVoteMsg(string(Time)$"...");
 	else if( Time<60 )
-		MapVoteMsg(string(Time)$" seconds...");
+		MapVoteMsg(string(Time)$" seconds..."); // TODO: localize
 	else if( Time==60 )
-		MapVoteMsg("1 minute remains...");
+		MapVoteMsg("1 minute remains..."); // TODO: localize
 	else if( Time==120 )
-		MapVoteMsg("2 minutes remain...");
+		MapVoteMsg("2 minutes remain..."); // TODO: localize
 }
 reliable client simulated function ClientNotifyVoteWin( int GameIndex, int MapIndex, bool bAdminForce )
 {
@@ -149,12 +149,12 @@ reliable client simulated function ClientNotifyVoteWin( int GameIndex, int MapIn
 	if( bAdminForce )
 	{
 		if( bAllReceived )
-			MapVoteMsg("An admin has forced mapswitch to "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
-		else MapVoteMsg("An admin has forced a mapswitch.");
+			MapVoteMsg("An admin has forced mapswitch to "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$")."); // TODO: localize
+		else MapVoteMsg("An admin has forced a mapswitch."); // TODO: localize
 	}
 	else if( bAllReceived )
-		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") has won mapvote, switching map...");
-	else MapVoteMsg("A map has won mapvote, switching map...");
+		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") has won mapvote, switching map..."); // TODO: localize
+	else MapVoteMsg("A map has won mapvote, switching map..."); // TODO: localize
 }
 reliable client simulated function ClientOpenMapvote( optional bool bShowRank )
 {

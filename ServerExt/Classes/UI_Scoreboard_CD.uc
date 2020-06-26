@@ -487,6 +487,7 @@ defaultproperties
 	
 	Components.Empty
 	
+	// TODO: localize
 	Begin Object Class=KFGUI_List_CD Name=PlayerList
 		bDrawBackground=false
 		OnDrawItem=DrawPlayerEntry

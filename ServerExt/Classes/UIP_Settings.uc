@@ -13,6 +13,7 @@ function InitMenu()
 	// Client settings
 	SettingsBox = KFGUI_ComponentList(FindComponentID('SettingsBox'));
 	
+	// TODO: localize
 	//AddCheckBox("Text-To-Speech:","Enable Text-to-Speech talk for player chat messages",'TTS', bool bDefault );
 	AddCheckBox("First person legs:","Show first person body",'FP',class'ExtPlayerController'.Default.bShowFPLegs);
 	if( class'ExtPlayerController'.Default.bShowFPLegs )
@@ -131,7 +132,7 @@ function ButtonClicked( KFGUI_Button Sender )
 	switch( Sender.ID )
 	{
 	case 'KB':
-		KeyBindButton.ButtonText = "Press a button";
+		KeyBindButton.ButtonText = "Press a button"; // TODO: localize
 		KeyBindButton.SetDisabled(true);
 		GrabKeyFocus();
 		bSetKeybind = true;

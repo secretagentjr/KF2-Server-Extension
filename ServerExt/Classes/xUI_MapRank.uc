@@ -32,6 +32,7 @@ defaultproperties
 	XSize=0.3
 	YSize=0.2
 	
+	// TODO: localize
 	Begin Object Class=KFGUI_TextLable Name=InfoLabel
 		XPosition=0.1
 		YPosition=0.15

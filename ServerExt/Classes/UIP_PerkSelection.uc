@@ -260,6 +260,7 @@ function ButtonClicked( KFGUI_Button Sender )
 
 defaultproperties
 {
+	// TODO: localize
 	Begin Object Class=KFGUI_List Name=PerksList
 		ID="Perks"
 		XPosition=0

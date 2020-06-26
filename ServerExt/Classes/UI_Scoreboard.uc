@@ -570,6 +570,7 @@ defaultproperties
 	SBTextColor=(R=250,G=250,B=250,A=255)
 	ScoreboardSpacing=4
 	
+	// TODO: localize
 	Begin Object Class=KFGUI_List Name=PlayerList
 		bDrawBackground=false
 		OnDrawItem=DrawPlayerEntry

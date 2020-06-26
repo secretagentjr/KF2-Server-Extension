@@ -50,7 +50,7 @@ function Timer()
 			return;
 		}
 		Cost = MyTrait.Static.GetTraitCost(OldLevel);
-		YesButton.ButtonText = "Buy ("$Cost$")";
+		YesButton.ButtonText = "Buy ("$Cost$")"; // TODO: localize
 		if( Cost>OldPoints || !MyTrait.Static.MeetsRequirements(OldLevel,MyPerk) )
 			YesButton.SetDisabled(true);
 		else YesButton.SetDisabled(false);
@@ -78,6 +78,7 @@ defaultproperties
 	bAlwaysTop=true
 	bOnlyThisFocus=true
 
+	// TODO: localize
 	Begin Object Class=KFGUI_TextField Name=TraitInfoLbl
 		ID="Info"
 		XPosition=0.05

@@ -14,9 +14,9 @@ function InitMenu()
 final function SetupTo( class<Ext_PerkBase> P )
 {
 	PerkToReset = P;
-	WindowTitle = "NOTICE: Unload stats for "$P.Default.PerkName;
+	WindowTitle = "NOTICE: Unload stats for "$P.Default.PerkName; // TODO: localize
 	YesButten.SetDisabled(true);
-	InfoLabel.SetText("Please wait...");
+	InfoLabel.SetText("Please wait..."); // TODO: localize
 	++CurCallCode;
 	ExtPlayerController(GetPlayer()).OnClientGetResponse = ReceivedInfo;
 	ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(CurCallCode,PerkToReset,false);
@@ -45,6 +45,7 @@ function ReceivedInfo( byte CallID, byte Code, int DataA, int DataB )
 {
 	if( CurCallCode!=CallID )
 		return;
+	// TODO: localize
 	switch( Code )
 	{
 	case 0:
@@ -76,6 +77,8 @@ defaultproperties
 		XSize=0.98
 		YSize=0.775
 	End Object
+	
+	// TODO: localize
 	Begin Object Class=KFGUI_Button Name=YesButten
 		ID="Yes"
 		ButtonText="YES"
