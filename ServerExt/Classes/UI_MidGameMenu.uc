@@ -23,10 +23,11 @@ function InitMenu()
 	Super(KFGUI_Page).InitMenu();
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
+	AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
 	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
 	SpectateButton = AddMenuButton('Spectate',"","");
 	AddMenuButton('Close',"Close","Close this menu");
-	//AddMenuButton('Exit',"Exit","Exit this game");
+	AddMenuButton('Exit',"Exit","Exit this game");
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
@@ -93,6 +94,9 @@ function ButtonClicked( KFGUI_Button Sender )
 	case 'Spectate':
 		ExtPlayerController(GetPlayer()).ChangeSpectateMode(!bOldSpectate);
 		DoClose();
+		break;
+	case 'SkipTrader':
+		KFPlayerController(GetPlayer()).RequestSkipTrader();
 		break;
 	}
 }
