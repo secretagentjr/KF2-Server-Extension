@@ -1,12 +1,7 @@
 Class UI_MidGameMenu extends KFGUI_FloatingWindow;
-
-struct FPageInfo
-{
-	var class<KFGUI_Base> PageClass;
-	var string Caption,Hint;
-};
+	
 var KFGUI_SwitchMenuBar PageSwitcher;
-var() array<FPageInfo> Pages;
+var array< class<KFGUI_Base> > Pages;
 
 var KFGUI_Button AdminButton,SpectateButton;
 
@@ -30,8 +25,8 @@ function InitMenu()
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
-		PageSwitcher.AddPage(Pages[i].PageClass,Pages[i].Caption,Pages[i].Hint,B).InitMenu();
-		if( Pages[i].PageClass==Class'UIP_AdminMenu' )
+		PageSwitcher.AddPage(Pages[i],B).InitMenu();
+		if( Pages[i]==Class'UIP_AdminMenu' )
 			AdminButton = B;
 	}
 }
@@ -139,13 +134,13 @@ defaultproperties
 	XSize=0.8
 	YSize=0.8
 	
-	Pages.Add((PageClass=Class'UIP_News',Caption="News",Hint="Server news page"))
-	Pages.Add((PageClass=Class'UIP_PerkSelection',Caption="Perk",Hint="Select and upgrade your perks"))
-	Pages.Add((PageClass=Class'UIP_Settings',Caption="Settings",Hint="Show additional ServerExt settings"))
-	Pages.Add((PageClass=Class'UIP_PlayerSpecs',Caption="Stats",Hint="Show all players server stats"))
-	Pages.Add((PageClass=Class'UIP_AdminMenu',Caption="Admin",Hint=""))
-	Pages.Add((PageClass=Class'UIP_About',Caption="About",Hint="About this mod on this server"))
-	Pages.Add((PageClass=Class'UIP_MiniGame',Caption="Minigame",Hint="Play a minigame while at it"))
+	Pages.Add(Class'UIP_News')
+	Pages.Add(Class'UIP_PerkSelection')
+	Pages.Add(Class'UIP_Settings')
+	Pages.Add(Class'UIP_PlayerSpecs')
+	Pages.Add(Class'UIP_AdminMenu')
+	Pages.Add(Class'UIP_About')
+	Pages.Add(Class'UIP_MiniGame')
 
 	Begin Object Class=KFGUI_SwitchMenuBar Name=MultiPager
 		ID="Pager"

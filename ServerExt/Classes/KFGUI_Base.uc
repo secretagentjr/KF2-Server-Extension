@@ -23,6 +23,9 @@ var() int IDValue; // Integer ID value.
 var transient float CompPos[4],InputPos[4];
 var float TimerRate,TimerCounter;
 
+var localized string Caption;
+var localized string Hint;
+
 var transient KFGUI_Base MouseArea; // Next in recurse line of the mouse pointer focus area.
 
 var() bool bDisabled,bClickable,bCanFocus;
