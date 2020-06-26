@@ -2,7 +2,7 @@
 Class Ext_TGroupBase extends Object
 	abstract;
 
-var() string GroupInfo;
+var() localized string GroupInfo;
 var() bool bLimitToOne; // Limit to only one trait for this group.
 
 static function string GetUIInfo( Ext_PerkBase Perk )
@@ -30,5 +30,4 @@ static function bool GroupLimited( Ext_PerkBase Perk, class<Ext_TraitBase> Trait
 
 defaultproperties
 {
-	GroupInfo="Group"
 }

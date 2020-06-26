@@ -2,7 +2,7 @@ Class VSZombie extends KFPawn_Monster
 	abstract;
 
 var() class<DamageType> MeleeHitDT;
-var() string ZombieName;
+var() localized string ZombieName;
 var transient VSFPZedHands FPHandModel;
 var() int MeleeDamage,HitsPerAttack;
 var() float PropDamageScale;
@@ -455,7 +455,6 @@ defaultproperties
 	HPScaler=1
 	InventoryManagerClass=None // No weapons for bots!
 
-	ZombieName="Zombie"
 	PropDamageScale=0.65
 	
 	HitZones(0)=(ZoneName="head",BoneName="head",GoreHealth=20,Limb=BP_Head,DmgScale=2)

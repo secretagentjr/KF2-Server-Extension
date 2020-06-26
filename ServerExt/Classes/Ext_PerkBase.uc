@@ -10,7 +10,7 @@ var array<FWebAdminConfigInfo> WebConfigs;
 var ExtPerkManager PerkManager;
 var Controller PlayerOwner;
 
-var() string PerkName;
+var() localized string PerkName;
 var() Texture2D PerkIcon;
 var() class<KFPerk> BasePerk; // KF perk that this perk is based on.
 var() class<KFWeapon> PrimaryMelee,PrimaryWeapon;

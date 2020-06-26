@@ -61,7 +61,7 @@ var color BlackBGColor,RedBGColor,HUDTextColor;
 var transient array<byte> WasNewlyAdded;
 
 var transient OnlineSubsystem OnlineSub;
-var string BadConnectionStr;
+var localized string BadConnectionStr;
 
 var transient bool bShowProgress,bProgressDC,bConfirmDisconnect,bMeAdmin,bLoadedInitItems;
 
@@ -1196,6 +1196,4 @@ defaultproperties
 	HealthBarFullVisDist=350
 	HealthBarCutoffDist=3500
 	DamagePopupFadeOutTime=3.000000
-	
-	BadConnectionStr="Warning: Connection problem!"
 }
