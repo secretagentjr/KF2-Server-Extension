@@ -40,9 +40,7 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkFieldMedic'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Zedative"
 	NumLevels=1
 	DefLevelCosts(0)=50
 	DefMinLevel=65
-	Description="During Zed time, damaging Zeds with perk weapons will slow them 30% and do massive amounts of poison damage. ||-REQUIREMENT: Healing bonus trait needs to have at least 25 points!"
 }

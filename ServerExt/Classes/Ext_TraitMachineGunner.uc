@@ -31,9 +31,7 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkCommando'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Machine Gunner"
 	NumLevels=1
 	DefLevelCosts(0)=60
 	DefMinLevel=55
-	Description="During Zed time, you do 3% more damage with perks weapons and shoot 3x faster with all guns!"
 }

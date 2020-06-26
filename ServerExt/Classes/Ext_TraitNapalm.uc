@@ -11,7 +11,5 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Napalm"
 	DefLevelCosts(0)=35
-	Description="Make zombies lit each other on fire."
 }

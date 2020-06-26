@@ -39,8 +39,6 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkDemolition'
-	TraitName="Demolitions Specialist"
 	DefLevelCosts(0)=100
 	DefMinLevel=100
-	Description="Projectiles from demo weapons will never be duds. ||-REQUIREMENT: Reload bonus trait needs to have at least 30 points!"
 }

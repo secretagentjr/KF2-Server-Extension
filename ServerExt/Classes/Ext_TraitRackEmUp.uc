@@ -14,7 +14,6 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkRhythmPerkBase'
-	TraitName="Rack 'em up"
 	DefLevelCosts(0)=10
 	DefLevelCosts(1)=15
 	DefLevelCosts(2)=20
@@ -26,5 +25,4 @@ defaultproperties
 	ComboSize.Add(16)
 	ComboSize.Add(28)
 	NumLevels=5
-	Description="Deals more damage to each consequtive headshot done to zeds by +7.5%.|For each level you can make a bigger combo and deal more damage in a rate of:|Lv1-5: +30%, +60%, +90%, +120%, +210%"
 }

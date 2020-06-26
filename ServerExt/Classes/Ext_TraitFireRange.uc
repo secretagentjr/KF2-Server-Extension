@@ -11,7 +11,5 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Extra Fire Range"
 	DefLevelCosts(0)=35
-	Description="Add some additional fire range to flamethrowers."
 }

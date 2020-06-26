@@ -144,7 +144,6 @@ defaultproperties
 {
 	Health=300
 	HealthMax=300
-	ZombieName="Recently Infected"
 	FPHandOffset=(X=-35,Z=-60)
 	HitsPerAttack=1
 	HPScaler=0.4

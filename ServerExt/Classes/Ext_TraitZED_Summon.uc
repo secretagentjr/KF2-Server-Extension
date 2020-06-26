@@ -161,8 +161,6 @@ defaultproperties
 {
 	bIsSummoner=true
 	NumLevels=6
-	TraitName="Monster Tongue"
-	Description="With this trait you will spawn yourself a helper zed, the higher level of this trait you have, the better zed will spawn.||-REQUIREMENT: Damage bonus trait needs to have at least 30 points!"
 	DefLevelCosts(0)=20
 	DefLevelCosts(1)=10
 	DefLevelCosts(2)=10

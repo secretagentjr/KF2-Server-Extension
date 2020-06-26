@@ -42,9 +42,7 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkFieldMedic'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Airborne Agent"
 	NumLevels=1
 	DefLevelCosts(0)=60
 	DefMinLevel=75
-	Description="You release a healing gas during Zed time, healing teammates close by. ||-REQUIREMENT: Grenade Upgrade trait needs to be level 1!"
 }

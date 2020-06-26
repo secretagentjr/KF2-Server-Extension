@@ -16,8 +16,6 @@ static function bool PreventDeath( KFPawn_Human Player, Controller Instigator, C
 
 defaultproperties
 {
-	TraitName="Retaliation"
 	DefLevelCosts(0)=50
 	DefMinLevel=40
-	Description="End your life with a BOOM!"
 }

@@ -21,8 +21,6 @@ static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Lev
 defaultproperties
 {
 	NumLevels=5
-	TraitName="Monster Damage"
-	Description="This trait will scale how much damage your helper ZED will deal:|Lv1-5: +10%, +25%, +50%, +100%, +200%||-Requires Monster Tongue trait."
 	DefLevelCosts(0)=10
 	DefLevelCosts(1)=20
 	DefLevelCosts(2)=30
