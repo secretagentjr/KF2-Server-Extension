@@ -2,6 +2,7 @@ Class Ext_PerkRhythmPerkBase extends Ext_PerkBase;
 
 var byte HeadShotComboCount,MaxRhythmCombo,MissComboCount;
 var float RhythmComboDmg;
+var private const float HeadShotCountdownIntervall;
 
 simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
 {
@@ -23,13 +24,28 @@ final function ResetRhythm()
 	HeadShotMessage(0,true,1);
 }
 
+function SubstractHeadShotCombo()
+{
+	if( HeadShotComboCount > 0 )
+	{
+		--HeadShotComboCount;
+		HeadShotMessage( HeadShotComboCount, true, MaxRhythmCombo );
+	}
+	else if( HeadShotComboCount <= 0 )
+	{
+		ClearTimer( nameOf( SubstractHeadShotCombo ) );
+	}
+}
+
 final function UpdateDmgScale( bool bUp )
 {
 	if( bUp )
 	{
 		MissComboCount = 0;
-		HeadShotComboCount = Min(HeadShotComboCount+1,255);
+		if (HeadShotComboCount < MaxRhythmCombo)
+			HeadShotComboCount = Min(HeadShotComboCount+1,255);
 		HeadShotMessage(HeadShotComboCount,false,MaxRhythmCombo);
+		SetTimer( HeadShotCountdownIntervall, true, nameOf( SubstractHeadShotCombo ) );
 	}
 	else if( HeadShotComboCount>0 && ++MissComboCount==3 )
 	{
@@ -40,6 +56,7 @@ final function UpdateDmgScale( bool bUp )
 	else return;
 	RhythmComboDmg = FMin(HeadShotComboCount,MaxRhythmCombo)*0.075;
 }
+
 function UpdatePerkHeadShots( ImpactInfo Impact, class<DamageType> DamageType, int NumHit )
 {
 	local int HitZoneIdx;
@@ -110,4 +127,5 @@ reliable client function HeadShotMessage( byte HeadShotNum, bool bMissed, byte M
 
 defaultproperties
 {
+	HeadShotCountdownIntervall=2.f
 }
