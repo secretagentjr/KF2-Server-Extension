@@ -12,7 +12,7 @@ var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
-var transient bool bInitSpectate,bOldSpectate;
+var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
 
 function InitMenu()
 {
@@ -65,7 +65,15 @@ function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
 		return false;
 	
 	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
-	return (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn);
+	if (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn)
+	{
+		return !bInitSkipTrader;
+	}
+	else
+	{
+		bInitSkipTrader=false;
+		return false;
+	}
 }
 
 function ShowMenu()
@@ -112,6 +120,8 @@ function ButtonClicked( KFGUI_Button Sender )
 		break;
 	case 'SkipTrader':
 		KFPlayerController(GetPlayer()).RequestSkipTrader();
+		bInitSkipTrader=true;
+		SkipTraderButton.SetDisabled(true);
 		break;
 	}
 }
@@ -157,6 +167,8 @@ defaultproperties
 	YPosition=0.1
 	XSize=0.8
 	YSize=0.8
+	
+	bInitSkipTrader=false
 	
 	Pages.Add((PageClass=Class'UIP_News',Caption="News",Hint="Server news page"))
 	Pages.Add((PageClass=Class'UIP_PerkSelection',Caption="Perk",Hint="Select and upgrade your perks"))
