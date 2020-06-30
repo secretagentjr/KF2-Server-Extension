@@ -8,11 +8,11 @@ struct FPageInfo
 var KFGUI_SwitchMenuBar PageSwitcher;
 var() array<FPageInfo> Pages;
 
-var KFGUI_Button AdminButton,SpectateButton;
+var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
-var transient bool bInitSpectate,bOldSpectate;
+var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
 
 function InitMenu()
 {
@@ -23,10 +23,11 @@ function InitMenu()
 	Super(KFGUI_Page).InitMenu();
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
+	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
 	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
 	SpectateButton = AddMenuButton('Spectate',"","");
 	AddMenuButton('Close',"Close","Close this menu");
-	//AddMenuButton('Exit',"Exit","Exit this game");
+	AddMenuButton('Exit',"Exit","Exit this game");
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
@@ -44,6 +45,7 @@ function Timer()
 	if( PRI==None )
 		return;
 	AdminButton.SetDisabled(!PRI.bAdmin && PRI.WorldInfo.NetMode==NM_Client);
+	SkipTraderButton.SetDisabled(!SkipTraderIsAviable(PRI));
 	if( !bInitSpectate || bOldSpectate!=PRI.bOnlySpectator )
 	{
 		bInitSpectate = true;
@@ -53,10 +55,32 @@ function Timer()
 	}
 }
 
+function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
+{
+	local KFGameReplicationInfo KFGRI;
+	local KFPlayerReplicationInfo KFPRI;
+
+	KFPRI = KFPlayerReplicationInfo(PRI);
+	if (KFPRI == none)
+		return false;
+	
+	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
+	if (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn)
+	{
+		return !bInitSkipTrader;
+	}
+	else
+	{
+		bInitSkipTrader=false;
+		return false;
+	}
+}
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	AdminButton.SetDisabled(true);
+	SkipTraderButton.SetDisabled(false);
 	if( GetPlayer().WorldInfo.GRI!=None )
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
 	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(false);
@@ -93,6 +117,11 @@ function ButtonClicked( KFGUI_Button Sender )
 	case 'Spectate':
 		ExtPlayerController(GetPlayer()).ChangeSpectateMode(!bOldSpectate);
 		DoClose();
+		break;
+	case 'SkipTrader':
+		KFPlayerController(GetPlayer()).RequestSkipTrader();
+		bInitSkipTrader=true;
+		SkipTraderButton.SetDisabled(true);
 		break;
 	}
 }
@@ -138,6 +167,8 @@ defaultproperties
 	YPosition=0.1
 	XSize=0.8
 	YSize=0.8
+	
+	bInitSkipTrader=false
 	
 	Pages.Add((PageClass=Class'UIP_News',Caption="News",Hint="Server news page"))
 	Pages.Add((PageClass=Class'UIP_PerkSelection',Caption="Perk",Hint="Select and upgrade your perks"))
