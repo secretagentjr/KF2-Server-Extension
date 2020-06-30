@@ -8,7 +8,7 @@ struct FPageInfo
 var KFGUI_SwitchMenuBar PageSwitcher;
 var() array<FPageInfo> Pages;
 
-var KFGUI_Button AdminButton,SpectateButton;
+var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
@@ -23,7 +23,7 @@ function InitMenu()
 	Super(KFGUI_Page).InitMenu();
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
-	AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
+	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
 	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
 	SpectateButton = AddMenuButton('Spectate',"","");
 	AddMenuButton('Close',"Close","Close this menu");
@@ -45,6 +45,7 @@ function Timer()
 	if( PRI==None )
 		return;
 	AdminButton.SetDisabled(!PRI.bAdmin && PRI.WorldInfo.NetMode==NM_Client);
+	SkipTraderButton.SetDisabled(!SkipTraderIsAviable(PRI));
 	if( !bInitSpectate || bOldSpectate!=PRI.bOnlySpectator )
 	{
 		bInitSpectate = true;
@@ -54,10 +55,24 @@ function Timer()
 	}
 }
 
+function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
+{
+	local KFGameReplicationInfo KFGRI;
+	local KFPlayerReplicationInfo KFPRI;
+
+	KFPRI = KFPlayerReplicationInfo(PRI);
+	if (KFPRI == none)
+		return false;
+	
+	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
+	return (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn);
+}
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	AdminButton.SetDisabled(true);
+	SkipTraderButton.SetDisabled(false);
 	if( GetPlayer().WorldInfo.GRI!=None )
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
 	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(false);
