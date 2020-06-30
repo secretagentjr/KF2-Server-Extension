@@ -24,9 +24,9 @@ function InitMenu()
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
 	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
-	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
 	SpectateButton = AddMenuButton('Spectate',"","");
 	AddMenuButton('Close',"Close","Close this menu");
+	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
 	AddMenuButton('Exit',"Exit","Exit this game");
 	
 	for( i=0; i<Pages.Length; ++i )
