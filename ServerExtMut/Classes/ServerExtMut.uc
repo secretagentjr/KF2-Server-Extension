@@ -66,7 +66,6 @@ function PostBeginPlay()
 	local Object O;
 	local string S;
 	local bool bLock;
-	local KFPickupFactory_Item ItemFactory;
 
 	Super.PostBeginPlay();
 	if( WorldInfo.Game.BaseMutator==None )
@@ -243,20 +242,28 @@ function PostBeginPlay()
 	if( bDumpXMLStats )
 		FileOutput = Spawn(class'ExtXMLOutput');
 
-	// Disable 9mm and medpistol in all PickupFactories
-	foreach AllActors(class'KFPickupFactory_Item', ItemFactory)
-	{
-		for(i=0;i<ItemFactory.ItemPickups.Length;i++)
-		{
-			if(ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_9mm'
-				|| ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_Medic')
-			{
-				ItemFactory.ItemPickups.Remove(i, 1);
-				break;
-			}
-		}
-	}
+	// Causes bugs
+	// SetTimer(0.1,'CheckPickupFactories')
 }
+
+// function CheckPickupFactories()
+// {
+// 	local KFPickupFactory_Item ItemFactory;
+
+// 	// Disable 9mm and medpistol in all PickupFactories
+// 	foreach AllActors(class'KFPickupFactory_Item', ItemFactory)
+// 	{
+// 		for(i=0;i<ItemFactory.ItemPickups.Length;i++)
+// 		{
+// 			if(ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_9mm'
+// 				|| ItemFactory.ItemPickups[i].ItemClass == class'KFGameContent.KFWeap_Pistol_Medic')
+// 			{
+// 				ItemFactory.ItemPickups.Remove(i, 1);
+// 				break;
+// 			}
+// 		}
+// 	}
+// }
 
 function EditTraiderItems()
 {

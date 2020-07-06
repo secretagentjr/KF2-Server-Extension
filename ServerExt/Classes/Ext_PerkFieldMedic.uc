@@ -112,6 +112,13 @@ simulated function float GetSnarePower( optional class<DamageType> DamageType, o
 	return 0.f;
 }
 
+function AddDefaultInventory( KFPawn P )
+{
+	P.DefaultInventory.RemoveItem(class'ExtWeap_Pistol_9mm');
+	P.DefaultInventory.AddItem(class'ExtWeap_Pistol_MedicS');
+	super.AddDefaultInventory(P);
+}
+
 simulated function bool GetHealingSpeedBoostActive()
 {
 	return bHealingBoost;
@@ -206,13 +213,14 @@ defaultproperties
 	DefPerkStats(17)=(bHiddenConfig=false) // Fire resistance
 	
 	PrimaryMelee=class'KFWeap_Knife_FieldMedic'
-	PrimaryWeapon=class'KFWeap_Pistol_Medic'
+	PrimaryWeapon=None
 	PerkGrenade=class'KFProj_MedicGrenade'
 	SuperGrenade=class'ExtProj_SUPERMedGrenade'
+	SecondaryWeaponDef=class'ExtWeapDef_MedicPistol'
 	
-	PrimaryWeaponDef=class'KFWeapDef_MedicPistol'
+	PrimaryWeaponDef=None
 	KnifeWeaponDef=class'KFWeapDef_Knife_Medic'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Medic'
 	
-	AutoBuyLoadOutPath=(class'KFWeapDef_MedicPistol', class'KFWeapDef_MedicSMG', class'KFWeapDef_MedicShotgun', class'KFWeapDef_MedicRifle')
+	AutoBuyLoadOutPath=(class'KFWeapDef_MedicSMG', class'KFWeapDef_MedicShotgun', class'KFWeapDef_MedicRifle')
 }
