@@ -273,7 +273,6 @@ function EditTraiderItems()
 	// local STraderItem SI;
 	// var config bool bDLCWeaponsForFree;
 	// var config bool bDontUseOriginalWeaponry;
-
 	if(!bDontUseOriginalWeaponry)
 	{
 		Trad = KFGameReplicationInfo(WorldInfo.GRI).TraderItems;

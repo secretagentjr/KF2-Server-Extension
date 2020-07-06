@@ -34,7 +34,8 @@ var config int FirstLevelExp, // How much EXP needed for first level.
 				StarPointsPerLevel,
 				MinLevelForPrestige, // Minimum level required for perk prestige.
 				PrestigeSPIncrease, // Starpoint increase per prestige levelup.
-				MaxPrestige; // Maximum prestige level.
+				MaxPrestige,
+				MinimalDataLevel; // Maximum prestige level.
 var config float PrestigeXPReduce; // Amount of XP cost is reduced for each prestige.
 var config array<string> TraitClasses;
 
@@ -405,6 +406,12 @@ function LoadData( ExtSaveDataBase Data )
 	local string S;
 
 	CurrentEXP = Data.ReadInt(3);
+	// if(MinimalDataLevel > 0)
+	// {
+	// 	i = GetNeededExp(MinimalDataLevel-1)
+	// 	if(i > CurrentEXP)
+	// 		CurrentEXP = i
+	// }
 	
 	if( Data.GetArVer()>=1 )
 		CurrentPrestige = Data.ReadInt(3);
@@ -464,6 +471,13 @@ function SetInitialLevel()
 {
 	local int i,a,b;
 	local byte MT,j;
+
+	if(MinimalDataLevel > 0)
+	{
+		i = GetNeededExp(MinimalDataLevel-1);
+		if(i > CurrentEXP)
+			CurrentEXP = i;
+	}
 
 	// Set to initial level player is on after configures has loaded.
 	CurrentLevel = CalcLevelForExp(CurrentEXP);
@@ -605,6 +619,7 @@ static function UpdateConfigs( int OldVer )
 		Default.MinLevelForPrestige = 140;
 		Default.PrestigeSPIncrease = 1;
 		Default.MaxPrestige = 20;
+		Default.MinimalDataLevel = 0;
 		Default.PrestigeXPReduce = 0.05;
 		
 		Default.PerkStats.Length = 0;
@@ -707,6 +722,8 @@ static function string GetValue( name PropName, int ElementIndex )
 		return string(Default.MinLevelForPrestige);
 	case 'PrestigeSPIncrease':
 		return string(Default.PrestigeSPIncrease);
+	case 'MinimalDataLevel':
+		return string(Default.MinimalDataLevel);
 	case 'MaxPrestige':
 		return string(Default.MaxPrestige);
 	case 'PrestigeXPReduce':
@@ -721,6 +738,8 @@ static function ApplyValue( name PropName, int ElementIndex, string Value )
 		Default.FirstLevelExp = int(Value);		break;
 	case 'LevelUpExpCost':
 		Default.LevelUpExpCost = int(Value);	break;
+	case 'MinimalDataLevel':
+		Default.MinimalDataLevel = int(Value);	break;
 	case 'LevelUpIncCost':
 		Default.LevelUpIncCost = int(Value);	break;
 	case 'MinimumLevel':
@@ -1418,6 +1437,7 @@ defaultproperties
 	WebConfigs.Add((PropType=0,PropName="PrestigeSPIncrease",UIName="Prestige SP Increase",UIDesc="Star points increase per level for every prestige"))
 	WebConfigs.Add((PropType=0,PropName="MaxPrestige",UIName="Max Prestige",UIDesc="Maximum prestige level"))
 	WebConfigs.Add((PropType=0,PropName="PrestigeXPReduce",UIName="Prestige XP Reduce",UIDesc="Percent amount of XP cost is reduced for each prestige (1.0 = 1/2, or 50 % of XP)"))
+	// WebConfigs.Add((PropType=0,PropName="MinimalDataLevel",UIName="Minimal Real Level",UIDesc="Minimal level for new players or who loads from saves"))
 	
 	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",UIName="Movement Speed (+&%)",Progress=0.4)
 	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",UIName="Perk Damage (+&%)",Progress=0.5)
@@ -1459,6 +1479,7 @@ defaultproperties
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
+	Modifiers.Add(0.f)
 	
 	EnemyDistDraw.Add(500)
 	EnemyDistDraw.Add(700)
