@@ -5,7 +5,7 @@ var KFGUI_NumericBox StatCountBox;
 var KFGUI_Button AddButton;
 
 var Ext_PerkBase MyPerk;
-var int StatIndex,OldValue,CurrentCost;
+var int StatIndex,OldValue,CurrentCost,MaxStatValue;
 var string ProgressStr;
 var bool bCostDirty;
 
@@ -42,7 +42,10 @@ function Timer()
 	{
 		bCostDirty = false;
 		OldValue = MyPerk.PerkStats[StatIndex].CurrentValue;
-		InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$", Cost "$CurrentCost$", "$ProgressStr$"%]:");
+		if(CurrentCost != 0)
+			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", Cost "$CurrentCost$", "$ProgressStr$"%]:");
+		else
+			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$ProgressStr$"%]:");
 	}
 }
 function BuyStatPoint( KFGUI_Button Sender )
@@ -51,8 +54,13 @@ function BuyStatPoint( KFGUI_Button Sender )
 }
 function EditBoxChange( KFGUI_EditBox Sender )
 {
-	CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
+	if(MyPerk.PerkStats[StatIndex].CostPerValue > 1)
+		CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
+	else
+		CurrentCost = 0;
+	MaxStatValue = MyPerk.PerkStats[StatIndex].MaxValue;
 	ProgressStr = ChopExtraDigits(MyPerk.PerkStats[StatIndex].Progress * StatCountBox.GetValueInt());
+	MaxStatValue = MyPerk.PerkStats[StatIndex].MaxValue;
 	bCostDirty = true;
 	Timer();
 }
@@ -68,8 +76,12 @@ final function CheckBuyLimit()
 
 	// Make the value clamped.
 	StatCountBox.ChangeValue(StatCountBox.Value);
-	CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
+	if(MyPerk.PerkStats[StatIndex].CostPerValue > 1)
+		CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
+	else
+		CurrentCost = 0;
 	ProgressStr = ChopExtraDigits(MyPerk.PerkStats[StatIndex].Progress * StatCountBox.GetValueInt());
+	MaxStatValue = MyPerk.PerkStats[StatIndex].MaxValue;
 	
 	// Disable button if can not buy anymore.
 	AddButton.SetDisabled(i==0);

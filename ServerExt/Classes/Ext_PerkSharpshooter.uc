@@ -28,11 +28,12 @@ defaultproperties
 	PerkName="Sharpshooter"
 	PerkIcon=Texture2D'UI_PerkIcons_TEX.UI_PerkIcon_Sharpshooter'
 	DefTraitList.Add(class'Ext_TraitWPSharp')
-	DefTraitList.Add(class'Ext_TraitRackEmUp')
 	DefTraitList.Add(class'Ext_TraitRanger')
 	DefTraitList.Add(class'Ext_TraitDireReload')
 	DefTraitList.Add(class'Ext_TraitEliteReload')
 	BasePerk=class'KFPerk_Sharpshooter'
+	DefPerkStats(1)=(Progress=0.25)
+	DefPerkStats(19)=(bHiddenConfig=false)
 
 	PrimaryMelee=class'KFWeap_Knife_Sharpshooter'
 	PrimaryWeapon=class'KFWeap_Rifle_Winchester1894'

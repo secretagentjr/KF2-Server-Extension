@@ -1143,6 +1143,9 @@ simulated function float ApplyEffect( name Type, float Value, float Progress )
 	case 'AllDmg':
 		Modifiers[18] = 1.f / (1.f+Value*Progress);
 		break;
+	case 'HeadDamage':
+		Modifiers[19] = Value*Progress;
+		break;
 	}
 	return (Value*Progress);
 }
@@ -1150,7 +1153,12 @@ simulated function float ApplyEffect( name Type, float Value, float Progress )
 simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
 {
 	if( BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))) )
-		InDamage *= Modifiers[1];
+	{
+		if(HitZoneIdx == 0)
+			InDamage *= (Modifiers[1] + Modifiers[19]);
+		else
+			InDamage *= Modifiers[1];
+	}
 	else if( DamageType==None || DamageType.Name!='KFDT_SuicideExplosive' )
 		InDamage *= Modifiers[12];
 }
@@ -1430,6 +1438,7 @@ defaultproperties
 	DefPerkStats(16)=(MaxValue=1000,CostPerValue=1,StatType="SonicDmg",UIName="Sonic Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
 	DefPerkStats(17)=(MaxValue=1000,CostPerValue=1,StatType="FireDmg",UIName="Fire Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
 	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",UIName="Zed Damage Reduction (+&%)",Progress=0.25)
+	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",UIName="Perk Head Damage (+&%)",Progress=1,bHiddenConfig=true)
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)

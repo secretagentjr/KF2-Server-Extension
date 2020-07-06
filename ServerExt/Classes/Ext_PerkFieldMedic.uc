@@ -114,8 +114,10 @@ simulated function float GetSnarePower( optional class<DamageType> DamageType, o
 
 function AddDefaultInventory( KFPawn P )
 {
-	P.DefaultInventory.RemoveItem(class'ExtWeap_Pistol_9mm');
-	P.DefaultInventory.AddItem(class'ExtWeap_Pistol_MedicS');
+	local int i;
+	i = P.DefaultInventory.Find(class'ExtWeap_Pistol_9mm');
+	if(i != -1)
+		P.DefaultInventory[i] = class'ExtWeap_Pistol_MedicS';
 	super.AddDefaultInventory(P);
 }
 
