@@ -83,7 +83,6 @@ function PostBeginPlay()
 	local Object O;
 	local string S;
 	local bool bLock;
-	local CustomZedXPStruct zedxp;
 
 	Super.PostBeginPlay();
 	if( WorldInfo.Game.BaseMutator==None )
@@ -260,13 +259,15 @@ function PostBeginPlay()
 	if( bDumpXMLStats )
 		FileOutput = Spawn(class'ExtXMLOutput');
 
-	UpdateCustomZedXPArray()
+	UpdateCustomZedXPArray();
 	// Causes bugs
 	// SetTimer(0.1,'CheckPickupFactories')
 }
 
 function UpdateCustomZedXPArray()
 {
+	local int i;
+	local CustomZedXPStruct zedxp;
 	CustomZedXPArray.Length = 0;
 	// Custom XP for custom zeds
 	for(i=0;i<CustomZedXP.Length;i++)
