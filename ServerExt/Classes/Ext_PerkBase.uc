@@ -650,6 +650,8 @@ static function UpdateConfigs( int OldVer )
 			AddStatsCfg(16); // Add sonic/fire damage.
 		else if( OldVer<=12 )
 			AddStatsCfg(18); // Add all damage.
+		else if( OldVer<=13 )
+			AddStatsCfg(19); // Add HeadDamage and HealRecharge
 		if( OldVer<=5 )
 		{
 			// Add prestige
@@ -1165,6 +1167,9 @@ simulated function float ApplyEffect( name Type, float Value, float Progress )
 	case 'HeadDamage':
 		Modifiers[19] = Value*Progress;
 		break;
+	case 'HealRecharge':
+		Modifiers[20] = 1.f / (1.f+Value*Progress);
+		break;
 	}
 	return (Value*Progress);
 }
@@ -1292,7 +1297,10 @@ final function UpdateAmmoStatus( InventoryManager Inv )
 	}
 }
 
-simulated function ModifyHealerRechargeTime( out float RechargeRate );
+simulated function ModifyHealerRechargeTime( out float RechargeRate )
+{
+	RechargeRate *= Modifiers[20];
+}
 
 simulated function DrawSpecialPerkHUD(Canvas C)
 {
@@ -1389,7 +1397,7 @@ simulated function float GetZedTimeExtensions( byte Level )
 
 defaultproperties
 {
-	CurrentConfigVer=13
+	CurrentConfigVer=14
 	bOnlyRelevantToOwner=true
 	bCanBeGrabbed=true
 	NetUpdateFrequency=1
@@ -1441,8 +1449,8 @@ defaultproperties
 	
 	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",UIName="Movement Speed (+&%)",Progress=0.4)
 	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",UIName="Perk Damage (+&%)",Progress=0.5)
-	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",UIName="Fire Recoil (-&%)",Progress=1)
-	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",UIName="Fire Spread (-&%)",Progress=0.75)
+	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",UIName="Fire Recoil Reduce (+&%)",Progress=1)
+	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",UIName="Fire Spread Reduce (+&%)",Progress=0.75)
 	DefPerkStats(4)=(MaxValue=1000,CostPerValue=1,StatType="Rate",UIName="Perk Rate of Fire (+&%)",Progress=0.5)
 	DefPerkStats(5)=(MaxValue=1000,CostPerValue=1,StatType="Reload",UIName="Perk Reload Time (-&%)",Progress=0.5)
 	DefPerkStats(6)=(MaxValue=150,CostPerValue=1,StatType="Health",UIName="Health (+&HP)",Progress=1)
@@ -1459,6 +1467,7 @@ defaultproperties
 	DefPerkStats(17)=(MaxValue=1000,CostPerValue=1,StatType="FireDmg",UIName="Fire Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
 	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",UIName="Zed Damage Reduction (+&%)",Progress=0.25)
 	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",UIName="Perk Head Damage (+&%)",Progress=1,bHiddenConfig=true)
+	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",UIName="Syringe Recharge Rate (+&%)",Progress=0.5,bHiddenConfig=true)
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
@@ -1480,6 +1489,7 @@ defaultproperties
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(0.f)
+	Modifiers.Add(1.f)
 	
 	EnemyDistDraw.Add(500)
 	EnemyDistDraw.Add(700)

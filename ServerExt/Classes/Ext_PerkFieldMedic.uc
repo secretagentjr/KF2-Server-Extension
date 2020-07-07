@@ -52,10 +52,13 @@ function bool ModifyHealAmount( out float HealAmount )
 	HealAmount*=Modifiers[9];
 	return (RepairArmorRate>0);
 }
-simulated function ModifyHealerRechargeTime( out float RechargeRate )
-{
-	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
-}
+
+// Di
+// simulated function ModifyHealerRechargeTime( out float RechargeRate )
+// {
+//	super.ModifyHealerRechargeTime(RechargeRate)	
+// 	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
+// }
 
 function CheckForAirborneAgent( KFPawn HealTarget, class<DamageType> DamType, int HealAmount )
 {
@@ -73,7 +76,7 @@ function GiveMedicAirborneAgentHealth( KFPawn HealTarget, class<DamageType> DamT
 	foreach WorldInfo.Allpawns(class'KFPawn', KFP, HealTarget.Location, 500.f)
 	{
 		if( KFP.IsAliveAndWell() && WorldInfo.GRI.OnSameTeam( HealTarget, KFP ) )
-		{					
+		{
 			if ( HealTarget == KFP )
 				KFP.HealDamage( RoundedExtraHealAmount, PlayerOwner, DamType );	
 			else KFP.HealDamage( RoundedExtraHealAmount + HealAmount, PlayerOwner, DamType );
@@ -213,6 +216,7 @@ defaultproperties
 	DefPerkStats(15)=(bHiddenConfig=false) // Toxic resistance
 	DefPerkStats(16)=(bHiddenConfig=false) // Sonic resistance
 	DefPerkStats(17)=(bHiddenConfig=false) // Fire resistance
+	DefPerkStats(20)=(bHiddenConfig=false) // Heal recharge
 	
 	PrimaryMelee=class'KFWeap_Knife_FieldMedic'
 	PrimaryWeapon=None
