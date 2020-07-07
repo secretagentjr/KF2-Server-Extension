@@ -10,6 +10,14 @@ struct FInventory
 	var class<Inventory> ItemClass;
 	var int Values[4];
 };
+struct CFGCustomZedXP
+{
+	var string zed; // zed name
+	var float XP1; // normal
+	var float XP2; // hard
+	var float XP3; // suicidal
+	var float XP4; // hoe
+};
 struct FSavedInvEntry
 {
 	var Controller OwnerPlayer;
@@ -19,6 +27,7 @@ struct FSavedInvEntry
 var array<FSavedInvEntry> PlayerInv;
 
 var config array<string> PerkClasses,CustomChars,AdminCommands,CustomItems,BonusGameSongs,BonusGameFX;
+var config array<CFGCustomZedXP> CustomZedXP;
 var array< class<Ext_PerkBase> > LoadedPerks;
 var array<FCustomCharEntry> CustomCharList;
 var ExtPlayerStat ServerStatLoader;
@@ -55,6 +64,14 @@ var config bool bDontUseOriginalWeaponry;
 var config bool bAllowStandartPistolUpgrade;
 var config bool bDisableCustomTrader;
 
+//Custom XP lightly array
+struct CustomZedXPStruct
+{
+	var class<KFPawn_Monster> zedclass;
+	var float XPValues[4];
+};
+var array<CustomZedXPStruct> CustomZedXPArray;
+
 function PostBeginPlay()
 {
 	local xVotingHandler MV;
@@ -66,6 +83,7 @@ function PostBeginPlay()
 	local Object O;
 	local string S;
 	local bool bLock;
+	local CustomZedXPStruct zedxp;
 
 	Super.PostBeginPlay();
 	if( WorldInfo.Game.BaseMutator==None )
@@ -242,8 +260,30 @@ function PostBeginPlay()
 	if( bDumpXMLStats )
 		FileOutput = Spawn(class'ExtXMLOutput');
 
+	UpdateCustomZedXPArray()
 	// Causes bugs
 	// SetTimer(0.1,'CheckPickupFactories')
+}
+
+function UpdateCustomZedXPArray()
+{
+	CustomZedXPArray.Length = 0;
+	// Custom XP for custom zeds
+	for(i=0;i<CustomZedXP.Length;i++)
+	{
+		zedxp.zedclass = class<KFPawn_Monster>(DynamicLoadObject(CustomZedXP[i].zed,Class'Class'));
+		if(zedxp.zedclass == none)
+		{
+			`log("Error loading"@CustomZedXP[i].zed);
+			continue;
+		}
+		zedxp.XPValues[0] = CustomZedXP[i].XP1;
+		zedxp.XPValues[1] = CustomZedXP[i].XP2;
+		zedxp.XPValues[2] = CustomZedXP[i].XP3;
+		zedxp.XPValues[3] = CustomZedXP[i].XP4;
+		CustomZedXPArray.AddItem(zedxp);
+		`log("CustomXP: Loaded"@PathName(zedxp.zedclass));
+	}
 }
 
 // function CheckPickupFactories()
@@ -557,14 +597,28 @@ function ScoreKill(Controller Killer, Controller Killed)
                     KFPC = KFPlayerController(DamagerKFPRI.Owner);
                     if( KFPC != none )
                     {
+                    	`log("ScoreKill:"@PathName(KFM));
+
+                    	XP = 0;
+                    	for(j=0;j<CustomZedXPArray.Length;j++)
+                    	{
+                    		if(KFM.Class == CustomZedXPArray[j].zedclass)
+                    		{
+                    			XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
+                    			break;
+                    		}
+                    	}
+                    	if(XP == 0)
+                    		XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
+
                         InstigatorPerk = KFPC.GetPerk();
                         if( InstigatorPerk.ShouldGetAllTheXP() )
                         {
-                            KFPC.OnPlayerXPAdded(KFM.static.GetXPValue(MyKFGI.GameDifficulty), InstigatorPerk.Class);
+                            KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
                             continue;
                         }
 
-                        XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty) / KFM.DamageHistory[i].DamagePerks.Length;
+                        XP /= KFM.DamageHistory[i].DamagePerks.Length;
 
                         for( j = 0; j < KFM.DamageHistory[i].DamagePerks.Length; j++ )
                         {
