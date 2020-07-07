@@ -465,6 +465,7 @@ function CheckWave()
 function NotifyWaveChange()
 {
 	local ExtPlayerController ExtPC;
+	local KFProj_RicochetStickBullet KFBolt;
 	
 	if( bRespawnCheck )
 	{
@@ -483,6 +484,13 @@ function NotifyWaveChange()
 	{
 		foreach WorldInfo.AllControllers(class'ExtPlayerController',ExtPC)
 			ExtPC.bSetPerk = false;
+	}
+
+	foreach WorldInfo.AllActors(class'KFProj_RicochetStickBullet', KFBolt)
+	{
+		if(KFProj_Bolt_CompoundBowSharp(KFBolt) != none ||
+			KFProj_Bolt_Crossbow(KFBolt) != none)
+			KFBolt.Destroy();
 	}
 }
 function SetupWebAdmin()
