@@ -29,11 +29,26 @@ var transient float RebunchTimer,NextVoteTimer;
 var bool bClientConnected,bAllReceived,bClientRanked;
 var transient bool bListDirty;
 
+var localized string MaplistRecvMsg;
+var localized string ClientMapVoteMsg;
+var localized string InitMapVoteMsg;
+var localized string TwoMinRemainMsg;
+var localized string OneMinRemainMsg;
+var localized string XSecondsRemainMsg;
+var localized string UnknownPlayerName;
+var localized string VotedForKnownMapMsg;
+var localized string VotedForUnkownMapMsg;
+var localized string AdminForcedKnownMapswitchMsg;
+var localized string AdminForcedUnknownMapswitchMsg;
+var localized string KnownMapSwitchMsg;
+var localized string UnknownMapSwitchMsg;
+
 function PostBeginPlay()
 {
 	PlayerOwner = PlayerController(Owner);
 	RebunchTimer = WorldInfo.TimeSeconds+5.f;
 }
+
 function Tick( float Delta )
 {
 	if( PlayerOwner==None || PlayerOwner.Player==None )
@@ -115,33 +130,33 @@ reliable client simulated function ClientReady( int CurGame )
 {
 	ClientCurrentGame = CurGame;
 	bAllReceived = true;
-	MapVoteMsg("Maplist successfully received."); // TODO: localize
+	MapVoteMsg(MaplistRecvMsg);
 }
 
 simulated final function MapVoteMsg( string S )
 {
 	if( S!="" )
-		GetPlayer().ClientMessage("MapVote: "$S); // TODO: localize
+		GetPlayer().ClientMessage(ClientMapVoteMsg$" "$S);
 }
 reliable client simulated function ClientNotifyVote( PlayerReplicationInfo PRI, int GameIndex, int MapIndex )
 {
 	if( bAllReceived )
-		MapVoteMsg((PRI!=None ? PRI.PlayerName : "Someone")$" has voted for "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
-	else MapVoteMsg((PRI!=None ? PRI.PlayerName : "Someone")$" has voted for a map.");
+		MapVoteMsg((PRI!=None ? PRI.PlayerName : UnknownPlayerName)$" "$VotedForKnownMapMsg$" "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
+	else MapVoteMsg((PRI!=None ? PRI.PlayerName : UnknownPlayerName)$" "$VotedForUnkownMapMsg);
 }
 
 reliable client simulated function ClientNotifyVoteTime( int Time )
 {
 	if( Time==0 )
-		MapVoteMsg("Initializing mid-game mapvote..."); // TODO: localize
+		MapVoteMsg(InitMapVoteMsg);
 	if( Time<=10 )
 		MapVoteMsg(string(Time)$"...");
 	else if( Time<60 )
-		MapVoteMsg(string(Time)$" seconds..."); // TODO: localize
+		MapVoteMsg(string(Time)$" "$XSecondsRemainMsg);
 	else if( Time==60 )
-		MapVoteMsg("1 minute remains..."); // TODO: localize
+		MapVoteMsg(OneMinRemainMsg);
 	else if( Time==120 )
-		MapVoteMsg("2 minutes remain..."); // TODO: localize
+		MapVoteMsg(TwoMinRemainMsg);
 }
 reliable client simulated function ClientNotifyVoteWin( int GameIndex, int MapIndex, bool bAdminForce )
 {
@@ -149,12 +164,12 @@ reliable client simulated function ClientNotifyVoteWin( int GameIndex, int MapIn
 	if( bAdminForce )
 	{
 		if( bAllReceived )
-			MapVoteMsg("An admin has forced mapswitch to "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$")."); // TODO: localize
-		else MapVoteMsg("An admin has forced a mapswitch."); // TODO: localize
+			MapVoteMsg(AdminForcedKnownMapswitchMsg$" "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
+		else MapVoteMsg(AdminForcedUnknownMapswitchMsg);
 	}
 	else if( bAllReceived )
-		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") has won mapvote, switching map..."); // TODO: localize
-	else MapVoteMsg("A map has won mapvote, switching map..."); // TODO: localize
+		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") "$KnownMapSwitchMsg);
+	else MapVoteMsg(UnknownMapSwitchMsg);
 }
 reliable client simulated function ClientOpenMapvote( optional bool bShowRank )
 {
