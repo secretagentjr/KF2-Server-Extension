@@ -34,7 +34,8 @@ var config int FirstLevelExp, // How much EXP needed for first level.
 				StarPointsPerLevel,
 				MinLevelForPrestige, // Minimum level required for perk prestige.
 				PrestigeSPIncrease, // Starpoint increase per prestige levelup.
-				MaxPrestige; // Maximum prestige level.
+				MaxPrestige,
+				MinimalDataLevel; // Maximum prestige level.
 var config float PrestigeXPReduce; // Amount of XP cost is reduced for each prestige.
 var config array<string> TraitClasses;
 
@@ -405,6 +406,12 @@ function LoadData( ExtSaveDataBase Data )
 	local string S;
 
 	CurrentEXP = Data.ReadInt(3);
+	// if(MinimalDataLevel > 0)
+	// {
+	// 	i = GetNeededExp(MinimalDataLevel-1)
+	// 	if(i > CurrentEXP)
+	// 		CurrentEXP = i
+	// }
 	
 	if( Data.GetArVer()>=1 )
 		CurrentPrestige = Data.ReadInt(3);
@@ -464,6 +471,13 @@ function SetInitialLevel()
 {
 	local int i,a,b;
 	local byte MT,j;
+
+	if(MinimalDataLevel > 0)
+	{
+		i = GetNeededExp(MinimalDataLevel-1);
+		if(i > CurrentEXP)
+			CurrentEXP = i;
+	}
 
 	// Set to initial level player is on after configures has loaded.
 	CurrentLevel = CalcLevelForExp(CurrentEXP);
@@ -605,6 +619,7 @@ static function UpdateConfigs( int OldVer )
 		Default.MinLevelForPrestige = 140;
 		Default.PrestigeSPIncrease = 1;
 		Default.MaxPrestige = 20;
+		Default.MinimalDataLevel = 0;
 		Default.PrestigeXPReduce = 0.05;
 		
 		Default.PerkStats.Length = 0;
@@ -635,6 +650,8 @@ static function UpdateConfigs( int OldVer )
 			AddStatsCfg(16); // Add sonic/fire damage.
 		else if( OldVer<=12 )
 			AddStatsCfg(18); // Add all damage.
+		else if( OldVer<=13 )
+			AddStatsCfg(19); // Add HeadDamage and HealRecharge
 		if( OldVer<=5 )
 		{
 			// Add prestige
@@ -707,6 +724,8 @@ static function string GetValue( name PropName, int ElementIndex )
 		return string(Default.MinLevelForPrestige);
 	case 'PrestigeSPIncrease':
 		return string(Default.PrestigeSPIncrease);
+	case 'MinimalDataLevel':
+		return string(Default.MinimalDataLevel);
 	case 'MaxPrestige':
 		return string(Default.MaxPrestige);
 	case 'PrestigeXPReduce':
@@ -721,6 +740,8 @@ static function ApplyValue( name PropName, int ElementIndex, string Value )
 		Default.FirstLevelExp = int(Value);		break;
 	case 'LevelUpExpCost':
 		Default.LevelUpExpCost = int(Value);	break;
+	case 'MinimalDataLevel':
+		Default.MinimalDataLevel = int(Value);	break;
 	case 'LevelUpIncCost':
 		Default.LevelUpIncCost = int(Value);	break;
 	case 'MinimumLevel':
@@ -1143,6 +1164,12 @@ simulated function float ApplyEffect( name Type, float Value, float Progress )
 	case 'AllDmg':
 		Modifiers[18] = 1.f / (1.f+Value*Progress);
 		break;
+	case 'HeadDamage':
+		Modifiers[19] = Value*Progress;
+		break;
+	case 'HealRecharge':
+		Modifiers[20] = 1.f / (1.f+Value*Progress);
+		break;
 	}
 	return (Value*Progress);
 }
@@ -1150,7 +1177,12 @@ simulated function float ApplyEffect( name Type, float Value, float Progress )
 simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
 {
 	if( BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))) )
-		InDamage *= Modifiers[1];
+	{
+		if(HitZoneIdx == 0)
+			InDamage *= (Modifiers[1] + Modifiers[19]);
+		else
+			InDamage *= Modifiers[1];
+	}
 	else if( DamageType==None || DamageType.Name!='KFDT_SuicideExplosive' )
 		InDamage *= Modifiers[12];
 }
@@ -1265,7 +1297,10 @@ final function UpdateAmmoStatus( InventoryManager Inv )
 	}
 }
 
-simulated function ModifyHealerRechargeTime( out float RechargeRate );
+simulated function ModifyHealerRechargeTime( out float RechargeRate )
+{
+	RechargeRate *= Modifiers[20];
+}
 
 simulated function DrawSpecialPerkHUD(Canvas C)
 {
@@ -1362,7 +1397,7 @@ simulated function float GetZedTimeExtensions( byte Level )
 
 defaultproperties
 {
-	CurrentConfigVer=13
+	CurrentConfigVer=14
 	bOnlyRelevantToOwner=true
 	bCanBeGrabbed=true
 	NetUpdateFrequency=1
@@ -1410,12 +1445,13 @@ defaultproperties
 	WebConfigs.Add((PropType=0,PropName="PrestigeSPIncrease",UIName="Prestige SP Increase",UIDesc="Star points increase per level for every prestige"))
 	WebConfigs.Add((PropType=0,PropName="MaxPrestige",UIName="Max Prestige",UIDesc="Maximum prestige level"))
 	WebConfigs.Add((PropType=0,PropName="PrestigeXPReduce",UIName="Prestige XP Reduce",UIDesc="Percent amount of XP cost is reduced for each prestige (1.0 = 1/2, or 50 % of XP)"))
+	// WebConfigs.Add((PropType=0,PropName="MinimalDataLevel",UIName="Minimal Real Level",UIDesc="Minimal level for new players or who loads from saves"))
 	
 	// TODO: localize
 	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",UIName="Movement Speed (+&%)",Progress=0.4)
 	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",UIName="Perk Damage (+&%)",Progress=0.5)
-	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",UIName="Fire Recoil (-&%)",Progress=1)
-	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",UIName="Fire Spread (-&%)",Progress=0.75)
+	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",UIName="Fire Recoil Reduce (+&%)",Progress=1)
+	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",UIName="Fire Spread Reduce (+&%)",Progress=0.75)
 	DefPerkStats(4)=(MaxValue=1000,CostPerValue=1,StatType="Rate",UIName="Perk Rate of Fire (+&%)",Progress=0.5)
 	DefPerkStats(5)=(MaxValue=1000,CostPerValue=1,StatType="Reload",UIName="Perk Reload Time (-&%)",Progress=0.5)
 	DefPerkStats(6)=(MaxValue=150,CostPerValue=1,StatType="Health",UIName="Health (+&HP)",Progress=1)
@@ -1431,6 +1467,8 @@ defaultproperties
 	DefPerkStats(16)=(MaxValue=1000,CostPerValue=1,StatType="SonicDmg",UIName="Sonic Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
 	DefPerkStats(17)=(MaxValue=1000,CostPerValue=1,StatType="FireDmg",UIName="Fire Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
 	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",UIName="Zed Damage Reduction (+&%)",Progress=0.25)
+	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",UIName="Perk Head Damage (+&%)",Progress=1,bHiddenConfig=true)
+	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",UIName="Syringe Recharge Rate (+&%)",Progress=0.5,bHiddenConfig=true)
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
@@ -1450,6 +1488,8 @@ defaultproperties
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
+	Modifiers.Add(1.f)
+	Modifiers.Add(0.f)
 	Modifiers.Add(1.f)
 	
 	EnemyDistDraw.Add(500)

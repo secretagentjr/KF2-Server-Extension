@@ -3,11 +3,11 @@ Class UI_MidGameMenu extends KFGUI_FloatingWindow;
 var KFGUI_SwitchMenuBar PageSwitcher;
 var array< class<KFGUI_Base> > Pages;
 
-var KFGUI_Button AdminButton,SpectateButton;
+var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
-var transient bool bInitSpectate,bOldSpectate;
+var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
 
 function InitMenu()
 {
@@ -20,10 +20,11 @@ function InitMenu()
 	// TODO: localize
 	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
 	AddMenuButton('Settings',"Settings","Enter the game settings");
-	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
+	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
 	SpectateButton = AddMenuButton('Spectate',"","");
 	AddMenuButton('Close',"Close","Close this menu");
-	//AddMenuButton('Exit',"Exit","Exit this game");
+	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
+	AddMenuButton('Exit',"Exit","Exit this game");
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
@@ -41,6 +42,7 @@ function Timer()
 	if( PRI==None )
 		return;
 	AdminButton.SetDisabled(!PRI.bAdmin && PRI.WorldInfo.NetMode==NM_Client);
+	SkipTraderButton.SetDisabled(!SkipTraderIsAviable(PRI));
 	if( !bInitSpectate || bOldSpectate!=PRI.bOnlySpectator )
 	{
 		bInitSpectate = true;
@@ -50,10 +52,32 @@ function Timer()
 	}
 }
 
+function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
+{
+	local KFGameReplicationInfo KFGRI;
+	local KFPlayerReplicationInfo KFPRI;
+
+	KFPRI = KFPlayerReplicationInfo(PRI);
+	if (KFPRI == none)
+		return false;
+	
+	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
+	if (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn)
+	{
+		return !bInitSkipTrader;
+	}
+	else
+	{
+		bInitSkipTrader=false;
+		return false;
+	}
+}
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	AdminButton.SetDisabled(true);
+	SkipTraderButton.SetDisabled(false);
 	if( GetPlayer().WorldInfo.GRI!=None )
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
 	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(false);
@@ -90,6 +114,11 @@ function ButtonClicked( KFGUI_Button Sender )
 	case 'Spectate':
 		ExtPlayerController(GetPlayer()).ChangeSpectateMode(!bOldSpectate);
 		DoClose();
+		break;
+	case 'SkipTrader':
+		KFPlayerController(GetPlayer()).RequestSkipTrader();
+		bInitSkipTrader=true;
+		SkipTraderButton.SetDisabled(true);
 		break;
 	}
 }
@@ -143,6 +172,7 @@ defaultproperties
 	Pages.Add(Class'UIP_AdminMenu')
 	Pages.Add(Class'UIP_About')
 	Pages.Add(Class'UIP_MiniGame')
+	bInitSkipTrader=false
 
 	Begin Object Class=KFGUI_SwitchMenuBar Name=MultiPager
 		ID="Pager"

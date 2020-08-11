@@ -12,6 +12,11 @@ defaultproperties
 	InventorySize=0
 	
 	InstantHitDamageTypes(DEFAULT_FIREMODE)=class'ExtDT_Ballistic_Pistol_Medic'
+
+	WeaponUpgrades[1]=(Stats=((Stat=EWUS_Damage0, Scale=1.7f), (Stat=EWUS_HealFullRecharge, Scale=0.9f)))
+	WeaponUpgrades[2]=(Stats=((Stat=EWUS_Damage0, Scale=2.0f), (Stat=EWUS_HealFullRecharge, Scale=0.8f)))
+	WeaponUpgrades[3]=(Stats=((Stat=EWUS_Damage0, Scale=2.55f), (Stat=EWUS_HealFullRecharge, Scale=0.7f)))
+	WeaponUpgrades[4]=(Stats=((Stat=EWUS_Damage0, Scale=3.0f), (Stat=EWUS_HealFullRecharge, Scale=0.6f)))
 }
 
 simulated static function bool AllowedForAllPerks()

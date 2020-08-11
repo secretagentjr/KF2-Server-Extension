@@ -1,7 +1,8 @@
 Class Ext_PerkRhythmPerkBase extends Ext_PerkBase;
 
-var byte HeadShotComboCount,MaxRhythmCombo,MissComboCount;
+var byte HeadShotComboCount,MaxRhythmCombo;
 var float RhythmComboDmg;
+var private const float HeadShotCountdownIntervall;
 
 simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
 {
@@ -19,59 +20,51 @@ final function ResetRhythm()
 	MaxRhythmCombo = 0;
 	HeadShotComboCount = 0;
 	RhythmComboDmg = 0;
-	MissComboCount = 0;
 	HeadShotMessage(0,true,1);
+}
+
+function SubstractHeadShotCombo()
+{
+	if( HeadShotComboCount > 0 )
+		UpdateDmgScale(false);
+	else
+		ClearTimer( nameOf( SubstractHeadShotCombo ) );
 }
 
 final function UpdateDmgScale( bool bUp )
 {
 	if( bUp )
 	{
-		MissComboCount = 0;
-		HeadShotComboCount = Min(HeadShotComboCount+1,255);
+		HeadShotComboCount = Min(HeadShotComboCount+1,MaxRhythmCombo);
 		HeadShotMessage(HeadShotComboCount,false,MaxRhythmCombo);
+		SetTimer( HeadShotCountdownIntervall, true, nameOf( SubstractHeadShotCombo ) );
 	}
-	else if( HeadShotComboCount>0 && ++MissComboCount==3 )
+	else if( HeadShotComboCount>0)
 	{
 		--HeadShotComboCount;
 		HeadShotMessage(HeadShotComboCount,true,MaxRhythmCombo);
-		MissComboCount = 0;
 	}
 	else return;
-	RhythmComboDmg = FMin(HeadShotComboCount,MaxRhythmCombo)*0.075;
+	RhythmComboDmg = HeadShotComboCount*0.075;
 }
+
 function UpdatePerkHeadShots( ImpactInfo Impact, class<DamageType> DamageType, int NumHit )
 {
 	local int HitZoneIdx;
    	local KFPawn_Monster KFPM;
- 	
-	// `log("RACKEMUP" @ GetScriptTrace());
 
 	if( MaxRhythmCombo<=0 )
 		return;
    	KFPM = KFPawn_Monster(Impact.HitActor);
    	if( KFPM==none || KFPM.GetTeamNum()==0 )
-   	{
-   		if( NumHit < 1 && HeadShotComboCount>0 )
-			UpdateDmgScale(false);
    		return;
-   	}
 
    	HitZoneIdx = KFPM.HitZones.Find('ZoneName', Impact.HitInfo.BoneName);
    	if( HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell() )
 	{
-		if( class<KFDamageType>(DamageType)!=None
-			&& (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0
-				|| DamageType == class'ExtDT_Ballistic_9mm'
-				|| DamageType == class'ExtDT_Ballistic_Pistol_Medic'
-				|| DamageType == class'KFDT_Ballistic_9mm'
-				|| DamageType == class'KFDT_Ballistic_Pistol_Medic'))
+		if( class<KFDamageType>(DamageType)!=None && (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
 			UpdateDmgScale(true);
-		else if( HeadShotComboCount>0 )
-			UpdateDmgScale(false);
 	}
-	else if( NumHit < 1 && HeadShotComboCount>0 )
-		UpdateDmgScale(false);
 }
 reliable client function HeadShotMessage( byte HeadShotNum, bool bMissed, byte MaxHits )
 {
@@ -110,4 +103,5 @@ reliable client function HeadShotMessage( byte HeadShotNum, bool bMissed, byte M
 
 defaultproperties
 {
+	HeadShotCountdownIntervall=2.f
 }

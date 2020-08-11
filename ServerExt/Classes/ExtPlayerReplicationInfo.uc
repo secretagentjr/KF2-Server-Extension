@@ -257,6 +257,7 @@ simulated static final function KFGFxObject_TraderItems CreateNewList()
 simulated static final function SetWeaponInfo( bool bDedicated, int Index, FCustomTraderItem Item, KFGFxObject_TraderItems List )
 {
 	local array<STraderItemWeaponStats> S;
+	local int i;
 
 	if( List.SaleItems.Length<=Index )
 		List.SaleItems.Length = Index+1;
@@ -268,16 +269,24 @@ simulated static final function SetWeaponInfo( bool bDedicated, int Index, FCust
 	else List.SaleItems[Index].SingleClassName = '';
 	List.SaleItems[Index].DualClassName = Item.WeaponClass.Default.DualClass!=None ? Item.WeaponClass.Default.DualClass.Name : '';
 	List.SaleItems[Index].AssociatedPerkClasses = Item.WeaponClass.Static.GetAssociatedPerkClasses();
+	List.SaleItems[Index].MaxSpareAmmo = Item.WeaponClass.Default.SpareAmmoCapacity[0];
 	List.SaleItems[Index].MagazineCapacity = Item.WeaponClass.Default.MagazineCapacity[0];
 	List.SaleItems[Index].InitialSpareMags = Item.WeaponClass.Default.InitialSpareMags[0];
-	List.SaleItems[Index].MaxSpareAmmo = Item.WeaponClass.Default.SpareAmmoCapacity[0];
 	List.SaleItems[Index].MaxSecondaryAmmo = Item.WeaponClass.Default.MagazineCapacity[1] * Item.WeaponClass.Default.SpareAmmoCapacity[1];
 	List.SaleItems[Index].BlocksRequired = Item.WeaponClass.Default.InventorySize;
 	List.SaleItems[Index].ItemID = Index;
-	
+
+	List.SaleItems[Index].InitialSecondaryAmmo = Item.WeaponClass.Default.InitialSpareMags[1];
+	List.SaleItems[Index].WeaponUpgradeDmgMultiplier[0] = 1.0;
+	for(i = 0;i<Min(Item.WeaponClass.Default.WeaponUpgrades.Length, 5);i++)
+	{
+		List.SaleItems[Index].WeaponUpgradeWeight[i+1] = Item.WeaponClass.Static.GetUpgradeStatAdd(EWUS_Weight, i+1);
+		List.SaleItems[Index].WeaponUpgradeDmgMultiplier[i+1] = Item.WeaponClass.Static.GetUpgradeStatScale(EWUS_Damage0, i+1);
+	}
+
 	if( !bDedicated )
 	{
-		List.SaleItems[Index].SecondaryAmmoImagePath = Item.WeaponClass.Default.SecondaryAmmoTexture!=None ? "img://"$PathName(Item.WeaponClass.Default.SecondaryAmmoTexture) : "";
+		List.SaleItems[Index].SecondaryAmmoImagePath = Item.WeaponClass.Default.SecondaryAmmoTexture!=None ? PathName(Item.WeaponClass.Default.SecondaryAmmoTexture) : "UI_SecondaryAmmo_TEX.GasTank";
 		List.SaleItems[Index].TraderFilter = Item.WeaponClass.Static.GetTraderFilter();
 		List.SaleItems[Index].InventoryGroup = Item.WeaponClass.Default.InventoryGroup;
 		List.SaleItems[Index].GroupPriority = Item.WeaponClass.Default.GroupPriority;
@@ -296,8 +305,12 @@ simulated function RecheckGRI()
 	{
 		KFGameReplicationInfo(WorldInfo.GRI).TraderItems = CustomList;
 		foreach LocalPlayerControllers(class'ExtPlayerController',PC)
+		{
 			if( PC.PurchaseHelper!=None )
+			{
 				PC.PurchaseHelper.TraderItems = CustomList;
+			}
+		}
 	}
 }
 

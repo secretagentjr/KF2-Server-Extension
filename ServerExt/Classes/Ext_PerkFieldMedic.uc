@@ -52,10 +52,13 @@ function bool ModifyHealAmount( out float HealAmount )
 	HealAmount*=Modifiers[9];
 	return (RepairArmorRate>0);
 }
-simulated function ModifyHealerRechargeTime( out float RechargeRate )
-{
-	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
-}
+
+// Di
+// simulated function ModifyHealerRechargeTime( out float RechargeRate )
+// {
+//	super.ModifyHealerRechargeTime(RechargeRate)	
+// 	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
+// }
 
 function CheckForAirborneAgent( KFPawn HealTarget, class<DamageType> DamType, int HealAmount )
 {
@@ -73,7 +76,7 @@ function GiveMedicAirborneAgentHealth( KFPawn HealTarget, class<DamageType> DamT
 	foreach WorldInfo.Allpawns(class'KFPawn', KFP, HealTarget.Location, 500.f)
 	{
 		if( KFP.IsAliveAndWell() && WorldInfo.GRI.OnSameTeam( HealTarget, KFP ) )
-		{					
+		{
 			if ( HealTarget == KFP )
 				KFP.HealDamage( RoundedExtraHealAmount, PlayerOwner, DamType );	
 			else KFP.HealDamage( RoundedExtraHealAmount + HealAmount, PlayerOwner, DamType );
@@ -110,6 +113,15 @@ simulated function float GetSnarePower( optional class<DamageType> DamageType, o
 		return 100;
 
 	return 0.f;
+}
+
+function AddDefaultInventory( KFPawn P )
+{
+	local int i;
+	i = P.DefaultInventory.Find(class'ExtWeap_Pistol_9mm');
+	if(i != -1)
+		P.DefaultInventory[i] = class'ExtWeap_Pistol_MedicS';
+	super.AddDefaultInventory(P);
 }
 
 simulated function bool GetHealingSpeedBoostActive()
@@ -203,15 +215,17 @@ defaultproperties
 	DefPerkStats(15)=(bHiddenConfig=false) // Toxic resistance
 	DefPerkStats(16)=(bHiddenConfig=false) // Sonic resistance
 	DefPerkStats(17)=(bHiddenConfig=false) // Fire resistance
+	DefPerkStats(20)=(bHiddenConfig=false) // Heal recharge
 	
 	PrimaryMelee=class'KFWeap_Knife_FieldMedic'
-	PrimaryWeapon=class'KFWeap_Pistol_Medic'
+	PrimaryWeapon=None
 	PerkGrenade=class'KFProj_MedicGrenade'
 	SuperGrenade=class'ExtProj_SUPERMedGrenade'
+	SecondaryWeaponDef=class'ExtWeapDef_MedicPistol'
 	
-	PrimaryWeaponDef=class'KFWeapDef_MedicPistol'
+	PrimaryWeaponDef=None
 	KnifeWeaponDef=class'KFWeapDef_Knife_Medic'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Medic'
 	
-	AutoBuyLoadOutPath=(class'KFWeapDef_MedicPistol', class'KFWeapDef_MedicSMG', class'KFWeapDef_MedicShotgun', class'KFWeapDef_MedicRifle')
+	AutoBuyLoadOutPath=(class'KFWeapDef_MedicSMG', class'KFWeapDef_MedicShotgun', class'KFWeapDef_MedicRifle')
 }
