@@ -41,13 +41,22 @@ function show_help ()
 
 function compile ()
 {
-	rm -f "$MutBinUnpublish/ServerExt.u" "$MutBinUnpublish/ServerExtMut.u"
+	rm -rf "$MutUnpublish"
+	mkdir -p \
+		"$MutUnpublish" \
+		"$MutStructScript" \
+		"$MutStructPackages" \
+		"$MutStructLocalization"
+	
+	cp -rf "$MutSource/Localization"/* "$MutStructLocalization"
+	cp -rf "$MutSource/ServerExtMut"/*.upk "$MutStructPackages"
+	
 	CMD //C $(unixpath2win "$KFEditor") make -useunpublished &
 	local PID="$!"
 	while ps -p "$PID" &> /dev/null
 	do
-		if [[ -e "$MutBinUnpublish/ServerExt.u"    ]] &&
-		   [[ -e "$MutBinUnpublish/ServerExtMut.u" ]]; then
+		if [[ -e "$MutStructScript/ServerExt.u"    ]] &&
+		   [[ -e "$MutStructScript/ServerExtMut.u" ]]; then
 			kill "$PID"; break
 		fi
 		sleep 2
@@ -63,18 +72,11 @@ function brew ()
 function brew_unpublished ()
 {
 	rm -rf "$MutPublish"
-	if  ! [[ -e "$MutBinUnpublish/ServerExt.u"    ]] ||
-		! [[ -e "$MutBinUnpublish/ServerExtMut.u" ]]; then
+	if  ! [[ -e "$MutStructScript/ServerExt.u"    ]] ||
+		! [[ -e "$MutStructScript/ServerExtMut.u" ]]; then
 		compile
 	fi
 	cp -rf "$MutUnpublish" "$MutPublish"
-}
-
-function prepare_package_dir () # $1: package dir
-{
-	mkdir -p "$1/Localization/INT"
-	cp -rf "$MutPublish"/* "$1"
-	cp -f "$MutSource/Localization/INT/ServerExt.int" "$1/Localization/INT"
 }
 
 function generate_wsinfo () # $1: package dir
@@ -96,7 +98,7 @@ function generate_wsinfo () # $1: package dir
 function upload ()
 {
 	PackageDir=$(mktemp -d -u -p "$KFDoc")
-	prepare_package_dir "$PackageDir"
+	cp -rf "$MutPublish"/* "$PackageDir"
 	generate_wsinfo "$PackageDir"
 	CMD //C $(unixpath2win "$KFWorkshop") "$MutWsInfoName"
 	rm -rf "$PackageDir"
@@ -123,7 +125,7 @@ function game_test ()
 }
 
 ScriptFullname=$(readlink -e "$0")
-ScriptName=$(echo "$ScriptFullname" | awk -F '/' '{print $NF;}')
+ScriptName=$(basename "$0")
 
 SteamPath=$(reg_readkey "HKCU\Software\Valve\Steam" "SteamPath")
 DocumentsPath=$(reg_readkey "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "Personal")
@@ -135,15 +137,19 @@ KFGame="$KFBin/Win64/KFGame.exe"
 KFWorkshop="$KFBin/WorkshopUserTool.exe"
 
 KFDoc="$DocumentsPath/My Games/KillingFloor2"
+
 MutSource="$KFDoc/KFGame/src"
+MutPubContent="$MutSource/PublicationContent"
 MutUnpublish="$KFDoc/KFGame/Unpublished"
 MutPublish="$KFDoc/KFGame/Published"
-MutBinUnpublish="$MutUnpublish/BrewedPC/Script"
-MutBinPublish="$MutPublish/BrewedPC/Script"
+
+MutStructScript="$MutUnpublish/BrewedPC/Script"
+MutStructPackages="$MutUnpublish/BrewedPC/Packages"
+MutStructLocalization="$MutUnpublish/BrewedPC/Localization"
+
 MutTestingIni="$MutSource/testing.ini"
 MutWsInfoName="wsinfo_serverext.txt"
 MutWsInfo="$KFDoc/$MutWsInfoName"
-MutPubContent="$MutSource/PublicationContent"
 
 if [[ $# -eq 0 ]]; then show_help; exit 0; fi
 case $1 in
