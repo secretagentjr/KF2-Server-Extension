@@ -1,22 +1,43 @@
 Class UI_UnloadInfo extends KFGUI_FloatingWindow;
 
 var class<Ext_PerkBase> PerkToReset;
-var KFGUI_Button YesButten;
+var KFGUI_Button UnloadPerkYesButton, UnloadPerkNoButton;
 var KFGUI_TextField InfoLabel;
 var byte CurCallCode;
 
+var localized string ResetPerkNotice;
+var localized string PleaseWait;
+var localized string ResetDisabledWarn;
+var localized string ResetMinLevelWarnPart1;
+var localized string ResetMinLevelWarnPart2;
+var localized string ResetAttentionPart1;
+var localized string ResetAttentionPart2;
+var localized string ResetAttentionPart3;
+
+var localized string ButtonYesText;
+var localized string ButtonNoText;
+var localized string ButtonYesToolTip;
+var localized string ButtonNoToolTip;
+
 function InitMenu()
 {
-	YesButten = KFGUI_Button(FindComponentID('Yes'));
+	UnloadPerkYesButton = KFGUI_Button(FindComponentID('Yes'));
+	UnloadPerkNoButton = KFGUI_Button(FindComponentID('No'));
+	
+	UnloadPerkYesButton.ButtonText=ButtonYesText;
+	UnloadPerkNoButton.ButtonText=ButtonNoText;
+	UnloadPerkYesButton.ToolTip=ButtonYesToolTip;
+	UnloadPerkNoButton.ToolTip=ButtonNoToolTip;
+	
 	InfoLabel = KFGUI_TextField(FindComponentID('Info'));
 	Super.InitMenu();
 }
 final function SetupTo( class<Ext_PerkBase> P )
 {
 	PerkToReset = P;
-	WindowTitle = "NOTICE: Unload stats for "$P.Default.PerkName; // TODO: localize
-	YesButten.SetDisabled(true);
-	InfoLabel.SetText("Please wait..."); // TODO: localize
+	WindowTitle = ResetPerkNotice$" "$P.Default.PerkName;
+	UnloadPerkYesButton.SetDisabled(true);
+	InfoLabel.SetText(PleaseWait);
 	++CurCallCode;
 	ExtPlayerController(GetPlayer()).OnClientGetResponse = ReceivedInfo;
 	ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(CurCallCode,PerkToReset,false);
@@ -45,18 +66,18 @@ function ReceivedInfo( byte CallID, byte Code, int DataA, int DataB )
 {
 	if( CurCallCode!=CallID )
 		return;
-	// TODO: localize
+	
 	switch( Code )
 	{
 	case 0:
-		InfoLabel.SetText("ERROR: Perk unloading is disabled on this server!");
+		InfoLabel.SetText(ResetDisabledWarn);
 		break;
 	case 1:
-		InfoLabel.SetText("ERROR: You need to be at least on level #{FFFF00}"$DataA$"#{DEF} before you can use this feature!");
+		InfoLabel.SetText(ResetMinLevelWarnPart1$DataA$ResetMinLevelWarnPart2);
 		break;
 	case 2:
-		InfoLabel.SetText("#{FF0000}WARNING:#{DEF} By using this feature you will lose #{FFFF00}"$DataA$"#{DEF} XP points, and by that you will drop down #{FF0000}"$DataB$"#{DEF} levels!|In addition you will be forced to suicide to reset specific stats.||Are you sure you want to continue?");
-		YesButten.SetDisabled(false);
+		InfoLabel.SetText(ResetAttentionPart1$DataA$ResetAttentionPart2$DataB$ResetAttentionPart3);
+		UnloadPerkYesButton.SetDisabled(false);
 		break;
 	}
 }
@@ -78,11 +99,8 @@ defaultproperties
 		YSize=0.775
 	End Object
 	
-	// TODO: localize
-	Begin Object Class=KFGUI_Button Name=YesButten
+	Begin Object Class=KFGUI_Button Name=UnloadPerkYesButton
 		ID="Yes"
-		ButtonText="YES"
-		Tooltip="Reset the perk (you can not undo this action!)"
 		XPosition=0.2
 		YPosition=0.9
 		XSize=0.29
@@ -91,10 +109,8 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	Begin Object Class=KFGUI_Button Name=NoButten
+	Begin Object Class=KFGUI_Button Name=UnloadPerkNoButton
 		ID="No"
-		ButtonText="ABORT"
-		Tooltip="Abort without doing anything"
 		XPosition=0.5
 		YPosition=0.9
 		XSize=0.29
@@ -104,6 +120,6 @@ defaultproperties
 	End Object
 	
 	Components.Add(WarningLabel)
-	Components.Add(YesButten)
-	Components.Add(NoButten)
+	Components.Add(UnloadPerkYesButton)
+	Components.Add(UnloadPerkNoButton)
 }
