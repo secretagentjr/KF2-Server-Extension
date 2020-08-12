@@ -1,20 +1,92 @@
 Class UIP_AdminMenu extends KFGUI_MultiComponent;
 
 var KFGUI_ColumnList PlayersList;
+var KFGUI_Button MotdButton;
 var editinline export KFGUI_RightClickMenu PlayerContext;
 var int SelectedID;
+
+var localized string EditPlayer;
+var localized string ShowDebugInfo;
+var localized string Add1kXP;
+var localized string Add10kXP;
+var localized string AdvancePerkLevel;
+var localized string SetPerkLevel;
+var localized string SetPrestigeLevel;
+var localized string UnloadAllStats;
+var localized string UnloadAllTraits;
+var localized string Remove1kXP;
+var localized string Remove10kXP;
+var localized string ResetAllStats;
+var localized string ResetCurrentPerkStats;
+var localized string ColumnPlayer;
+var localized string ColumnTotalKills;
+var localized string ColumnTotalExp;
+var localized string ColumnTotalPlayTime;
+var localized string EditMotdButtonText;
+var localized string EditMotdButtonToolTip;
+
+function FRowItem newFRowItem(string Text, int Value, bool isSplitter)
+{
+	local FRowItem newItem;
+	
+	newItem.Text=Text;
+	newItem.Value=Value;
+	newItem.bSplitter=isSplitter;
+	
+	return newItem;
+}
+
+function FColumnItem newFColumnItem(string Text, float Width)
+{
+	local FColumnItem newItem;
+	
+	newItem.Text=Text;
+	newItem.Width=Width;
+	
+	return newItem;
+}
 
 function InitMenu()
 {
 	PlayersList = KFGUI_ColumnList(FindComponentID('Players'));
+	MotdButton = KFGUI_Button(FindComponentID('MOTD'));
+	
+	PlayerContext.ItemRows.AddItem(newFRowItem("",-1,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(ShowDebugInfo,9,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
+	PlayerContext.ItemRows.AddItem(newFRowItem(Add1kXP,2,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(Add10kXP,3,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(AdvancePerkLevel,4,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(SetPerkLevel,-1,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(SetPrestigeLevel,-2,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
+	PlayerContext.ItemRows.AddItem(newFRowItem(UnloadAllStats,5,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(UnloadAllTraits,6,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
+	PlayerContext.ItemRows.AddItem(newFRowItem(Remove1kXP,7,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(Remove10kXP,8,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
+	PlayerContext.ItemRows.AddItem(newFRowItem(ResetAllStats,0,false));
+	PlayerContext.ItemRows.AddItem(newFRowItem(ResetCurrentPerkStats,1,false));
+		
+	PlayersList.Columns.AddItem(newFColumnItem(ColumnPlayer,0.55));
+	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalKills,0.15));
+	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalExp,0.15));
+	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalPlayTime,0.15));
+	
+	MotdButton.ButtonText=EditMotdButtonText;
+	MotdButton.Tooltip=EditMotdButtonToolTip;
+	
 	Super.InitMenu();
 }
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	SetTimer(2,true);
 	Timer();
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
@@ -30,7 +102,7 @@ function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick 
 {
 	if( bRight || bDblClick )
 	{
-		PlayerContext.ItemRows[0].Text = "-- EDIT: "$Item.Columns[0]; // TODO: localize?
+		PlayerContext.ItemRows[0].Text = EditPlayer$" "$Item.Columns[0]; // TODO: localize?
 		SelectedID = Item.Value;
 		PlayerContext.OpenMenu(Self);
 	}
@@ -56,33 +128,13 @@ function ButtonClicked( KFGUI_Button Sender )
 
 defaultproperties
 {
-	// TODO: localize
 	Begin Object Class=KFGUI_RightClickMenu Name=PlayerContextMenu
-		ItemRows.Add((Text="",Value=-1))
-		ItemRows.Add((Text="Show Debug Info",Value=9))
-		ItemRows.Add((bSplitter=true))
-		ItemRows.Add((Text="Add 1,000 XP",Value=2))
-		ItemRows.Add((Text="Add 10,000 XP",Value=3))
-		ItemRows.Add((Text="Advance Perk Level",Value=4))
-		ItemRows.Add((Text="Set Perk Level",Value=-1))
-		ItemRows.Add((Text="Set Prestige Level",Value=-2))
-		ItemRows.Add((bSplitter=true))
-		ItemRows.Add((Text="Unload all stats",Value=5))
-		ItemRows.Add((Text="Unload all traits",Value=6))
-		ItemRows.Add((bSplitter=true))
-		ItemRows.Add((Text="Remove 1,000 XP",Value=7))
-		ItemRows.Add((Text="Remove 10,000 XP",Value=8))
-		ItemRows.Add((bSplitter=true))
-		ItemRows.Add((Text="Reset ALL Stats",Value=0))
-		ItemRows.Add((Text="Reset Current Perk Stats",Value=1))
 		OnSelectedItem=SelectedRCItem
 	End Object
 	PlayerContext=PlayerContextMenu
 	
 	Begin Object Class=KFGUI_Button Name=EditMOTDButton
 		ID="MOTD"
-		ButtonText="Edit MOTD"
-		Tooltip="Edit the server Message of the Day"
 		XPosition=0.2
 		YPosition=0.997
 		XSize=0.1
@@ -98,10 +150,6 @@ defaultproperties
 		YPosition=0.05
 		XSize=0.9
 		YSize=0.92
-		Columns.Add((Text="Player",Width=0.55))
-		Columns.Add((Text="Total Kills",Width=0.15))
-		Columns.Add((Text="Total EXP",Width=0.15))
-		Columns.Add((Text="Total PlayTime",Width=0.15))
 		OnSelectedRow=SelectedRow
 	End Object
 	Components.Add(PlayerList)
