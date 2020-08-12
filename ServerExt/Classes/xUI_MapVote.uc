@@ -17,6 +17,7 @@ var localized string ColumnPlayCount;
 var localized string ColumnRating;
 var localized string ColumnGame;
 var localized string ColumnNumVotes;
+var localized string Title;
 
 function FColumnItem newFColumnItem(string Text, float Width)
 {
@@ -64,6 +65,8 @@ function InitMenu()
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnMapName,0.5));
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnNumVotes,0.15));
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnRating,0.15));
+	
+	WindowTitle=Title;
 }
 function CloseMenu()
 {
@@ -194,8 +197,6 @@ function SelectedVoteRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblCl
 
 defaultproperties
 {
-	WindowTitle="Killing Floor 2 mapvote menu"
-	
 	XPosition=0.2
 	YPosition=0.1
 	XSize=0.6
