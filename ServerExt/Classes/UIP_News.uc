@@ -4,6 +4,9 @@ var KFGUI_TextField NewsField;
 var string WebsiteURL;
 var KFGUI_Button WebsiteButton;
 
+var localized string WebSiteButtonText;
+var localized string WebsiteButtonToolTip;
+
 function InitMenu()
 {
 	Super.InitMenu();
@@ -11,6 +14,9 @@ function InitMenu()
 	// Client settings
 	NewsField = KFGUI_TextField(FindComponentID('News'));
 	WebsiteButton = KFGUI_Button(FindComponentID('Website'));
+	
+	WebsiteButton.ButtonText=WebSiteButtonText;
+	
 	Timer();
 }
 function ShowMenu()
@@ -23,7 +29,7 @@ function ShowMenu()
 	if( !WebsiteButton.bDisabled )
 	{
 		WebsiteURL = GRI.ServerAdInfo.WebsiteLink;
-		WebsiteButton.ChangeToolTip("Visit the server website at: "$WebsiteURL); // TODO: localize
+		WebsiteButton.ChangeToolTip(WebsiteButtonToolTip$" "$WebsiteURL);
 	}
 }
 function Timer()
@@ -53,7 +59,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=WebSiteButton
 		ID="Website"
-		ButtonText="Visit Website"
 		XPosition=0.44
 		YPosition=0.92
 		XSize=0.12
