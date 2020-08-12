@@ -102,7 +102,7 @@ function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick 
 {
 	if( bRight || bDblClick )
 	{
-		PlayerContext.ItemRows[0].Text = EditPlayer$" "$Item.Columns[0]; // TODO: localize?
+		PlayerContext.ItemRows[0].Text = EditPlayer$" "$Item.Columns[0];
 		SelectedID = Item.Value;
 		PlayerContext.OpenMenu(Self);
 	}
