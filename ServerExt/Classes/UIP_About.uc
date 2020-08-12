@@ -52,7 +52,6 @@ defaultproperties
 {
 	ForumURL="https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712"
 
-	// TODO: localize
 	Begin Object Class=KFGUI_TextField Name=AboutText
 		ID="About"
 		XPosition=0.025
