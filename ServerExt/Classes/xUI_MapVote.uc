@@ -3,9 +3,36 @@ Class xUI_MapVote extends KFGUI_FloatingWindow;
 var xVotingReplication RepInfo;
 var KFGUI_ColumnList CurrentVotes,MapList;
 var KFGUI_ComboBox GameModeCombo;
+var KFGUI_RightClickMenu MapRClicker;
+var KFGUI_Button CloseButton;
 var int SelectedMapIndex;
 var editinline export KFGUI_RightClickMenu MapRightClick;
 var bool bFirstTime;
+
+var localized string CloseButtonText;
+var localized string CloseButtonToolTip;
+var localized string ColumnMapName;
+var localized string ColumnSequence;
+var localized string ColumnPlayCount;
+var localized string ColumnRating;
+var localized string ColumnGame;
+var localized string ColumnNumVotes;
+
+function FColumnItem newFColumnItem(string Text, float Width)
+{
+	local FColumnItem newItem;
+	newItem.Text=Text;
+	newItem.Width=Width;
+	return newItem;
+}
+
+function FRowItem newFRowItem(string Text, bool isDisabled)
+{
+	local FRowItem newItem;
+	newItem.Text=Text;
+	newItem.bDisabled=isDisabled;
+	return newItem;
+}
 
 function InitMenu()
 {
@@ -13,6 +40,30 @@ function InitMenu()
 	CurrentVotes = KFGUI_ColumnList(FindComponentID('Votes'));
 	MapList = KFGUI_ColumnList(FindComponentID('Maps'));
 	GameModeCombo = KFGUI_ComboBox(FindComponentID('Filter'));
+	MapRClicker = KFGUI_RightClickMenu(FindComponentID('RClick'));
+	CloseButton = KFGUI_Button(FindComponentID('Close'));
+	
+	// TODO: i18n this
+	// I don't know why it's not working
+	// MapRClicker.ItemRows.AddItem(newFRowItem("Vote this map", false));
+	// MapRClicker.ItemRows.AddItem(newFRowItem("Admin force this map", true));
+	
+	// And this too:
+	// GameModeCombo.LableString="Game mode:";
+	// GameModeCombo.ToolTip="Select game mode to vote for.";
+	
+	CloseButton.ButtonText=CloseButtonText;
+	CloseButton.ToolTip=CloseButtonToolTip;
+	
+	MapList.Columns.AddItem(newFColumnItem(ColumnMapName,0.5));
+	MapList.Columns.AddItem(newFColumnItem(ColumnSequence,0.18));
+	MapList.Columns.AddItem(newFColumnItem(ColumnPlayCount,0.18));
+	MapList.Columns.AddItem(newFColumnItem(ColumnRating,0.14));
+	
+	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnGame,0.2));
+	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnMapName,0.5));
+	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnNumVotes,0.15));
+	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnRating,0.15));
 }
 function CloseMenu()
 {
@@ -143,22 +194,19 @@ function SelectedVoteRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblCl
 
 defaultproperties
 {
+	WindowTitle="Killing Floor 2 mapvote menu"
+	
 	XPosition=0.2
 	YPosition=0.1
 	XSize=0.6
 	YSize=0.8
 	
-	// TODO: localize
 	Begin Object Class=KFGUI_ColumnList Name=CurrentVotesList
 		XPosition=0.015
 		YPosition=0.075
 		XSize=0.98
 		YSize=0.25
 		ID="Votes"
-		Columns.Add((Text="Game",Width=0.2))
-		Columns.Add((Text="Map Name",Width=0.5))
-		Columns.Add((Text="Num votes",Width=0.15))
-		Columns.Add((Text="Rating",Width=0.15))
 		OnSelectedRow=SelectedVoteRow
 		bShouldSortList=true
 		bLastSortedReverse=true
@@ -170,10 +218,6 @@ defaultproperties
 		XSize=0.98
 		YSize=0.56
 		ID="Maps"
-		Columns.Add((Text="Map Name",Width=0.5))
-		Columns.Add((Text="Sequence",Width=0.18))
-		Columns.Add((Text="Play Count",Width=0.18))
-		Columns.Add((Text="Rating",Width=0.14))
 		OnSelectedRow=SelectedVoteRow
 	End Object
 	Begin Object Class=KFGUI_ComboBox Name=GameModeFilter
@@ -192,8 +236,6 @@ defaultproperties
 		XSize=0.1
 		YSize=0.05
 		ID="Close"
-		ButtonText="Close"
-		ToolTip="Close the mapvote menu."
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
@@ -204,6 +246,7 @@ defaultproperties
 	Components.Add(CloseButton)
 	
 	Begin Object Class=KFGUI_RightClickMenu Name=MapRClicker
+		ID="RClick"
 		ItemRows(0)=(Text="Vote this map")
 		ItemRows(1)=(Text="Admin force this map",bDisabled=true)
 		OnSelectedItem=ClickedRow
