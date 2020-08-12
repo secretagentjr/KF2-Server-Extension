@@ -9,6 +9,23 @@ var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
 var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
 
+var localized string MapVoteButtonText;
+var localized string MapVoteButtonToolTip;
+var localized string SettingsButtonText;
+var localized string SettingsButtonToolTip;
+var localized string SkipTraderButtonText;
+var localized string SkipTraderButtonToolTip;
+var localized string SpectateButtonText;
+var localized string SpectateButtonToolTip;
+var localized string CloseButtonText;
+var localized string CloseButtonToolTip;
+var localized string DisconnectButtonText;
+var localized string DisconnectButtonToolTip;
+var localized string ExitButtonText;
+var localized string ExitButtonToolTip;
+var localized string JoinButtonText;
+var localized string JoinButtonToolTip;
+
 function InitMenu()
 {
 	local int i;
@@ -17,14 +34,13 @@ function InitMenu()
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
 	
-	// TODO: localize
-	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
-	AddMenuButton('Settings',"Settings","Enter the game settings");
-	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
-	SpectateButton = AddMenuButton('Spectate',"","");
-	AddMenuButton('Close',"Close","Close this menu");
-	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
-	AddMenuButton('Exit',"Exit","Exit this game");
+	AddMenuButton('Mapvote',MapVoteButtonText,MapVoteButtonToolTip);
+	AddMenuButton('Settings',SettingsButtonText,SettingsButtonToolTip);
+	SkipTraderButton = AddMenuButton('SkipTrader',SkipTraderButtonText,SkipTraderButtonToolTip);
+	SpectateButton = AddMenuButton('Spectate',SpectateButtonText,SpectateButtonToolTip);
+	AddMenuButton('Close',CloseButtonText,CloseButtonToolTip);
+	AddMenuButton('Disconnect',DisconnectButtonText,DisconnectButtonToolTip);
+	AddMenuButton('Exit',ExitButtonText,ExitButtonToolTip);
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
@@ -47,8 +63,8 @@ function Timer()
 	{
 		bInitSpectate = true;
 		bOldSpectate = PRI.bOnlySpectator;
-		SpectateButton.ButtonText = (bOldSpectate ? "Join" : "Spectate"); // TODO: localize
-		SpectateButton.ChangeToolTip(bOldSpectate ? "Click to become an active player" : "Click to become a spectator"); // TODO: localize
+		SpectateButton.ButtonText = (bOldSpectate ? JoinButtonText : SpectateButtonText);
+		SpectateButton.ChangeToolTip(bOldSpectate ? JoinButtonToolTip : SpectateButtonToolTip);
 	}
 }
 
@@ -80,7 +96,6 @@ function ShowMenu()
 	SkipTraderButton.SetDisabled(false);
 	if( GetPlayer().WorldInfo.GRI!=None )
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
-	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(false);
 	
 	// Update spectate button info text.
 	Timer();
@@ -89,7 +104,6 @@ function ShowMenu()
 function CloseMenu()
 {
 	Super.CloseMenu();
-	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(true);
 }
 function ButtonClicked( KFGUI_Button Sender )
 {
@@ -159,7 +173,7 @@ final function KFGUI_Button AddMenuButton( name ButtonID, string Text, optional 
 
 defaultproperties
 {
-	WindowTitle="Killing Floor 2 - Survival" // TODO: wtf?
+	WindowTitle="RPG"
 	XPosition=0.1
 	YPosition=0.1
 	XSize=0.8
