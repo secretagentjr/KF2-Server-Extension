@@ -48,7 +48,7 @@ function UserPressedEsc();
 
 defaultproperties
 {
-	WindowTitle="" // TODO: localize? WTF?
+	WindowTitle=""
 	XPosition=0.01
 	XSize=0.73
 	YSize=0.73
