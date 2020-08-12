@@ -1,7 +1,7 @@
 Class UIP_PerkSelection extends KFGUI_MultiComponent;
 
 var KFGUI_List PerkList;
-var KFGUI_Button B_Prestige;
+var KFGUI_Button B_Prestige, B_Reset, B_Unload;
 var KFGUI_ComponentList StatsList;
 var UIR_PerkTraitList TraitsList;
 var KFGUI_TextLable PerkLabel;
@@ -11,6 +11,19 @@ var class<Ext_PerkBase> PrevPendingPerk;
 var array<UIR_PerkStat> StatBuyers;
 var int OldPerkPoints;
 
+var localized string PrestigeButtonText;
+var localized string PrestigeButtonToolTip;
+var localized string ResetButtonText;
+var localized string ResetButtonToolTip;
+var localized string UnloadButtonText;
+var localized string UnloadButtonToolTip;
+var localized string PrestigeButtonDisabledToolTip;
+var localized string Level;
+var localized string Points;
+var localized string NoPerkSelected;
+var localized string NotAviable;
+var localized string MaxStr;
+
 function InitMenu()
 {
 	PerkList = KFGUI_List(FindComponentID('Perks'));
@@ -19,6 +32,18 @@ function InitMenu()
 	PerkLabel = KFGUI_TextLable(FindComponentID('Info'));
 	PerkLabel.SetText("");
 	B_Prestige = KFGUI_Button(FindComponentID('Prestige'));
+	B_Reset = KFGUI_Button(FindComponentID('Reset'));
+	B_Unload = KFGUI_Button(FindComponentID('Unload'));
+	
+	B_Prestige.ButtonText=PrestigeButtonText;
+	B_Prestige.ToolTip="-";
+	
+	B_Unload.ButtonText=UnloadButtonText;
+	B_Unload.ToolTip=UnloadButtonToolTip;
+	
+	B_Reset.ButtonText=ResetButtonText;
+	B_Reset.ToolTip=ResetButtonToolTip;
+		
 	Super.InitMenu();
 }
 function ShowMenu()
@@ -87,7 +112,7 @@ function Timer()
 					}
 				}
 				OldPerkPoints = PendingPerk.CurrentSP;
-				PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
+				PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
 				for( i=0; i<StatsList.ItemComponents.Length; ++i ) // Just make sure perk stays the same.
 				{
 					StatBuyers[i].SetActivePerk(PendingPerk);
@@ -95,8 +120,8 @@ function Timer()
 				}
 				B_Prestige.SetDisabled(!PendingPerk.CanPrestige());
 				if( PendingPerk.MinLevelForPrestige<0 )
-					B_Prestige.ChangeToolTip("Prestige is disabled for this perk");
-				else B_Prestige.ChangeToolTip("Prestige this perk.|Minimum level required: "$PendingPerk.MinLevelForPrestige);
+					B_Prestige.ChangeToolTip(PrestigeButtonDisabledToolTip);
+				else B_Prestige.ChangeToolTip(PrestigeButtonToolTip$" "$PendingPerk.MinLevelForPrestige);
 				UpdateTraits();
 			}
 			else // Empty out if needed.
@@ -104,7 +129,7 @@ function Timer()
 				for( i=0; i<StatsList.ItemComponents.Length; ++i )
 					StatBuyers[i].CloseMenu();
 				StatsList.ItemComponents.Length = 0;
-				PerkLabel.SetText("<No perk selected>");
+				PerkLabel.SetText(NoPerkSelected);
 			}
 		}
 		else if( PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP )
@@ -112,7 +137,7 @@ function Timer()
 			B_Prestige.SetDisabled(!PendingPerk.CanPrestige());
 
 			OldPerkPoints = PendingPerk.CurrentSP;
-			PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
+			PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
 			for( i=0; i<StatsList.ItemComponents.Length; ++i ) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
 			
@@ -158,13 +183,13 @@ final function UpdateTraits()
 			if( TC.Default.TraitGroup==N )
 			{
 				if( PendingPerk.PerkTraits[i].CurrentLevel>=TC.Default.NumLevels )
-					S = "MAX\nN/A";
+					S = MaxStr$"\n"$NotAviable;
 				else
 				{
 					S = PendingPerk.PerkTraits[i].CurrentLevel$"/"$TC.Default.NumLevels$"\n";
 					if( TC.Static.MeetsRequirements(PendingPerk.PerkTraits[i].CurrentLevel,PendingPerk) )
 						S $= string(TC.Static.GetTraitCost(PendingPerk.PerkTraits[i].CurrentLevel));
-					else S $= "N/A";
+					else S $= NotAviable;
 				}
 				TraitsList.AddLine(TC.Default.TraitName$"\n"$S,i);
 				TraitsList.ToolTip.AddItem(TC.Static.GetTooltipInfo());
@@ -260,7 +285,6 @@ function ButtonClicked( KFGUI_Button Sender )
 
 defaultproperties
 {
-	// TODO: localize
 	Begin Object Class=KFGUI_List Name=PerksList
 		ID="Perks"
 		XPosition=0
@@ -304,8 +328,6 @@ defaultproperties
 	
 	Begin Object Class=KFGUI_Button Name=ResetPerkButton
 		ID="Reset"
-		ButtonText="Reset Level"
-		ToolTip="Reset this perk by unloading all stats, traits and set XP gained and level to 0"
 		XPosition=0.25
 		YPosition=0.025
 		XSize=0.074
@@ -316,8 +338,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=UnloadPerkButton
 		ID="Unload"
-		ButtonText="Unload Perk"
-		ToolTip="Reset all spent points on this perk and refund the points in exchange of some XP"
 		XPosition=0.325
 		YPosition=0.025
 		XSize=0.074
@@ -328,8 +348,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=PrestigePerkButton
 		ID="Prestige"
-		ButtonText="Prestige"
-		ToolTip="-"
 		XPosition=0.4
 		YPosition=0.025
 		XSize=0.074
