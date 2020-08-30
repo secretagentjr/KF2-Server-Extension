@@ -9,6 +9,8 @@ This mod replaces current perk system in KF2 with a serverside perk progression 
 (You can add some options or replace KF-BioticsLab with the map you want)
 
 [h1]Usage (Server):[/h1]
+[b]Note:[/b] If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.
+
 1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
 2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
 [code]ServerSubscribedWorkshopItems=2085786712[/code]
@@ -16,14 +18,11 @@ This mod replaces current perk system in KF2 with a serverside perk progression 
 4. Add [b]?Mutator=ServerExtMut.ServerExtMut[/b] above to launchup URL and restart server.
 
 [h1]Mutator Setup[/h1]
-[url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/]Look here[/url] 
+[url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url] 
 
 [h1]Is it possible to make the game harder?[/h1]
-Hmm... You can try to adjust skills and abilities, so that would be more difficult.
-Look here: WebAdmin → Settings → ExtServer Mod
-
-But it will be more efficient to use RPG Mod together with other mutators (which add new zeds or game modes).
-You can use [url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359647296750/]my experience[/url] or come up with something of your own.
+It will be more efficient to use RPG Mod together with other mutators (which add new zeds or game modes).
+You can use [u][url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359647296750/]my experience[/url][/u] or come up with something of your own.
 
 [h1]If not working[/h1]
 Older versions of Server-Ext have the same file names - this can cause conflicts if you subscribe to them. Therefore:
@@ -53,4 +52,4 @@ ServerExtMut.u
 [url=https://www.deviantart.com/cottonvalent]CottonValent[/url] - artist who created gorgeous cat on the preview (I don’t know why he is here, it happened).
 
 [h1]Links:[/h1]
-[url=https://github.com/inklesspen1scripter/KF2-Server-Extension]Sources[/url]
+[url=https://github.com/inklesspen1scripter/KF2-Server-Extension][u]Sources[/u][/url]
