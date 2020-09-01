@@ -16,6 +16,7 @@ function InitStyle()
 	for( i=0; i<ArrayCount(LoadedTex); ++i )
 		if( LoadedTex[i]==None )
 			LoadedTex[i] = Texture2D'EngineMaterials.DefaultWhiteGrid';
+	// TODO: SmallFont/TinyFont not support unicode
 	DrawFonts[0] = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_General",class'Font'));
 	DrawFonts[1] = Font(DynamicLoadObject("EngineFonts.SmallFont",class'Font'));
 	DrawFonts[2] = Font(DynamicLoadObject("EngineFonts.TinyFont",class'Font'));
@@ -496,11 +497,11 @@ function Font PickFont( byte i, out float Scaler )
 	switch( i )
 	{
 	case 0:
-		Scaler = 1;
-		return DrawFonts[2];
+		Scaler = 0.3;
+		return DrawFonts[0]; // use unicode font only
 	case 1:
-		Scaler = 1;
-		return DrawFonts[1];
+		Scaler = 0.35;
+		return DrawFonts[0]; // use unicode font only
 	case 2:
 		Scaler = 0.4;
 		return DrawFonts[0];
