@@ -2,14 +2,34 @@ Class UI_AdminMOTD extends KFGUI_FloatingWindow;
 
 var KFGUI_TextField NewsField;
 var KFGUI_EditBox EditField;
+var KFGUI_Button YesButton;
+var KFGUI_Button NoButton;
+
+var localized string WindowTitleText;
+var localized string YesButtonText;
+var localized string YesButtonToolTip; 
+var localized string NoButtonText;
+var localized string NoButtonToolTip; 
+var localized string EditBoxToolTip;
+var localized string MotdPreviewText;
 
 function InitMenu()
 {
 	Super.InitMenu();
-
+	
 	// Client settings
 	NewsField = KFGUI_TextField(FindComponentID('News'));
 	EditField = KFGUI_EditBox(FindComponentID('Edit'));
+	YesButton = KFGUI_Button(FindComponentID('Yes'));
+	NoButton = KFGUI_Button(FindComponentID('No'));
+	
+	WindowTitle = WindowTitleText;
+	EditField.ToolTip=EditBoxToolTip;
+	YesButton.ButtonText=YesButtonText;
+	YesButton.Tooltip=YesButtonToolTip;
+	NoButton.ButtonText=NoButtonText;
+	NoButton.Tooltip=NoButtonToolTip;
+		
 	Timer();
 }
 function Timer()
@@ -45,13 +65,11 @@ function ButtonClicked( KFGUI_Button Sender )
 }
 function MOTDEdited( KFGUI_EditBox Sender )
 {
-	NewsField.SetText("MOTD Preview:|"$Sender.Value);
+	NewsField.SetText(MotdPreviewText$"|"$Sender.Value);
 }
 
 defaultproperties
 {
-	// TODO: localize
-	WindowTitle="Edit MOTD line"
 	XPosition=0.25
 	YPosition=0.2
 	XSize=0.5
@@ -68,8 +86,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=YesButten
 		ID="Yes"
-		ButtonText="Submit"
-		Tooltip="Submit changes to server"
 		XPosition=0.4
 		YPosition=0.9
 		XSize=0.09
@@ -80,8 +96,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=NoButten
 		ID="No"
-		ButtonText="Cancel"
-		Tooltip="Abort without doing anything"
 		XPosition=0.5
 		YPosition=0.9
 		XSize=0.09
@@ -91,7 +105,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_EditBox Name=EditBox
 		ID="Edit"
-		Tooltip="Enter the text here, use vertical line character for line switches."
 		XPosition=0.05
 		YPosition=0.09
 		XSize=0.9
