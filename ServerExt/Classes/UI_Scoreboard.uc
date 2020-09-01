@@ -17,11 +17,57 @@ var KFGUI_Tooltip ToolTipItem;
 
 var transient bool bHasSelectedPlayer,bMeAdmin,bShowSpectatorsOnly;
 
+var KFGUI_Button SpecButton;
+
+var localized string TimeText;
+var localized string PlayersText;
+var localized string PlayerText;
+var localized string AliveText;
+var localized string SpectatorsText;
+var localized string HeaderWaveText;
+var localized string HeaderPlayerText;
+var localized string HeaderDoshText;
+var localized string HeaderKillsText;
+var localized string HeaderAssistText;
+var localized string HeaderPingText;
+var localized string NoPerkText;
+var localized string RespawnText;
+var localized string BotText;
+var localized string DeadText;
+var localized string UnmutePlayerText;
+var localized string MutePlayerText;
+var localized string YouveMutedText;
+var localized string YouveUnmutedText;
+var localized string HealthText;
+var localized string RClickForOptsText;
+var localized string SpecButtonText;
+var localized string SpecButtonTooltip;
+var localized string SpectateThisPlayerText;
+var localized string ViewPlayerProfileText;
+var localized string MuteText;
+
+function FRowItem NewFRowItem(string Text, bool isSplitter)
+{
+	local FRowItem newItem;
+	newItem.Text=Text;
+	newItem.bSplitter=isSplitter;
+	return newItem;
+}
+
 function InitMenu()
 {
 	Super.InitMenu();
 	HealthIcon = Texture2D(DynamicLoadObject("UI_Objective_Tex.UI_Obj_Healing_Loc",class'Texture2D'));
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
+	SpecButton = KFGUI_Button(FindComponentID('Spec'));
+	
+	SpecButton.ButtonText=SpecButtonText;
+	SpecButton.Tooltip=SpecButtonTooltip;
+	
+	PlayerContext.ItemRows.AddItem(NewFRowItem(SpectateThisPlayerText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem(ViewPlayerProfileText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem(MuteText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem("", true));
 }
 function ShowMenu()
 {
@@ -161,7 +207,7 @@ function DrawMenu()
 
 	Y+=YL;
 	Canvas.SetPos(XPos+26,Y);
-	Canvas.DrawText("Time: "$FormatTimeSM(KFGRI.ElapsedTime)$" | Players: "$NumPlayer$" | Alive: "$NumAlivePlayer$" | Spectators: "$NumSpec,,FontScalar,FontScalar);
+	Canvas.DrawText(TimeText$" "$FormatTimeSM(KFGRI.ElapsedTime)$" | "$PlayersText$" "$NumPlayer$" | "$AliveText$" "$NumAlivePlayer$" | "$SpectatorsText$" "$NumSpec,,FontScalar,FontScalar);
 	
 	XPos += XScale*0.75-1;
 	XScale *= 0.25;
@@ -171,7 +217,7 @@ function DrawMenu()
 	Canvas.Font = Owner.CurrentStyle.PickFont(DefFont+3,FontScalar);
 	Canvas.TextSize("A",XL,YL,FontScalar,FontScalar);
 	Y = YPos+4;
-	DrawCenteredText("WAVE",XPos+XScale*0.5,Y,FontScalar);
+	DrawCenteredText(HeaderWaveText,XPos+XScale*0.5,Y,FontScalar);
 	Y += YL;
 	DrawCenteredText(KFGRI.WaveNum$"/"$(KFGRI.WaveMax-1),XPos+XScale*0.5,Y,FontScalar*1.1);
 	
@@ -205,15 +251,15 @@ function DrawMenu()
 	Canvas.DrawColor = SBTextColor;
 	Y = YPos+4;
 	Canvas.SetPos(XPos+18,Y);
-	Canvas.DrawText("PLAYER",,FontScalar,FontScalar);
+	Canvas.DrawText(HeaderPlayerText,,FontScalar,FontScalar);
 	if( !bShowSpectatorsOnly )
 	{
 		Canvas.SetPos(XPos+CashXPos,Y);
-		Canvas.DrawText("DOSH",,FontScalar,FontScalar);
-		DrawCenteredText("KILLS",XPos+KillsXPos,Y,FontScalar);
-		DrawCenteredText("ASSISTS",XPos+AssistXPos,Y,FontScalar);
+		Canvas.DrawText(HeaderDoshText,,FontScalar,FontScalar);
+		DrawCenteredText(HeaderKillsText,XPos+KillsXPos,Y,FontScalar);
+		DrawCenteredText(HeaderAssistText,XPos+AssistXPos,Y,FontScalar);
 	}
-	DrawCenteredText("PING",XPos+PingXPos,Y,FontScalar);
+	DrawCenteredText(HeaderPingText,XPos+PingXPos,Y,FontScalar);
 
 	// Check how many players to draw.
 	YPos+=(YHeight-1);
@@ -410,14 +456,14 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		else
 		{
 			C.DrawColor = SBTextColor;
-			S = "No Perk";
+			S = NoPerkText;
 		}
 		YPos = SBFontSize*0.9;
 		C.SetPos(XPos+Height*0.5,YOffset+Height*0.495);
 		if( PRI.RespawnCounter>=0 )
 		{
 			C.DrawColor = SBTextColor;
-			S = "Respawn: "$FormatTimeSM(PRI.RespawnCounter);
+			S = RespawnText$" "$FormatTimeSM(PRI.RespawnCounter);
 		}
 		while( true ) // Make sure too long name doesn't overleap.
 		{
@@ -445,7 +491,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 		
 	// Ping
-	DrawCenteredText(PRI.bBot ? "BOT" : string(PRI.Ping*4),PingXPos,YPos,SBFontSize);
+	DrawCenteredText(PRI.bBot ? BotText : string(PRI.Ping*4),PingXPos,YPos,SBFontSize);
 	
 	// Draw health.
 	if( !bShowSpectatorsOnly )
@@ -456,7 +502,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			C.DrawTile(HealthIcon,(Height-12)*0.5,(Height-12)*0.5,0,0,256,256);
 		}
 		if( PRI.PlayerHealth<=0 || PRI.PlayerHealthPercent<=0 )
-			DrawCenteredText("DEAD",6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
+			DrawCenteredText(DeadText,6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
 		else DrawCenteredText(string(PRI.PlayerHealth),6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
 	}
 }
@@ -475,7 +521,7 @@ function ClickedPlayer( int Index, bool bRight, int MouseX, int MouseY )
 	PlayerContext.ItemRows[0].bDisabled = (PlayerIndex==Index || !PC.IsSpectating());
 	PlayerContext.ItemRows[1].bDisabled = RightClickPlayer.bBot;
 	PlayerContext.ItemRows[2].bDisabled = (PlayerIndex==Index || RightClickPlayer.bBot);
-	PlayerContext.ItemRows[2].Text = (PlayerContext.ItemRows[2].bDisabled || PC.IsPlayerMuted(RightClickPlayer.UniqueId)) ? "Unmute player" : "Mute player";
+	PlayerContext.ItemRows[2].Text = (PlayerContext.ItemRows[2].bDisabled || PC.IsPlayerMuted(RightClickPlayer.UniqueId)) ? UnmutePlayerText : MutePlayerText;
 
 	if( PlayerIndex==Index ) // Selected self.
 	{
@@ -510,13 +556,13 @@ function SelectedRCItem( int Index )
 	case 2: // Mute voice.
 		if( !PC.IsPlayerMuted(RightClickPlayer.UniqueId) )
 		{
-			PC.ClientMessage("You've muted "$RightClickPlayer.TaggedPlayerName);
+			PC.ClientMessage(YouveMutedText$" "$RightClickPlayer.TaggedPlayerName);
 			PC.ClientMutePlayer(RightClickPlayer.UniqueId);
 			RightClickPlayer.bIsMuted = true;
 		}
 		else
 		{
-			PC.ClientMessage("You've unmuted "$RightClickPlayer.TaggedPlayerName);
+			PC.ClientMessage(YouveUnmutedText$" "$RightClickPlayer.TaggedPlayerName);
 			PC.ClientUnmutePlayer(RightClickPlayer.UniqueId);
 			RightClickPlayer.bIsMuted = false;
 		}
@@ -542,10 +588,10 @@ function ShowPlayerTooltip( int Index )
 			ToolTipItem.ParentComponent = Self;
 			ToolTipItem.InitMenu();
 		}
-		S = "Player: "$PRI.TaggedPlayerName$"|Health: "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
+		S = PlayerText$" "$PRI.TaggedPlayerName$"|"$HealthText$" "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
 		if( PRI.ShowAdminName() )
 			S = S$"|"$PRI.GetAdminName();
-		S = S$"|(Right click for options)";
+		S = S$"|"$RClickForOptsText;
 		ToolTipItem.SetText(S);
 		ToolTipItem.ShowMenu();
 		ToolTipItem.CompPos[0] = Owner.MousePosition.X;
@@ -570,7 +616,6 @@ defaultproperties
 	SBTextColor=(R=250,G=250,B=250,A=255)
 	ScoreboardSpacing=4
 	
-	// TODO: localize
 	Begin Object Class=KFGUI_List Name=PlayerList
 		bDrawBackground=false
 		OnDrawItem=DrawPlayerEntry
@@ -581,8 +626,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowSpecs
 		ID="Spec"
-		ButtonText="Show Spectators"
-		Tooltip="Toggle show server spectators"
 		XPosition=0.67
 		YPosition=0.95
 		XSize=0.09
@@ -595,10 +638,6 @@ defaultproperties
 	Components.Add(B_ShowSpecs)
 	
 	Begin Object Class=KFGUI_RightClickMenu Name=PlayerContextMenu
-		ItemRows.Add((Text="Spectate this player"))
-		ItemRows.Add((Text="View player Steam profile"))
-		ItemRows.Add((Text="Mute"))
-		ItemRows.Add((bSplitter=true))
 		OnSelectedItem=SelectedRCItem
 		OnBecameHidden=HidRightClickMenu
 	End Object
