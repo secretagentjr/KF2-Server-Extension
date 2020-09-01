@@ -69,6 +69,7 @@ function InitMenu()
 	PlayerContext.ItemRows.AddItem(NewFRowItem(MuteText, false));
 	PlayerContext.ItemRows.AddItem(NewFRowItem("", true));
 }
+
 function ShowMenu()
 {
 	local ExtPlayerController PC;
@@ -207,7 +208,7 @@ function DrawMenu()
 
 	Y+=YL;
 	Canvas.SetPos(XPos+26,Y);
-	Canvas.DrawText(TimeText$" "$FormatTimeSM(KFGRI.ElapsedTime)$" | "$PlayersText$" "$NumPlayer$" | "$AliveText$" "$NumAlivePlayer$" | "$SpectatorsText$" "$NumSpec,,FontScalar,FontScalar);
+	Canvas.DrawText(TimeText$": "$FormatTimeSM(KFGRI.ElapsedTime)$" | "$PlayersText$": "$NumPlayer$" | "$AliveText$": "$NumAlivePlayer$" | "$SpectatorsText$": "$NumSpec,,FontScalar,FontScalar);
 	
 	XPos += XScale*0.75-1;
 	XScale *= 0.25;
@@ -463,7 +464,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if( PRI.RespawnCounter>=0 )
 		{
 			C.DrawColor = SBTextColor;
-			S = RespawnText$" "$FormatTimeSM(PRI.RespawnCounter);
+			S = RespawnText$": "$FormatTimeSM(PRI.RespawnCounter);
 		}
 		while( true ) // Make sure too long name doesn't overleap.
 		{
@@ -588,7 +589,7 @@ function ShowPlayerTooltip( int Index )
 			ToolTipItem.ParentComponent = Self;
 			ToolTipItem.InitMenu();
 		}
-		S = PlayerText$" "$PRI.TaggedPlayerName$"|"$HealthText$" "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
+		S = PlayerText$": "$PRI.TaggedPlayerName$"|"$HealthText$": "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
 		if( PRI.ShowAdminName() )
 			S = S$"|"$PRI.GetAdminName();
 		S = S$"|"$RClickForOptsText;

@@ -3,6 +3,34 @@ class UI_Scoreboard_CD extends UI_Scoreboard;
 var transient float AdminXPos, PerkXPos, PlayerXPos, StateXPos, TimeXPos;
 var int MaxPlayerCount;
 
+var localized string HeaderPerkText;
+var localized string HeaderStateText;
+var localized string HeaderRankText;
+var localized string DeveloperText;
+var localized string VoteKickText;
+
+function FRowItem NewFRowItem(string Text, bool isSplitter)
+{
+	local FRowItem newItem;
+	newItem.Text=Text;
+	newItem.bSplitter=isSplitter;
+	return newItem;
+}
+
+function InitMenu()
+{
+	Super.InitMenu();
+
+	SpecButton.ButtonText=SpecButtonText;
+	SpecButton.Tooltip=SpecButtonTooltip;
+	
+	PlayerContext.ItemRows.AddItem(NewFRowItem(SpectateThisPlayerText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem(ViewPlayerProfileText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem(MuteText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem(VoteKickText, false));
+	PlayerContext.ItemRows.AddItem(NewFRowItem("", true));
+}
+
 static final function string FormatTimeSMH (float Sec)
 {
     local int Hours, Seconds, Minutes;
@@ -112,7 +140,7 @@ function DrawMenu()
 	Canvas.TextSize (S, XL, YL, FontScalar, FontScalar);
 
 	XPos += XL;
-	S = "  | WAVE " $KFGRI.WaveNum;
+	S = "  | "$HeaderWaveText$" " $KFGRI.WaveNum;
 	Canvas.SetPos (XPos, YPos);
 	Canvas.DrawText (S, , FontScalar, FontScalar);
 	Canvas.TextSize (S, XL, YL, FontScalar, FontScalar);
@@ -133,7 +161,7 @@ function DrawMenu()
 	XPos = XPosCenter;
 	YPos += YL;
 
-	S = " Players : " $NumPlayer $"  |  Alive : " $NumAlivePlayer $"  |  Spectators : " $NumSpec $" ";
+	S = " "$PlayersText$" : " $NumPlayer $"  |  "$AliveText$" : " $NumAlivePlayer $"  |  "$SpectatorsText$" : " $NumSpec $" ";
 	Canvas.TextSize (S, XL, YL, FontScalar, FontScalar);
 
 	XPos -= (XL * 0.5);
@@ -144,19 +172,19 @@ function DrawMenu()
 	Canvas.DrawColor = MakeColor (250, 250, 0, 255);
 	XPos += 5;
 
-	S = "Players : " $NumPlayer;
+	S = PlayersText$" : " $NumPlayer;
 	Canvas.SetPos (XPos, YPos);
 	Canvas.DrawText (S, , FontScalar, FontScalar);
 	Canvas.TextSize (S, XL, YL, FontScalar, FontScalar);
 
 	XPos += XL;
-	S = "  |  Alive : " $NumAlivePlayer;
+	S = "  |  "$AliveText$" : " $NumAlivePlayer;
 	Canvas.SetPos (XPos, YPos);
 	Canvas.DrawText (S, , FontScalar, FontScalar);
 	Canvas.TextSize (S, XL, YL, FontScalar, FontScalar);
 
 	XPos += XL;
-	S = "  |  Spectators : " $NumSpec;
+	S = "  |  "$SpectatorsText$" : " $NumSpec;
 	Canvas.SetPos (XPos, YPos);
 	Canvas.DrawText (S, , FontScalar, FontScalar);
 	
@@ -185,29 +213,29 @@ function DrawMenu()
 	if( !bShowSpectatorsOnly )
 	{
 		Canvas.SetPos (XPos + PerkXPos, YPos);
-		Canvas.DrawText ("PERK", , FontScalar, FontScalar);
+		Canvas.DrawText (HeaderPerkText, , FontScalar, FontScalar);
 
 		Canvas.SetPos (XPos + KillsXPos, YPos);
-		Canvas.DrawText ("KILLS", , FontScalar, FontScalar);
+		Canvas.DrawText (HeaderKillsText, , FontScalar, FontScalar);
 
 		Canvas.SetPos (XPos + AssistXPos, YPos);
-		Canvas.DrawText ("ASSISTS", , FontScalar, FontScalar);
+		Canvas.DrawText (HeaderAssistText, , FontScalar, FontScalar);
 		
 		Canvas.SetPos (XPos + CashXPos, YPos);
-		Canvas.DrawText ("DOSH", , FontScalar, FontScalar);
+		Canvas.DrawText (HeaderDoshText, , FontScalar, FontScalar);
 
 		Canvas.SetPos (XPos + StateXPos, YPos);
-		Canvas.DrawText ("STATE", , FontScalar, FontScalar);
+		Canvas.DrawText (HeaderStateText, , FontScalar, FontScalar);
 	}
 	
 	Canvas.SetPos (XPos, YPos);
-	Canvas.DrawText ("RANK", , FontScalar, FontScalar);
+	Canvas.DrawText (HeaderRankText, , FontScalar, FontScalar);
 	
 	Canvas.SetPos (XPos + PlayerXPos, YPos);
-	Canvas.DrawText ("PLAYER", , FontScalar, FontScalar);
+	Canvas.DrawText (HeaderPlayerText, , FontScalar, FontScalar);
 
 	Canvas.SetPos (XPos + PingXPos, YPos);
-	Canvas.DrawText ("PING", , FontScalar, FontScalar);
+	Canvas.DrawText (HeaderPingText, , FontScalar, FontScalar);
 	
 	PRIList.Length = (bShowSpectatorsOnly ? NumSpec : NumPlayer);
 	j = PRIList.Length;
@@ -298,7 +326,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		else
 		{
 			C.DrawColor = MakeColor (250, 250, 250, 255);
-			S = "No Perk";
+			S = NoPerkText;
 			C.SetPos (0.f + PerkXPos + Height, YOffset);
 			C.DrawText (S, , FontScalar, FontScalar);
 		}
@@ -326,12 +354,12 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	else if( KFPRI.bIsDev )
 	{
-		S = "Developer";
+		S = DeveloperText;
 		C.DrawColor = MakeColor(130,255,235,255);
 	}
 	else
 	{
-		S = "Player";
+		S = PlayerText;
 		C.DrawColor = MakeColor(255,255,255,255);
 	}
 	
@@ -367,7 +395,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 		{
 			C.DrawColor = MakeColor (250, 0, 0, 255);
-			S = "DEAD";
+			S = DeadText;
 		}
 		else
 		{
@@ -421,10 +449,10 @@ function ShowPlayerTooltip( int Index )
 			ToolTipItem.ParentComponent = Self;
 			ToolTipItem.InitMenu();
 		}
-		S = "Player: "$PRI.TaggedPlayerName$"|Health: "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
+		S = PlayerText$": "$PRI.TaggedPlayerName$"|"$HealthText$": "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
 		if( PRI.ShowAdminName() )
 			S = S$"|"$PRI.GetAdminName();
-		S = S$"|(Right click for options)";
+		S = S$"|"$RClickForOptsText;
 		ToolTipItem.SetText(S);
 		ToolTipItem.ShowMenu();
 		ToolTipItem.CompPos[0] = Owner.MousePosition.X;
@@ -487,7 +515,6 @@ defaultproperties
 	
 	Components.Empty
 	
-	// TODO: localize
 	Begin Object Class=KFGUI_List_CD Name=PlayerList
 		bDrawBackground=false
 		OnDrawItem=DrawPlayerEntry
@@ -498,8 +525,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button_CD Name=B_ShowSpecs
 		ID="Spec"
-		ButtonText="Show Spectators"
-		Tooltip="Toggle show server spectators"
 		XPosition=0.67
 		YPosition=0.965
 		XSize=0.09
@@ -511,11 +536,6 @@ defaultproperties
 	Components.Add(B_ShowSpecs)
 	
 	Begin Object Class=KFGUI_RightClickMenu_CD Name=PlayerContextMenu
-		ItemRows.Add((Text="Spectate this player"))
-		ItemRows.Add((Text="View player Steam profile"))
-		ItemRows.Add((Text="Mute Player"))
-		ItemRows.Add((Text="Vote kick player"))
-		ItemRows.Add((bSplitter=true))
 		OnSelectedItem=SelectedRCItem
 		OnBecameHidden=HidRightClickMenu
 	End Object
