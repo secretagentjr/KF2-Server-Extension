@@ -4,6 +4,30 @@ Class UIR_PerkTraitList extends KFGUI_ColumnList;
 var array<string> ToolTip;
 var KFGUI_Tooltip ToolTipItem;
 
+var localized string TraitNameText;
+var localized string TraitLevelText;
+var localized string TraitCostText;
+
+function InitMenu()
+{
+	local FColumnItem NameItem;
+	local FColumnItem LevelItem;
+	local FColumnItem CostItem;
+	
+	Super.InitMenu();	
+	
+	NameItem.Text=TraitNameText;
+	NameItem.Width=0.6;
+	LevelItem.Text=TraitLevelText;
+	LevelItem.Width=0.2;
+	CostItem.Text=TraitCostText;
+	CostItem.Width=0.2;
+	
+	Columns.AddItem(NameItem);
+	Columns.AddItem(LevelItem);
+	Columns.AddItem(CostItem);
+}
+
 function DrawMenu()
 {
 	local int i,n,j;
@@ -110,9 +134,5 @@ function NotifyMousePaused()
 
 defaultproperties
 {
-	// TODO: localize
-	Columns.Add((Text="Trait name",Width=0.6))
-	Columns.Add((Text="Level",Width=0.2))
-	Columns.Add((Text="Cost",Width=0.2))
 	bCanSortColumn=false
 }
