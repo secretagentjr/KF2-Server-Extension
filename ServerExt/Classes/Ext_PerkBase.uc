@@ -64,7 +64,6 @@ struct FDefPerkStat
 	var int MaxValue,CostPerValue;
 	var float Progress;
 	var name StatType;
-	var string UIName;
 	var bool bHiddenConfig; // Hide this config by default.
 };
 var() array<FDefPerkStat> DefPerkStats;
@@ -88,6 +87,57 @@ var byte EnemyHealthRange;
 var() array<float> EnemyDistDraw;
 
 var bool bOwnerNetClient,bClientAuthorized,bPerkNetReady,bHasNightVision,bCanBeGrabbed,bExplosiveWeld,bExplodeOnContact,bNapalmFire,bFireExplode,bToxicDart,bTacticalReload,bHeavyArmor,bHasSWATEnforcer;
+
+var localized string StatSpeed;
+var localized string StatDamage;
+var localized string StatRecoil;
+var localized string StatSpread;
+var localized string StatRate;
+var localized string StatReload;
+var localized string StatHealth;
+var localized string StatKnockDown;
+var localized string StatWelder;
+var localized string StatHeal;
+var localized string StatMag;
+var localized string StatSpare;
+var localized string StatOffDamage;
+var localized string StatSelfDamage;
+var localized string StatArmor;
+var localized string StatPoisonDmg;
+var localized string StatSonicDmg;
+var localized string StatFireDmg;
+var localized string StatAllDmg;
+var localized string StatHeadDamage;
+var localized string StatHealRecharge;
+
+function string UIName(FDefPerkStat DefPerkStat)
+{
+	switch( DefPerkStat.StatType )
+	{
+		case name("Speed"):        return StatSpeed;
+		case name("Damage"):       return StatDamage;
+		case name("Recoil"):       return StatRecoil;
+		case name("Spread"):       return StatSpread;
+		case name("Rate"):         return StatRate;
+		case name("Reload"):       return StatReload;
+		case name("Health"):       return StatHealth;
+		case name("KnockDown"):    return StatKnockDown;
+		case name("Welder"):       return StatWelder;
+		case name("Heal"):         return StatHeal;
+		case name("Mag"):          return StatMag;
+		case name("Spare"):        return StatSpare;
+		case name("OffDamage"):    return StatOffDamage;
+		case name("SelfDamage"):   return StatSelfDamage;
+		case name("Armor"):        return StatArmor;
+		case name("PoisonDmg"):    return StatPoisonDmg;
+		case name("SonicDmg"):     return StatSonicDmg;
+		case name("FireDmg"):      return StatFireDmg;
+		case name("AllDmg"):       return StatAllDmg;
+		case name("HeadDamage"):   return StatHeadDamage;
+		case name("HealRecharge"): return StatHealRecharge;
+	}
+	return "";
+}
 
 replication
 {
@@ -152,13 +202,13 @@ simulated function PostBeginPlay()
 		{
 			i = DefPerkStats.Find('StatType',PerkStats[j].StatType);
 			if( i>=0 )
-				PerkStats[j].UIName = DefPerkStats[i].UIName;
+				PerkStats[j].UIName = UIName(DefPerkStats[i]);
 			else
 			{
 				// Fallback to parent perk for trying to find name.
 				i = Class'Ext_PerkBase'.Default.DefPerkStats.Find('StatType',PerkStats[j].StatType);
 				if( i>=0 )
-					PerkStats[j].UIName = Class'Ext_PerkBase'.Default.DefPerkStats[i].UIName;
+					PerkStats[j].UIName = UIName(Class'Ext_PerkBase'.Default.DefPerkStats[i]);
 				else PerkStats[j].UIName = string(PerkStats[j].StatType); // Fallback to stat name then...
 			}
 		}
@@ -231,13 +281,13 @@ reliable client simulated function ClientReceiveStat( int Index, int MaxValue, i
 	}
 	i = DefPerkStats.Find('StatType',Type);
 	if( i>=0 )
-		PerkStats[Index].UIName = DefPerkStats[i].UIName;
+		PerkStats[Index].UIName = UIName(DefPerkStats[i]);
 	else
 	{
 		// Fallback to parent perk for trying to find name.
 		i = Class'Ext_PerkBase'.Default.DefPerkStats.Find('StatType',Type);
 		if( i>=0 )
-			PerkStats[Index].UIName = Class'Ext_PerkBase'.Default.DefPerkStats[i].UIName;
+			PerkStats[Index].UIName = UIName(Class'Ext_PerkBase'.Default.DefPerkStats[i]);
 		else PerkStats[Index].UIName = string(Type); // Fallback to stat name then...
 	}
 }
@@ -1448,27 +1498,27 @@ defaultproperties
 	// WebConfigs.Add((PropType=0,PropName="MinimalDataLevel",UIName="Minimal Real Level",UIDesc="Minimal level for new players or who loads from saves"))
 	
 	// TODO: localize
-	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",UIName="Movement Speed (+&%)",Progress=0.4)
-	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",UIName="Perk Damage (+&%)",Progress=0.5)
-	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",UIName="Fire Recoil Reduce (+&%)",Progress=1)
-	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",UIName="Fire Spread Reduce (+&%)",Progress=0.75)
-	DefPerkStats(4)=(MaxValue=1000,CostPerValue=1,StatType="Rate",UIName="Perk Rate of Fire (+&%)",Progress=0.5)
-	DefPerkStats(5)=(MaxValue=1000,CostPerValue=1,StatType="Reload",UIName="Perk Reload Time (-&%)",Progress=0.5)
-	DefPerkStats(6)=(MaxValue=150,CostPerValue=1,StatType="Health",UIName="Health (+&HP)",Progress=1)
-	DefPerkStats(7)=(MaxValue=100,CostPerValue=1,StatType="KnockDown",UIName="Knockback (+&%)",Progress=1)
-	DefPerkStats(8)=(MaxValue=200,CostPerValue=1,StatType="Welder",UIName="Welding Rate (+&%)",bHiddenConfig=true,Progress=0.5)
-	DefPerkStats(9)=(MaxValue=400,CostPerValue=1,StatType="Heal",UIName="Heal Efficiency (+&%)",bHiddenConfig=true,Progress=0.5)
-	DefPerkStats(10)=(MaxValue=400,CostPerValue=1,StatType="Mag",UIName="Magazine Capacity (+&%)",Progress=1)
-	DefPerkStats(11)=(MaxValue=500,CostPerValue=1,StatType="Spare",UIName="Max Ammo (+&%)",Progress=1)
-	DefPerkStats(12)=(MaxValue=1000,CostPerValue=1,StatType="OffDamage",UIName="Off-Perk Damage (+&%)",Progress=0.25)
-	DefPerkStats(13)=(MaxValue=1000,CostPerValue=1,StatType="SelfDamage",UIName="Self Damage Reduction (+&%)",Progress=1,bHiddenConfig=true)
-	DefPerkStats(14)=(MaxValue=150,CostPerValue=1,StatType="Armor",UIName="Armor (+&)",Progress=1)
-	DefPerkStats(15)=(MaxValue=1000,CostPerValue=1,StatType="PoisonDmg",UIName="Toxic Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
-	DefPerkStats(16)=(MaxValue=1000,CostPerValue=1,StatType="SonicDmg",UIName="Sonic Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
-	DefPerkStats(17)=(MaxValue=1000,CostPerValue=1,StatType="FireDmg",UIName="Fire Resistance (+&%)",Progress=1.5,bHiddenConfig=true)
-	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",UIName="Zed Damage Reduction (+&%)",Progress=0.25)
-	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",UIName="Perk Head Damage (+&%)",Progress=1,bHiddenConfig=true)
-	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",UIName="Syringe Recharge Rate (+&%)",Progress=0.5,bHiddenConfig=true)
+	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",Progress=0.4)
+	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",Progress=0.5)
+	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",Progress=1)
+	DefPerkStats(3)=(MaxValue=80,CostPerValue=1,StatType="Spread",Progress=0.75)
+	DefPerkStats(4)=(MaxValue=1000,CostPerValue=1,StatType="Rate",Progress=0.5)
+	DefPerkStats(5)=(MaxValue=1000,CostPerValue=1,StatType="Reload",Progress=0.5)
+	DefPerkStats(6)=(MaxValue=150,CostPerValue=1,StatType="Health",Progress=1)
+	DefPerkStats(7)=(MaxValue=100,CostPerValue=1,StatType="KnockDown",Progress=1)
+	DefPerkStats(8)=(MaxValue=200,CostPerValue=1,StatType="Welder",bHiddenConfig=true,Progress=0.5)
+	DefPerkStats(9)=(MaxValue=400,CostPerValue=1,StatType="Heal",bHiddenConfig=true,Progress=0.5)
+	DefPerkStats(10)=(MaxValue=400,CostPerValue=1,StatType="Mag",Progress=1)
+	DefPerkStats(11)=(MaxValue=500,CostPerValue=1,StatType="Spare",Progress=1)
+	DefPerkStats(12)=(MaxValue=1000,CostPerValue=1,StatType="OffDamage",Progress=0.25)
+	DefPerkStats(13)=(MaxValue=1000,CostPerValue=1,StatType="SelfDamage",Progress=1,bHiddenConfig=true)
+	DefPerkStats(14)=(MaxValue=150,CostPerValue=1,StatType="Armor",Progress=1)
+	DefPerkStats(15)=(MaxValue=1000,CostPerValue=1,StatType="PoisonDmg",Progress=1.5,bHiddenConfig=true)
+	DefPerkStats(16)=(MaxValue=1000,CostPerValue=1,StatType="SonicDmg",Progress=1.5,bHiddenConfig=true)
+	DefPerkStats(17)=(MaxValue=1000,CostPerValue=1,StatType="FireDmg",Progress=1.5,bHiddenConfig=true)
+	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",Progress=0.25)
+	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",Progress=1,bHiddenConfig=true)
+	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",Progress=0.5,bHiddenConfig=true)
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
