@@ -6,6 +6,29 @@ var KFGUI_TextLable KeyBindLabel;
 var name CurKeybind;
 var bool bSetKeybind,bDelayedSet;
 
+var localized string FirstPersonLegsText;
+var localized string FirstPersonLegsToolTip;
+var localized string HideNameBeaconsText;
+var localized string HideNameBeaconsToolTip;
+var localized string HideKillMessagesText;
+var localized string HideKillMessagesToolTip;
+var localized string HideDamageMessagesText;
+var localized string HideDamageMessagesToolTip;
+var localized string HideDamagePopupText;
+var localized string HideDamagePopupToolTip;
+var localized string UseKf2DeathMessagesText;
+var localized string UseKf2DeathMessagesToolTip;
+var localized string UseKf2KillMessagesText;
+var localized string UseKf2KillMessagesToolTip;
+var localized string DontBecomeZombieText;
+var localized string DontBecomeZombieToolTip;
+var localized string NoScreenShakeText;
+var localized string NoScreenShakeToolTip;
+var localized string ButtonToggleBehindviewKeybindText;
+var localized string ButtonToggleBehindviewKeybindToolTip;
+var localized string ButtonPressButtonText;
+var localized string NotSetText;
+
 function InitMenu()
 {
 	Super.InitMenu();
@@ -13,22 +36,22 @@ function InitMenu()
 	// Client settings
 	SettingsBox = KFGUI_ComponentList(FindComponentID('SettingsBox'));
 	
-	// TODO: localize
 	//AddCheckBox("Text-To-Speech:","Enable Text-to-Speech talk for player chat messages",'TTS', bool bDefault );
-	AddCheckBox("First person legs:","Show first person body",'FP',class'ExtPlayerController'.Default.bShowFPLegs);
+	AddCheckBox(FirstPersonLegsText,FirstPersonLegsToolTip,'FP',class'ExtPlayerController'.Default.bShowFPLegs);
 	if( class'ExtPlayerController'.Default.bShowFPLegs )
 		ExtPlayerController(GetPlayer()).ToggleFPBody(false);
-	AddCheckBox("Hide name beacons:","Hide the player name beacons",'NB',class'ExtPlayerController'.Default.bHideNameBeacons);
-	AddCheckBox("Hide kill messages:","Hide player kill messages",'KM',class'ExtPlayerController'.Default.bHideKillMsg);
-	AddCheckBox("Hide damage messages:","Hide player damage messages",'DM',class'ExtPlayerController'.Default.bHideDamageMsg);
-	AddCheckBox("Hide damage popup:","Hide damage popup messages",'PP',class'ExtPlayerController'.Default.bHideNumberMsg);
-	AddCheckBox("Use KF2 DeathMessages:","Use KF2 death message display format.",'K2DM',class'ExtPlayerController'.Default.bUseKF2DeathMessages);
-	AddCheckBox("Use KF2 Kill Messages:","Use KF2 kill message display format.",'K2KM',class'ExtPlayerController'.Default.bUseKF2KillMessages);
-	KeyBindButton = AddButton("","Toggle Behindview keybind:","With this desired button you can toggle your behindview (click to change it)",'KB',KeyBindLabel);
-	AddCheckBox("Don't become zombie:","Disable zombie player mode (for game modes that support it)",'ZP',class'ExtPlayerController'.Default.bNoMonsterPlayer);
-	AddCheckBox("No screen shake:","Disable screen shake (from explosions)",'NS',class'ExtPlayerController'.Default.bNoScreenShake);
+	AddCheckBox(HideNameBeaconsText,HideNameBeaconsToolTip,'NB',class'ExtPlayerController'.Default.bHideNameBeacons);
+	AddCheckBox(HideKillMessagesText,HideKillMessagesToolTip,'KM',class'ExtPlayerController'.Default.bHideKillMsg);
+	AddCheckBox(HideDamageMessagesText,HideDamageMessagesToolTip,'DM',class'ExtPlayerController'.Default.bHideDamageMsg);
+	AddCheckBox(HideDamagePopupText,HideDamagePopupToolTip,'PP',class'ExtPlayerController'.Default.bHideNumberMsg);
+	AddCheckBox(UseKf2DeathMessagesText,UseKf2DeathMessagesToolTip,'K2DM',class'ExtPlayerController'.Default.bUseKF2DeathMessages);
+	AddCheckBox(UseKf2KillMessagesText,UseKf2KillMessagesToolTip,'K2KM',class'ExtPlayerController'.Default.bUseKF2KillMessages);
+	KeyBindButton = AddButton("",ButtonToggleBehindviewKeybindText,ButtonToggleBehindviewKeybindToolTip,'KB',KeyBindLabel);
+	AddCheckBox(DontBecomeZombieText,DontBecomeZombieToolTip,'ZP',class'ExtPlayerController'.Default.bNoMonsterPlayer);
+	AddCheckBox(NoScreenShakeText,NoScreenShakeToolTip,'NS',class'ExtPlayerController'.Default.bNoScreenShake);
 	InitBehindviewKey();
 }
+
 final function InitBehindviewKey()
 {
 	local PlayerInput IN;
@@ -46,7 +69,7 @@ final function InitBehindviewKey()
 			break;
 		}
 	}
-	KeyBindButton.ButtonText = (CurKeybind!='' ? string(CurKeybind) : "<Not set>");
+	KeyBindButton.ButtonText = (CurKeybind!='' ? string(CurKeybind) : NotSetText);
 }
 final function KFGUI_CheckBox AddCheckBox( string Cap, string TT, name IDN, bool bDefault )
 {
@@ -132,7 +155,7 @@ function ButtonClicked( KFGUI_Button Sender )
 	switch( Sender.ID )
 	{
 	case 'KB':
-		KeyBindButton.ButtonText = "Press a button"; // TODO: localize
+		KeyBindButton.ButtonText = ButtonPressButtonText;
 		KeyBindButton.SetDisabled(true);
 		GrabKeyFocus();
 		bSetKeybind = true;
