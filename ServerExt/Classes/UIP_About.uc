@@ -6,11 +6,19 @@ var KFGUI_TextField About;
 var KFGUI_Button AuthorButton;
 var KFGUI_Button Forumbutton;
 
-var localized string AboutText;
 var localized string AuthorButtonText;
 var localized string AuthorButtonTooltip;
 var localized string ForumButtonText;
 var localized string ForumButtonTooltip;
+
+var localized string MarcoText;
+var localized string CreditsText;
+var localized string ForrestMarkXText;
+var localized string SheepText;
+var localized string MysterialText;
+var localized string PostText;
+var localized string InklesspenText;
+var localized string GenzmeyText;
 
 function InitMenu()
 {
@@ -20,7 +28,7 @@ function InitMenu()
 	
 	Super.InitMenu();
 	
-	About.SetText(AboutText);
+	About.SetText("#{F3E2A9}Server Extension Mod#{DEF} - "$MarcoText$" Marco||"$CreditsText$":|#{01DF3A}Forrest Mark X#{DEF} - "$ForrestMarkXText$"|#{FF00FF}Sheep#{DEF} - "$SheepText$"|inklesspen - "$InklesspenText$"|GenZmeY - "$GenzmeyText$"|Mysterial - "$MysterialText$"|"$PostText);
 	AuthorButton.ButtonText=AuthorButtonText;
 	AuthorButton.Tooltip=AuthorButtonTooltip;
 	Forumbutton.ButtonText=ForumButtonText;
