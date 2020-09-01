@@ -55,7 +55,6 @@ defaultproperties
 	bAlwaysTop=true
 	bOnlyThisFocus=true
 	
-	// TODO: localize
 	Begin Object Class=KFGUI_TextField Name=WarningLabel
 		ID="Info"
 		XPosition=0.01
