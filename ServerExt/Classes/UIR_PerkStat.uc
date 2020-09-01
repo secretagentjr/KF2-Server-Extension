@@ -9,11 +9,19 @@ var int StatIndex,OldValue,CurrentCost,MaxStatValue;
 var string ProgressStr;
 var bool bCostDirty;
 
+var localized string AddButtonToolTip;
+var localized string CountBoxToolTip;
+var localized string CostText;
+
 function InitMenu()
 {
 	InfoText = KFGUI_TextLable(FindComponentID('Info'));
 	StatCountBox = KFGUI_NumericBox(FindComponentID('CountBox'));
 	AddButton = KFGUI_Button(FindComponentID('AddBox'));
+	
+	AddButton.ToolTip=AddButtonToolTip;
+	StatCountBox.ToolTip=CountBoxToolTip;
+	
 	Super.InitMenu();
 }
 
@@ -43,7 +51,7 @@ function Timer()
 		bCostDirty = false;
 		OldValue = MyPerk.PerkStats[StatIndex].CurrentValue;
 		if(CurrentCost != 0)
-			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", Cost "$CurrentCost$", "$ProgressStr$"%]:");
+			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$CostText$" "$CurrentCost$", "$ProgressStr$"%]:");
 		else
 			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$ProgressStr$"%]:");
 	}
@@ -118,7 +126,6 @@ final function string ChopExtraDigits( float Value )
 
 defaultproperties
 {
-	// TODO: localize
 	Begin Object Class=KFGUI_TextLable Name=InfoLable
 		ID="Info"
 		XPosition=0
@@ -136,7 +143,6 @@ defaultproperties
 		XSize=0.18
 		YSize=0.8
 		OnTextChange=EditBoxChange
-		ToolTip="Here you can specify how many stat points to buy"
 		MaxValue=100
 		MinValue=1
 		bScaleByFontSize=false
@@ -148,7 +154,6 @@ defaultproperties
 		XSize=0.08
 		YSize=0.8
 		ButtonText="+"
-		ToolTip="Click here to buy stats for this perk"
 		OnClickLeft=BuyStatPoint
 		OnClickRight=BuyStatPoint
 	End Object
