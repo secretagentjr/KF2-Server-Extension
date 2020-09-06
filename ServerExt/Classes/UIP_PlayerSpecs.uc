@@ -48,9 +48,9 @@ function InitMenu()
 	TopPlayers[2] = KFGUI_ColumnList(FindComponentID('EXP'));
 	MultiPager = KFGUI_SwitchComponent(FindComponentID('Pager'));
 	
-	TopPlaytimeButton=KFGUI_Button(FindComponentID('Playtime'));
-	TopKillsButton=KFGUI_Button(FindComponentID('Kills'));
-	TopExpButton=KFGUI_Button(FindComponentID('Exp'));
+	TopPlaytimeButton=KFGUI_Button(FindComponentID('BPlaytime'));
+	TopKillsButton=KFGUI_Button(FindComponentID('BKills'));
+	TopExpButton=KFGUI_Button(FindComponentID('BExp'));
 	
 	PreviousButton.ButtonText=ShowStatsButtonText;
 	PreviousButton.Tooltip=ShowStatsButtonToolTip;
@@ -237,7 +237,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopTime
-		ID="Playtime"
+		ID="BPlaytime"
 		XPosition=0.35
 		YPosition=0.05
 		XSize=0.1
@@ -247,7 +247,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopKills
-		ID="Kills"
+		ID="BKills"
 		XPosition=0.6
 		YPosition=0.05
 		XSize=0.1
@@ -257,7 +257,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopEXP
-		ID="Exp"
+		ID="BExp"
 		XPosition=0.85
 		YPosition=0.05
 		XSize=0.1
