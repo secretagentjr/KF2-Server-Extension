@@ -110,7 +110,7 @@ var localized string StatAllDmg;
 var localized string StatHeadDamage;
 var localized string StatHealRecharge;
 
-function string UIName(FDefPerkStat DefPerkStat)
+reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 {
 	switch( DefPerkStat.StatType )
 	{
