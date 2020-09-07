@@ -44,11 +44,16 @@ ServerExtMut.u
 [/code]
 3. Reinstall RPG and try again.
 
+[h1]Localization[/h1]
+ServerExt supports localization now!
+
+There is only english and russian localization, but if you have a desire to help translate ServerExt into other languages, you can read how to do it in this thread: [u][url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/2942494909176752884]Localization[/url][/u]
+
 [h1]Credits:[/h1]
 [url=https://steamcommunity.com/profiles/76561197975509070]Marco[/url] - creating a mutator;
 [url=https://steamcommunity.com/profiles/76561197997881512]ForrestMarkX[/url] - mutator updates;
 [url=https://steamcommunity.com/profiles/76561198143883210]inklesspen[/url] - mutator updates, fixes, features;
-[url=https://steamcommunity.com/profiles/76561198001617867]GenZmeY[/url] - mutator description, instructions;
+[url=https://steamcommunity.com/profiles/76561198001617867]GenZmeY[/url] - mutator description, localization;
 [url=https://www.deviantart.com/cottonvalent]CottonValent[/url] - artist who created gorgeous cat on the preview (I don’t know why he is here, it happened).
 
 [h1]Links:[/h1]
