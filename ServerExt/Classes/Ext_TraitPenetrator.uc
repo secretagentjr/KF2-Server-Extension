@@ -43,9 +43,7 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkSupport'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Penetrator"
 	NumLevels=1
 	DefLevelCosts(0)=50
 	DefMinLevel=65
-	Description="During Zed time, your perk weapons penetrate through any targets they hit! ||-REQUIREMENT: Armor Piercing Shots trait needs to be level 1!"
 }

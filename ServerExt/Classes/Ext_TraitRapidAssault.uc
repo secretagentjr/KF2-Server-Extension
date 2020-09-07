@@ -13,7 +13,5 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkSWAT'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Rapid Assault"
 	DefLevelCosts(0)=30
-	Description="Gives player unlimited ammunition for perked weapons during ZED-time and allows them to fire in realtime."
 }

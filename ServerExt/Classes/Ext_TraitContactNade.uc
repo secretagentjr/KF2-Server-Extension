@@ -11,7 +11,5 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Explode on Contact"
 	DefLevelCosts(0)=25
-	Description="Make dynamites explode on contact with the ZED."
 }

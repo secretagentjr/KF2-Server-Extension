@@ -12,8 +12,6 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkDemolition'
-	TraitName="High Impact"
 	DefLevelCosts(0)=65
 	DefMinLevel=35
-	Description="Demo weapons will do 25% more damage on a direct hit!"
 }

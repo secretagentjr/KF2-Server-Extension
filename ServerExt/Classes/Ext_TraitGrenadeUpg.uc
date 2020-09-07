@@ -20,9 +20,7 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Grenade Upgrade"
 	NumLevels=2
 	DefLevelCosts(0)=5
 	DefLevelCosts(1)=50
-	Description="With this upgrade you will upgrade to your perk specific grenades.|Level 1: Normal perk grenade|Level 2: Perk SUPER grenade (REQUIRES perk level 50 to buy)!"
 }

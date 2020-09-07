@@ -13,9 +13,7 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkSupport'
-	TraitName="Door Repair"
 	NumLevels=1
 	DefLevelCosts(0)=30
 	DefMinLevel=25
-	Description="Allows you to repair doors using the welder."
 }

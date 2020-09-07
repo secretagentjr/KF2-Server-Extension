@@ -40,9 +40,7 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkCommando'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Tactician"
 	NumLevels=1
 	DefLevelCosts(0)=30
 	DefMinLevel=35
-	Description="During Zed time, you reload perk weapons at full speed and switch perk weapons twice as fast! ||-REQUIREMENT: Damage bonus trait needs to have at least 30 points!"
 }

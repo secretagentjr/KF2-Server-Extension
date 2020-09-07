@@ -11,8 +11,6 @@ static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Lev
 
 defaultproperties
 {
-	TraitName="Tactical Reload"
 	DefLevelCosts(0)=50
-	Description="With this trait you will have extra speedy tactical reload moves for your perked weapons."
 	DefMinLevel=50
 }

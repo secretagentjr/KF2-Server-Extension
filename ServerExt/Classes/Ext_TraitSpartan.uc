@@ -19,12 +19,10 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkBerserker'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED TIME - Spartan!"
 	NumLevels=3
 	DefLevelCosts(0)=50
 	DefLevelCosts(1)=40
 	DefLevelCosts(2)=80
-	Description="This trait lets you move at normal speed and attack faster in ZED-time.|Lv1-3: +50,+120,+300% atk speed"
 	AtkRates.Add(1.5)
 	AtkRates.Add(2.2)
 	AtkRates.Add(4.0)

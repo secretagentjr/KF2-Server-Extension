@@ -12,8 +12,6 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkDemolition'
-	TraitName="Reactive Armor"
 	DefLevelCosts(0)=25
 	DefMinLevel=45
-	Description="When near death you will explode and leave yourself with 5 health"
 }

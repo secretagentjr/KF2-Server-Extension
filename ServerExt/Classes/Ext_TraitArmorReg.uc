@@ -18,8 +18,6 @@ static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Lev
 
 defaultproperties
 {
-	TraitName="Armor Regeneration"
-	Description="With this trait your armor will regen every 10 seconds at a rate of:|Lvl1-3: +7pts, +12pts, +25pts"
 	RegenValues.Empty()
 	RegenValues.Add(7)
 	RegenValues.Add(12)

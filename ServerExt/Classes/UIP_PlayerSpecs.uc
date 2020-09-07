@@ -4,6 +4,7 @@ struct FPageExtraInfo
 {
 	var array<UniqueNetId> UserID;
 };
+
 var FPageExtraInfo ExtraInfo[3];
 var KFGUI_ColumnList PlayersList,TopPlayers[3];
 var KFGUI_SwitchComponent MultiPager;
@@ -11,6 +12,31 @@ var int CurrentPageIndex;
 var byte CurrentPageStatus[3];
 var KFGUI_Button PreviousButton;
 var bool bDownloadingPage;
+
+var KFGUI_Button TopPlaytimeButton;
+var KFGUI_Button TopKillsButton;
+var KFGUI_Button TopExpButton;
+
+var localized string ShowStatsButtonText;
+var localized string ShowStatsButtonToolTip;
+var localized string TopPlaytimeButtonText;
+var localized string TopPlaytimeButtonToolTip;
+var localized string TopKillsButtonText;
+var localized string TopKillsButtonToolTip;
+var localized string TopExpButtonText;
+var localized string TopExpButtonToolTip;
+var localized string PlayerColumnText;
+var localized string TotalKillsColumnText;
+var localized string TotalExpColumnText;
+var localized string TotalPlaytimeColumnText;
+
+function FColumnItem NewFColumnItem(string Text, float Width)
+{
+	local FColumnItem NewItem;
+	NewItem.Text = Text;
+	NewItem.Width = Width;
+	return NewItem;
+}
 
 function InitMenu()
 {
@@ -21,6 +47,40 @@ function InitMenu()
 	TopPlayers[1] = KFGUI_ColumnList(FindComponentID('Kills'));
 	TopPlayers[2] = KFGUI_ColumnList(FindComponentID('EXP'));
 	MultiPager = KFGUI_SwitchComponent(FindComponentID('Pager'));
+	
+	TopPlaytimeButton=KFGUI_Button(FindComponentID('BPlaytime'));
+	TopKillsButton=KFGUI_Button(FindComponentID('BKills'));
+	TopExpButton=KFGUI_Button(FindComponentID('BExp'));
+	
+	PreviousButton.ButtonText=ShowStatsButtonText;
+	PreviousButton.Tooltip=ShowStatsButtonToolTip;
+	
+	TopPlaytimeButton.ButtonText=TopPlaytimeButtonText;
+	TopPlaytimeButton.Tooltip=TopPlaytimeButtonToolTip;
+	
+	TopKillsButton.ButtonText=TopKillsButtonText;
+	TopKillsButton.Tooltip=TopKillsButtonToolTip;
+	
+	TopExpButton.ButtonText=TopExpButtonText;
+	TopExpButton.Tooltip=TopExpButtonToolTip;
+	
+	PlayersList.Columns.AddItem(NewFColumnItem(PlayerColumnText,0.55));
+	PlayersList.Columns.AddItem(NewFColumnItem(TotalKillsColumnText,0.15));
+	PlayersList.Columns.AddItem(NewFColumnItem(TotalExpColumnText,0.15));
+	PlayersList.Columns.AddItem(NewFColumnItem(TotalPlaytimeColumnText,0.15));
+
+	TopPlayers[0].Columns.AddItem(NewFColumnItem("#",0.05));
+	TopPlayers[0].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
+	TopPlayers[0].Columns.AddItem(NewFColumnItem(TotalPlaytimeColumnText,0.25));
+	
+	TopPlayers[1].Columns.AddItem(NewFColumnItem("#",0.05));
+	TopPlayers[1].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
+	TopPlayers[1].Columns.AddItem(NewFColumnItem(TotalKillsColumnText,0.25));
+	
+	TopPlayers[2].Columns.AddItem(NewFColumnItem("#",0.05));
+	TopPlayers[2].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
+	TopPlayers[2].Columns.AddItem(NewFColumnItem(TotalExpColumnText,0.25));
+
 	Super.InitMenu();
 }
 function ShowMenu()
@@ -167,8 +227,6 @@ function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick 
 defaultproperties
 {
 	Begin Object Class=KFGUI_Button Name=B_ShowStats
-		ButtonText="Show Stats"
-		Tooltip="Show the stats of the current players in server"
 		XPosition=0.05
 		YPosition=0.05
 		XSize=0.1
@@ -179,8 +237,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopTime
-		ButtonText="Top playtime"
-		Tooltip="Show the top playtime by players in all-time from this server"
+		ID="BPlaytime"
 		XPosition=0.35
 		YPosition=0.05
 		XSize=0.1
@@ -190,8 +247,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopKills
-		ButtonText="Top kills"
-		Tooltip="Show the top kills by players in all-time from this server"
+		ID="BKills"
 		XPosition=0.6
 		YPosition=0.05
 		XSize=0.1
@@ -201,8 +257,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Begin Object Class=KFGUI_Button Name=B_ShowTopEXP
-		ButtonText="Top EXP"
-		Tooltip="Show the top EXP by players in all-time from this server"
+		ID="BExp"
 		XPosition=0.85
 		YPosition=0.05
 		XSize=0.1
@@ -222,34 +277,20 @@ defaultproperties
 		XSize=0.9
 		YSize=0.85
 		ID="Pager"
-
 		Begin Object Class=KFGUI_ColumnList Name=PlayerList
 			ID="Players"
-			Columns.Add((Text="Player",Width=0.55))
-			Columns.Add((Text="Total Kills",Width=0.15))
-			Columns.Add((Text="Total EXP",Width=0.15))
-			Columns.Add((Text="Total PlayTime",Width=0.15))
 			OnSelectedRow=SelectedRow
 		End Object
 		Begin Object Class=KFGUI_ColumnList Name=TopPlaytimes
 			ID="PlayTimes"
-			Columns.Add((Text="#",Width=0.05))
-			Columns.Add((Text="Player",Width=0.7))
-			Columns.Add((Text="Total PlayTime",Width=0.25))
 			OnSelectedRow=SelectedRow
 		End Object
 		Begin Object Class=KFGUI_ColumnList Name=TopKills
 			ID="Kills"
-			Columns.Add((Text="#",Width=0.05))
-			Columns.Add((Text="Player",Width=0.7))
-			Columns.Add((Text="Total Kills",Width=0.25))
 			OnSelectedRow=SelectedRow
 		End Object
 		Begin Object Class=KFGUI_ColumnList Name=TopExp
 			ID="EXP"
-			Columns.Add((Text="#",Width=0.05))
-			Columns.Add((Text="Player",Width=0.7))
-			Columns.Add((Text="Total EXP",Width=0.25))
 			OnSelectedRow=SelectedRow
 		End Object
 		Components.Add(PlayerList)

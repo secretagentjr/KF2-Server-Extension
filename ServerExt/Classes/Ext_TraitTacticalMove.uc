@@ -12,10 +12,8 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkSWAT'
-	TraitName="Tactical Movement"
 	NumLevels=3
 	DefLevelCosts(0)=30
 	DefLevelCosts(1)=35
 	DefLevelCosts(2)=50
-	Description="This trait makes you move faster while in iron sight and crouched at a rate of:|Lv 1-3: +30%,+50%,+100%"
 }

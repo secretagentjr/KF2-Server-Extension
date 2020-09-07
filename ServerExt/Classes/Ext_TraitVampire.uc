@@ -14,7 +14,6 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkBerserker'
-	TraitName="Vampire"
 	NumLevels=4
 	DefLevelCosts(0)=25
 	DefLevelCosts(1)=15
@@ -24,5 +23,4 @@ defaultproperties
 	RegenRate.Add(0.03)
 	RegenRate.Add(0.04)
 	RegenRate.Add(0.06)
-	Description="With this trait you will recover some of your health by every kill (with a melee weapon), in a rate of:|Lv1-4: +2%, +3%, +4%, +6%"
 }

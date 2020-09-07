@@ -2,13 +2,34 @@ Class UI_AdminPerkLevel extends KFGUI_FloatingWindow;
 
 var KFGUI_NumericBox LevelBox;
 var int PlayerID,BaseValue;
+var KFGUI_Button YesButton;
+var KFGUI_Button NoButton;
+
+var localized string WindowTitleSetLevel;
+var localized string WindowTitleSetPrestigeLevel;
+var localized string WindowTitleSetLevelOf;
+var localized string WindowTitleSetPrestigeLevelOf;
+var localized string YesButtonText;
+var localized string YesButtonToolTip;
+var localized string NoButtonText;
+var localized string NoButtonToolTip;
+var localized string LevelBoxToolTip;
 
 function InitMenu()
 {
 	Super.InitMenu();
 
 	LevelBox = KFGUI_NumericBox(FindComponentID('Edit'));
+	YesButton = KFGUI_Button(FindComponentID('Yes'));
+	NoButton = KFGUI_Button(FindComponentID('No'));
+	
+	YesButton.ButtonText=YesButtonText;
+	YesButton.Tooltip=YesButtonToolTip;
+	NoButton.ButtonText=NoButtonText;
+	NoButton.Tooltip=NoButtonToolTip;
+	LevelBox.Tooltip=LevelBoxToolTip;
 }
+
 final function InitPage( int UserID, byte Mode )
 {
 	local PlayerReplicationInfo PRI;
@@ -23,10 +44,10 @@ final function InitPage( int UserID, byte Mode )
 	}
 	if( ExtPlayerReplicationInfo(PRI)==None )
 	{
-		WindowTitle = Mode==1 ? "Set level" : "Set prestige level";
+		WindowTitle = Mode==1 ? WindowTitleSetLevel : WindowTitleSetPrestigeLevel;
 		return;
 	}
-	WindowTitle = (Mode==1 ? "Set level of " : "Set prestige level of ")$PRI.GetHumanReadableName();
+	WindowTitle = (Mode==1 ? WindowTitleSetLevelOf : WindowTitleSetPrestigeLevelOf)$" "$PRI.GetHumanReadableName();
 	LevelBox.ChangeValue(string(Mode==1 ? ExtPlayerReplicationInfo(PRI).ECurrentPerkLevel : ExtPlayerReplicationInfo(PRI).ECurrentPerkPrestige));
 	BaseValue = (Mode==1 ? 100 : 100000);
 }
@@ -55,8 +76,6 @@ defaultproperties
 
 	Begin Object Class=KFGUI_Button Name=YesButten
 		ID="Yes"
-		ButtonText="Submit"
-		Tooltip="Set the perk/prestige level"
 		XPosition=0.4
 		YPosition=0.5
 		XSize=0.09
@@ -67,8 +86,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=NoButten
 		ID="No"
-		ButtonText="Cancel"
-		Tooltip="Abort without doing anything"
 		XPosition=0.5
 		YPosition=0.5
 		XSize=0.09
@@ -78,7 +95,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_NumericBox Name=EditBox
 		ID="Edit"
-		Tooltip="Enter the new perk/prestige level to set this player to."
 		XPosition=0.05
 		YPosition=0.2
 		XSize=0.9

@@ -59,5 +59,4 @@ simulated final function NotifyOwner()
 defaultproperties
 {
 	bBot=true
-	MonsterName="Petty"
 }

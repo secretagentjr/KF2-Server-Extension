@@ -17,7 +17,5 @@ static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Lev
 
 defaultproperties
 {
-	TraitName="Auto-Fire weapons"
 	DefLevelCosts(0)=50
-	Description="Make all perked weapons fully automatic."
 }

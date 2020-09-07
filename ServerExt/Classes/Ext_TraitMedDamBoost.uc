@@ -23,11 +23,9 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkFieldMedic'
-	TraitName="Focus Injection"
 	NumLevels=3
 	DefLevelCosts(0)=40
 	DefLevelCosts(1)=50
 	DefLevelCosts(2)=60
 	DefMinLevel=85
-	Description="Healing players will increase there damage up to 15%. The percent is increased by every level in:|Lv1-3: 5%, 10%, 15%"
 }

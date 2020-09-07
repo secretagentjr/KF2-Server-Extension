@@ -11,7 +11,5 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Fire Explosion"
 	DefLevelCosts(0)=50
-	Description="Make zombies sometimes explode when burned to death."
 }

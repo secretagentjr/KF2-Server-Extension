@@ -12,7 +12,5 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 
 defaultproperties
 {
-	TraitName="Explosive Weld"
 	DefLevelCosts(0)=30
-	Description="Cases welded doors explode when broken by zeds. The more you weld one door, the bigger explosion."
 }

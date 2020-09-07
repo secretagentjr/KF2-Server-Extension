@@ -23,12 +23,10 @@ static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_Tra
 defaultproperties
 {
 	SupportedPerk=class'Ext_PerkSupport'
-	TraitName="Armor Piercing Rounds"
 	NumLevels=4
 	DefLevelCosts(0)=15
 	DefLevelCosts(1)=30
 	DefLevelCosts(2)=40
 	DefLevelCosts(3)=50
 	DefMinLevel=15
-	Description="Greatly increases penetration with perk weapons! The penetration strength is increased by every level in:|Lv1-4: 25%, 30%, 35%, 40%"
 }

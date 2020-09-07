@@ -26,7 +26,5 @@ static function ApplyEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 
 defaultproperties
 {
-	TraitName="Medic Pistol"
 	DefLevelCosts(0)=20
-	Description="Spawn with a medic pistol instead of standard 9mm."
 }

@@ -6,7 +6,7 @@ Class Ext_TraitBase extends Object
 var array<FWebAdminConfigInfo> WebConfigs;
 
 var() class<Ext_TGroupBase> TraitGroup; // With groups you can prevent player from buying multiple traits of same group.
-var() string TraitName,Description; // UI name.
+var() localized string TraitName,Description; // UI name.
 var() byte NumLevels; // Maximum number of levels.
 var config array<int> LevelCosts;
 var() array<int> DefLevelCosts; // Point price tag for each level.

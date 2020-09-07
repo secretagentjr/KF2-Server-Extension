@@ -1,18 +1,30 @@
 Class UI_MidGameMenu extends KFGUI_FloatingWindow;
-
-struct FPageInfo
-{
-	var class<KFGUI_Base> PageClass;
-	var string Caption,Hint;
-};
+	
 var KFGUI_SwitchMenuBar PageSwitcher;
-var() array<FPageInfo> Pages;
+var array< class<KFGUI_Base> > Pages;
 
 var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
 var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
+
+var localized string MapVoteButtonText;
+var localized string MapVoteButtonToolTip;
+var localized string SettingsButtonText;
+var localized string SettingsButtonToolTip;
+var localized string SkipTraderButtonText;
+var localized string SkipTraderButtonToolTip;
+var localized string SpectateButtonText;
+var localized string SpectateButtonToolTip;
+var localized string CloseButtonText;
+var localized string CloseButtonToolTip;
+var localized string DisconnectButtonText;
+var localized string DisconnectButtonToolTip;
+var localized string ExitButtonText;
+var localized string ExitButtonToolTip;
+var localized string JoinButtonText;
+var localized string JoinButtonToolTip;
 
 function InitMenu()
 {
@@ -21,18 +33,19 @@ function InitMenu()
 
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
-	AddMenuButton('Mapvote',"Map Vote","Show mapvote menu");
-	AddMenuButton('Settings',"Settings","Enter the game settings");
-	SkipTraderButton = AddMenuButton('SkipTrader',"Skip Trader","start voting for skip trader");
-	SpectateButton = AddMenuButton('Spectate',"","");
-	AddMenuButton('Close',"Close","Close this menu");
-	AddMenuButton('Disconnect',"Disconnect","Disconnect from this server");
-	AddMenuButton('Exit',"Exit","Exit this game");
+	
+	AddMenuButton('Mapvote',MapVoteButtonText,MapVoteButtonToolTip);
+	AddMenuButton('Settings',SettingsButtonText,SettingsButtonToolTip);
+	SkipTraderButton = AddMenuButton('SkipTrader',SkipTraderButtonText,SkipTraderButtonToolTip);
+	SpectateButton = AddMenuButton('Spectate',SpectateButtonText,SpectateButtonToolTip);
+	AddMenuButton('Close',CloseButtonText,CloseButtonToolTip);
+	AddMenuButton('Disconnect',DisconnectButtonText,DisconnectButtonToolTip);
+	AddMenuButton('Exit',ExitButtonText,ExitButtonToolTip);
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
-		PageSwitcher.AddPage(Pages[i].PageClass,Pages[i].Caption,Pages[i].Hint,B).InitMenu();
-		if( Pages[i].PageClass==Class'UIP_AdminMenu' )
+		PageSwitcher.AddPage(Pages[i],B).InitMenu();
+		if( Pages[i]==Class'UIP_AdminMenu' )
 			AdminButton = B;
 	}
 }
@@ -50,8 +63,8 @@ function Timer()
 	{
 		bInitSpectate = true;
 		bOldSpectate = PRI.bOnlySpectator;
-		SpectateButton.ButtonText = (bOldSpectate ? "Join" : "Spectate");
-		SpectateButton.ChangeToolTip(bOldSpectate ? "Click to become an active player" : "Click to become a spectator");
+		SpectateButton.ButtonText = (bOldSpectate ? JoinButtonText : SpectateButtonText);
+		SpectateButton.ChangeToolTip(bOldSpectate ? JoinButtonToolTip : SpectateButtonToolTip);
 	}
 }
 
@@ -83,7 +96,6 @@ function ShowMenu()
 	SkipTraderButton.SetDisabled(false);
 	if( GetPlayer().WorldInfo.GRI!=None )
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
-	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(false);
 	
 	// Update spectate button info text.
 	Timer();
@@ -92,7 +104,6 @@ function ShowMenu()
 function CloseMenu()
 {
 	Super.CloseMenu();
-	//KFGFxHudWrapper(GetPlayer().MyHUD).SetVisible(true);
 }
 function ButtonClicked( KFGUI_Button Sender )
 {
@@ -162,21 +173,20 @@ final function KFGUI_Button AddMenuButton( name ButtonID, string Text, optional 
 
 defaultproperties
 {
-	WindowTitle="Killing Floor 2 - Survival"
+	WindowTitle="RPG"
 	XPosition=0.1
 	YPosition=0.1
 	XSize=0.8
 	YSize=0.8
 	
+	Pages.Add(Class'UIP_News')
+	Pages.Add(Class'UIP_PerkSelection')
+	Pages.Add(Class'UIP_Settings')
+	Pages.Add(Class'UIP_PlayerSpecs')
+	Pages.Add(Class'UIP_AdminMenu')
+	Pages.Add(Class'UIP_About')
+	Pages.Add(Class'UIP_MiniGame')
 	bInitSkipTrader=false
-	
-	Pages.Add((PageClass=Class'UIP_News',Caption="News",Hint="Server news page"))
-	Pages.Add((PageClass=Class'UIP_PerkSelection',Caption="Perk",Hint="Select and upgrade your perks"))
-	Pages.Add((PageClass=Class'UIP_Settings',Caption="Settings",Hint="Show additional ServerExt settings"))
-	Pages.Add((PageClass=Class'UIP_PlayerSpecs',Caption="Stats",Hint="Show all players server stats"))
-	Pages.Add((PageClass=Class'UIP_AdminMenu',Caption="Admin",Hint=""))
-	Pages.Add((PageClass=Class'UIP_About',Caption="About",Hint="About this mod on this server"))
-	Pages.Add((PageClass=Class'UIP_MiniGame',Caption="Minigame",Hint="Play a minigame while at it"))
 
 	Begin Object Class=KFGUI_SwitchMenuBar Name=MultiPager
 		ID="Pager"

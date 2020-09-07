@@ -22,8 +22,6 @@ defaultproperties
 {
 	NumLevels=5
 	bPostApplyEffect=true
-	TraitName="Monster Health"
-	Description="This trait will scale how much health your helper ZED will have:|Lv1-5: +25%, +50%, +75%, +100%, +200%||-Requires Monster Tongue trait."
 	DefLevelCosts(0)=5
 	DefLevelCosts(1)=15
 	DefLevelCosts(2)=25

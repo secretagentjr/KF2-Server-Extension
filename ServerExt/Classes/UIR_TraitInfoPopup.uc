@@ -2,18 +2,32 @@ Class UIR_TraitInfoPopup extends KFGUI_FloatingWindow;
 
 var KFGUI_TextField TraitInfo;
 var KFGUI_Button YesButton;
+var KFGUI_Button NoButton;
 
 var class<Ext_TraitBase> MyTrait;
 var int TraitIndex;
 var Ext_PerkBase MyPerk;
 var int OldPoints,OldLevel;
 
+var localized string ButtonBuyText;
+var localized string ButtonBuyDisabledText;
+var localized string ButtonBuyTooltip;
+var localized string ButtonCancelText;
+var localized string ButtonCancelTooltip;
+
 function InitMenu()
 {
 	TraitInfo = KFGUI_TextField(FindComponentID('Info'));
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
+	NoButton = KFGUI_Button(FindComponentID('No'));
+	
+	NoButton.ButtonText=ButtonCancelText;
+	NoButton.Tooltip=ButtonCancelTooltip;
+	YesButton.Tooltip=ButtonBuyTooltip;
+	
 	Super.InitMenu();
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
@@ -45,12 +59,12 @@ function Timer()
 		OldLevel = MyPerk.PerkTraits[TraitIndex].CurrentLevel;
 		if( OldLevel>=MyTrait.Default.NumLevels )
 		{
-			YesButton.ButtonText = "Max level";
+			YesButton.ButtonText = ButtonBuyDisabledText;
 			YesButton.SetDisabled(true);
 			return;
 		}
 		Cost = MyTrait.Static.GetTraitCost(OldLevel);
-		YesButton.ButtonText = "Buy ("$Cost$")";
+		YesButton.ButtonText = ButtonBuyText$" ("$Cost$")";
 		if( Cost>OldPoints || !MyTrait.Static.MeetsRequirements(OldLevel,MyPerk) )
 			YesButton.SetDisabled(true);
 		else YesButton.SetDisabled(false);
@@ -87,7 +101,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=BuyButten
 		ID="Yes"
-		Tooltip="Purchase this trait (you can not undo this action!)"
 		XPosition=0.3
 		YPosition=0.91
 		XSize=0.19
@@ -98,8 +111,6 @@ defaultproperties
 	End Object
 	Begin Object Class=KFGUI_Button Name=CancelButten
 		ID="No"
-		ButtonText="Cancel"
-		Tooltip="Abort without doing anything"
 		XPosition=0.5
 		YPosition=0.91
 		XSize=0.19

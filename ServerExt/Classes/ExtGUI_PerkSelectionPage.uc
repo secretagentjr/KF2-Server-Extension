@@ -10,7 +10,7 @@ function InitMenu()
 	
 	for( i=0; i<Pages.Length; ++i )
 	{
-		PageSwitcher.AddPage(Pages[i].PageClass,Pages[i].Caption,Pages[i].Hint,B).InitMenu();
+		PageSwitcher.AddPage(Pages[i],B).InitMenu();
 	}
 }
 
@@ -49,11 +49,10 @@ function UserPressedEsc();
 defaultproperties
 {
 	WindowTitle=""
-	
 	XPosition=0.01
 	XSize=0.73
 	YSize=0.73
 	
 	Pages.Empty
-	Pages.Add((PageClass=Class'UIP_PerkSelectionLobby',Caption="Perk",Hint="Select and upgrade your perks"))
+	Pages.Add(Class'UIP_PerkSelectionLobby')
 }

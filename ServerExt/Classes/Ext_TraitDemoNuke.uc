@@ -54,12 +54,10 @@ defaultproperties
 {
 	SupportedPerk=class'Ext_PerkDemolition'
 	TraitGroup=class'Ext_TGroupZEDTime'
-	TraitName="ZED Time - Nuke"
 	NumLevels=4
 	DefLevelCosts(0)=100
 	DefLevelCosts(1)=150
 	DefLevelCosts(2)=200
 	DefLevelCosts(3)=250
 	DefMinLevel=100
-	Description="Demo weapons will spawn a nuke during ZED time. |Each level increases the damage & time of the nuke field. ||-REQUIREMENT: Damage bonus trait needs to have at least 30 points!"
 }

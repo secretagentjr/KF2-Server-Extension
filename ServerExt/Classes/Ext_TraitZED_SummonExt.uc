@@ -57,8 +57,6 @@ defaultproperties
 {
 	bIsSummoner=true
 	NumLevels=4
-	TraitName="Monster Tongue Extra"
-	Description="With this trait you will spawn yourself extra helper zeds.|Lv 1: Spawn one extra weak zed.|Lv 2: Spawn one extra strong zed.|Lv 3: Spawn one weak and one strong zed.|Lv 4: Spawn two strong zeds.||-Requires Monster Tongue trait."
 	DefLevelCosts(0)=100
 	DefLevelCosts(1)=40
 	DefLevelCosts(2)=80

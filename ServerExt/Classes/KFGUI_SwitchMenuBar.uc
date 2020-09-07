@@ -9,10 +9,13 @@ var int NumButtons,CurrentPageNum,PageComponentIndex;
 var array<KFGUI_Button> PageButtons;
 
 // Remember to call InitMenu() on the newly created page after.
-final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, string Caption, string Hint, optional out KFGUI_Button Button )
+final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, optional out KFGUI_Button Button )
 {
 	local KFGUI_Base P;
+	local KFGUI_Base C;
 	local KFGUI_Button B;
+	
+	C = new PageClass;
 	
 	// Add page.
 	P = new (Self) PageClass;
@@ -22,8 +25,8 @@ final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, string Caption, 
 
 	// Add page switch button.
 	B = new (Self) class'KFGUI_Button';
-	B.ButtonText = Caption;
-	B.ToolTip = Hint;
+	B.ButtonText = C.Caption;
+	B.ToolTip = C.Hint;
 	B.OnClickLeft = PageSwitched;
 	B.OnClickRight = PageSwitched;
 	B.IDValue = NumButtons;

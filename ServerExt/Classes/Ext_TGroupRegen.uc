@@ -30,5 +30,4 @@ static final function byte GetMaxLimit( Ext_PerkBase Perk )
 
 defaultproperties
 {
-	GroupInfo="Regeneration"
 }
