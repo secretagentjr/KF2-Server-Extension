@@ -7,7 +7,7 @@ var KFGUI_Button AdminButton,SpectateButton,SkipTraderButton;
 
 var transient KFGUI_Button PrevButton;
 var transient int NumButtons,NumButtonRows;
-var transient bool bInitSpectate,bOldSpectate,bInitSkipTrader;
+var transient bool bInitSpectate,bOldSpectate;
 
 var localized string MapVoteButtonText;
 var localized string MapVoteButtonToolTip;
@@ -74,19 +74,12 @@ function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
 	local KFPlayerReplicationInfo KFPRI;
 
 	KFPRI = KFPlayerReplicationInfo(PRI);
-	if (KFPRI == none)
+	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
+	
+	if ( KFGRI == none || KFPRI == none)
 		return false;
 	
-	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
-	if (KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn)
-	{
-		return !bInitSkipTrader;
-	}
-	else
-	{
-		bInitSkipTrader=false;
-		return false;
-	}
+	return KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn && !KFPRI.bVotedToSkipTraderTime;
 }
 
 function ShowMenu()
@@ -131,7 +124,6 @@ function ButtonClicked( KFGUI_Button Sender )
 		break;
 	case 'SkipTrader':
 		KFPlayerController(GetPlayer()).RequestSkipTrader();
-		bInitSkipTrader=true;
 		SkipTraderButton.SetDisabled(true);
 		break;
 	}
@@ -186,7 +178,6 @@ defaultproperties
 	Pages.Add(Class'UIP_AdminMenu')
 	Pages.Add(Class'UIP_About')
 	Pages.Add(Class'UIP_MiniGame')
-	bInitSkipTrader=false
 
 	Begin Object Class=KFGUI_SwitchMenuBar Name=MultiPager
 		ID="Pager"
