@@ -1,14 +1,14 @@
 [h1]Description:[/h1]
 This mod replaces current perk system in KF2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
 
-[h1]Usage (Single player):[/h1]
+[h1]Usage (single player):[/h1]
 1. Subscribe to this mutator;
 2. Start KF2; 
 3. Open console (`) and input:
 [code]open KF-BioticsLab?Mutator=ServerExtMut.ServerExtMut[/code]
 (You can add some options or replace KF-BioticsLab with the map you want)
 
-[h1]Usage (Server):[/h1]
+[h1]Usage (server):[/h1]
 [b]Note:[/b] If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.
 
 1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
@@ -17,7 +17,7 @@ This mod replaces current perk system in KF2 with a serverside perk progression 
 3. Start the server and wait while the mutator is downloading;
 4. Add [b]?Mutator=ServerExtMut.ServerExtMut[/b] above to launchup URL and restart server.
 
-[h1]Mutator Setup[/h1]
+[h1]Mutator setup[/h1]
 [url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url] 
 
 [h1]Is it possible to make the game harder?[/h1]
@@ -43,6 +43,12 @@ ServerExt.u
 ServerExtMut.u
 [/code]
 3. Reinstall RPG and try again.
+
+[h1]Bug reports[/h1]
+If you find a bug, please create a new issue here:
+[u]https://github.com/inklesspen1scripter/KF2-Server-Extension/issues[/u]
+
+Describe what the bug looks like and how we can repeat it.
 
 [h1]Localization[/h1]
 ServerExt supports localization now!
