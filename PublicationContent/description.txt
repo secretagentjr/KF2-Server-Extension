@@ -48,7 +48,7 @@ ServerExtMut.u
 If you find a bug, please create a new issue here:
 [u]https://github.com/inklesspen1scripter/KF2-Server-Extension/issues[/u]
 
-Describe what the bug looks like and how we can repeat it.
+Describe what the bug looks like and how we can reproduce it.
 
 [h1]Localization[/h1]
 ServerExt supports localization now!
