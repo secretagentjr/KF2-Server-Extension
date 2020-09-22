@@ -1,5 +1,23 @@
+[img]https://raw.githubusercontent.com/inklesspen1scripter/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
+
 [h1]Description:[/h1]
-This mod replaces current perk system in KF2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
+[i]This mod replaces current perk system in Killing Floor 2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
+
+This is a further development of the ServerExt mutator from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=681440898]Marco[/url] and [url=https://steamcommunity.com/sharedfiles/filedetails/?l=english&id=1207269970]Forrest Mark X[/url].[/i]
+
+[h1]Features[/h1]
+[list]
+[*]RPG elements (traits and stats);
+[*]New menu system;
+[*]Scoreboard that supports unlimited playercount on server;
+[*]Supports custom characters and weapons;
+[*]Enhanced HUD feedback (kill/damage messages);
+[*]First person legs and backpack weapon;
+[*][b]Customizable experience for killing custom zeds;[/b]
+[*][b]DLC weapons are available for purchase from the trader;[/b]
+[*][b]Localization support.[/b]
+[/list]
+The full changelog is available [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712]here[/url].
 
 [h1]Usage (single player):[/h1]
 1. Subscribe to this mutator;
