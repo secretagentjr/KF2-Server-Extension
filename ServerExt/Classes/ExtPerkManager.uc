@@ -563,7 +563,7 @@ function bool CanNotBeGrabbed()
 {
 	return (CurrentPerk!=None ? !CurrentPerk.bCanBeGrabbed : false);
 }
-simulated function ModifyMagSizeAndNumber( KFWeapon KFW, out byte MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname )
+simulated function ModifyMagSizeAndNumber( KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname )
 {
 	if( CurrentPerk!=None )
 		CurrentPerk.ModifyMagSizeAndNumber(KFW,MagazineCapacity,WeaponPerkClass,bSecondary,WeaponClassname);

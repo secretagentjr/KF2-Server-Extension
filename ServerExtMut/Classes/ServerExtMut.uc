@@ -341,7 +341,9 @@ function EditTraiderItems()
 				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Rifle_MosinNagant"
 				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_AssaultRifle_LazerCutter"
 				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_SMG_G18"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_DualG18")
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_DualG18"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Mine_Reconstructor"
+				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Minigun")
 				{
 					continue;
 				}
@@ -380,6 +382,8 @@ function EditTraiderItems()
 		AddCIToTrader("ServerExt.DLCWeapDef_LazerCutter");
 		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_DualG18");
 		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_G18C");
+		AddCIToTrader("ServerExt.DLCWeapDef_Mine_Reconstructor");
+		AddCIToTrader("ServerExt.DLCWeapDef_Minigun");
 	}
 
 	// Add custom items from WebAdmin
