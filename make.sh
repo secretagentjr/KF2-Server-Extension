@@ -22,7 +22,7 @@ function reg_readkey () # $1: path, $2: key
 	winpath2unix $(
 	reg query "$1" //v "$2" | \
 	grep -F "$2"            | \
-	awk '{ print $3 }' )
+	awk '{ $1=$2=""; print $0 }' )
 }
 
 function show_help ()
@@ -51,7 +51,7 @@ function compile ()
 	cp -rf "$MutSource/Localization"/* "$MutStructLocalization"
 	cp -rf "$MutSource/ServerExtMut"/*.upk "$MutStructPackages"
 	
-	CMD //C $(unixpath2win "$KFEditor") make -useunpublished &
+	CMD //C "$(unixpath2win "$KFEditor")" make -useunpublished &
 	local PID="$!"
 	while ps -p "$PID" &> /dev/null
 	do
@@ -66,7 +66,7 @@ function compile ()
 function brew ()
 {
 	echo "brew command is broken. Use --brew-unpublished or brew from WorkshopUploadToolGUI instead of this."
-	# CMD //C $(unixpath2win "$KFEditor") brewcontent -platform=PC ServerExt ServerExtMut -useunpublished
+	# CMD //C "$(unixpath2win "$KFEditor")" brewcontent -platform=PC ServerExt ServerExtMut -useunpublished
 }
 
 function brew_unpublished ()
@@ -100,7 +100,7 @@ function upload ()
 	PackageDir=$(mktemp -d -u -p "$KFDoc")
 	cp -rf "$MutPublish"/* "$PackageDir"
 	generate_wsinfo "$PackageDir"
-	CMD //C $(unixpath2win "$KFWorkshop") "$MutWsInfoName"
+	CMD //C "$(unixpath2win "$KFWorkshop")" "$MutWsInfoName"
 	rm -rf "$PackageDir"
 	rm -f "$MutWsInfo"
 }
@@ -121,7 +121,7 @@ function game_test ()
 		create_default_testing_ini
 	fi
 	source "$MutTestingIni"
-	CMD //C $(unixpath2win "$KFGame") ${Map}?Difficulty=${Difficulty}?GameLength=${GameLength}?Game=${Game}?Mutator=${Mutators}?${Args} -useunpublished -log
+	CMD //C "$(unixpath2win "$KFGame")" ${Map}?Difficulty=${Difficulty}?GameLength=${GameLength}?Game=${Game}?Mutator=${Mutators}?${Args} -useunpublished -log
 }
 
 ScriptFullname=$(readlink -e "$0")
