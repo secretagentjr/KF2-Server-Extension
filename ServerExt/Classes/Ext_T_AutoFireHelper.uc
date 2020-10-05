@@ -26,7 +26,11 @@ function Timer()
 }
 simulated function Tick( float Delta )
 {
-	if( WorldInfo.NetMode==NM_DedicatedServer || PawnOwner==None || PawnOwner.InvManager==None || KFWeapon(PawnOwner.Weapon)==None || KFWeapon(PawnOwner.Weapon).GetWeaponPerkClass(AssociatedPerkClass)!=AssociatedPerkClass && AssociatedPerkClass != class'KFPerk_Survivalist' )
+	if ( WorldInfo.NetMode==NM_DedicatedServer
+	|| PawnOwner==None
+	|| PawnOwner.InvManager==None
+	|| KFWeapon(PawnOwner.Weapon)==None
+	|| ( KFWeapon(PawnOwner.Weapon).GetWeaponPerkClass(AssociatedPerkClass) != AssociatedPerkClass && AssociatedPerkClass != class'KFPerk_Survivalist' ))
 		return;
 	
 	// Find local playercontroller.
