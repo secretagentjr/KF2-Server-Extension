@@ -27,7 +27,7 @@ function Timer()
 			{
 				if( W.SpareAmmoCount[i] < W.SpareAmmoCapacity[i] )
 				{
-					ExtraAmmo = Min(FMax(float(W.SpareAmmoCapacity[i])*RegCount,1.f),W.SpareAmmoCapacity[i]);
+					ExtraAmmo = FMax(float(W.SpareAmmoCapacity[i] + W.MagazineCapacity[i])*RegCount,1.f);
 					if ( i==0 )
 					{
 						W.AddAmmo(ExtraAmmo);
