@@ -35,7 +35,7 @@ function Timer()
 					else
 					{
 						W.AddSecondaryAmmo(ExtraAmmo);
-                    }
+					}
 					W.bNetDirty = true;
 				}
 			}
