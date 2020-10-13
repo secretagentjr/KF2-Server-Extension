@@ -39,7 +39,7 @@ The full changelog is available [url=https://steamcommunity.com/sharedfiles/file
 [url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url] 
 
 [h1]Is it possible to make the game harder?[/h1]
-It will be more efficient to use RPG Mod together with other mutators (which add new zeds or game modes).
+It will be more efficient to use ServerExt together with other mutators (which add new zeds or game modes).
 You can use [u][url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359647296750/]my experience[/url][/u] or come up with something of your own.
 
 [h1]If not working[/h1]
@@ -60,7 +60,7 @@ If you do not want to download the subscriptions again, delete only those folder
 ServerExt.u
 ServerExtMut.u
 [/code]
-3. Reinstall RPG and try again.
+3. Reinstall ServerExt and try again.
 
 [h1]Bug reports[/h1]
 If you find a bug, please create a new issue here:
