@@ -15,6 +15,7 @@ function Timer()
 {
 	local KFWeapon W;
 	local byte i;
+	local int ExtraAmmo;
 
 	if( PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.InvManager==None )
 		Destroy();
@@ -24,9 +25,17 @@ function Timer()
 		{
 			for( i=0; i<2; ++i )
 			{
-				if( W.SpareAmmoCount[i]<W.SpareAmmoCapacity[i] )
+				if( W.SpareAmmoCount[i] < W.SpareAmmoCapacity[i] )
 				{
-					W.SpareAmmoCount[i] = Min(W.SpareAmmoCount[i]+FMax(float(W.SpareAmmoCapacity[i])*RegCount,1.f),W.SpareAmmoCapacity[i]);
+					ExtraAmmo = Min(FMax(float(W.SpareAmmoCapacity[i])*RegCount,1.f),W.SpareAmmoCapacity[i]);
+					if ( i==0 )
+					{
+						W.AddAmmo(ExtraAmmo);
+					}
+					else
+					{
+						W.AddSecondaryAmmo(ExtraAmmo);
+                    }
 					W.bNetDirty = true;
 				}
 			}
