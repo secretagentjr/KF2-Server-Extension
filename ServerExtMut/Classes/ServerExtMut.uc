@@ -545,30 +545,30 @@ function AddMutator(Mutator M)
 
 function bool IsFromMod(Object O)
 {
-    local string PackageName;
-    
-    if( O == None )
-        return false;
-    
-    PackageName = string(O.GetPackageName());
-    if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
-    {
-        PackageName = string(O);
-        if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
-            return false;
-    }
-        
-    return true;
+	local string PackageName;
+	
+	if( O == None )
+		return false;
+	
+	PackageName = string(O.GetPackageName());
+	if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
+	{
+		PackageName = string(O);
+		if( Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
+			return false;
+	}
+		
+	return true;
 }
 
 function ScoreKill(Controller Killer, Controller Killed)
 {
 	local KFPawn_Monster KFM;
-    local int i, j;
-    local KFPlayerReplicationInfo DamagerKFPRI;
-    local float XP;
-    local KFPerk InstigatorPerk;
-    local bool cont;
+	local int i, j;
+	local KFPlayerReplicationInfo DamagerKFPRI;
+	local float XP;
+	local KFPerk InstigatorPerk;
+	local bool cont;
 	
 	local KFPlayerController KFPC;
 	local ExtPerkManager KillersPerk;
@@ -583,64 +583,64 @@ function ScoreKill(Controller Killer, Controller Killed)
 		if( bKillMessages && Killer.PlayerReplicationInfo!=None )
 			BroadcastKillMessage(Killed.Pawn,Killer);
 		if( KFM.DamageHistory.Length > 0 )
-        {
-            for( i = 0; i<KFM.DamageHistory.Length; i++ )
-            {
-                DamagerKFPRI = KFPlayerReplicationInfo(KFM.DamageHistory[i].DamagerPRI);
-                if( DamagerKFPRI != None )
-                {
-                    if( KFM.DamageHistory[i].DamagePerks.Length <= 0 )
-                    {
-                        continue;
-                    }
+		{
+			for( i = 0; i<KFM.DamageHistory.Length; i++ )
+			{
+				DamagerKFPRI = KFPlayerReplicationInfo(KFM.DamageHistory[i].DamagerPRI);
+				if( DamagerKFPRI != None )
+				{
+					if( KFM.DamageHistory[i].DamagePerks.Length <= 0 )
+					{
+						continue;
+					}
 
-                    cont = true;
-                    for(j=0;j<KFM.DamageHistory[i].DamageCausers.Length;j++)
-                    {
-                        if(IsFromMod(KFM.DamageHistory[i].DamageCausers[j]) || IsFromMod(KFM.DamageHistory[i].DamageTypes[j]))
-                        {
-                            cont = false;
-                            break;
-                        }
-                    }
-                    if(cont && !IsFromMod(KFM))
-                        continue;
+					cont = true;
+					for(j=0;j<KFM.DamageHistory[i].DamageCausers.Length;j++)
+					{
+						if(IsFromMod(KFM.DamageHistory[i].DamageCausers[j]) || IsFromMod(KFM.DamageHistory[i].DamageTypes[j]))
+						{
+							cont = false;
+							break;
+						}
+					}
+					if(cont && !IsFromMod(KFM))
+						continue;
 
-                    // Distribute experience points
-                    KFPC = KFPlayerController(DamagerKFPRI.Owner);
-                    if( KFPC != none )
-                    {
-                    	`log("ScoreKill:"@PathName(KFM));
+					// Distribute experience points
+					KFPC = KFPlayerController(DamagerKFPRI.Owner);
+					if( KFPC != none )
+					{
+						`log("ScoreKill:"@PathName(KFM));
 
-                    	XP = 0;
-                    	for(j=0;j<CustomZedXPArray.Length;j++)
-                    	{
-                    		if(KFM.Class == CustomZedXPArray[j].zedclass)
-                    		{
-                    			XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
-                    			break;
-                    		}
-                    	}
-                    	if(XP == 0)
-                    		XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
+						XP = 0;
+						for(j=0;j<CustomZedXPArray.Length;j++)
+						{
+							if(KFM.Class == CustomZedXPArray[j].zedclass)
+							{
+								XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
+								break;
+							}
+						}
+						if(XP == 0)
+							XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
 
-                        InstigatorPerk = KFPC.GetPerk();
-                        if( InstigatorPerk.ShouldGetAllTheXP() )
-                        {
-                            KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
-                            continue;
-                        }
+						InstigatorPerk = KFPC.GetPerk();
+						if( InstigatorPerk.ShouldGetAllTheXP() )
+						{
+							KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
+							continue;
+						}
 
-                        XP /= KFM.DamageHistory[i].DamagePerks.Length;
+						XP /= KFM.DamageHistory[i].DamagePerks.Length;
 
-                        for( j = 0; j < KFM.DamageHistory[i].DamagePerks.Length; j++ )
-                        {
-                            KFPC.OnPlayerXPAdded(FCeil(XP), KFM.DamageHistory[i].DamagePerks[j]);
-                        }
-                    }
-                }
-            }
-        }
+						for( j = 0; j < KFM.DamageHistory[i].DamagePerks.Length; j++ )
+						{
+							KFPC.OnPlayerXPAdded(FCeil(XP), KFM.DamageHistory[i].DamagePerks[j]);
+						}
+					}
+				}
+			}
+		}
 	}
 	if ( MyKFGI != None && MyKFGI.IsZedTimeActive() && KFPawn_Monster(Killed.Pawn) != None )
 	{

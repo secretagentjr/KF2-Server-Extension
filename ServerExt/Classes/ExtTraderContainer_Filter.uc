@@ -11,7 +11,7 @@ function SetPerkFilterData(byte FilterIndex)
 
 	SetBool("filterVisibliity", true);
 
-    KFPC = ExtPlayerController( GetPC() );
+	KFPC = ExtPlayerController( GetPC() );
 	if ( KFPC != none )
 	{
 		PrM = KFPC.ActivePerkManager;
@@ -36,7 +36,7 @@ function SetPerkFilterData(byte FilterIndex)
 			{
 				FilterObject = CreateObject( "Object" );
 				FilterObject.SetString("source",  PrM.UserPerks[i].GetPerkIconPath(PrM.UserPerks[i].CurrentLevel));
-			    DataProvider.SetElementObject( i, FilterObject );
+				DataProvider.SetElementObject( i, FilterObject );
 			}
 
 			FilterObject = CreateObject( "Object" );
@@ -44,8 +44,8 @@ function SetPerkFilterData(byte FilterIndex)
 			DataProvider.SetElementObject( i, FilterObject );
 
 			SetObject( "filterSource", DataProvider );
-    	}
-    }
+		}
+	}
 }
 
 defaultproperties

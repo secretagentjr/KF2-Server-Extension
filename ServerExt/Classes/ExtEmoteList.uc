@@ -5,7 +5,7 @@ var const array<Emote> Emotes;
 
 static final function name GetUnlockedEmote( int ItemId, ExtPlayerController PC )
 {
-    local int i;
+	local int i;
 	local name Anim;
 	local ExtPlayerReplicationInfo PRI;
 	
@@ -44,7 +44,7 @@ static final function array<Emote> GetEmoteArray()
 
 static final function byte GetEmoteIndex( int ItemId )
 {
-    local int i;
+	local int i;
 	i = default.Emotes.Find('Id', ItemId);
 	if( i > -1 )
 		return i;

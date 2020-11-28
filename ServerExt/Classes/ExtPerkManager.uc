@@ -540,7 +540,7 @@ simulated function ModifyMeleeAttackSpeed( out float InDuration, KFWeapon KFW )
 }
 simulated function class<KFProj_Grenade> GetGrenadeClass()
 {
-    return (CurrentPerk!=None ? CurrentPerk.GrenadeClass : GrenadeClass);
+	return (CurrentPerk!=None ? CurrentPerk.GrenadeClass : GrenadeClass);
 }
 simulated function ModifyWeldingRate( out float FastenRate, out float UnfastenRate )
 {

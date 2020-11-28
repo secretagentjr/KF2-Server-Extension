@@ -17,19 +17,19 @@ function UpdatePerkSelection(byte SelectedPerkIndex)
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{
 			PerkClass = KFPC.ActivePerkManager.UserPerks[i];
-		    TempObj = CreateObject( "Object" );
-		    TempObj.SetInt( "PerkLevel", PerkClass.CurrentLevel );
-		    TempObj.SetString( "Title",  PerkClass.PerkName );	
+			TempObj = CreateObject( "Object" );
+			TempObj.SetInt( "PerkLevel", PerkClass.CurrentLevel );
+			TempObj.SetString( "Title",  PerkClass.PerkName );	
 			TempObj.SetString( "iconSource",  PerkClass.GetPerkIconPath(PerkClass.CurrentLevel) );
 			TempObj.SetBool("bTierUnlocked", true);
 			
-		    DataProvider.SetElementObject( i, TempObj );
+			DataProvider.SetElementObject( i, TempObj );
 		}	
 		SetObject( "perkData", DataProvider );
 		SetInt("SelectedIndex", SelectedPerkIndex);
 
 		UpdatePendingPerkInfo(SelectedPerkIndex);
-    }
+	}
 }
 
 function UpdatePendingPerkInfo(byte SelectedPerkIndex)

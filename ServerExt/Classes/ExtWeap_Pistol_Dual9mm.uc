@@ -14,7 +14,7 @@ defaultproperties
 
 simulated static function bool AllowedForAllPerks()
 {
-    return true;
+	return true;
 }
 
 simulated function ConsumeAmmo( byte FireModeNum )

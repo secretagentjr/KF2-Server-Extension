@@ -45,7 +45,7 @@ function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
 		PerkIconObject = CreateObject("Object");
 		PerkIconObject.SetString("perkIcon", ExtMemberSlots[SlotIndex].PerkClass.static.GetPerkIconPath(EPRI.ECurrentPerkLevel));
 		PlayerInfoObject.SetObject("perkImageSource", PerkIconObject);
-        
+		
 		PlayerInfoObject.SetString("perkLevel", string(EPRI.ECurrentPerkLevel));
 	}
 	if( !bIsMyPlayer )

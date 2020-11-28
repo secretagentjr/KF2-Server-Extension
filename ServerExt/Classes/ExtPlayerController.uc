@@ -316,13 +316,13 @@ reliable client event TeamMessage( PlayerReplicationInfo PRI, coerce string S, n
 	}
 	
 	if (MyGFxManager != none && MyGFxManager.PartyWidget != none)
-    {
-    	if( !MyGFxManager.PartyWidget.ReceiveMessage(S) )  //Fails if message is for updating perks in a steam lobby
-    		return;
-    }
+	{
+		if( !MyGFxManager.PartyWidget.ReceiveMessage(S) )  //Fails if message is for updating perks in a steam lobby
+			return;
+	}
 
-    if( MyGFxHUD != none )
-    {
+	if( MyGFxHUD != none )
+	{
 		switch( Type )
 		{
 		case 'Log':
@@ -340,7 +340,7 @@ reliable client event TeamMessage( PlayerReplicationInfo PRI, coerce string S, n
 		case 'TeamSay':
 			if( ExtPlayerReplicationInfo(PRI)!=None && ExtPlayerReplicationInfo(PRI).ShowAdminName() )
 				MyGFxHUD.HudChatBox.AddChatMessage("("$ExtPlayerReplicationInfo(PRI).GetAdminNameAbr()$")"$S, ExtPlayerReplicationInfo(PRI).GetAdminColor());
-    		else MyGFxHUD.HudChatBox.AddChatMessage(S, "64FE2E");
+			else MyGFxHUD.HudChatBox.AddChatMessage(S, "64FE2E");
 			break;
 		case 'Priority':
 			MyGFxHUD.HudChatBox.AddChatMessage(S, class 'KFLocalMessage'.default.PriorityColor);
@@ -509,9 +509,9 @@ reliable server function ServerCamera( name NewMode )
 {
 	// <- REMOVED CAMERA LOGGING (PlayerController)
 	if ( NewMode == '1st' )
-    	NewMode = 'FirstPerson';
-    else if ( NewMode == '3rd' )
-    	NewMode = 'ThirdPerson';
+		NewMode = 'FirstPerson';
+	else if ( NewMode == '3rd' )
+		NewMode = 'ThirdPerson';
 	SetCameraMode( NewMode );
 }
 exec function Camera( name NewMode )
@@ -582,12 +582,12 @@ simulated reliable client event bool ShowConnectionProgressPopup( EProgressMessa
 {
 	switch(ProgressType)
 	{
-	case    PMT_ConnectionFailure :
-	case    PMT_PeerConnectionFailure :
+	case	PMT_ConnectionFailure :
+	case	PMT_PeerConnectionFailure :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
 		KFExtendedHUD(myHUD).ShowProgressMsg("Connection Error: "$ProgressTitle$"|"$ProgressDescription$"|Disconnecting...",true);
 		return true;
-	case    PMT_DownloadProgress :
+	case	PMT_DownloadProgress :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
 	case	PMT_AdminMessage :
 		KFExtendedHUD(myHUD).ShowProgressMsg(ProgressTitle$"|"$ProgressDescription);
@@ -1127,7 +1127,7 @@ state Dead
 			KFPawn(ViewTarget).SetMeshVisibility(true);
 		}
 
-        // Deactivate any post process effects when we die
+		// Deactivate any post process effects when we die
 		ResetGameplayPostProcessFX();
 
 		if(CurrentPerk != none)
@@ -1169,12 +1169,12 @@ state Dead
 
 exec function RequestSwitchTeam()
 {
-    ConsoleCommand("disconnect");
+	ConsoleCommand("disconnect");
 }
 
 exec function SwitchTeam()
 {
-    ConsoleCommand("disconnect");
+	ConsoleCommand("disconnect");
 }
 
 defaultproperties

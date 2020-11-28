@@ -8,7 +8,7 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 	if( bCanHeadTrack )
 	{
 		IK_Look_Head		= SkelControlLookAt(Mesh.FindSkelControl('HeadLook'));
-		//IK_Look_Spine       = SkelControlLookAt(Mesh.FindSkelControl('SpineLook'));
+		//IK_Look_Spine	   = SkelControlLookAt(Mesh.FindSkelControl('SpineLook'));
 	}
 }
 

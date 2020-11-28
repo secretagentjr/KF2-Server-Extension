@@ -4,12 +4,12 @@ function TickHud(float DeltaTime)
 {
 	local int i;
 
-    if(KFGRI == none)
-        KFGRI = KFGameReplicationInfo(GetPC().WorldInfo.GRI);
-    else
-    {
-        if(KFGRI.bTraderIsOpen)
-        {
+	if(KFGRI == none)
+		KFGRI = KFGameReplicationInfo(GetPC().WorldInfo.GRI);
+	else
+	{
+		if(KFGRI.bTraderIsOpen)
+		{
 			i = KFGRI.GetTraderTimeRemaining();
 			if(LastTraderTimeRemaining != i)
 			{
@@ -17,7 +17,7 @@ function TickHud(float DeltaTime)
 				LastTraderTimeRemaining = i;
 			}
 		}
-        else
+		else
 		{
 			i = KFGRI.IsFinalWave() ? INDEX_NONE : Max(KFGRI.AIRemaining,0);
 			if(LastZEDCount != i)
@@ -45,7 +45,7 @@ function TickHud(float DeltaTime)
 			}
 			SetInt("currentWave",Min(LastWave,LastWaveMax));
 		}
-    }
+	}
 }
 
 function UpdateWaveCount();

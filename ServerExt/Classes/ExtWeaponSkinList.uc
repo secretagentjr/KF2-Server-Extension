@@ -21,7 +21,7 @@ var array<WeaponSkin> Skins;
 
 static function array<MaterialInterface> GetWeaponSkin(int ItemId, EWeaponSkinType Type, ExtPlayerController PC)
 {
-    local int i;
+	local int i;
 	local array<MaterialInterface> Mats;
 	local MaterialInterface LoadedMat;
 	local string FirstPMat;
@@ -75,7 +75,7 @@ static function SaveWeaponSkin(class<KFWeaponDefinition> WeaponDef, int ID, ExtP
 
 static function bool IsSkinEquip(class<KFWeaponDefinition> WeaponDef, int ID, ExtPlayerController PC)
 {
-    local int i;
+	local int i;
 	i = PC.SavedWeaponSkins.Find('ID', ID);
 	if( i > -1 )
 		return true;

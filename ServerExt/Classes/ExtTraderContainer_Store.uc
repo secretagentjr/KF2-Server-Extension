@@ -15,7 +15,7 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 			TargetPerkClass = EKFPC.ActivePerkManager.UserPerks[FilterIndex].BasePerk;
 
 		SlotIndex = 0;
-	    ItemDataArray = CreateArray();
+		ItemDataArray = CreateArray();
 
 		for (i = 0; i < ItemList.Length; i++)
 		{

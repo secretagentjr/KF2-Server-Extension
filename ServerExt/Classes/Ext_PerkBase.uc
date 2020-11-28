@@ -114,25 +114,25 @@ reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 {
 	switch( DefPerkStat.StatType )
 	{
-		case name("Speed"):        return StatSpeed;
-		case name("Damage"):       return StatDamage;
-		case name("Recoil"):       return StatRecoil;
-		case name("Spread"):       return StatSpread;
-		case name("Rate"):         return StatRate;
-		case name("Reload"):       return StatReload;
-		case name("Health"):       return StatHealth;
-		case name("KnockDown"):    return StatKnockDown;
-		case name("Welder"):       return StatWelder;
-		case name("Heal"):         return StatHeal;
-		case name("Mag"):          return StatMag;
-		case name("Spare"):        return StatSpare;
-		case name("OffDamage"):    return StatOffDamage;
+		case name("Speed"):		return StatSpeed;
+		case name("Damage"):	   return StatDamage;
+		case name("Recoil"):	   return StatRecoil;
+		case name("Spread"):	   return StatSpread;
+		case name("Rate"):		 return StatRate;
+		case name("Reload"):	   return StatReload;
+		case name("Health"):	   return StatHealth;
+		case name("KnockDown"):	return StatKnockDown;
+		case name("Welder"):	   return StatWelder;
+		case name("Heal"):		 return StatHeal;
+		case name("Mag"):		  return StatMag;
+		case name("Spare"):		return StatSpare;
+		case name("OffDamage"):	return StatOffDamage;
 		case name("SelfDamage"):   return StatSelfDamage;
-		case name("Armor"):        return StatArmor;
-		case name("PoisonDmg"):    return StatPoisonDmg;
-		case name("SonicDmg"):     return StatSonicDmg;
-		case name("FireDmg"):      return StatFireDmg;
-		case name("AllDmg"):       return StatAllDmg;
+		case name("Armor"):		return StatArmor;
+		case name("PoisonDmg"):	return StatPoisonDmg;
+		case name("SonicDmg"):	 return StatSonicDmg;
+		case name("FireDmg"):	  return StatFireDmg;
+		case name("AllDmg"):	   return StatAllDmg;
 		case name("HeadDamage"):   return StatHeadDamage;
 		case name("HealRecharge"): return StatHealRecharge;
 	}

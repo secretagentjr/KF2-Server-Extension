@@ -17,8 +17,8 @@ function DrawMenu()
 	if( bIsHighlighted )
 	{
 		Canvas.DrawColor.R = Min(Canvas.DrawColor.R + 25, FrameOpacity);
-        Canvas.DrawColor.G = Min(Canvas.DrawColor.G + 25, FrameOpacity);
-        Canvas.DrawColor.B = Min(Canvas.DrawColor.B + 25, FrameOpacity);
+		Canvas.DrawColor.G = Min(Canvas.DrawColor.G + 25, FrameOpacity);
+		Canvas.DrawColor.B = Min(Canvas.DrawColor.B + 25, FrameOpacity);
 	}
 
 	Canvas.SetPos(0.f,0.f);

@@ -11,16 +11,16 @@ function TickHud(float DeltaTime)
 
 final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInfo PRI2, optional string VictimStr, optional bool bDeathMessage = false, optional class<Pawn> PawnOther )
 {
-    local GFxObject DataObject;
-    local bool bHumanDeath;
-    local string KilledName, KillerName, KilledIconpath, KillerIconPath; 
-    local string KillerTextColor, KilledTextColor;
+	local GFxObject DataObject;
+	local bool bHumanDeath;
+	local string KilledName, KillerName, KilledIconpath, KillerIconPath; 
+	local string KillerTextColor, KilledTextColor;
    
-    if(KFPC == none)
-        return;
+	if(KFPC == none)
+		return;
 
-    if( KFGXHUDManager != none )
-    {
+	if( KFGXHUDManager != none )
+	{
 		if(PawnOther != none)
 		{
 			if( bDeathMessage )
@@ -47,7 +47,7 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 				if( ExtPlayerReplicationInfo(PRI1)!=None && ExtPlayerReplicationInfo(PRI1).ECurrentPerk!=None )
 					KillerIconpath = ExtPlayerReplicationInfo(PRI1).ECurrentPerk.static.GetPerkIconPath(0);
 			}
-			KillerName = PRI1.PlayerName;               
+			KillerName = PRI1.PlayerName;			   
 		}
 
 		if(PRI2 != none)

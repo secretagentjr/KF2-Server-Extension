@@ -11,15 +11,15 @@ simulated function PostBeginPlay()
 }
 simulated function ExplodeTimer()
 {
-    local Actor HitActor;
-    local vector HitLocation, HitNormal;
+	local Actor HitActor;
+	local vector HitLocation, HitNormal;
 
 	if( WorldInfo.NetMode!=NM_Client && InstigatorController==none )
 	{
 		Destroy();
 		return;
 	}
-    GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
+	GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
 	if( --NumCrackers==0 )
 		TriggerExplosion(HitLocation, HitNormal, HitActor);
 	else SmallExplosion(HitLocation, HitNormal, HitActor);

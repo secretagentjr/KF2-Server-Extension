@@ -33,70 +33,70 @@ function InitMenu()
 
 static final function string FormatTimeSMH (float Sec)
 {
-    local int Hours, Seconds, Minutes;
+	local int Hours, Seconds, Minutes;
 
-    Sec = Abs (Sec);
-    Seconds = int (Sec);
-    Minutes = Seconds / 60;
-    Seconds -= Minutes * 60;
-    Hours = Minutes / 60;
+	Sec = Abs (Sec);
+	Seconds = int (Sec);
+	Minutes = Seconds / 60;
+	Seconds -= Minutes * 60;
+	Hours = Minutes / 60;
 
-    return ((Hours < 1) ? "0" $Hours : string (Hours)) @":" @((Minutes < 10) ? "0" $Minutes : string (Minutes)) @":" @((Seconds < 10) ? "0" $Seconds : string (Seconds));
+	return ((Hours < 1) ? "0" $Hours : string (Hours)) @":" @((Minutes < 10) ? "0" $Minutes : string (Minutes)) @":" @((Seconds < 10) ? "0" $Seconds : string (Seconds));
 }
 
 function DrawMenu()
 {
-    local string S;
-    local PlayerController PC;
-    local PlayerReplicationInfo PRI;
-    local ExtPlayerReplicationInfo KFPRI;
-    local float XPos, YPos, XL, YL, FontScalar, XPosCenter, CurrentBoxY;
-    local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width, NotShownCount;
+	local string S;
+	local PlayerController PC;
+	local PlayerReplicationInfo PRI;
+	local ExtPlayerReplicationInfo KFPRI;
+	local float XPos, YPos, XL, YL, FontScalar, XPosCenter, CurrentBoxY;
+	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width, NotShownCount;
 	local byte DefFont;
 
-    PC = GetPlayer ();
-    if (KFGRI == None) {
-        KFGRI = KFGameReplicationInfo (PC.WorldInfo.GRI);
-        if (KFGRI == None)
-            return;
-    }
+	PC = GetPlayer ();
+	if (KFGRI == None) {
+		KFGRI = KFGameReplicationInfo (PC.WorldInfo.GRI);
+		if (KFGRI == None)
+			return;
+	}
 
-    // Sort player list.
-    for (i = (KFGRI.PRIArray.Length - 1); i > 0; --i) {
-        for (j = i - 1; j >= 0; --j) {
-            if (!InOrder (KFGRI.PRIArray [i], KFGRI.PRIArray [j])) {
-                PRI = KFGRI.PRIArray [i];
-                KFGRI.PRIArray [i] = KFGRI.PRIArray [j];
-                KFGRI.PRIArray [j] = PRI;
-            }
-        }
-    }
+	// Sort player list.
+	for (i = (KFGRI.PRIArray.Length - 1); i > 0; --i) {
+		for (j = i - 1; j >= 0; --j) {
+			if (!InOrder (KFGRI.PRIArray [i], KFGRI.PRIArray [j])) {
+				PRI = KFGRI.PRIArray [i];
+				KFGRI.PRIArray [i] = KFGRI.PRIArray [j];
+				KFGRI.PRIArray [j] = PRI;
+			}
+		}
+	}
 
-    // Check players.
-    NumPlayer = 0;
-    for (i = (KFGRI.PRIArray.Length - 1); i >= 0; --i) {
-        KFPRI = ExtPlayerReplicationInfo (KFGRI.PRIArray [i]);
-        if (KFPRI == None)
-            continue;
+	// Check players.
+	NumPlayer = 0;
+	for (i = (KFGRI.PRIArray.Length - 1); i >= 0; --i) {
+		KFPRI = ExtPlayerReplicationInfo (KFGRI.PRIArray [i]);
+		if (KFPRI == None)
+			continue;
 
-        if (KFPRI.bOnlySpectator) {
-            ++NumSpec;
-            continue;
-        }
+		if (KFPRI.bOnlySpectator) {
+			++NumSpec;
+			continue;
+		}
 
-        if (KFPRI.PlayerHealth > 0 && KFPRI.PlayerHealthPercent > 0 && KFPRI.GetTeamNum () == 0)
-            ++NumAlivePlayer;
-        ++NumPlayer;
-    }
+		if (KFPRI.PlayerHealth > 0 && KFPRI.PlayerHealthPercent > 0 && KFPRI.GetTeamNum () == 0)
+			++NumAlivePlayer;
+		++NumPlayer;
+	}
 
-    //`Log ("DrawMenu (): PlayList.Length = " @PRIList.Length);
+	//`Log ("DrawMenu (): PlayList.Length = " @PRIList.Length);
 
-    // Header font info.
+	// Header font info.
 	DefFont = Owner.CurrentStyle.DefaultFontSize;
-    Canvas.Font = Owner.CurrentStyle.PickFont(DefFont, FontScalar);
+	Canvas.Font = Owner.CurrentStyle.PickFont(DefFont, FontScalar);
 
-    YL = Owner.CurrentStyle.DefaultHeight;
-    XPosCenter = (Canvas.ClipX * 0.5);
+	YL = Owner.CurrentStyle.DefaultHeight;
+	XPosCenter = (Canvas.ClipX * 0.5);
 
 	// ServerName
 
@@ -282,7 +282,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	bFocus = bFocus || (bHasSelectedPlayer && RightClickPlayer==KFPRI);
 	
 	DefFont = Owner.CurrentStyle.DefaultFontSize;
-    C.Font = Owner.CurrentStyle.PickFont(DefFont, FontScalar);
+	C.Font = Owner.CurrentStyle.PickFont(DefFont, FontScalar);
 	
 	if (KFPRI == GetPlayer().PlayerReplicationInfo)
 	{

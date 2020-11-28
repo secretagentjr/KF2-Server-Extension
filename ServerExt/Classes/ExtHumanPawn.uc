@@ -115,8 +115,8 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 	local ExtPlayerController InstigatorPC, KFPC;
 	local KFPerk InstigatorPerk;
 	local class<KFDamageType> KFDT;
-    local int i;
-    local bool bRepairedArmor;
+	local int i;
+	local bool bRepairedArmor;
 	local ExtPlayerReplicationInfo EPRI;
 	local Ext_PerkBase InstigatorExtPerk;
 
@@ -143,14 +143,14 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 		}
 	}
 
-    if( Amount > 0 && IsAliveAndWell() && Health < HealthMax )
-    {
+	if( Amount > 0 && IsAliveAndWell() && Health < HealthMax )
+	{
 		// Play any healing effects attached to this damage type
 		KFDT = class<KFDamageType>(DamageType);
 		if( KFDT != none && KFDT.default.bNoPain )
 			PlayHeal( KFDT );
 
-    	if( Role == ROLE_Authority )
+		if( Role == ROLE_Authority )
 		{
 			if( Healer==None || Healer.PlayerReplicationInfo == None )
 				return false;
@@ -166,15 +166,15 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 				UsedHealAmount = Min(HealthMax - (Health + HealthToRegen),255-HealthToRegen);
 			else UsedHealAmount = Min(UsedHealAmount,255-HealthToRegen);
 
-	    	HealthToRegen += UsedHealAmount;
+			HealthToRegen += UsedHealAmount;
 			RepRegenHP = HealthToRegen;
 			if( !IsTimerActive('GiveHealthOverTime') )
 				SetTimer(HealthRegenRate, true, 'GiveHealthOverTime');
 
 			// Give the healer money/XP for helping a teammate
-		    if( Healer.Pawn != none && Healer.Pawn != self )
-		    {
-			    DoshEarned = ( UsedHealAmount / float(HealthMax) ) * HealerRewardScaler;
+			if( Healer.Pawn != none && Healer.Pawn != self )
+			{
+				DoshEarned = ( UsedHealAmount / float(HealthMax) ) * HealerRewardScaler;
 				if( InstigatorPRI!=None )
 					InstigatorPRI.AddDosh(Max(DoshEarned, 0), true);
 				if( InstigatorPC!=None )
@@ -184,7 +184,7 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 			if( Healer.bIsPlayer )
 			{
 				if( Healer != Controller )
-		    	{
+				{
 					if( InstigatorPC!=None )
 					{
 						if( !InstigatorPC.bClientHideNumbers )
@@ -205,20 +205,20 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 				`DialogManager.PlayHealingDialog( KFPawn(Healer.Pawn), self, float(Health + HealthToRegen) / float(HealthMax) );
 			}
 
-            // Reduce burn duration and damage in half if you heal while burning
-            for( i = 0; i < DamageOverTimeArray.Length; ++i )
-        	{
-                if( DamageOverTimeArray[i].DoT_Type == DOT_Fire )
-                {
-                    DamageOverTimeArray[i].Duration *= 0.5;
-                    DamageOverTimeArray[i].Damage *= 0.5;
-                    break;
-                }
-        	}
+			// Reduce burn duration and damage in half if you heal while burning
+			for( i = 0; i < DamageOverTimeArray.Length; ++i )
+			{
+				if( DamageOverTimeArray[i].DoT_Type == DOT_Fire )
+				{
+					DamageOverTimeArray[i].Duration *= 0.5;
+					DamageOverTimeArray[i].Damage *= 0.5;
+					break;
+				}
+			}
 
-		    return true;
+			return true;
 		}
-    }
+	}
 
 	return bRepairedArmor;
 }
@@ -679,7 +679,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 
 		// Call CheckHitInfo to give us a valid BoneName
 		HitDirection = Normal(TearOffMomentum);
-    	CheckHitInfo(HitInfo, Mesh, HitDirection, HitLoc);
+		CheckHitInfo(HitInfo, Mesh, HitDirection, HitLoc);
 
 		// Play ragdoll death animation (bSkipReplication=TRUE)
 		if( CanDoSpecialMove(SM_DeathAnim) && ClassIsChildOf(DamageType, class'KFDamageType') )
@@ -726,11 +726,11 @@ simulated function OnWakeUpFinished();
 
 function AddDefaultInventory()
 {
-    local KFPerk MyPerk;
+	local KFPerk MyPerk;
 
-    MyPerk = GetPerk();
+	MyPerk = GetPerk();
 	if( MyPerk != none )
-        MyPerk.AddDefaultInventory(self);
+		MyPerk.AddDefaultInventory(self);
 
 	Super(KFPawn).AddDefaultInventory();
 }
@@ -757,7 +757,7 @@ simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bFor
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-    KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
 	if (Info != CharacterArch || bForce)
 	{
 		// Set Family Info
@@ -1017,7 +1017,7 @@ simulated final function InitFPLegs()
 	FPBodyMesh.SetAnimTreeTemplate(CharacterArch.AnimTreeTemplate);
 	FPBodyMesh.SetSkeletalMesh(Mesh.SkeletalMesh);
 	
-    FPBodyMesh.SetActorCollision(false, false);
+	FPBodyMesh.SetActorCollision(false, false);
 	FPBodyMesh.SetNotifyRigidBodyCollision(false);
 	FPBodyMesh.SetTraceBlocking(false, false);
 
@@ -1025,9 +1025,9 @@ simulated final function InitFPLegs()
 		FPBodyMesh.SetMaterial(i, Mesh.Materials[i]);
 
 	FPBodyMesh.HideBoneByName('neck', PBO_None);
-    FPBodyMesh.HideBoneByName('Spine2', PBO_None);
-    FPBodyMesh.HideBoneByName('RightShoulder', PBO_None);
-    FPBodyMesh.HideBoneByName('LeftShoulder', PBO_None);
+	FPBodyMesh.HideBoneByName('Spine2', PBO_None);
+	FPBodyMesh.HideBoneByName('RightShoulder', PBO_None);
+	FPBodyMesh.HideBoneByName('LeftShoulder', PBO_None);
 }
 
 // ForrestMarkX's third person backpack weapon and first person legs:
@@ -1175,16 +1175,16 @@ simulated function SetCharacterAnimationInfo()
 
 simulated function SetMeshLightingChannels(LightingChannelContainer NewLightingChannels)
 {
-    Super.SetMeshLightingChannels(NewLightingChannels);
+	Super.SetMeshLightingChannels(NewLightingChannels);
 
 	if (AttachedBackItem != none)
-        AttachedBackItem.SetLightingChannels(NewLightingChannels);
+		AttachedBackItem.SetLightingChannels(NewLightingChannels);
 	FPBodyMesh.SetLightingChannels(NewLightingChannels);
 }
 
 simulated function PlayWeaponSwitch(Weapon OldWeapon, Weapon NewWeapon)
 {
-    Super.PlayWeaponSwitch(OldWeapon, NewWeapon);
+	Super.PlayWeaponSwitch(OldWeapon, NewWeapon);
 
 	if( WorldInfo.NetMode!=NM_Client )
 	{

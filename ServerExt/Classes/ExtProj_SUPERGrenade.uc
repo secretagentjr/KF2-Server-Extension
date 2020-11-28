@@ -32,7 +32,7 @@ simulated function ProcessTouch(Actor Other, Vector HitLocation, Vector HitNorma
 	{
 		// For opposing team, make the grenade explode instantly
 		GetExplodeEffectLocation( HitLocation, HitNormal, Other );
-        TriggerExplosion( HitLocation, HitNormal, Other );
+		TriggerExplosion( HitLocation, HitNormal, Other );
 	}
 	else super.ProcessTouch( Other, HitLocation, HitNormal );
 }
@@ -69,14 +69,14 @@ simulated function TriggerExplosion(Vector HitLocation, Vector HitNormal, Actor 
 
 simulated function Destroyed()
 {
-    local Actor HitActor;
-    local vector HitLocation, HitNormal;
+	local Actor HitActor;
+	local vector HitLocation, HitNormal;
 
 	// Final Failsafe check for explosion effect
 	if( !bHasExploded && WorldInfo.NetMode==NM_Client )
 	{
 		GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
-        TriggerExplosion(HitLocation, HitNormal, HitActor);
+		TriggerExplosion(HitLocation, HitNormal, HitActor);
 	}
 }
 

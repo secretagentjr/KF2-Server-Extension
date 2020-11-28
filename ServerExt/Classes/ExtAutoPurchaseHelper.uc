@@ -131,13 +131,13 @@ function InitializeOwnedItemList()
 	local Ext_PerkBase EP;
 
 	EP = GetExtPerk();
-    OwnedItemList.length = 0;
+	OwnedItemList.length = 0;
 
 	TraderItems = KFGameReplicationInfo( WorldInfo.GRI ).TraderItems;
 
 	KFP = KFPawn_Human( Pawn );
-    if( KFP != none )
-    {
+	if( KFP != none )
+	{
 		// init armor purchase values
 		ArmorItem.SpareAmmoCount = KFP.Armor;
 		ArmorItem.MaxSpareAmmo = KFP.GetMaxArmor();
@@ -160,7 +160,7 @@ function InitializeOwnedItemList()
 			{
 				// Set the weapon information and add it to the OwnedItemList
 				SetWeaponInformation( KFW );
-	     	}
+		 	}
 		}
 
 		if(MyGfxManager != none && MyGfxManager.TraderMenu != none)
@@ -237,7 +237,7 @@ function bool CanCarry(const out STraderItem Item, optional int OverrideLevelVal
 	Result = TotalBlocks + MyKFIM.GetDisplayedBlocksRequiredFor(Item);
 	if (Result > MaxBlocks)
 	{
-    	return false;
+		return false;
 	}
 	return true;
 }

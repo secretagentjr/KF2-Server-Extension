@@ -30,7 +30,7 @@ function SetPerkList()
 	KFPC = ExtPlayerController(GetPC());
 	if( KFPC != none && KFPC.ActivePerkManager!=None )
 	{
-    	DataProvider = CreateArray();
+		DataProvider = CreateArray();
 
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{

@@ -82,7 +82,7 @@ simulated function SetCharacterAnimationInfo()
 
 	// Keep monster animations.
 	M = KFCharacterInfo_Monster'ZED_ARCH.ZED_Clot_UnDev_Archetype';
-    Mesh.AnimSets = M.AnimSets;
+	Mesh.AnimSets = M.AnimSets;
 	if ( Mesh.AnimTreeTemplate != M.AnimTreeTemplate )
 		Mesh.SetAnimTreeTemplate(M.AnimTreeTemplate);
 	if ( M.AnimArchetype != None )
@@ -100,7 +100,7 @@ simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bFor
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-    KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
 	if (Info != CharacterArch)
 	{
 		// Set Family Info

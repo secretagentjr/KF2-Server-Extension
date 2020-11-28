@@ -5,8 +5,8 @@ event Timer();
 
 event InitGame( string Options, out string ErrorMessage )
 {
-    MaxPlayers = 99;
-    MaxSpectators = 99;
+	MaxPlayers = 99;
+	MaxSpectators = 99;
 	class'MS_TMPUI'.Static.Remove();
 }
 

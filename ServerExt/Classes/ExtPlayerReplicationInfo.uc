@@ -8,14 +8,14 @@ struct FCustomCharEntry
 };
 struct FMyCustomChar // Now without constant.
 {
-    var int CharacterIndex,HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,AttachmentMeshIndices[`MAX_COSMETIC_ATTACHMENTS],AttachmentSkinIndices[`MAX_COSMETIC_ATTACHMENTS];
-    
-    structdefaultproperties
-    {
-        AttachmentMeshIndices[0]=`CLEARED_ATTACHMENT_INDEX
-        AttachmentMeshIndices[1]=`CLEARED_ATTACHMENT_INDEX
-        AttachmentMeshIndices[2]=`CLEARED_ATTACHMENT_INDEX
-    }
+	var int CharacterIndex,HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,AttachmentMeshIndices[`MAX_COSMETIC_ATTACHMENTS],AttachmentSkinIndices[`MAX_COSMETIC_ATTACHMENTS];
+	
+	structdefaultproperties
+	{
+		AttachmentMeshIndices[0]=`CLEARED_ATTACHMENT_INDEX
+		AttachmentMeshIndices[1]=`CLEARED_ATTACHMENT_INDEX
+		AttachmentMeshIndices[2]=`CLEARED_ATTACHMENT_INDEX
+	}
 };
 
 // For custom trader inventory.
@@ -537,10 +537,10 @@ reliable server final function ServerSetCharacterX( FMyCustomChar NewMeshInfo )
 
 	CustomCharacter = NewMeshInfo;
 
-    if ( Role == Role_Authority )
-    {
+	if ( Role == Role_Authority )
+	{
 		CharacterCustomizationChanged();
-    }
+	}
 }
 simulated final function bool IsClientCharLocked( byte Index )
 {

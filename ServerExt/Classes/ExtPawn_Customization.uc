@@ -11,7 +11,7 @@ simulated function SetCharacterArch( KFCharacterInfoBase Info, optional bool bFo
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-    KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
 	if (Info != CharacterArch || bForce)
 	{
 		// Set Family Info
