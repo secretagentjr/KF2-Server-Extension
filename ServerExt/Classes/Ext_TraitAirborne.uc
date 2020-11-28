@@ -7,6 +7,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 	Ext_PerkFieldMedic(Perk).AirborneAgentHealRate = Default.HealRates[Level-1];
 	Ext_PerkFieldMedic(Perk).AirborneAgentLevel = (Level<4 ? 1 : 2);
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkFieldMedic(Perk).AirborneAgentLevel = 0;

@@ -4,6 +4,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Perk.EnemyHealthRange = Level;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.EnemyHealthRange = 0;

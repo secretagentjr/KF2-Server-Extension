@@ -5,6 +5,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Perk.bExplosiveWeld = true;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.bExplosiveWeld = false;

@@ -83,12 +83,14 @@ function InitMenu()
 
 	Super.InitMenu();
 }
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	SetTimer(2,true);
 	Timer();
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
@@ -167,6 +169,7 @@ static final function string FormatTimeSMH(float Sec)
 		S = Days$"d "$S;
 	return S;
 }
+
 static final function string FormatInteger(int Val)
 {
 	local string S,O;

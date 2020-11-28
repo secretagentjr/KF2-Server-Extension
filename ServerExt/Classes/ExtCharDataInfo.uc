@@ -27,6 +27,7 @@ final function FMyCustomChar LoadData()
 	R.AttachmentSkinIndices[2] = AttachmentSkin2;
 	return R;
 }
+
 final function SaveData(FMyCustomChar R)
 {
 	HeadMeshIndex = R.HeadMeshIndex;

@@ -11,6 +11,7 @@ function PostBeginPlay()
 		Destroy();
 	else SetTimer(29+FRand(),true);
 }
+
 function Timer()
 {
 	local KFWeapon W;

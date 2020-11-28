@@ -96,6 +96,7 @@ static function Ext_TraitDataStore Initializefor (Ext_PerkBase Perk, ExtPlayerCo
 	}
 	return T;
 }
+
 static function CleanupTrait(ExtPlayerController Player, Ext_PerkBase Perk, optional Ext_TraitDataStore Data)
 {
 	if (Data!=None)
@@ -130,10 +131,12 @@ static final function string IntToStr(int Value, optional byte MaxVal) // Helper
 		return Chr((Value & 32767)+1) $ Chr(((Value >> 15) & 32767)+1);
 	}
 }
+
 static final function string InlineString(string Str) // Helper function to append a string line to a text using a length char in front.
 {
 	return IntToStr(Len(Str))$Str;
 }
+
 static final function int StrToInt(out string Value, optional byte MaxVal) // Reverse.
 {
 	local int Res;
@@ -151,6 +154,7 @@ static final function int StrToInt(out string Value, optional byte MaxVal) // Re
 	}
 	return Res;
 }
+
 static final function string GetInlineStr(out string S) // Reverse.
 {
 	local int l;
@@ -172,6 +176,7 @@ static function string GetRepData()
 		S $= IntToStr(Default.LevelCosts[i]);
 	return S;
 }
+
 static function string ClientSetRepData(string S)
 {
 	local int i;
@@ -193,6 +198,7 @@ static function CheckConfig()
 		StaticSaveConfig();
 	}
 }
+
 static function UpdateConfigs(int OldVer)
 {
 	if (OldVer==0)
@@ -207,6 +213,7 @@ static function InitWebAdmin(ExtWebAdmin_UI UI)
 {
 	UI.AddSettingsPage("Trait "$Default.TraitName,Default.Class,Default.WebConfigs,GetValue,ApplyValue);
 }
+
 static function string GetValue(name PropName, int ElementIndex)
 {
 	switch (PropName)
@@ -219,6 +226,7 @@ static function string GetValue(name PropName, int ElementIndex)
 		return string(Default.bDisabled);
 	}
 }
+
 static function ApplyValue(name PropName, int ElementIndex, string Value)
 {
 	switch (PropName)

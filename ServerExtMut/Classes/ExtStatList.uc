@@ -22,6 +22,7 @@ static final function SetTopPlayers(ExtPlayerController Other)
 	if (bDirty)
 		StaticSaveConfig();
 }
+
 static final function bool CheckBestTrack(PlayerReplicationInfo PRI, int Value, out array<FTopPlayers> V)
 {
 	local string S;

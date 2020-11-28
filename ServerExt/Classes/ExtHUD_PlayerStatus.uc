@@ -52,6 +52,7 @@ function UpdatePerk()
 		LastEXPValue = CurrentPerkEXP;
 	}
 }
+
 function ShowXPBark(int DeltaXP, string IconPath, bool bIsCurrentPerk)
 {
 	ActionScriptVoid("showXPBark");

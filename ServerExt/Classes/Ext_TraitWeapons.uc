@@ -13,6 +13,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 		return false;
 	return Super.MeetsRequirements(Lvl,Perk);
 }
+
 static final function bool HasMaxCarry(Ext_PerkBase Perk)
 {
 	local int i;
@@ -20,6 +21,7 @@ static final function bool HasMaxCarry(Ext_PerkBase Perk)
 	i = Perk.PerkTraits.Find('TraitType',Class'Ext_TraitCarryCap');
 	return (i==-1 || Perk.PerkTraits[i].CurrentLevel>=3);
 }
+
 static function string GetPerkDescription()
 {
 	return Super.GetPerkDescription()$"|- Level 4 requires perk level 50 and level 3 carry capacity trait!";
@@ -29,6 +31,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Perk.PrimaryWeapon = None; // Give a new primary weapon.
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.PrimaryWeapon = Perk.Default.PrimaryWeapon;
@@ -56,6 +59,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	if (M!=None)
 		M.bInfiniteWeight = false;
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local class<Inventory> IC;

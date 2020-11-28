@@ -4,6 +4,7 @@ final function class<KFPerk> GetBasePerk()
 {
 	return (ActivePerkManager!=None && ActivePerkManager.CurrentPerk!=None) ? ActivePerkManager.CurrentPerk.BasePerk : None;
 }
+
 final function Ext_PerkBase GetExtPerk()
 {
 	return ActivePerkManager!=None ? ActivePerkManager.CurrentPerk : None;

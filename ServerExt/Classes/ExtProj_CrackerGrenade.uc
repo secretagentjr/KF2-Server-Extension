@@ -9,6 +9,7 @@ simulated function PostBeginPlay()
 	Super.PostBeginPlay();
 	SetTimer(FuseTime+FRand()*0.25, true, 'ExplodeTimer');
 }
+
 simulated function ExplodeTimer()
 {
 	local Actor HitActor;
@@ -24,6 +25,7 @@ simulated function ExplodeTimer()
 		TriggerExplosion(HitLocation, HitNormal, HitActor);
 	else SmallExplosion(HitLocation, HitNormal, HitActor);
 }
+
 simulated function SmallExplosion(Vector HitLocation, Vector HitNormal, Actor HitActor)
 {
 	local vector NudgedHitLocation, ExplosionDirection;
@@ -81,9 +83,11 @@ simulated function SmallExplosion(Vector HitLocation, Vector HitNormal, Actor Hi
 		}
 	}
 }
+
 simulated function ProcessTouch(Actor Other, Vector HitLocation, Vector HitNormal)
 {
 }
+
 simulated function Explode(vector HitLocation, vector HitNormal);
 
 defaultproperties

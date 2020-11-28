@@ -16,14 +16,17 @@ function cleanup()
 		ExtAdminUI = None;
 	}
 }
+
 function init(WebAdmin webapp)
 {
 	webadmin = webapp;
 }
+
 function registerMenuItems(WebAdminMenu menu)
 {
 	menu.addMenu(ExtWebURL, "ExtServer Mod", self, "Modify settings of Extended Server Mod.", -44);
 }
+
 function bool handleQuery(WebAdminQuery q)
 {
 	switch (q.request.URI)
@@ -50,6 +53,7 @@ final function IncludeFile(WebAdminQuery q, string file)
 	}
 	q.response.IncludeUHTM(webadmin.Path $ "/" $ file);
 }
+
 final function SendHeader(WebAdminQuery q, string Title)
 {
 	local IQueryHandler handler;
@@ -68,6 +72,7 @@ final function SendHeader(WebAdminQuery q, string Title)
 	IncludeFile(q,"header.inc");
 	q.response.SendText("<div id=\"content\"><h2>"$Title$"</h2></div><div class=\"section\">");
 }
+
 final function SendFooter(WebAdminQuery q)
 {
 	IncludeFile(q,"navigation.inc");
@@ -84,6 +89,7 @@ final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, 
 		S $= "</TR>";
 	q.response.SendText(S);
 }
+
 final function AddConfigCheckbox(WebAdminQuery q, string InfoStr, bool bCur, string ResponseVar, string Tooltip)
 {
 	local string S;
@@ -92,6 +98,7 @@ final function AddConfigCheckbox(WebAdminQuery q, string InfoStr, bool bCur, str
 	S = "<TR><TD><abbr title=\""$Tooltip$"\">"$InfoStr$":</abbr></TD><TD><input type=\"checkbox\" name=\""$ResponseVar$"\" value=\"1\" "$S$"></TD></TR>";
 	q.response.SendText(S);
 }
+
 final function AddConfigTextbox(WebAdminQuery q, string InfoStr, string CurVal, int Rows, string ResponseVar, string Tooltip)
 {
 	local string S;
@@ -271,6 +278,7 @@ function bool producesXhtml()
 {
 	return true;
 }
+
 function bool unhandledQuery(WebAdminQuery q);
 function decoratePage(WebAdminQuery q);
 

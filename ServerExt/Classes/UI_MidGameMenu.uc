@@ -94,10 +94,12 @@ function ShowMenu()
 	Timer();
 	SetTimer(0.5,true);
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)
@@ -128,6 +130,7 @@ function ButtonClicked(KFGUI_Button Sender)
 		break;
 	}
 }
+
 final function OpenUpMapvote()
 {
 	local xVotingReplication R;

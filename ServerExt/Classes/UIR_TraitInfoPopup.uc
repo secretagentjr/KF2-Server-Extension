@@ -49,6 +49,7 @@ function ShowTraitInfo(int Index, Ext_PerkBase Perk)
 	Timer();
 	SetTimer(0.2,true);
 }
+
 function Timer()
 {
 	local int Cost;
@@ -70,6 +71,7 @@ function Timer()
 		else YesButton.SetDisabled(false);
 	}
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)

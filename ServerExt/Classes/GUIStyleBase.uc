@@ -13,6 +13,7 @@ function InitStyle()
 	if (ItemTex==None)
 		ItemTex = Texture2D'EngineMaterials.DefaultWhiteGrid';
 }
+
 function RenderFramedWindow(KFGUI_FloatingWindow P);
 function RenderWindow(KFGUI_Page P);
 function RenderToolTip(KFGUI_Tooltip TT);
@@ -45,6 +46,7 @@ function PickDefaultFontSize(float YRes)
 	PickFont(DefaultFontSize,YRes).GetStringHeightAndWidth(S,YL,XL);
 	DefaultHeight = float(YL)*YRes;
 }
+
 final function DrawText(byte Res, string S)
 {
 	local float Scale;
@@ -70,6 +72,7 @@ final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir) // Draw non-unifo
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,11,73,66,-58);
 	}
 }
+
 final function DrawCornerTex(int Size, byte Dir)
 {
 	switch (Dir)
@@ -87,6 +90,7 @@ final function DrawCornerTex(int Size, byte Dir)
 		Canvas.DrawTile(ItemTex,Size,Size,11,73,66,-58);
 	}
 }
+
 final function DrawWhiteBox(int XS, int YS)
 {
 	Canvas.DrawTile(ItemTex,XS,YS,19,45,1,1);

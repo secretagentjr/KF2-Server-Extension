@@ -12,15 +12,18 @@ simulated function InitHands(SkeletalMeshComponent C)
 	HandsAnimNode = AnimNodeSlot(Mesh.FindAnimNode('ArmsSlot'));
 	BodyNode = AnimNodeSlot(Mesh.FindAnimNode('BodySlot'));
 }
+
 simulated final function SetIdleAnim(name N)
 {
 	IdleAnimName = N;
 	Timer();
 }
+
 simulated function Timer()
 {
 	HandsAnimNode.PlayCustomAnim(IdleAnimName,1.f,0.15,,true);
 }
+
 simulated final function PlayHandsAnim(name N, optional float Rate=1.f)
 {
 	SetTimer(HandsAnimNode.PlayCustomAnim(N,Rate,0.05,,,true),false);

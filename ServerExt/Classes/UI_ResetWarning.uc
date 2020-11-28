@@ -26,11 +26,13 @@ function InitMenu()
 	
 	Super.InitMenu();
 }
+
 function SetupTo(Ext_PerkBase P)
 {
 	PerkToReset = P.Class;
 	WindowTitle = TitleText$" "$P.PerkName;
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)

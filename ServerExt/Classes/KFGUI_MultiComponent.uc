@@ -13,6 +13,7 @@ function InitMenu()
 		Components[i].InitMenu();
 	}
 }
+
 function ShowMenu()
 {
 	local int i;
@@ -20,6 +21,7 @@ function ShowMenu()
 	for (i=0; i<Components.Length; ++i)
 		Components[i].ShowMenu();
 }
+
 function PreDraw()
 {
 	local int i;
@@ -38,6 +40,7 @@ function PreDraw()
 		Components[i].PreDraw();
 	}
 }
+
 function MenuTick(float DeltaTime)
 {
 	local int i;
@@ -62,6 +65,7 @@ function CloseMenu()
 	for (i=0; i<Components.Length; ++i)
 		Components[i].CloseMenu();
 }
+
 function bool CaptureMouse()
 {
 	local int i;
@@ -75,6 +79,7 @@ function bool CaptureMouse()
 	MouseArea = None;
 	return Super.CaptureMouse(); // check with frame itself.
 }
+
 function KFGUI_Base FindComponentID(name InID)
 {
 	local int i;
@@ -89,6 +94,7 @@ function KFGUI_Base FindComponentID(name InID)
 	}
 	return Result;
 }
+
 function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 {
 	local int i;
@@ -98,6 +104,7 @@ function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 	for (i=0; i<Components.Length; ++i)
 		Components[i].FindAllComponentID(InID,Res);
 }
+
 function RemoveComponent(KFGUI_Base B)
 {
 	local int i;
@@ -112,6 +119,7 @@ function RemoveComponent(KFGUI_Base B)
 	for (i=0; i<Components.Length; ++i)
 		Components[i].RemoveComponent(B);
 }
+
 function NotifyLevelChange()
 {
 	local int i;

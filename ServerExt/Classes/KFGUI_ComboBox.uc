@@ -38,12 +38,14 @@ function HandleMouseClick(bool bRight)
 		Selection.YPosition-=((Selection.YPosition+Selection.YSize)-1.f);
 	Selection.GetInputFocus();
 }
+
 final function string GetCurrent()
 {
 	if (SelectedIndex<Values.Length)
 		return Values[SelectedIndex];
 	return "";
 }
+
 final function bool SetValue(string S)
 {
 	local int i;
@@ -54,6 +56,7 @@ final function bool SetValue(string S)
 	SelectedIndex = i;
 	return true;
 }
+
 Delegate OnComboChanged(KFGUI_ComboBox Sender);
 
 defaultproperties

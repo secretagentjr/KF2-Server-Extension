@@ -16,6 +16,7 @@ static final function Apply()
 	T.UIManager = T.RealUI.UIManager;
 	G.UIController = T;
 }
+
 static final function Remove()
 {
 	local GameViewportClient G;

@@ -32,18 +32,21 @@ function ShowMenu()
 	SetTimer(0.1,true);
 	EditBoxChange(StatCountBox);
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
 	MyPerk = None;
 	SetTimer(0,false);
 }
+
 function SetActivePerk(Ext_PerkBase P)
 {
 	MyPerk = P;
 	StatCountBox.Value = "5";
 	OldValue = -1;
 }
+
 function Timer()
 {
 	if (OldValue!=MyPerk.PerkStats[StatIndex].CurrentValue || bCostDirty)
@@ -56,10 +59,12 @@ function Timer()
 			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$ProgressStr$"%]:");
 	}
 }
+
 function BuyStatPoint(KFGUI_Button Sender)
 {
 	ExtPlayerController(GetPlayer()).BuyPerkStat(MyPerk.Class,StatIndex,StatCountBox.GetValueInt());
 }
+
 function EditBoxChange(KFGUI_EditBox Sender)
 {
 	if (MyPerk.PerkStats[StatIndex].CostPerValue > 1)
@@ -72,6 +77,7 @@ function EditBoxChange(KFGUI_EditBox Sender)
 	bCostDirty = true;
 	Timer();
 }
+
 final function CheckBuyLimit()
 {
 	local int i;

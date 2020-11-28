@@ -17,6 +17,7 @@ function WriteValue(string Key, string Value)
 {
 	Logf(Intendent$"<"$Key$">"$Value$"</"$Key$">");
 }
+
 function StartIntendent(string Section, optional string Key, optional string Value)
 {
 	if (Key!="")
@@ -25,12 +26,14 @@ function StartIntendent(string Section, optional string Key, optional string Val
 	Intendent $= Chr(9);
 	StackedSect.AddItem(Section);
 }
+
 function EndIntendent()
 {
 	Intendent = Left(Intendent,Len(Intendent)-1);
 	Logf(Intendent$"</"$StackedSect[StackedSect.Length-1]$">");
 	StackedSect.Remove(StackedSect.Length-1,1);
 }
+
 function ResetFile()
 {
 	Intendent = "";

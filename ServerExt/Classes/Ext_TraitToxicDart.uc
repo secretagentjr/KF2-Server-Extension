@@ -7,6 +7,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 	Perk.ToxicDartDamage = Default.DartDamages[Level-1];
 	Perk.bToxicDart = true;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.bToxicDart = false;

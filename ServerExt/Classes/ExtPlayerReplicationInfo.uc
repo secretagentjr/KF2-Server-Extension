@@ -96,6 +96,7 @@ simulated final function bool CanUseSupply(Pawn P)
 {
 	return (SupplierLimit.SuppliedPawn!=P || SupplierLimit.NextSupplyTimer<WorldInfo.TimeSeconds);
 }
+
 simulated final function UsedSupply(Pawn P, float NextTime)
 {
 	SupplierLimit.SuppliedPawn = P;
@@ -143,16 +144,19 @@ simulated event ReplicatedEvent(name VarName)
 		Super.ReplicatedEvent(VarName);
 	}
 }
+
 function SetPlayerName(string S)
 {
 	Super.SetPlayerName(S);
 	UpdateNameTag();
 }
+
 function SetPlayerNameTag(string S)
 {
 	NameTag = S;
 	UpdateNameTag();
 }
+
 function OverrideWith(PlayerReplicationInfo PRI)
 {
 	Super.OverrideWith(PRI);
@@ -161,12 +165,14 @@ function OverrideWith(PlayerReplicationInfo PRI)
 	AdminType = ExtPlayerReplicationInfo(PRI).AdminType;
 	UpdateNameTag();
 }
+
 simulated final function UpdateNameTag()
 {
 	if (NameTag!="")
 		TaggedPlayerName = "["$NameTag$"] "$PlayerName;
 	else TaggedPlayerName = PlayerName;
 }
+
 final function SetLevelProgress(int CurLevel, int CurPrest, int MinLevel, int MaxLevel)
 {
 	local float V;
@@ -180,10 +186,12 @@ final function SetLevelProgress(int CurLevel, int CurPrest, int MinLevel, int Ma
 	if (WorldInfo.NetMode!=NM_DedicatedServer)
 		HUDPerkColor = PickPerkColor();
 }
+
 simulated final function string GetPerkLevelStr()
 {
 	return (ECurrentPerkPrestige>0 ? (string(ECurrentPerkPrestige)$"-"$string(ECurrentPerkLevel)) : string(ECurrentPerkLevel));
 }
+
 simulated final function color PickPerkColor()
 {
 	local float P;
@@ -219,6 +227,7 @@ function SetInitPlayTime(int T)
 	RepPlayTime = T;
 	SetTimer(5,false,'UnsetPT');
 }
+
 function UnsetPT()
 {
 	bInitialPT = false;
@@ -228,6 +237,7 @@ Delegate bool OnRepNextItem(ExtPlayerReplicationInfo PRI, int RepIndex)
 {
 	return false;
 }
+
 simulated reliable client function ClientAddTraderItem(int Index, FCustomTraderItem Item)
 {
 	// Make sure to not execute on server.
@@ -254,6 +264,7 @@ simulated static final function KFGFxObject_TraderItems CreateNewList()
 
 	return L;
 }
+
 simulated static final function SetWeaponInfo(bool bDedicated, int Index, FCustomTraderItem Item, KFGFxObject_TraderItems List)
 {
 	local array<STraderItemWeaponStats> S;
@@ -318,6 +329,7 @@ simulated final function bool ShowAdminName()
 {
 	return (bAdmin || AdminType<255);
 }
+
 simulated function string GetAdminName()
 {
 	switch (AdminType)
@@ -335,6 +347,7 @@ simulated function string GetAdminName()
 		return "VIP";
 	}
 }
+
 simulated function string GetAdminNameAbr()
 {
 	switch (AdminType)
@@ -352,6 +365,7 @@ simulated function string GetAdminNameAbr()
 		return "V";
 	}
 }
+
 simulated function string GetAdminColor()
 {
 	switch (AdminType)
@@ -369,6 +383,7 @@ simulated function string GetAdminColor()
 		return "FFD700";
 	}
 }
+
 simulated function color GetAdminColorC()
 {
 	switch (AdminType)
@@ -398,10 +413,12 @@ function SetFixedData(byte M)
 	FixedData = FixedData | M;
 	SetTimer(5,false,'ClearFixed');
 }
+
 function ClearFixed()
 {
 	FixedData = 0;
 }
+
 simulated final function string GetDesc()
 {
 	local string S;
@@ -418,6 +435,7 @@ simulated final function string GetDesc()
 		S $= "WA.";
 	return S;
 }
+
 delegate OnModeSet(ExtPlayerReplicationInfo PRI, byte Num);
 
 simulated final function bool LoadPlayerCharacter(byte CharIndex, out FMyCustomChar CharInfo)
@@ -437,6 +455,7 @@ simulated final function bool LoadPlayerCharacter(byte CharIndex, out FMyCustomC
 	CharInfo = SaveDataObjects[CharIndex].LoadData();
 	return true;
 }
+
 simulated final function bool SavePlayerCharacter()
 {
 	local KFCharacterInfo_Human C;
@@ -454,6 +473,7 @@ simulated final function bool SavePlayerCharacter()
 	SaveDataObjects[CustomCharacter.CharacterIndex].SaveData(CustomCharacter);
 	return true;
 }
+
 simulated function ChangeCharacter(byte CharIndex, optional bool bFirstSet)
 {
 	local FMyCustomChar NewChar;
@@ -484,6 +504,7 @@ simulated function ChangeCharacter(byte CharIndex, optional bool bFirstSet)
 			CharacterCustomizationChanged();
 	}
 }
+
 simulated function UpdateCustomization(byte Type, byte MeshIndex, byte SkinIndex, optional byte SlotIndex)
 {
 	switch (Type)
@@ -506,6 +527,7 @@ simulated function UpdateCustomization(byte Type, byte MeshIndex, byte SkinIndex
 	if (WorldInfo.NetMode==NM_Client)
 		CharacterCustomizationChanged();
 }
+
 simulated final function RemoveAttachments()
 {
 	local byte i;
@@ -520,6 +542,7 @@ simulated final function RemoveAttachments()
 	if (WorldInfo.NetMode==NM_Client)
 		CharacterCustomizationChanged();
 }
+
 simulated function ClearCharacterAttachment(int AttachmentIndex)
 {
 	if (UsesCustomChar())
@@ -542,6 +565,7 @@ reliable server final function ServerSetCharacterX(FMyCustomChar NewMeshInfo)
 		CharacterCustomizationChanged();
 	}
 }
+
 simulated final function bool IsClientCharLocked(byte Index)
 {
 	if (Index<CharacterArchetypes.Length)
@@ -572,6 +596,7 @@ simulated reliable client function AllCharReceived()
 		bClientInitChars = true;
 	}
 }
+
 simulated final function NotifyCharListDone()
 {
 	local KFPawn_Human KFP;
@@ -616,6 +641,7 @@ simulated final function bool ReallyUsingCustomChar()
 		return false;
 	return (CustomCharacter.CharacterIndex>=CharacterArchetypes.Length);
 }
+
 simulated final function KFCharacterInfo_Human GetSelectedArch()
 {
 	if (UsesCustomChar())
@@ -688,6 +714,7 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 		}
 	}
 }
+
 final function LoadCustomCharacter(ExtSaveDataBase Data)
 {
 	local string S;
@@ -755,6 +782,7 @@ static final function DummyLoadChar(ExtSaveDataBase Data)
 	for (i=0; i<n; ++i)
 		Data.SkipBytes(3);
 }
+
 static final function DummySaveChar(ExtSaveDataBase Data)
 {
 	Data.SaveStr("");

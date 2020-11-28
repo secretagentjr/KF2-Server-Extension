@@ -46,12 +46,14 @@ function InitMenu()
 		
 	Super.InitMenu();
 }
+
 function ShowMenu()
 {
 	Super.ShowMenu();
 	SetTimer(0.1,true);
 	Timer();
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
@@ -236,6 +238,7 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 	C.SetPos(6+Height,YOffset+Height*0.5);
 	C.DrawText("Lv "$P.GetLevelString()$" ("$P.CurrentEXP$"/"$P.NextLevelEXP$" XP)",,Sc,Sc);
 }
+
 function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)
 {
 	if (CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
@@ -244,6 +247,7 @@ function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)
 	PendingPerk = CurrentManager.UserPerks[Index];
 	ExtPlayerController(GetPlayer()).SwitchToPerk(PendingPerk.Class);
 }
+
 function ShowTraitInfo(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
 	local UIR_TraitInfoPopup T;
@@ -253,6 +257,7 @@ function ShowTraitInfo(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick
 		T.ShowTraitInfo(Item.Value,PendingPerk);
 	}
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	local KFGUI_Page T;

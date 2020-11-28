@@ -26,10 +26,12 @@ function bool BotFire(bool bFinished)
 	StartFire(0);
 	return true;
 }
+
 function bool CanAttack(Actor Other)
 {
 	return VSizeSq(Other.Location-Location)<62500.f; // 250.f
 }
+
 function bool IsFiring()
 {
 	local byte i;
@@ -39,6 +41,7 @@ function bool IsFiring()
 			return true;
 	return false;
 }
+
 function bool StopFiring()
 {
 	local byte i;
@@ -47,6 +50,7 @@ function bool StopFiring()
 		IsFiringMode[i] = 0;
 	return true;
 }
+
 function bool HasRangedAttack()
 {
 	return false;
@@ -70,10 +74,12 @@ function PlayAttackAnim(byte Num)
 	if (!bAttacking)
 		ServerAttackAnim(Num);
 }
+
 simulated function float StartAttackAnim(byte Num) // Return animation duration.
 {
 	return 0.2f;
 }
+
 simulated function AttackFinished()
 {
 	local byte i;
@@ -103,12 +109,14 @@ reliable server function ServerModeFire(bool bStart, byte Mode)
 	if (bStart)
 		PlayAttackAnim(Mode);
 }
+
 simulated function StartFire(byte FireModeNum)
 {
 	if (bNoWeaponFiring)
 		return;
 	ServerModeFire(true,FireModeNum);
 }
+
 simulated function StopFire(byte FireModeNum)
 {
 	ServerModeFire(false,FireModeNum);
@@ -132,10 +140,12 @@ function ServerAttackAnim(byte Num)
 		SetTimer(F+0.5,false,'ResetAttackTimer');
 	}
 }
+
 function ResetAttackTimer()
 {
 	ServerAttackMode = 0;
 }
+
 simulated event ReplicatedEvent(name VarName)
 {
 	switch (VarName)
@@ -227,12 +237,14 @@ function bool MeleeDamageTarget(vector pushdir)
 	}
 	return bResult;
 }
+
 function DealMeleeDamage(Actor Other, vector HL, vector pushdir)
 {
 	if (KFPawn_Monster(Other)!=None && KFPawn_Monster(Other).GetTeamNum()==0)
 		Other.TakeDamage(MeleeDamage*5, Controller, HL, pushdir, MeleeHitDT,,Self); // Almost insta-kill pet zeds.
 	else Other.TakeDamage(MeleeDamage, Controller, HL, pushdir, MeleeHitDT,,Self);
 }
+
 function DamageDoor(KFDoorActor D, vector HL, vector pushdir)
 {
 	local bool bIsP;
@@ -313,6 +325,7 @@ simulated function DrawHUD(HUD H)
 		FPHandModel.SetLocation(GetPawnViewLocation()+(FPHandOffset >> FPHandModel.Rotation));
 	}
 }
+
 simulated function InitFPHands()
 {
 	FPHandModel.Mesh.HideBoneByName('RightUpLeg',PBO_Term);
@@ -320,6 +333,7 @@ simulated function InitFPHands()
 	FPHandModel.Mesh.HideBoneByName('Neck',PBO_Term);
 	FPHandModel.SetIdleAnim(FPHandsIdle);
 }
+
 simulated function Destroyed()
 {
 	DisableNightVision();
@@ -327,6 +341,7 @@ simulated function Destroyed()
 		FPHandModel.Destroy();
 	Super.Destroyed();
 }
+
 simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
 {
 	DisableNightVision();
@@ -334,6 +349,7 @@ simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
 		FPHandModel.Destroy();
 	Super.PlayDying(DamageType,HitLoc);
 }
+
 exec function TestFPOffset(vector V)
 {
 	FPHandOffset = V;

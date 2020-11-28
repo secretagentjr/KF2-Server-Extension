@@ -8,6 +8,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	if (H!=None)
 		H.RegCount = Default.RegenValues[Level-1];
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ArmorRegHelp H;

@@ -10,6 +10,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	if (M!=None)
 		M.MaxCarryBlocks = M.Default.MaxCarryBlocks+Default.CarryAdds[Level-1];
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local KFInventoryManager M;

@@ -184,6 +184,7 @@ final function PlayHitSound(bool bPlayer)
 			HitSoundIndex[1] = 0;
 	}
 }
+
 final function PlayerScored(bool bPlayer)
 {
 	++NumPlays;

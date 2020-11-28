@@ -93,6 +93,7 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 	}
 	return Super.Died(Killer, DamageType, HitLocation);
 }
+
 simulated function BroadcastDeathMessage(Controller Killer);
 
 function SetBatteryRate(float Rate)
@@ -101,6 +102,7 @@ function SetBatteryRate(float Rate)
 	NVGBatteryDrainRate = Default.NVGBatteryDrainRate*Rate;
 	ClientSetBatteryRate(Rate);
 }
+
 simulated reliable client function ClientSetBatteryRate(float Rate)
 {
 	BatteryDrainRate = Default.BatteryDrainRate*Rate;
@@ -257,6 +259,7 @@ function PlayHit(float Damage, Controller InstigatedBy, vector HitLocation, clas
 	}
 	Super.PlayHit(Damage,InstigatedBy,HitLocation,damageType,Momentum,HitInfo);
 }
+
 event Landed(vector HitNormal, actor FloorActor)
 {
 	local float ExcessSpeed;
@@ -313,6 +316,7 @@ function bool DoJump(bool bUpdating)
 	}
 	return false;
 }
+
 simulated function ResetBHopAccel(optional bool bSkipRep) // Set on Landed, or Tick if falling 2D speed is too low.
 {
 	if (BHopAccelSpeed>0)
@@ -325,6 +329,7 @@ simulated function ResetBHopAccel(optional bool bSkipRep) // Set on Landed, or T
 			NotifyHasStopped();
 	}
 }
+
 function UpdateGroundSpeed()
 {
 	local KFInventoryManager InvM;
@@ -384,10 +389,12 @@ function DelayedRagdoll()
 {
 	SetFeignDeath(2.f+FRand()*3.f);
 }
+
 exec function FeignDeath(float Time)
 {
 	SetFeignDeath(Time);
 }
+
 function SetFeignDeath(float Time)
 {
 	if (WorldInfo.NetMode!=NM_Client && !bFeigningDeath && Health>0 && bCanBecomeRagdoll && NoRagdollChance<1.f && (NoRagdollChance==0.f || FRand()>NoRagdollChance))
@@ -397,6 +404,7 @@ function SetFeignDeath(float Time)
 		SetTimer(Time,false,'UnsetFeignDeath');
 	}
 }
+
 function UnsetFeignDeath()
 {
 	if (bFeigningDeath)
@@ -560,6 +568,7 @@ simulated function PlayFeignDeath(bool bEnable, optional bool bForce, optional b
 		SetRotation(NewRotation);
 	}
 }
+
 final function vector PickNearestNode()
 {
 	local NavigationPoint N,Best;
@@ -576,6 +585,7 @@ final function vector PickNearestNode()
 	}
 	return (Best!=None ? Best.Location : Location);
 }
+
 simulated function bool SetFeignEndLocation(vector HitLocation, vector FeignLocation)
 {
 	local vector NewDest;
@@ -607,6 +617,7 @@ simulated function bool SetFeignEndLocation(vector HitLocation, vector FeignLoca
 
 	return false;
 }
+
 simulated function bool CheckValidLocation(vector FeignLocation)
 {
 	local vector HitLocation, HitNormal, DestFinalZ;
@@ -627,6 +638,7 @@ simulated function bool CheckValidLocation(vector FeignLocation)
 	}
 	return false;
 }
+
 simulated function SetPawnRBChannels(bool bRagdollMode)
 {
 	if (bRagdollMode)
@@ -649,6 +661,7 @@ simulated function SetPawnRBChannels(bool bRagdollMode)
 		Mesh.SetRBCollidesWithChannel(RBCC_BlockingVolume,FALSE);
 	}
 }
+
 simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 {
 	local TraceHitInfo HitInfo;
@@ -693,6 +706,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 		}
 	}
 }
+
 simulated function StartFeignDeathRecoveryAnim()
 {
 	if (FPBodyMesh!=None && !bFPLegsAttached && bOnFirstPerson && Class'ExtPlayerController'.Default.bShowFPLegs)
@@ -740,6 +754,7 @@ simulated event FellOutOfWorld(class<DamageType> dmgType)
 	if (Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds) // Make sure to not to spam deathmessages while ghosting.
 		Super.FellOutOfWorld(dmgType);
 }
+
 simulated event OutsideWorldBounds()
 {
 	if (Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds)

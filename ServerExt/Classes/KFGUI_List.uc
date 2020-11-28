@@ -107,6 +107,7 @@ function PreDraw()
 		}
 	}
 }
+
 function UpdateListVis()
 {
 	if (ListCount<=ListItemsPerPage)
@@ -120,6 +121,7 @@ function UpdateListVis()
 		ScrollBar.SetDisabled(false);
 	}
 }
+
 function ChangeListSize(int NewSize)
 {
 	if (ListCount==NewSize)
@@ -127,6 +129,7 @@ function ChangeListSize(int NewSize)
 	ListCount = NewSize;
 	UpdateListVis();
 }
+
 final function int GetListSize()
 {
 	return ListCount;
@@ -142,6 +145,7 @@ function DoubleMouseClick(bool bRight)
 		OnDblClickedItem(FocusMouseItem,bRight,Owner.MousePosition.X-CompPos[0],MouseYHit);
 	}
 }
+
 function MouseClick(bool bRight)
 {
 	if (!bDisabled && bClickable)
@@ -150,6 +154,7 @@ function MouseClick(bool bRight)
 		bPressedDown = true;
 	}
 }
+
 function MouseRelease(bool bRight)
 {
 	if (!bDisabled && bClickable && PressedDown[byte(bRight)]==1)
@@ -160,6 +165,7 @@ function MouseRelease(bool bRight)
 		OnClickedItem(FocusMouseItem,bRight,Owner.MousePosition.X-CompPos[0],MouseYHit);
 	}
 }
+
 function MouseLeave()
 {
 	Super.MouseLeave();
@@ -169,6 +175,7 @@ function MouseLeave()
 	PressedDown[1] = 0;
 	bPressedDown = false;
 }
+
 function MouseEnter()
 {
 	Super.MouseEnter();

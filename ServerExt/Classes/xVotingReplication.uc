@@ -72,6 +72,7 @@ reliable server function ServerNotifyReady()
 {
 	bClientConnected = true;
 }
+
 unreliable client simulated function ClientVerify()
 {
 	SetOwner(GetPlayer());
@@ -84,6 +85,7 @@ simulated final function PlayerController GetPlayer()
 		PlayerOwner = GetALocalPlayerController();
 	return PlayerOwner;
 }
+
 reliable client simulated function ClientReceiveGame(int Index, string GameName, string GameSName, string Prefix)
 {
 	if (GameModes.Length<=Index)
@@ -93,6 +95,7 @@ reliable client simulated function ClientReceiveGame(int Index, string GameName,
 	GameModes[Index].Prefix = Prefix;
 	bListDirty = true;
 }
+
 reliable client simulated function ClientReceiveMap(int Index, string MapName, int UpVote, int DownVote, int Sequence, int NumPlays, optional string MapTitle)
 {
 	if (Maps.Length<=Index)
@@ -105,6 +108,7 @@ reliable client simulated function ClientReceiveMap(int Index, string MapName, i
 	Maps[Index].NumPlays = NumPlays;
 	bListDirty = true;
 }
+
 reliable client simulated function ClientReceiveVote(int GameIndex, int MapIndex, int VoteCount)
 {
 	local int i;
@@ -126,6 +130,7 @@ reliable client simulated function ClientReceiveVote(int GameIndex, int MapIndex
 	ActiveVotes[i].NumVotes = VoteCount;
 	bListDirty = true;
 }
+
 reliable client simulated function ClientReady(int CurGame)
 {
 	ClientCurrentGame = CurGame;
@@ -138,6 +143,7 @@ simulated final function MapVoteMsg(string S)
 	if (S!="")
 		GetPlayer().ClientMessage(ClientMapVoteMsg$" "$S);
 }
+
 reliable client simulated function ClientNotifyVote(PlayerReplicationInfo PRI, int GameIndex, int MapIndex)
 {
 	if (bAllReceived)
@@ -158,6 +164,7 @@ reliable client simulated function ClientNotifyVoteTime(int Time)
 	else if (Time==120)
 		MapVoteMsg(TwoMinRemainMsg);
 }
+
 reliable client simulated function ClientNotifyVoteWin(int GameIndex, int MapIndex, bool bAdminForce)
 {
 	Class'KF2GUIController'.Static.GetGUIController(GetPlayer()).CloseMenu(None,true);
@@ -171,6 +178,7 @@ reliable client simulated function ClientNotifyVoteWin(int GameIndex, int MapInd
 		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") "$KnownMapSwitchMsg);
 	else MapVoteMsg(UnknownMapSwitchMsg);
 }
+
 reliable client simulated function ClientOpenMapvote(optional bool bShowRank)
 {
 	local xUI_MapRank R;
@@ -189,6 +197,7 @@ reliable client simulated function ClientOpenMapvote(optional bool bShowRank)
 			KFGameReplicationInfo(WorldInfo.GRI).ProcessChanceDrop();
 	}
 }
+
 simulated function DelayedOpenMapvote()
 {
 	local xUI_MapVote U;
@@ -205,6 +214,7 @@ reliable server simulated function ServerCastVote(int GameIndex, int MapIndex, b
 		VoteHandler.ClientCastVote(Self,GameIndex,MapIndex,bAdminForce);
 	}
 }
+
 reliable server simulated function ServerRankMap(bool bUp)
 {
 	if (!bClientRanked)

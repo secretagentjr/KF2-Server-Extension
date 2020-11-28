@@ -6,6 +6,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 		return false;
 	return Super.MeetsRequirements(Lvl,Perk);
 }
+
 static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	if (Level==1)
@@ -13,6 +14,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 	else if (Level==2)
 		Perk.GrenadeClass = Perk.SuperGrenade;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.GrenadeClass = Perk.Default.GrenadeClass;

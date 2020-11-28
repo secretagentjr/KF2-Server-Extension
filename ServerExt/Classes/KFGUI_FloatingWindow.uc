@@ -12,6 +12,7 @@ function InitMenu()
 	HeaderComp = new (Self) class'KFGUI_FloatingWindowHeader';
 	AddComponent(HeaderComp);
 }
+
 function DrawMenu()
 {
 	Owner.CurrentStyle.RenderFramedWindow(Self);
@@ -22,6 +23,7 @@ function DrawMenu()
 		HeaderComp.YSize = HeaderComp.CompPos[3] / CompPos[3]; // Keep header height fit the window height.
 	}
 }
+
 function SetWindowDrag(bool bDrag)
 {
 	bDragWindow = bDrag;
@@ -31,6 +33,7 @@ function SetWindowDrag(bool bDrag)
 		DragOffset[1] = Owner.MousePosition.Y-CompPos[1];
 	}
 }
+
 function bool CaptureMouse()
 {
 	if (bDragWindow && HeaderComp!=None) // Always keep focus on window frame now!
@@ -40,6 +43,7 @@ function bool CaptureMouse()
 	}
 	return Super.CaptureMouse();
 }
+
 function PreDraw()
 {
 	if (bDragWindow)

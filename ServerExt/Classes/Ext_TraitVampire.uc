@@ -6,6 +6,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Ext_PerkBerserker(Perk).VampRegenRate = Default.RegenRate[Level-1];
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkBerserker(Perk).VampRegenRate = 0;

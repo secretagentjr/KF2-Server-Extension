@@ -4,6 +4,7 @@ static function string GetUIInfo(Ext_PerkBase Perk)
 {
 	return Default.GroupInfo$" (MAX "$GetMaxLimit(Perk)$")";
 }
+
 static function string GetUIDesc()
 {
 	return Super.GetUIDesc()$"|To buy additional regen abilities:|-Prestige level 1 + Perk level 100 = MAX 2 traits|-Prestige level 5 + Perk level 150 = MAX 3 traits";

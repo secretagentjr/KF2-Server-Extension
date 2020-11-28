@@ -87,6 +87,7 @@ function ShowMenu()
 			PlayerContext.ItemRows[4+i].Text = PC.AdminCommands[i].Info;
 	}
 }
+
 function CloseMenu()
 {
 	Owner.bAbsorbInput = true;
@@ -107,6 +108,7 @@ function bool InOrder(PlayerReplicationInfo A, PlayerReplicationInfo B)
 		return (A.Score<B.Score);
 	return (A.PlayerName<B.PlayerName);
 }
+
 function DrawMenu()
 {
 	local PlayerController PC;
@@ -308,6 +310,7 @@ final function DrawCenteredText(string S, float X, float Y, optional float Scale
 	Canvas.SetPos(X-(XL*Scale*0.5),Y);
 	Canvas.DrawText(S,,Scale,Scale);
 }
+
 static final function string FormatTimeSM(float Sec)
 {
 	local int Seconds,Minutes;
@@ -507,6 +510,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		else DrawCenteredText(string(PRI.PlayerHealth),6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
 	}
 }
+
 function ClickedPlayer(int Index, bool bRight, int MouseX, int MouseY)
 {
 	local PlayerController PC;
@@ -537,10 +541,12 @@ function ClickedPlayer(int Index, bool bRight, int MouseX, int MouseY)
 
 	PlayerContext.OpenMenu(Self);
 }
+
 function HidRightClickMenu(KFGUI_RightClickMenu M)
 {
 	bHasSelectedPlayer = false;
 }
+
 function SelectedRCItem(int Index)
 {
 	local PlayerController PC;

@@ -214,6 +214,7 @@ simulated function PostBeginPlay()
 		}
 	}
 }
+
 simulated function InitPerk()
 {
 	if (PlayerOwner==None)
@@ -227,6 +228,7 @@ simulated function InitPerk()
 		}
 	}
 }
+
 simulated function Destroyed()
 {
 	local int i;
@@ -291,6 +293,7 @@ reliable client simulated function ClientReceiveStat(int Index, int MaxValue, in
 		else PerkStats[Index].UIName = string(Type); // Fallback to stat name then...
 	}
 }
+
 reliable client simulated function ClientSetStatValue(int Index, int NewValue)
 {
 	if (PerkStats.Length<=Index)
@@ -299,6 +302,7 @@ reliable client simulated function ClientSetStatValue(int Index, int NewValue)
 	if (bPerkNetReady)
 		ApplyEffects();
 }
+
 reliable client simulated function ClientReceiveTrait(int Index, class<Ext_TraitBase> TC, byte Lvl)
 {
 	if (PerkTraits.Length<=Index)
@@ -306,11 +310,13 @@ reliable client simulated function ClientReceiveTrait(int Index, class<Ext_Trait
 	PerkTraits[Index].TraitType = TC;
 	PerkTraits[Index].CurrentLevel = Lvl;
 }
+
 reliable client simulated function ClientReceiveTraitData(int Index, string Data)
 {
 	if (WorldInfo.NetMode==NM_Client)
 		PerkTraits[Index].TraitType.Static.ClientSetRepData(Data);
 }
+
 reliable client simulated function ClientReceiveTraitLvl(int Index, byte NewLevel)
 {
 	PerkTraits[Index].CurrentLevel = NewLevel;
@@ -324,6 +330,7 @@ final function SetPerkStat(name Type, int Value)
 	if (i>=0)
 		PerkStats[i].CurrentValue = Value;
 }
+
 final function int GetPerkStat(name Type)
 {
 	local int i;
@@ -652,6 +659,7 @@ static function CheckConfig()
 			T.Static.CheckConfig();
 	}
 }
+
 static function UpdateConfigs(int OldVer)
 {
 	local int i,j;
@@ -716,6 +724,7 @@ static function UpdateConfigs(int OldVer)
 			Default.TraitClasses[i] = PathName(Default.DefTraitList[i]);
 	}
 }
+
 static final function AddStatsCfg(int StartRange)
 {
 	local int i,j;
@@ -750,6 +759,7 @@ static function InitWebAdmin(ExtWebAdmin_UI UI)
 		T.Static.InitWebAdmin(UI);
 	}
 }
+
 static function string GetValue(name PropName, int ElementIndex)
 {
 	switch (PropName)
@@ -782,6 +792,7 @@ static function string GetValue(name PropName, int ElementIndex)
 		return string(Default.PrestigeXPReduce);
 	}
 }
+
 static function ApplyValue(name PropName, int ElementIndex, string Value)
 {
 	switch (PropName)
@@ -833,6 +844,7 @@ static function ApplyValue(name PropName, int ElementIndex, string Value)
 	}
 	StaticSaveConfig();
 }
+
 static final function FPerkStat ParsePerkStatStr(string S)
 {
 	local FPerkStat Res;
@@ -959,6 +971,7 @@ simulated unreliable client function ClientAuth()
 		SetOwner(PlayerOwner);
 	ServerAck();
 }
+
 unreliable server function ServerAck()
 {
 	if (!bClientAuthorized)
@@ -969,6 +982,7 @@ unreliable server function ServerAck()
 		SetTimer(0.01+FRand()*0.025,true,'ReplicateTimer');
 	}
 }
+
 function ReplicateTimer()
 {
 	switch (RepState)
@@ -1001,11 +1015,13 @@ function ReplicateTimer()
 		ClientIsReady(); // Notify client were ready.
 	}
 }
+
 simulated reliable client function ClientIsReady()
 {
 	bPerkNetReady = true;
 	ApplyEffects();
 }
+
 simulated function string GetStatUIStr(int iStat)
 {
 	local string S;
@@ -1081,6 +1097,7 @@ final function UnloadStats(optional byte Mode)
 		}
 	}
 }
+
 function FullReset(optional bool bNotPrestige)
 {
 	UnloadStats();
@@ -1236,6 +1253,7 @@ simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCaus
 	else if (DamageType==None || DamageType.Name!='KFDT_SuicideExplosive')
 		InDamage *= Modifiers[12];
 }
+
 simulated function ModifyDamageTaken(out int InDamage, optional class<DamageType> DamageType, optional Controller InstigatedBy)
 {
 	if (InDamage>0)
@@ -1252,36 +1270,44 @@ simulated function ModifyDamageTaken(out int InDamage, optional class<DamageType
 			InDamage = Max(InDamage*Modifiers[18],1);
 	}
 }
+
 simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 {
 	if (IsWeaponOnPerk(KFW))
 		CurrentRecoilModifier *= Modifiers[2];
 }
+
 simulated function ModifySpread(out float InSpread)
 {
 	InSpread *= Modifiers[3];
 }
+
 simulated function ModifyRateOfFire(out float InRate, KFWeapon KFW)
 {
 	if (IsWeaponOnPerk(KFW))
 		InRate *= Modifiers[4];
 }
+
 simulated function float GetReloadRateScale(KFWeapon KFW)
 {
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5] : 1.f);
 }
+
 function ModifyHealth(out int InHealth)
 {
 	InHealth *= Modifiers[6];
 }
+
 function ModifyArmor(out byte MaxArmor)
 {
 	MaxArmor = Min(MaxArmor+Modifiers[14],255);
 }
+
 function float GetKnockdownPowerModifier()
 {
 	return Modifiers[7];
 }
+
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
 {
 	return Modifiers[7];
@@ -1316,21 +1342,25 @@ function bool RepairArmor(Pawn HealTarget)
 {
 	return false;
 }
+
 function bool ModifyHealAmount(out float HealAmount)
 {
 	HealAmount*=Modifiers[9];
 	return false;
 }
+
 simulated function ModifyMagSizeAndNumber(KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname)
 {
 	if (MagazineCapacity>2 && (KFW==None ? WeaponPerkClass.Find(BasePerk)>=0 : IsWeaponOnPerk(KFW))) // Skip boomstick for this.
 		MagazineCapacity = Min(MagazineCapacity*Modifiers[10],255);
 }
+
 simulated function ModifySpareAmmoAmount(KFWeapon KFW, out int PrimarySpareAmmo, optional const out STraderItem TraderItem, optional bool bSecondary)
 {
 	if (KFW==None ? TraderItem.AssociatedPerkClasses.Find(BasePerk)>=0 : IsWeaponOnPerk(KFW))
 		PrimarySpareAmmo*=Modifiers[11];
 }
+
 simulated function bool ShouldMagSizeModifySpareAmmo(KFWeapon KFW, optional Class<KFPerk> WeaponPerkClass)
 {
 	return (KFW==None ? WeaponPerkClass==BasePerk : IsWeaponOnPerk(KFW));

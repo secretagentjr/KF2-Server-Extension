@@ -47,6 +47,7 @@ function bool RepairArmor(Pawn HealTarget)
 	}
 	return false;
 }
+
 function bool ModifyHealAmount(out float HealAmount)
 {
 	HealAmount*=Modifiers[9];
@@ -128,50 +129,62 @@ simulated function bool GetHealingSpeedBoostActive()
 {
 	return bHealingBoost;
 }
+
 simulated function byte GetHealingSpeedBoost()
 {
 	return byte(HealingSpeedBoostPct);
 }
+
 simulated function byte GetMaxHealingSpeedBoost()
 {
 	return MaxHealingSpeedBoost;
 }
+
 simulated function float GetHealingSpeedBoostDuration()
 {
 	return HealingSpeedBoostDuration;
 }
+
 simulated function bool GetHealingDamageBoostActive()
 {
 	return bHealingDamageBoost;
 }
+
 simulated function byte GetHealingDamageBoost()
 {
 	return byte(HealingDamageBoostPct);
 }
+
 simulated function byte GetMaxHealingDamageBoost()
 {
 	return MaxHealingDamageBoost;
 }
+
 simulated function float GetHealingDamageBoostDuration()
 {
 	return HealingDamageBoostDuration;
 }
+
 simulated function bool GetHealingShieldActive()
 {
 	return bHealingShield;
 }
+
 simulated function byte GetHealingShield()
 {
 	return byte(HealingShieldPct);
 }
+
 simulated function byte GetMaxHealingShield()
 {
 	return MaxHealingShield;
 }
+
 simulated function float GetHealingShieldDuration()
 {
 	return HealingShieldDuration;
 }
+
 simulated function float GetSelfHealingSurgePct()
 { 
 	return SelfHealingSurgePct; 

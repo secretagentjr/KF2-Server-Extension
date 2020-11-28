@@ -68,15 +68,18 @@ function InitMenu()
 	
 	WindowTitle=Title;
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();
 	RepInfo = None;
 }
+
 function InitMapvote(xVotingReplication R)
 {
 	RepInfo = R;
 }
+
 function DrawMenu()
 {
 	Super.DrawMenu();
@@ -129,6 +132,7 @@ final function UpdateList()
 	// Keep same row selected if possible.
 	CurrentVotes.SelectedRowIndex = (SItem!=None ? SItem.Index : -1);
 }
+
 function ChangeToMaplist(KFGUI_ComboBox Sender)
 {
 	local int i,g;
@@ -157,6 +161,7 @@ function ChangeToMaplist(KFGUI_ComboBox Sender)
 		}
 	}
 }
+
 static final function bool BelongsToPrefix(string MN, string Prefix)
 {
 	return (Prefix=="" || Left(MN,Len(Prefix))~=Prefix);
@@ -183,6 +188,7 @@ function ClickedRow(int RowNum)
 		RepInfo.ServerCastVote(GameModeCombo.SelectedIndex,SelectedMapIndex,true);
 	}
 }
+
 function SelectedVoteRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
 	if (bRight)

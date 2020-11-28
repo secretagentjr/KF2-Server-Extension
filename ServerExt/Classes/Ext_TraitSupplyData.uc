@@ -16,6 +16,7 @@ final function SpawnSupplier(KFPawn_Human H, optional bool bGrenades)
 	if (PlayerOwner!=None && ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo)!=None)
 		ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo).HasSupplier = class<Ext_TraitSupply>(TraitClass);
 }
+
 final function RemoveSupplier()
 {
 	if (SupplyInteraction!=None)
@@ -24,6 +25,7 @@ final function RemoveSupplier()
 	if (PlayerOwner!=None && ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo)!=None)
 		ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo).HasSupplier = None;
 }
+
 function Destroyed()
 {
 	RemoveSupplier();

@@ -132,6 +132,7 @@ function MouseClick(bool bRight)
 		}
 	}
 }
+
 function MouseRelease(bool bRight)
 {
 	if (bScaleColumn && !bRight)
@@ -155,12 +156,14 @@ function MouseRelease(bool bRight)
 		}
 	}
 }
+
 function byte GetCursorStyle()
 {
 	if (bClickable)
 		return (bMouseScaler ? 2 : 1);
 	return 0;
 }
+
 function MouseLeave()
 {
 	Super.MouseLeave();
@@ -171,6 +174,7 @@ function MouseLeave()
 		bPressedDown = false;
 	}
 }
+
 function MouseEnter()
 {
 	Super.MouseEnter();

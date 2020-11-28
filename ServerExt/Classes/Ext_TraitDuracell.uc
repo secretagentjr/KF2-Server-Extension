@@ -7,6 +7,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	if (ExtHumanPawn(Player)!=None)
 		ExtHumanPawn(Player).SetBatteryRate(Default.BatteryCharges[Level-1]);
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	if (ExtHumanPawn(Player)!=None)

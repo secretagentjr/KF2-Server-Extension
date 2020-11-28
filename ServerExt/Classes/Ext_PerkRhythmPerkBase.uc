@@ -15,6 +15,7 @@ final function SetMaxRhythm(byte MaxCombo)
 {
 	MaxRhythmCombo = MaxCombo;
 }
+
 final function ResetRhythm()
 {
 	MaxRhythmCombo = 0;
@@ -66,6 +67,7 @@ function UpdatePerkHeadShots(ImpactInfo Impact, class<DamageType> DamageType, in
 			UpdateDmgScale(true);
 	}
 }
+
 reliable client function HeadShotMessage(byte HeadShotNum, bool bMissed, byte MaxHits)
 {
 	local AkEvent TempAkEvent;

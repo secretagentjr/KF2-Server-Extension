@@ -11,6 +11,7 @@ function PostBeginPlay()
 		Destroy();
 	else SetTimer(0.5+FRand()*0.1,true);
 }
+
 function Timer()
 {
 	local KFPawn_Monster M;

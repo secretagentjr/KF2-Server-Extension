@@ -26,6 +26,7 @@ function InitStyle()
 			DrawFonts[i] = class'Engine'.Static.GetMediumFont();
 	}
 }
+
 function RenderFramedWindow(KFGUI_FloatingWindow P)
 {
 	local int XS,YS,CornerSlope,TitleHeight;
@@ -83,6 +84,7 @@ function RenderFramedWindow(KFGUI_FloatingWindow P)
 		DrawText(DefaultFontSize,P.WindowTitle);
 	}
 }
+
 function RenderWindow(KFGUI_Page P)
 {
 	local int XS,YS,CornerSlope;
@@ -112,6 +114,7 @@ function RenderWindow(KFGUI_Page P)
 	Canvas.SetPos(XS-CornerSlope,CornerSlope);
 	DrawWhiteBox(CornerSlope,YS-(CornerSlope*2));
 }
+
 function RenderToolTip(KFGUI_Tooltip TT)
 {
 	local int i;
@@ -168,6 +171,7 @@ function RenderToolTip(KFGUI_Tooltip TT)
 		Y+=DefaultHeight;
 	}
 }
+
 function RenderButton(KFGUI_Button B)
 {
 	local float XL,YL,TS;
@@ -217,6 +221,7 @@ function RenderButton(KFGUI_Button B)
 		Canvas.DrawText(B.ButtonText,,TS,TS,B.TextFontInfo);
 	}
 }
+
 function RenderEditBox(KFGUI_EditBox E)
 {
 	local color C;
@@ -249,6 +254,7 @@ function RenderEditBox(KFGUI_EditBox E)
 	Canvas.DrawColor = C;
 	DrawWhiteBox(E.CompPos[2]-6,E.CompPos[3]-6);
 }
+
 function RenderScrollBar(KFGUI_ScrollBarBase S)
 {
 	local float A;
@@ -303,6 +309,7 @@ function RenderScrollBar(KFGUI_ScrollBarBase S)
 		DrawWhiteBox(S.SliderScale,S.CompPos[3]);
 	}
 }
+
 function RenderColumnHeader(KFGUI_ColumnTop C, float XPos, float Width, int Index, bool bFocus, bool bSort)
 {
 	local int XS;
@@ -329,6 +336,7 @@ function RenderColumnHeader(KFGUI_ColumnTop C, float XPos, float Width, int Inde
 	Canvas.SetPos(XPos+XS,(C.CompPos[3]-C.ListOwner.TextHeight)*0.5f);
 	C.ListOwner.DrawStrClipped(C.ListOwner.Columns[Index].Text);
 }
+
 function RenderCheckbox(KFGUI_CheckBox C)
 {
 	if (C.bDisabled)
@@ -351,6 +359,7 @@ function RenderCheckbox(KFGUI_CheckBox C)
 		Canvas.DrawTile(LoadedTex[1],C.CompPos[2],C.CompPos[3],0,0,LoadedTex[1].GetSurfaceWidth(),LoadedTex[1].GetSurfaceHeight());
 	}
 }
+
 function RenderComboBox(KFGUI_ComboBox C)
 {
 	if (C.bDisabled)
@@ -375,6 +384,7 @@ function RenderComboBox(KFGUI_ComboBox C)
 		Canvas.PopMaskRegion();
 	}
 }
+
 function RenderComboList(KFGUI_ComboSelector C)
 {
 	local float X,Y,YL,YP,Edge;
@@ -430,6 +440,7 @@ function RenderComboList(KFGUI_ComboSelector C)
 		C.PlayMenuSound(MN_DropdownChange);
 	}
 }
+
 function RenderRightClickMenu(KFGUI_RightClickMenu C)
 {
 	local float X,Y,YP,Edge,TextScale;

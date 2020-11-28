@@ -31,6 +31,7 @@ final function vector PickPointNearOwner()
 	OwnerPawn = None;
 	return V;
 }
+
 final function bool CanSeeOwner()
 {
 	local Pawn P;

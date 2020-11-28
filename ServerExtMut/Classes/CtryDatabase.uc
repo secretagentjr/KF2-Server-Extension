@@ -26,6 +26,7 @@ static final function string GetClientCountryStr(string IP)
 
 	return GetClientCountryTag(i);
 }
+
 static final function string GetClientCountryTag(int IP)
 {
 	local byte V;

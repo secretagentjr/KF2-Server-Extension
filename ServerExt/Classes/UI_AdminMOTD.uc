@@ -32,6 +32,7 @@ function InitMenu()
 		
 	Timer();
 }
+
 function Timer()
 {
 	if (!ExtPlayerController(GetPlayer()).bMOTDReceived)
@@ -42,6 +43,7 @@ function Timer()
 		MOTDEdited(EditField);
 	}
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	local string S;
@@ -63,6 +65,7 @@ function ButtonClicked(KFGUI_Button Sender)
 		break;
 	}
 }
+
 function MOTDEdited(KFGUI_EditBox Sender)
 {
 	NewsField.SetText(MotdPreviewText$"|"$Sender.Value);

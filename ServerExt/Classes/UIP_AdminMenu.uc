@@ -107,6 +107,7 @@ function SelectedRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 		PlayerContext.OpenMenu(Self);
 	}
 }
+
 function SelectedRCItem(int Index)
 {
 	if (Index>0 && !PlayerContext.ItemRows[Index].bSplitter)
@@ -116,6 +117,7 @@ function SelectedRCItem(int Index)
 		else UI_AdminPerkLevel(Owner.OpenMenu(class'UI_AdminPerkLevel')).InitPage(SelectedID,-PlayerContext.ItemRows[Index].Value);
 	}
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)

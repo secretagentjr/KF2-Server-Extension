@@ -40,6 +40,7 @@ final function Cleanup()
 {
 	ConfigList.Length = 0;
 }
+
 final function AddSettingsPage(string PageName, class<Object> Obj, const out array<FWebAdminConfigInfo> Configs, delegate<OnGetValue> GetFunc, delegate<OnSetValue> SetFunc)
 {
 	local int i;
@@ -56,6 +57,7 @@ final function AddSettingsPage(string PageName, class<Object> Obj, const out arr
 	ConfigList[i].GetValue = GetFunc;
 	ConfigList[i].SetValue = SetFunc;
 }
+
 final function bool HasConfigfor (class<Object> Obj)
 {
 	return (ConfigList.Find('ObjClass',Obj)>=0);

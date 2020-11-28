@@ -21,6 +21,7 @@ function InitializeMenu(KFGFxMoviePlayer_Manager InManager)
 	InitCharacterMenu();
 	// TraderItems = KFGameReplicationInfo(GetPC().WorldInfo.GRI).TraderItems;
 }
+
 function InitCharacterMenu()
 {
 	ExtPRI = ExtPlayerReplicationInfo(GetPC().PlayerReplicationInfo);
@@ -211,6 +212,7 @@ final function string GetMenuName(Object Obj)
 {
 	return Obj==None ? "Empty" : Repl(string(Obj.Name),"_"," ");
 }
+
 final function string GetMenuNameStr(string ObjName)
 {
 	local int i;

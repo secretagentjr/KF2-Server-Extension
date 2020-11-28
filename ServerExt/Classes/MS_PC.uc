@@ -101,6 +101,7 @@ exec function SelectNextWeapon()
 {
 	MS_HUD(myHUD).ActiveGame.AdjustSensitivity(true);
 }
+
 exec function SelectPrevWeapon()
 {
 	MS_HUD(myHUD).ActiveGame.AdjustSensitivity(false);

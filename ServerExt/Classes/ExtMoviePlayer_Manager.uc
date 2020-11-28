@@ -24,6 +24,7 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 		return Super.WidgetInitialized(WidgetName,WidgetPath,Widget);
 	}
 }
+
 function LaunchMenus(optional bool bForceSkipLobby)
 {
 	local GFxWidgetBinding WidgetBinding;

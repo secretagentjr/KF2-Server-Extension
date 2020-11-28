@@ -51,6 +51,7 @@ final function InitPage(int UserID, byte Mode)
 	LevelBox.ChangeValue(string(Mode==1 ? ExtPlayerReplicationInfo(PRI).ECurrentPerkLevel : ExtPlayerReplicationInfo(PRI).ECurrentPerkPrestige));
 	BaseValue = (Mode==1 ? 100 : 100000);
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)

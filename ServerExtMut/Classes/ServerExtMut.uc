@@ -424,6 +424,7 @@ static final function string GetStatFile(const out UniqueNetId UID)
 {
 	return Repl(Default.StatFileDir,"%s","U_"$class'OnlineSubsystem'.Static.UniqueNetIdToString(UID));
 }
+
 final function bool IsDev(const out UniqueNetId UID)
 {
 	local int i;
@@ -433,6 +434,7 @@ final function bool IsDev(const out UniqueNetId UID)
 			return true;
 	return false;
 }
+
 function InitGRIList()
 {
 	local ExtPlayerController PC;
@@ -447,6 +449,7 @@ function InitGRIList()
 				PC.PurchaseHelper.TraderItems = CustomTrader;
 	}
 }
+
 function CheckWave()
 {
 	if (KF==None)
@@ -466,6 +469,7 @@ function CheckWave()
 		bGameHasEnded = true;
 	}
 }
+
 function NotifyWaveChange()
 {
 	local ExtPlayerController ExtPC;
@@ -497,6 +501,7 @@ function NotifyWaveChange()
 			KFBolt.Destroy();
 	}
 }
+
 function SetupWebAdmin()
 {
 	local WebServer W;
@@ -520,6 +525,7 @@ function SetupWebAdmin()
 	}
 	else `Log("ExtWebAdmin ERROR: No WebServer object found!");
 }
+
 function SetMaxPlayers()
 {
 	local OnlineGameSettings GameSettings;
@@ -533,6 +539,7 @@ function SetMaxPlayers()
 			GameSettings.NumPublicConnections = ForcedMaxPlayers;
 	}
 }
+
 function AddMutator(Mutator M)
 {
 	if (M!=Self) // Make sure we don't get added twice.
@@ -662,6 +669,7 @@ function ScoreKill(Controller Killer, Controller Killed)
 	else
 		Super.ScoreKill(Killer, Killed);
 }
+
 function bool PreventDeath(Pawn Killed, Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
 	if ((KFPawn_Human(Killed)!=None && CheckPreventDeath(KFPawn_Human(Killed),Killer,damageType)) || Super.PreventDeath(Killed,Killer,damageType,HitLocation))
@@ -705,6 +713,7 @@ final function GT_PlayerKilled(Controller Killer, Controller Killed, class<Damag
 		//	KFG.CheckForBerserkerSmallRadiusKill(MonsterPawn, KFPC);
 	}
 }
+
 final function bool CheckPreventDeath(KFPawn_Human Victim, Controller Killer, class<DamageType> damageType)
 {
 	local ExtPlayerController E;
@@ -714,6 +723,7 @@ final function bool CheckPreventDeath(KFPawn_Human Victim, Controller Killer, cl
 	E = ExtPlayerController(Victim.Controller);
 	return (E!=None && E.ActivePerkManager!=None && E.ActivePerkManager.CurrentPerk!=None && E.ActivePerkManager.CurrentPerk.PreventDeath(Victim,Killer,damageType));
 }
+
 final function BroadcastKillMessage(Pawn Killed, Controller Killer)
 {
 	local ExtPlayerController E;
@@ -730,6 +740,7 @@ final function BroadcastKillMessage(Pawn Killed, Controller Killer)
 	else if (ExtPlayerController(Killer)!=None && !ExtPlayerController(Killer).bClientHideKillMsg)
 		ExtPlayerController(Killer).ReceiveKillMessage(Killed.Class);
 }
+
 final function BroadcastFFDeath(Controller Killer, Pawn Killed, class<DamageType> damageType)
 {
 	local ExtPlayerController E;
@@ -812,6 +823,7 @@ function NetDamage(int OriginalDamage, out int Damage, Pawn Injured, Controller 
 		}
 	}
 }
+
 final function CheckDamageDone()
 {
 	local int Damage;
@@ -829,6 +841,7 @@ final function CheckDamageDone()
 	}
 	LastDamageDealer = None;
 }
+
 final function HackSetHistory(KFPawn C, Pawn Injured, Controller Player, int Damage, vector HitLocation)
 {
 	local int i;
@@ -884,6 +897,7 @@ function NotifyLogout(Controller Exiting)
 	if (NextMutator != None)
 		NextMutator.NotifyLogout(Exiting);
 }
+
 function NotifyLogin(Controller NewPlayer)
 {
 	if (ExtPlayerController(NewPlayer)!=None)
@@ -906,6 +920,7 @@ function NotifyLogin(Controller NewPlayer)
 	if (NextMutator != None)
 		NextMutator.NotifyLogin(NewPlayer);
 }
+
 final function InitializePerks(ExtPlayerController Other)
 {
 	local ExtPerkManager PM;
@@ -939,6 +954,7 @@ final function InitializePerks(ExtPlayerController Other)
 	PM.ServerInitPerks();
 	PM.InitiateClientRep();
 }
+
 final function SendMOTD(ExtPlayerController PC)
 {
 	local string S;
@@ -955,6 +971,7 @@ final function SendMOTD(ExtPlayerController PC)
 	for (i=0; i<AdminCommands.Length; ++i)
 		PC.AddAdminCmd(AdminCommands[i]);
 }
+
 final function SavePlayerPerk(ExtPlayerController PC)
 {
 	if (PC.ActivePerkManager!=None && PC.ActivePerkManager.bStatsDirty)
@@ -984,6 +1001,7 @@ final function SavePlayerPerk(ExtPlayerController PC)
 			FileOutput.DumpXML(PC.ActivePerkManager);
 	}
 }
+
 function SaveAllPerks(optional bool bOnEndGame)
 {
 	local ExtPlayerController PC;
@@ -1019,6 +1037,7 @@ function CheckRespawn(Controller PC)
 	if (PendingSpawners.Find(PC)<0)
 		PendingSpawners.AddItem(PC);
 }
+
 function RemoveRespawn(Controller PC)
 {
 	ExtPlayerReplicationInfo(PC.PlayerReplicationInfo).RespawnCounter = -1;
@@ -1036,6 +1055,7 @@ final function InitPlayer(ExtHumanPawn Other)
 	Other.bRagdollFromMomentum = bRagdollFromMomentum;
 	Other.bRagdollFromBackhit = bRagdollFromBackhit;
 }
+
 function ModifyPlayer(Pawn Other)
 {
 	if (ExtHumanPawn(Other)!=None)
@@ -1095,6 +1115,7 @@ function Timer()
 		else PC.PlayerReplicationInfo.bForceNetUpdate = true;
 	}
 }
+
 final function SavePlayerInventory()
 {
 	local KFPawn_Human P;
@@ -1133,6 +1154,7 @@ final function SavePlayerInventory()
 			++i;
 		}
 }
+
 final function bool AddPlayerSpecificInv(Pawn Other)
 {
 	local int i,j;
@@ -1169,6 +1191,7 @@ final function bool AddPlayerSpecificInv(Pawn Other)
 		}
 	return false;
 }
+
 final function Pawn SpawnDefaultPawnfor (Controller NewPlayer, Actor StartSpot) // Clone of GameInfo one, but with Actor StartSpot.
 {
 	local class<Pawn> PlayerClass;
@@ -1180,6 +1203,7 @@ final function Pawn SpawnDefaultPawnfor (Controller NewPlayer, Actor StartSpot) 
 	ResultPawn = Spawn(PlayerClass,,,StartSpot.Location,R,,true);
 	return ResultPawn;
 }
+
 final function bool RespawnPlayer(Controller NewPlayer)
 {
 	local KFPlayerReplicationInfo KFPRI;
@@ -1325,6 +1349,7 @@ function PlayerBuyStats(ExtPlayerController PC, class<Ext_PerkBase> Perk, int iS
 	if (!P.IncrementStat(iStat,Amount))
 		PC.ClientMessage("Failed to buy stat.");
 }
+
 function PlayerChangePerk(ExtPlayerController PC, class<Ext_PerkBase> NewPerk)
 {
 	if (bGameHasEnded)
@@ -1354,6 +1379,7 @@ function PlayerChangePerk(ExtPlayerController PC, class<Ext_PerkBase> NewPerk)
 		PC.PendingPerkClass = NewPerk;
 	}
 }
+
 function CheckPerkChange(ExtPlayerController PC)
 {
 	if (PC.PendingPerkClass!=None)
@@ -1367,6 +1393,7 @@ function CheckPerkChange(ExtPlayerController PC)
 		PC.PendingPerkClass = None;
 	}
 }
+
 function Tick(float DeltaTime)
 {
 	local bool bCheckedWave;
@@ -1382,6 +1409,7 @@ function Tick(float DeltaTime)
 	else if (bCheckedWave)
 		bCheckedWave = false;
 }
+
 function PlayerBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass, class<Ext_TraitBase> Trait)
 {
 	local Ext_PerkBase P;
@@ -1426,6 +1454,7 @@ function PlayerBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass
 		}
 	}
 }
+
 function PlayerUnloadInfo(ExtPlayerController PC, byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload)
 {
 	local Ext_PerkBase P;
@@ -1516,6 +1545,7 @@ final function bool HasPrivs(ExtPlayerReplicationInfo P)
 {
 	return WorldInfo.NetMode==NM_StandAlone || (P!=None && P.ShowAdminName() && (P.AdminType<=1 || P.AdminType==255));
 }
+
 function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 {
 	local ExtPlayerController E;
@@ -1643,6 +1673,7 @@ function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 		PC.ClientMessage("Unknown admin action.",'Priority');
 	}
 }
+
 function AdminSetMOTD(ExtPlayerController PC, string S)
 {
 	if (!HasPrivs(ExtPlayerReplicationInfo(PC.PlayerReplicationInfo)))
@@ -1713,6 +1744,7 @@ function InitWebAdmin(ExtWebAdmin_UI UI)
 	for (i=0; i<LoadedPerks.Length; ++i)
 		LoadedPerks[i].Static.InitWebAdmin(UI);
 }
+
 function string WebAdminGetValue(name PropName, int ElementIndex)
 {
 	switch (PropName)
@@ -1779,6 +1811,7 @@ function string WebAdminGetValue(name PropName, int ElementIndex)
 		return (ElementIndex==-1 ? string(BonusGameFX.Length) : BonusGameFX[ElementIndex]);
 	}
 }
+
 final function UpdateArray(out array<string> Ar, int Index, const out string Value)
 {
 	if (Value=="#DELETE")
@@ -1790,6 +1823,7 @@ final function UpdateArray(out array<string> Ar, int Index, const out string Val
 		Ar[Index] = Value;
 	}
 }
+
 function WebAdminSetValue(name PropName, int ElementIndex, string Value)
 {
 	switch (PropName)

@@ -120,6 +120,7 @@ function KFGUI_ListItem AddLine(string Value, optional int iValue, optional stri
 	
 	return N;
 }
+
 final function RemoveLine(KFGUI_ListItem I)
 {
 	local KFGUI_ListItem N;
@@ -153,6 +154,7 @@ final function RemoveLine(KFGUI_ListItem I)
 
 	UpdateListSize();
 }
+
 final function EmptyList()
 {
 	local KFGUI_ListItem N,I;
@@ -403,11 +405,13 @@ function PreDraw()
 	CompPos[2] += SpaceX;
 	CompPos[3] += ColumnComp.CompPos[3];
 }
+
 function InternalClickedItem(int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
 	OnSelectedRow(GetFromIndex(Index),Index,bRight,false);
 }
+
 function InternalDblClickedItem(int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;

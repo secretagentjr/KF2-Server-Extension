@@ -188,6 +188,7 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 	}
 	return true;
 }
+
 final function PasteText()
 {
 	local string S;
@@ -207,6 +208,7 @@ final function PasteText()
 	else Value = Left(Value,TypePos) $ S $ Mid(Value,TypePos);
 	TypePos+=Len(S);
 }
+
 function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	if ((!bAllSelected && Len(Value)>=MaxTextLength) || (bHoldCtrl && (Unicode~="C" || Unicode~="X" || Unicode~="V")))

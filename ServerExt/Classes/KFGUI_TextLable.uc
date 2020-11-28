@@ -66,6 +66,7 @@ function InitSize()
 		InitOffset[1] = CompPos[3]-YL;
 	}
 }
+
 function SetText(string S)
 {
 	if (Text==S)
@@ -73,6 +74,7 @@ function SetText(string S)
 	Text = S;
 	OldSize[0] = -1; // Force to refresh.
 }
+
 final function string GetText()
 {
 	return Text;
@@ -92,6 +94,7 @@ function DrawMenu()
 	Canvas.DrawColor = TextColor;
 	Canvas.DrawText(Text,,InitFontScale,InitFontScale,TextFontInfo);
 }
+
 function bool CaptureMouse()
 {
 	return false;

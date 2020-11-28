@@ -66,6 +66,7 @@ simulated function PostBeginPlay()
 		SetTimer(0.1,true,'CheckPerk');
 	}
 }
+
 simulated function Destroyed()
 {
 	if (ActivePerkManager!=None)
@@ -74,6 +75,7 @@ simulated function Destroyed()
 	if (ActivePerkManager!=None)
 		ActivePerkManager.Destroy();
 }
+
 function CheckPerk()
 {
 	if (CurrentPerk!=ActivePerkManager)
@@ -105,21 +107,25 @@ reliable client function AddAdminCmd(string S)
 		AdminCommands[i].Info = Mid(S,j+1);
 	}
 }
+
 reliable client function ClientSetHUD(class<HUD> newHUDType)
 {
 	Super.ClientSetHUD(newHUDType);
 	SendServerSettings();
 }
+
 reliable client function ClientSetBonus(SoundCue C, Object FX)
 {
 	BonusMusic = C;
 	BonusFX = FX;
 }
+
 simulated final function SendServerSettings()
 {
 	if (LocalPlayer(Player)!=None)
 		ServerSetSettings(bHideKillMsg,bHideDamageMsg,bHideNumberMsg,bNoMonsterPlayer);
 }
+
 reliable server function ServerSetSettings(bool bHideKill, bool bHideDmg, bool bHideNum, bool bNoZ)
 {
 	bClientHideKillMsg = bHideKill;
@@ -128,6 +134,7 @@ reliable server function ServerSetSettings(bool bHideKill, bool bHideDmg, bool b
 	bNoDamageTracking = (bHideDmg && bHideNum);
 	bClientNoZed = bNoZ;
 }
+
 unreliable server function NotifyFixed(byte Mode)
 {
 	if (Mode==1 && (Pawn==None || (WorldInfo.TimeSeconds-Pawn.SpawnTime)<5.f))
@@ -136,6 +143,7 @@ unreliable server function NotifyFixed(byte Mode)
 	if (Default.bRenderModes && ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		ExtPlayerReplicationInfo(PlayerReplicationInfo).SetFixedData(Mode);
 }
+
 delegate OnClientFixed(ExtPlayerController PC, byte Mode);
 
 reliable client event ReceiveLocalizedMessage(class<LocalMessage> Message, optional int Switch, optional PlayerReplicationInfo RelatedPRI_1, optional PlayerReplicationInfo RelatedPRI_2, optional Object OptionalObject)
@@ -176,10 +184,12 @@ function AddSmallRadiusKill(byte Difficulty, class<KFPerk> PerkClass)
 {
 	AwardXP(class'KFPerk_Berserker'.static.GetSmallRadiusKillXP(Difficulty));
 }
+
 function AddWeldPoints(int PointsWelded)
 {
 	AwardXP(PointsWelded,1);
 }
+
 function AddHealPoints(int PointsHealed)
 {
 	AwardXP(PointsHealed,2);
@@ -253,6 +263,7 @@ reliable client function ReceiveServerMOTD(string S, bool bFinal)
 	ServerMOTD $= S;
 	bMOTDReceived = bFinal;
 }
+
 reliable server function ServerSetMOTD(string S, bool bFinal)
 {
 	PendingMOTD $= S;
@@ -277,6 +288,7 @@ reliable client function ReceiveLevelUp(Ext_PerkBase Perk, int NewLevel)
 	if (Perk!=None)
 		MyGFxHUD.LevelUpNotificationWidget.ShowAchievementNotification(class'KFGFxWidget_LevelUpNotification'.Default.LevelUpString, Perk.PerkName, class'KFGFxWidget_LevelUpNotification'.Default.TierUnlockedString, Perk.GetPerkIconPath(NewLevel), false, NewLevel);
 }
+
 reliable client function ReceiveKillMessage(class<Pawn> Victim, optional bool bGlobal, optional PlayerReplicationInfo KillerPRI)
 {
 	if (bHideKillMsg || (bGlobal && KillerPRI==None))
@@ -291,11 +303,13 @@ reliable client function ReceiveKillMessage(class<Pawn> Victim, optional bool bG
 	else if (KFExtendedHUD(myHUD)!=None && Victim!=None)
 		KFExtendedHUD(myHUD).AddKillMessage(Victim,1,KillerPRI,byte(bGlobal));
 }
+
 unreliable client function ReceiveDamageMessage(class<Pawn> Victim, int Damage)
 {
 	if (!bHideDamageMsg && KFExtendedHUD(myHUD)!=None && Victim!=None)
 		KFExtendedHUD(myHUD).AddKillMessage(Victim,Damage,None,2);
 }
+
 unreliable client function ClientNumberMsg(int Count, vector Pos, EDmgMsgType Type)
 {
 	if (!bHideNumberMsg && KFExtendedHUD(myHUD)!=None)
@@ -356,6 +370,7 @@ reliable client event TeamMessage(PlayerReplicationInfo PRI, coerce string S, na
 		}
 	}
 }
+
 final function PopScreenMsg(string S)
 {
 	local int i;
@@ -381,6 +396,7 @@ final function PopScreenMsg(string S)
 	}
 	MyGFxHUD.DisplayPriorityMessage(S,L,T);
 }
+
 reliable client function ClientKillMessage(class<DamageType> DamType, PlayerReplicationInfo Victim, PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn)
 {
 	local string Msg,S;
@@ -435,6 +451,7 @@ reliable client function ClientKillMessage(class<DamageType> DamType, PlayerRepl
 		KFExtendedHUD(myHUD).AddDeathMessage(Msg,S);
 	ClientMessage(S,'DeathMessage');
 }
+
 reliable client function ClientZedKillMessage(class<DamageType> DamType, string Victim, optional PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn, optional bool bFFKill)
 {
 	local string Msg,S;
@@ -471,6 +488,7 @@ reliable client function ClientZedKillMessage(class<DamageType> DamType, string 
 		KFExtendedHUD(myHUD).AddDeathMessage(Msg,S);
 	ClientMessage(S,'DeathMessage');
 }
+
 simulated final function string ParseSuicideMsg(string Victim, class<DamageType> DamType)
 {
 	local string S;
@@ -487,6 +505,7 @@ simulated final function string ParseSuicideMsg(string Victim, class<DamageType>
 		return Victim$Chr(6)$"M was blown into pieces";
 	return Victim$Chr(6)$"M had a sudden heart attack";
 }
+
 simulated final function string ParseKillMsg(string Victim, string Killer, bool bFF, class<DamageType> DamType)
 {
 	local string T,S;
@@ -514,10 +533,12 @@ reliable server function ServerCamera(name NewMode)
 		NewMode = 'ThirdPerson';
 	SetCameraMode(NewMode);
 }
+
 exec function Camera(name NewMode)
 {
 	ServerCamera(PlayerCamera.CameraStyle=='FirstPerson' ? 'ThirdPerson' : 'FirstPerson');
 }
+
 simulated final function ToggleFPBody(bool bEnable)
 {
 	bShowFPLegs = bEnable;
@@ -537,6 +558,7 @@ exec function Kick(string S)
 	if (WorldInfo.Game!=None)
 		WorldInfo.Game.Kick(S);
 }
+
 reliable server function SkipLobby();
 
 Delegate OnChangePerk(ExtPlayerController PC, class<Ext_PerkBase> NewPerk);
@@ -614,6 +636,7 @@ function ShowBossNameplate(KFInterface_MonsterBoss KFBoss, optional string Playe
 		SetTimer(8,false,'HideBossNameplate'); // MAKE sure it goes hidden.
 	}
 }
+
 function HideBossNameplate()
 {	
 	if (!bNamePlateHidden)
@@ -638,12 +661,14 @@ reliable server function ServerGetUnloadInfo(byte CallID, class<Ext_PerkBase> Pe
 {
 	OnRequestUnload(Self,CallID,PerkClass,bUnload);
 }
+
 delegate OnRequestUnload(ExtPlayerController PC, byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload);
 
 reliable client function ClientGotUnloadInfo(byte CallID, byte Code, optional int DataA, optional int DataB)
 {
 	OnClientGetResponse(CallID,Code,DataA,DataB);
 }
+
 delegate OnClientGetResponse(byte CallID, byte Code, int DataA, int DataB);
 function DefClientResponse(byte CallID, byte Code, int DataA, int DataB);
 
@@ -702,6 +727,7 @@ exec function ViewPlayerID(int ID)
 {
 	ServerViewPlayerID(ID);
 }
+
 reliable server function ServerViewPlayerID(int ID)
 {
 	local PlayerReplicationInfo PRI;
@@ -738,6 +764,7 @@ reliable server function SpectateRoaming()
 		ClientSetLocation(Location,Rotation);
 	}
 }
+
 reliable client function ClientSetLocation(vector NewLocation, rotator NewRotation)
 {
 	SetLocation(NewLocation);
@@ -752,6 +779,7 @@ unreliable server function ServerPlayLevelUpDialog()
 		Super.ServerPlayLevelUpDialog();
 	}
 }
+
 unreliable server function ServerPlayVoiceCommsDialog(int CommsIndex)
 {
 	if (NextCommTime<WorldInfo.TimeSeconds)
@@ -771,6 +799,7 @@ exec function StartFire(optional byte FireModeNum)
 		bAltFire = 1;
 	Super.StartFire(FireModeNum);
 }
+
 exec function StopFire(optional byte FireModeNum)
 {
 	if (FireModeNum==0)
@@ -878,11 +907,13 @@ simulated function EndGameCamFocus(vector Pos)
 	else if (KFPawn(ViewTarget)!=None)
 		KFPawn(ViewTarget).SetMeshVisibility(true);
 }
+
 reliable client function ClientFocusView(vector Pos)
 {
 	if (WorldInfo.NetMode==NM_Client)
 		EndGameCamFocus(Pos);
 }
+
 final function bool CalcEndGameCam()
 {
 	local float T,RT;
@@ -923,6 +954,7 @@ final function bool CalcEndGameCam()
 	}
 	return true;
 }
+
 simulated event GetPlayerViewPoint(out vector out_Location, out Rotator out_Rotation)
 {
 	if (bEndGameCamFocus && CalcEndGameCam())
@@ -933,6 +965,7 @@ simulated event GetPlayerViewPoint(out vector out_Location, out Rotator out_Rota
 	}
 	Super.GetPlayerViewPoint(out_Location,out_Rotation);
 }
+
 exec function DebugRenderMode()
 {
 	if (WorldInfo.NetMode!=NM_Client)
@@ -953,6 +986,7 @@ reliable server function ServerRequestStats(byte ListNum)
 		SetTimer(0.001,true,'SendNextList');
 	}
 }
+
 function SendNextList()
 {
 	if (!OnClientGetStat(Self,TransitListNum,TransitIndex++))
@@ -961,6 +995,7 @@ function SendNextList()
 		ClearTimer('SendNextList');
 	}
 }
+
 simulated reliable client function ClientGetStat(byte ListNum, bool bFinal, optional string N, optional UniqueNetId ID, optional int V)
 {
 	OnClientReceiveStat(ListNum,bFinal,N,ID,V);
@@ -973,10 +1008,12 @@ reliable server function ChangeSpectateMode(bool bSpectator)
 {
 	OnSpectateChange(Self,bSpectator);
 }
+
 simulated reliable client function ClientSpectateMode(bool bSpectator)
 {
 	UpdateURL("SpectatorOnly",(bSpectator ? "1" : "0"),false);
 }
+
 Delegate OnSpectateChange(ExtPlayerController PC, bool bSpectator);
 
 state RagdollMove extends PlayerWalking

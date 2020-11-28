@@ -9,6 +9,7 @@ static function string GetUIInfo(Ext_PerkBase Perk)
 {
 	return (Default.bLimitToOne ? Default.GroupInfo$" (MAX 1)" : Default.GroupInfo);
 }
+
 static function string GetUIDesc()
 {
 	return Default.GroupInfo$" trait group";

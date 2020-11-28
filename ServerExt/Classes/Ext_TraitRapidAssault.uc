@@ -4,6 +4,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Ext_PerkSWAT(Perk).bRapidAssault = true;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkSWAT(Perk).bRapidAssault = false;

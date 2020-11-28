@@ -22,6 +22,7 @@ function OnOpen()
 	ExUpdateContainers(ExtPrevPerk); 
 	SetBool("locked", true);
 }
+
 final function ExUpdateContainers(Ext_PerkBase PerkClass)
 {
 	LastPerkLevel = PerkClass.CurrentLevel;
@@ -68,6 +69,7 @@ function Callback_PerkSelected(byte NewPerkIndex, bool bClickedIndex)
 	ExtKFPC.PendingPerkClass = ExtPrevPerk.Class;
 	ExtKFPC.SwitchToPerk(ExtPrevPerk.Class);
 }
+
 function Callback_SkillSelectionOpened();
 
 defaultproperties

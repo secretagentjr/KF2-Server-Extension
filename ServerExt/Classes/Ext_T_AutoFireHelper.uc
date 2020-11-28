@@ -19,11 +19,13 @@ function PostBeginPlay()
 		Destroy();
 	else SetTimer(0.5+FRand()*0.4,true);
 }
+
 function Timer()
 {
 	if (PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.InvManager==None)
 		Destroy();
 }
+
 simulated function Tick(float Delta)
 {
 	if (WorldInfo.NetMode==NM_DedicatedServer

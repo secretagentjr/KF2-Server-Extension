@@ -68,6 +68,7 @@ simulated function HandleDrawMenu()
 		}
 	}
 }
+
 simulated function RenderMenu(Canvas C)
 {
 	local int i;
@@ -290,6 +291,7 @@ simulated final function int GetFreeIndex(bool bNewAlwaysTop) // Find first allo
 	ActiveMenus.Length = i+1;
 	return i;
 }
+
 simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 {
 	local int i;
@@ -351,6 +353,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 	M.ShowMenu();
 	return M;
 }
+
 simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAll)
 {
 	local int i;
@@ -380,6 +383,7 @@ simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAl
 	if (ActiveMenus.Length==0)
 		SetMenuState(false);
 }
+
 simulated function PopCloseMenu(KFGUI_Base Item)
 {
 	local int i;
@@ -410,6 +414,7 @@ simulated function PopCloseMenu(KFGUI_Base Item)
 	if (ActiveMenus.Length==0)
 		SetMenuState(false);
 }
+
 simulated function BringMenuToFront(KFGUI_Page Page)
 {
 	local int i;
@@ -431,6 +436,7 @@ simulated function BringMenuToFront(KFGUI_Page Page)
 	ActiveMenus.Insert(0,1);
 	ActiveMenus[0] = Page;
 }
+
 simulated final function bool MenuIsOpen(optional class<KFGUI_Page> MenuClass)
 {
 	local int i;
@@ -440,6 +446,7 @@ simulated final function bool MenuIsOpen(optional class<KFGUI_Page> MenuClass)
 			return true;
 	return false;
 }
+
 simulated final function GrabInputFocus(KFGUI_Base Comp, optional bool bForce)
 {
 	if (Comp==KeyboardFocus && !bForce)
@@ -515,6 +522,7 @@ simulated final function GUI_InputMouse(bool bPressed, bool bRight)
 			MouseFocus.MouseRelease(bRight);
 	}
 }
+
 simulated final function bool CheckMouse(name Key, EInputEvent Event)
 {
 	if (Event == IE_Pressed)
@@ -543,6 +551,7 @@ simulated final function bool CheckMouse(name Key, EInputEvent Event)
 	}
 	return false;
 }
+
 simulated function bool ReceivedInputKey(int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	if (!bIsInMenuState)
@@ -565,6 +574,7 @@ simulated function bool ReceivedInputKey(int ControllerId, name Key, EInputEvent
 	}
 	return true;
 }
+
 simulated function bool ReceivedInputChar(int ControllerId, string Unicode)
 {
 	if (!bIsInMenuState)
@@ -576,14 +586,17 @@ simulated Delegate bool OnInputKey(int ControllerId, name Key, EInputEvent Event
 {
 	return false;
 }
+
 simulated Delegate bool OnReceivedInputChar(int ControllerId, string Unicode)
 {
 	return false;
 }
+
 simulated Delegate bool InternalInputKey(int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	return false;
 }
+
 simulated Delegate bool InternalReceivedInputChar(int ControllerId, string Unicode)
 {
 	return false;

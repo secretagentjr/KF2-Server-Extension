@@ -16,6 +16,7 @@ static function OpenMenuForClient(PlayerController PC, class<KFGUI_Page> Page)
 		G = PC.Spawn(class'KF2GUINetwork',PC);
 	G.ClientOpenMenu(Page);
 }
+
 static function CloseMenuForClient(PlayerController PC, class<KFGUI_Page> Page, optional bool bCloseAll)
 {
 	local KF2GUINetwork G;
@@ -35,6 +36,7 @@ simulated reliable client function ClientOpenMenu(class<KFGUI_Page> Page)
 		GUIController = Class'KF2GUIController'.Static.GetGUIController(PlayerOwner);
 	GUIController.OpenMenu(Page);
 }
+
 simulated reliable client function ClientCloseMenu(class<KFGUI_Page> Page, bool bCloseAll)
 {
 	if (!bLocalClient)

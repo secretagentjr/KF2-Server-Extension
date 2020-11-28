@@ -43,6 +43,7 @@ function PreDraw()
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
 }
+
 function DrawMenu(); // Draw menu now.
 function CloseMenu(); // Menu was closed.
 
@@ -56,6 +57,7 @@ function MenuTick(float DeltaTime)
 		Timer();
 	}
 }
+
 final function SetTimer(float Rate, optional bool bLoop)
 {
 	bTimerActive = (Rate>0.f);
@@ -66,6 +68,7 @@ final function SetTimer(float Rate, optional bool bLoop)
 		TimerCounter = Rate;
 	}
 }
+
 function Timer();
 
 function MouseEnter()
@@ -73,11 +76,13 @@ function MouseEnter()
 	bFocused = true;
 	OnFocus(Self,True);
 }
+
 function MouseLeave()
 {
 	bFocused = false;
 	OnFocus(Self,False);
 }
+
 function MouseClick(bool bRight);
 function MouseRelease(bool bRight);
 function DoubleMouseClick(bool bRight) // User rapidly double clicked this component.
@@ -139,16 +144,19 @@ function UserPressedEsc() // user pressed escape while this menu was active.
 		ParentComponent.UserPressedEsc();
 	else DoClose();
 }
+
 function bool BringPageToFront()
 {
 	if (ParentComponent!=None)
 		return ParentComponent.BringPageToFront();
 	return true; // Allow user to bring this page to front.
 }
+
 final function bool IsTopMenu()
 {
 	return (Owner.ActiveMenus.Length>0 && GetPageTop()==Owner.ActiveMenus[0]);
 }
+
 final function KFGUI_Page GetPageTop()
 {
 	local KFGUI_Base M;
@@ -157,17 +165,20 @@ final function KFGUI_Page GetPageTop()
 	{}
 	return KFGUI_Page(M);
 }
+
 function KFGUI_Base FindComponentID(name InID)
 {
 	if (ID==InID)
 		return Self;
 	return None;
 }
+
 function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 {
 	if (ID==InID)
 		Res[Res.Length] = Self;
 }
+
 function RemoveComponent(KFGUI_Base B);
 
 function GetInputFocus()
@@ -176,6 +187,7 @@ function GetInputFocus()
 		Owner.InputFocus.LostInputFocus();
 	Owner.InputFocus = Self;
 }
+
 function DropInputFocus()
 {
 	if (Owner.InputFocus==Self)
@@ -184,6 +196,7 @@ function DropInputFocus()
 		Owner.InputFocus = None;
 	}
 }
+
 function LostInputFocus();
 
 // Obtain keyboard focus.
@@ -191,17 +204,20 @@ final function GrabKeyFocus()
 {
 	Owner.GrabInputFocus(Self);
 }
+
 final function ReleaseKeyFocus()
 {
 	if (Owner.KeyboardFocus==Self)
 		Owner.GrabInputFocus(None);
 }
+
 function LostKeyFocus();
 
 function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
 	return false;
 }
+
 function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	return false;
@@ -218,6 +234,7 @@ final function GetActualPos(out float X, out float Y)
 	X = ((XPosition+X)*InputPos[2]) + InputPos[0];
 	Y = ((YPosition+Y)*InputPos[3]) + InputPos[1];
 }
+
 final function GetRealtivePos(out float X, out float Y)
 {
 	X = X / CompPos[2];

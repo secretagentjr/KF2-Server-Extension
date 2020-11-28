@@ -32,6 +32,7 @@ function InitMenu()
 	InfoLabel = KFGUI_TextField(FindComponentID('Info'));
 	Super.InitMenu();
 }
+
 final function SetupTo(class<Ext_PerkBase> P)
 {
 	PerkToReset = P;
@@ -42,6 +43,7 @@ final function SetupTo(class<Ext_PerkBase> P)
 	ExtPlayerController(GetPlayer()).OnClientGetResponse = ReceivedInfo;
 	ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(CurCallCode,PerkToReset,false);
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)
@@ -55,6 +57,7 @@ function ButtonClicked(KFGUI_Button Sender)
 		break;
 	}
 }
+
 function CloseMenu()
 {
 	Super.CloseMenu();

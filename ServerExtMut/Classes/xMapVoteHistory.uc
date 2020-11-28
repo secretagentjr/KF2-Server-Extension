@@ -26,6 +26,7 @@ static final function int GetMapHistory(string MapName, string MapTitle)
 		Default.N[i].T = MapTitle;
 	return i;
 }
+
 static final function GetHistory(int i, out int UpVotes, out int DownVotes, out int Seq, out int NumP, out string Title)
 {
 	UpVotes = Default.N[i].U;
@@ -49,6 +50,7 @@ static final function UpdateMapHistory(int iWon)
 		else ++Default.N[i].S;
 	}
 }
+
 static final function AddMapKarma(int i, bool bUp)
 {
 	if (bUp)

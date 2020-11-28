@@ -13,6 +13,7 @@ static final function ExtSpawnPointHelper FindHelper(WorldInfo Level)
 		return H;
 	return Level.Spawn(class'ExtSpawnPointHelper');
 }
+
 final function Actor PickBestSpawn()
 {
 	local Actor N,BestN;
@@ -76,6 +77,7 @@ function PreBeginPlay()
 {
 	SetTimer(0.2,false,'InitChecker');
 }
+
 function InitChecker()
 {
 	local PlayerStart PS,Fallback;
@@ -94,6 +96,7 @@ function InitChecker()
 		CheckSpawn(Fallback);
 	SetTimer(0.001,true,'NextCheck');
 }
+
 function NextCheck()
 {
 	local NavigationPoint N;
@@ -114,6 +117,7 @@ function NextCheck()
 		CheckedList.Length = 0;
 	}
 }
+
 final function CheckSpawn(NavigationPoint N)
 {
 	local vector V;

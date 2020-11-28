@@ -112,6 +112,7 @@ function MouseLeave()
 {
 	Super(KFGUI_Base).MouseLeave();
 }
+
 function MouseEnter()
 {
 	Super(KFGUI_Base).MouseEnter();
@@ -129,6 +130,7 @@ function bool CaptureMouse()
 		}
 	return Super.CaptureMouse();
 }
+
 function CloseMenu()
 {
 	local int i;
@@ -137,6 +139,7 @@ function CloseMenu()
 		ItemComponents[i].CloseMenu();
 	Super.CloseMenu();
 }
+
 function NotifyLevelChange()
 {
 	local int i;
@@ -145,6 +148,7 @@ function NotifyLevelChange()
 		ItemComponents[i].NotifyLevelChange();
 	Super.NotifyLevelChange();
 }
+
 function MenuTick(float DeltaTime)
 {
 	local int i;

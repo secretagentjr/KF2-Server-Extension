@@ -4,6 +4,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 {
 	Ext_PerkGunslinger(Perk).bHasUberAmmo = true;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkGunslinger(Perk).bHasUberAmmo = false;

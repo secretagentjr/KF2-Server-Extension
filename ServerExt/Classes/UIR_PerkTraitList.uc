@@ -113,6 +113,7 @@ function DrawMenu()
 		C = C.Next;
 	}
 }
+
 function NotifyMousePaused()
 {
 	if (Owner.InputFocus==None && FocusMouseItem!=-1 && ToolTip[FocusMouseItem]!="")

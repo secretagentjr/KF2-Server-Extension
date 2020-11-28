@@ -8,10 +8,12 @@ function InitializeMenu(KFGFxMoviePlayer_Manager InManager)
 	Super.InitializeMenu(InManager);
 	ExtKFPC = ExtPlayerController (GetPC());
 }
+
 function int GetPerkIndex()
 {
 	return (ExtKFPC.ActivePerkManager!=None ? Max(ExtKFPC.ActivePerkManager.UserPerks.Find(ExtKFPC.ActivePerkManager.CurrentPerk),0) : 0);
 }
+
 function UpdatePlayerInfo()
 {
 	if (ExtKFPC != none && PlayerInfoContainer != none)

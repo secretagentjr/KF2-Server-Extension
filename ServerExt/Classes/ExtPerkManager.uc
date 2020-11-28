@@ -46,6 +46,7 @@ final function SetGrenadeCap(byte AddedCap)
 	if (RepState==REP_Done)
 		ClientSetGrenadeCap(MaxGrenadeCount);
 }
+
 simulated reliable client function ClientSetGrenadeCap(byte NewCap)
 {
 	MaxGrenadeCount = NewCap;
@@ -63,6 +64,7 @@ function bool ApplyPerkClass(class<Ext_PerkBase> P)
 		}
 	return false;
 }
+
 function bool ApplyPerkName(string S)
 {
 	local int i;
@@ -75,6 +77,7 @@ function bool ApplyPerkName(string S)
 		}
 	return false;
 }
+
 function ApplyPerk(Ext_PerkBase P)
 {
 	local KFPawn_Human HP;
@@ -142,6 +145,7 @@ function ApplyPerk(Ext_PerkBase P)
 		}
 	}
 }
+
 simulated final function Ext_PerkBase FindPerk(class<Ext_PerkBase> P)
 {
 	local int i;
@@ -186,10 +190,12 @@ simulated function InitPerks()
 		}
 	}
 }
+
 function CheckPlayTime()
 {
 	++TotalPlayTime; // Stats.
 }
+
 function ServerInitPerks()
 {
 	local int i;
@@ -209,6 +215,7 @@ simulated function RegisterPerk(Ext_PerkBase P)
 	UserPerks[UserPerks.Length] = P;
 	P.PerkManager = Self;
 }
+
 simulated function UnregisterPerk(Ext_PerkBase P)
 {
 	UserPerks.RemoveItem(P);
@@ -415,6 +422,7 @@ function InitiateClientRep()
 	RepIndex = 0;
 	SetTimer(0.01,true,'ReplicateTimer');
 }
+
 function ReplicateTimer()
 {
 	switch (RepState)
@@ -478,123 +486,150 @@ simulated function ModifySpeed(out float Speed)
 	if (CurrentPerk!=None)
 		Speed *= CurrentPerk.Modifiers[0];
 }
+
 function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyDamageGiven(InDamage,DamageCauser,MyKFPM,DamageInstigator,DamageType,HitZoneIdx);
 }
+
 simulated function ModifyDamageTaken(out int InDamage, optional class<DamageType> DamageType, optional Controller InstigatedBy)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyDamageTaken(InDamage,DamageType,InstigatedBy);
 }
+
 simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyRecoil(CurrentRecoilModifier,KFW);
 }
+
 simulated function ModifySpread(out float InSpread)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpread(InSpread);
 }
+
 simulated function ModifyRateOfFire(out float InRate, KFWeapon KFW)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyRateOfFire(InRate,KFW);
 }
+
 simulated function float GetReloadRateScale(KFWeapon KFW)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetReloadRateScale(KFW) : 1.f);
 }
+
 simulated function bool GetUsingTactialReload(KFWeapon KFW)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetUsingTactialReload(KFW) : false);
 }
+
 function ModifyHealth(out int InHealth)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyHealth(InHealth);
 }
+
 function ModifyArmor(out byte MaxArmor)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyArmor(MaxArmor);
 }
+
 function float GetKnockdownPowerModifier(optional class<DamageType> DamageType, optional byte BodyPart, optional bool bIsSprinting=false)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetKnockdownPowerModifier() : 1.f);
 }
+
 function float GetStumblePowerModifier(optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetKnockdownPowerModifier() : 1.f);
 }
+
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetStunPowerModifier(DamageType,HitZoneIdx) : 1.f);
 }
+
 simulated function ModifyMeleeAttackSpeed(out float InDuration, KFWeapon KFW)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyMeleeAttackSpeed(InDuration);
 }
+
 simulated function class<KFProj_Grenade> GetGrenadeClass()
 {
 	return (CurrentPerk!=None ? CurrentPerk.GrenadeClass : GrenadeClass);
 }
+
 simulated function ModifyWeldingRate(out float FastenRate, out float UnfastenRate)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyWeldingRate(FastenRate,UnfastenRate);
 }
+
 simulated function bool HasNightVision()
 {
 	return (CurrentPerk!=None ? CurrentPerk.bHasNightVision : false);
 }
+
 function bool RepairArmor(Pawn HealTarget)
 {
 	return (CurrentPerk!=None ? CurrentPerk.RepairArmor(HealTarget) : false);
 }
+
 function bool ModifyHealAmount(out float HealAmount)
 {
 	return (CurrentPerk!=None ? CurrentPerk.ModifyHealAmount(HealAmount) : false);
 }
+
 function bool CanNotBeGrabbed()
 {
 	return (CurrentPerk!=None ? !CurrentPerk.bCanBeGrabbed : false);
 }
+
 simulated function ModifyMagSizeAndNumber(KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyMagSizeAndNumber(KFW,MagazineCapacity,WeaponPerkClass,bSecondary,WeaponClassname);
 }
+
 simulated function ModifySpareAmmoAmount(KFWeapon KFW, out int PrimarySpareAmmo, optional const out STraderItem TraderItem, optional bool bSecondary=false)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpareAmmoAmount(KFW,PrimarySpareAmmo,TraderItem,bSecondary);
 }
+
 simulated function ModifyMaxSpareAmmoAmount(KFWeapon KFW, out int SpareAmmoCapacity, optional const out STraderItem TraderItem, optional bool bSecondary=false)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpareAmmoAmount(KFW,SpareAmmoCapacity,TraderItem,bSecondary);
 }
+
 simulated function bool ShouldMagSizeModifySpareAmmo(KFWeapon KFW, optional Class<KFPerk> WeaponPerkClass)
 {
 	return (CurrentPerk!=None ? CurrentPerk.ShouldMagSizeModifySpareAmmo(KFW,WeaponPerkClass) : false);
 }
+
 simulated function ModifyHealerRechargeTime(out float RechargeRate)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyHealerRechargeTime(RechargeRate);
 }
+
 simulated function bool CanExplosiveWeld()
 {
 	return (CurrentPerk!=None ? CurrentPerk.bExplosiveWeld : false);
 }
+
 simulated function bool IsOnContactActive()
 {
 	return (CurrentPerk!=None ? CurrentPerk.bExplodeOnContact : false);
 }
+
 function bool CanSpreadNapalm()
 {
 	if (CurrentPerk!=None && CurrentPerk.bNapalmFire && LastNapalmTime!=WorldInfo.TimeSeconds)
@@ -604,34 +639,41 @@ function bool CanSpreadNapalm()
 	}
 	return false;
 }
+
 simulated function bool IsRangeActive()
 {
 	return MyPRI!=None ? MyPRI.bExtraFireRange : false;
 }
+
 simulated function DrawSpecialPerkHUD(Canvas C)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.DrawSpecialPerkHUD(C);
 }
+
 function PlayerKilled(KFPawn_Monster Victim, class<DamageType> DamageType)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.PlayerKilled(Victim,DamageType);
 }
+
 function ModifyBloatBileDoT(out float DoTScaler)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.ModifyBloatBileDoT(DoTScaler);
 }
+
 simulated function bool GetIsUberAmmoActive(KFWeapon KFW)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetIsUberAmmoActive(KFW) : false);
 }
+
 function UpdatePerkHeadShots(ImpactInfo Impact, class<DamageType> DamageType, int NumHit)
 {
 	if (CurrentPerk!=None)
 		CurrentPerk.UpdatePerkHeadShots(Impact,DamageType,NumHit);
 }
+
 function CheckForAirborneAgent(KFPawn HealTarget, class<DamageType> DamType, int HealAmount)
 {
 	if (!bCurrentlyHealing && CurrentPerk!=None)
@@ -642,6 +684,7 @@ function CheckForAirborneAgent(KFPawn HealTarget, class<DamageType> DamType, int
 		bCurrentlyHealing = false;
 	}
 }
+
 simulated function float GetZedTimeModifier(KFWeapon W)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetZedTimeModifier(W) : 0.f);
@@ -652,6 +695,7 @@ function bool IsAcidicCompoundActive()
 {
 	return (CurrentPerk!=None ? CurrentPerk.bToxicDart : false);
 }
+
 function ModifyACDamage(out int InDamage)
 {
 	if (CurrentPerk!=None && CurrentPerk.bToxicDart)
@@ -663,10 +707,12 @@ function bool CouldBeZedShrapnel(class<KFDamageType> KFDT)
 {
 	return (CurrentPerk!=None ? (CurrentPerk.bFireExplode && class<KFDT_Fire>(KFDT)!=None) : false);
 }
+
 simulated function bool ShouldShrapnel()
 {
 	return (CurrentPerk!=None ? (CurrentPerk.bFireExplode && Rand(3)==0) : false);
 }
+
 function GameExplosion GetExplosionTemplate()
 {
 	return class'KFPerk_Firebug'.Default.ExplosionTemplate;
@@ -677,10 +723,12 @@ function OnWaveEnded()
 {
 	CurrentPerk.OnWaveEnded();
 }
+
 function NotifyZedTimeStarted()
 {
 	CurrentPerk.NotifyZedTimeStarted();
 }
+
 simulated function float GetZedTimeExtensions(byte Level)
 {
 	return CurrentPerk.GetZedTimeExtensions(Level);
@@ -691,14 +739,17 @@ simulated function bool HasHeavyArmor()
 {
 	return (CurrentPerk!=None && CurrentPerk.bHeavyArmor);
 }
+
 simulated function float GetIronSightSpeedModifier(KFWeapon KFW)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetIronSightSpeedModifier(KFW) : 1.f);
 }
+
 simulated function float GetCrouchSpeedModifier(KFWeapon KFW)
 {
 	return (CurrentPerk!=None ? CurrentPerk.GetIronSightSpeedModifier(KFW) : 1.f);
 }
+
 simulated function bool ShouldKnockDownOnBump()
 {
 	return (CurrentPerk!=None && CurrentPerk.bHasSWATEnforcer);
@@ -709,22 +760,27 @@ simulated function bool ShouldRandSirenResist()
 {
 	return (Ext_PerkDemolition(CurrentPerk)!=None ? Ext_PerkDemolition(CurrentPerk).bSirenResistance : false);
 }
+
 simulated function bool IsAoEActive()
 {
 	return (Ext_PerkDemolition(CurrentPerk)!=None ? Ext_PerkDemolition(CurrentPerk).AOEMult > 1.0f : false);
 }
+
 simulated function bool ShouldSacrifice()
 {
 	return (Ext_PerkDemolition(CurrentPerk)!=None ? (Ext_PerkDemolition(CurrentPerk).bCanUseSacrifice && !Ext_PerkDemolition(CurrentPerk).bUsedSacrifice) : false);
 }
+
 simulated function bool ShouldNeverDud()
 {
 	return (Ext_PerkDemolition(CurrentPerk)!=None ? Ext_PerkDemolition(CurrentPerk).bProfessionalActive : false);
 }
+
 function NotifyPerkSacrificeExploded()
 {
 	if (Ext_PerkDemolition(CurrentPerk) != none) Ext_PerkDemolition(CurrentPerk).bUsedSacrifice = true;
 }
+
 simulated function float GetAoERadiusModifier()
 {
 	return (Ext_PerkDemolition(CurrentPerk)!=None ? Ext_PerkDemolition(CurrentPerk).GetAoERadiusModifier() : 1.0);
@@ -735,30 +791,37 @@ simulated function bool GetHealingSpeedBoostActive()
 {
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetHealingSpeedBoostActive() : false);
 }
+
 simulated function bool GetHealingDamageBoostActive()
 {
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetHealingDamageBoostActive() : false);
 }
+
 simulated function bool GetHealingShieldActive()
 {
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetHealingShieldActive() : false);
 }
+
 simulated function float GetSelfHealingSurgePct()
 { 
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetSelfHealingSurgePct() : 0.f);
 }
+
 function bool IsToxicDmgActive()
 {
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).bUseToxicDamage : false);
 }
+
 static function class<KFDamageType> GetToxicDmgTypeClass()
 {
 	return class'Ext_PerkFieldMedic'.static.GetToxicDmgTypeClass();
 }
+
 static function ModifyToxicDmg(out int ToxicDamage)
 {
 	ToxicDamage = class'Ext_PerkFieldMedic'.static.ModifyToxicDmg(ToxicDamage);
 }
+
 simulated function float GetSnarePower(optional class<DamageType> DamageType, optional byte HitZoneIdx)
 {
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetSnarePower(DamageType, HitZoneIdx) : 0.f);
@@ -769,6 +832,7 @@ simulated function bool CanRepairDoors()
 {
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).CanRepairDoors() : false);
 }
+
 simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
 {
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);

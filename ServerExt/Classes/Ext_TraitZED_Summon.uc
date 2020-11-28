@@ -83,6 +83,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 	}
 	return true;
 }
+
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
@@ -97,6 +98,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		if (Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
 			Perk.PerkTraits[i].TraitType.Static.ApplyEffectOn(Player,Perk,Level,Data);
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
@@ -115,6 +117,7 @@ static function string GetRepData()
 	S $= IntToStr(Default.FinalLevelPrestige);
 	return S;
 }
+
 static function string ClientSetRepData(string S)
 {
 	S = Super.ClientSetRepData(S);
@@ -136,6 +139,7 @@ static function string GetValue(name PropName, int ElementIndex)
 		return Super.GetValue(PropName,ElementIndex);
 	}
 }
+
 static function ApplyValue(name PropName, int ElementIndex, string Value)
 {
 	switch (PropName)

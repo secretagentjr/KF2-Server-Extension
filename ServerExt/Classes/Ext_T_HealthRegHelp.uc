@@ -11,6 +11,7 @@ function PostBeginPlay()
 		Destroy();
 	else SetTimer(9+FRand(),true);
 }
+
 function Timer()
 {
 	if (PawnOwner==None || PawnOwner.Health<=0)

@@ -5,6 +5,7 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 	if (Level==1)
 		Perk.GrenadeClass = Perk.SuperGrenade;
 }
+
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.GrenadeClass = Perk.Default.GrenadeClass;

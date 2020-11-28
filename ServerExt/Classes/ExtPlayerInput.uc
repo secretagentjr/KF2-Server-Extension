@@ -7,6 +7,7 @@ exec function StartCrouch()
 {
 	bDuck = 1;
 }
+
 exec function ToggleCrouch()
 {
 	bDuck = (bDuck == 0) ? 1 : 0;
@@ -28,6 +29,7 @@ simulated exec function IronSights(optional bool bHoldButtonMode)
 		}
 	}
 }
+
 simulated exec function IronSightsRelease(optional bool bHoldButtonMode)
 {
 	local KFWeapon KFW;

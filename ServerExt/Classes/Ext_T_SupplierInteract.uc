@@ -119,6 +119,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 	}
 	return true;
 }
+
 function CleanupUsers()
 {
 	local int i;
@@ -129,6 +130,7 @@ function CleanupUsers()
 	if (ActiveUsers.Length==0)
 		ClearTimer('CleanupUsers');
 }
+
 final function GiveAmmunition(KFPawn_Human Other)
 {
 	local KFWeapon KFW;
@@ -167,6 +169,7 @@ final function GiveAmmunition(KFPawn_Human Other)
 		}
 	}
 }
+
 simulated final function UsedOnClient(Pawn User)
 {
 	local ExtPlayerReplicationInfo PRI;

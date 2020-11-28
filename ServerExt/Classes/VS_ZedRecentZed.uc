@@ -28,6 +28,7 @@ simulated event ReplicatedEvent(name VarName)
 		Super.ReplicatedEvent(VarName);
 	}
 }
+
 simulated function WakeUp() // Just spawned from transformed into a zombie.
 {
 	bWasWoken = true;
@@ -36,6 +37,7 @@ simulated function WakeUp() // Just spawned from transformed into a zombie.
 	SetTimer(WakeUpAnimTime,false,'GotUp');
 	GoToState('WakingUp');
 }
+
 simulated function GotUp()
 {
 	if (Health<=0)
@@ -137,6 +139,7 @@ simulated function bool PlayDismemberment(int InHitZoneIndex, class<KFDamageType
 {
 	return false;
 }
+
 event OnRigidBodyLinearConstraintViolated(name StretchedBoneName);
 simulated function ApplyHeadChunkGore(class<KFDamageType> DmgType, vector HitLocation, vector HitDirection);
 

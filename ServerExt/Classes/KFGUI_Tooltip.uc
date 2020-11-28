@@ -8,14 +8,17 @@ function InputMouseMoved()
 {
 	DropInputFocus();
 }
+
 function MouseClick(bool bRight)
 {
 	DropInputFocus();
 }
+
 function MouseRelease(bool bRight)
 {
 	DropInputFocus();
 }
+
 function ShowMenu()
 {
 	CurrentAlpha = 1;

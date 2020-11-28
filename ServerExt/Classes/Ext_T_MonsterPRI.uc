@@ -21,6 +21,7 @@ simulated event PostBeginPlay()
 	if (WorldInfo.NetMode!=NM_Client)
 		SetTimer(1,true);
 }
+
 simulated event Destroyed()
 {
 	if (OwnerHUD!=None)
@@ -31,6 +32,7 @@ simulated event Destroyed()
 	if (WorldInfo.GRI != None)
 		WorldInfo.GRI.RemovePRI(self);
 }
+
 simulated event ReplicatedEvent(name VarName)
 {
 	if (VarName=='OwnerPRI' && OwnerPRI!=None)
@@ -38,6 +40,7 @@ simulated event ReplicatedEvent(name VarName)
 	else if (VarName=='MonsterType' && MonsterType!=None)
 		MonsterName = Class'KFExtendedHUD'.Static.GetNameOf(MonsterType);
 }
+
 simulated function Timer()
 {
 	if (PawnOwner==None || PawnOwner.Health<=0)
@@ -45,6 +48,7 @@ simulated function Timer()
 	else if (HealthStatus!=PawnOwner.Health)
 		HealthStatus = PawnOwner.Health;
 }
+
 simulated final function NotifyOwner()
 {
 	local PlayerController PC;

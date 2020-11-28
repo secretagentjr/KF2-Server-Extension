@@ -33,6 +33,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		if (Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
 			Perk.PerkTraits[i].TraitType.Static.ApplyEffectOn(Player,Perk,Level,Data);
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
@@ -41,6 +42,7 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 		if (H.bIsExtra)
 			H.Destroy();
 }
+
 static final function AddHelperType(byte Lv, KFPawn_Human Player)
 {
 	local Ext_T_ZEDHelper H;

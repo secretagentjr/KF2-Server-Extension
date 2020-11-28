@@ -26,6 +26,7 @@ function OpenMenu(KFGUI_Base Menu)
 		YPosition-=((YPosition+YSize)-1.f); // Move up until fit on screen.
 	GetInputFocus();
 }
+
 final function ComputeSize()
 {
 	local float XS,YS,Scalar;
@@ -55,6 +56,7 @@ final function ComputeSize()
 	XSize = (XS+(EdgeSize*2)) / Owner.ScreenSize.X;
 	YSize = (YS+(EdgeSize*2)) / Owner.ScreenSize.Y;
 }
+
 final function AddRow(string Text, bool bDisable)
 {
 	local int i;
@@ -69,10 +71,12 @@ final function AddRow(string Text, bool bDisable)
 		ItemRows[i].bDisabled = bDisable;
 	}
 }
+
 function DrawMenu()
 {
 	Owner.CurrentStyle.RenderRightClickMenu(Self);
 }
+
 function HandleMouseClick(bool bRight)
 {
 	if (CurrentRow>=0 && (ItemRows[CurrentRow].bSplitter || ItemRows[CurrentRow].bDisabled))
@@ -82,6 +86,7 @@ function HandleMouseClick(bool bRight)
 	if (CurrentRow>=0)
 		OnSelectedItem(CurrentRow);
 }
+
 function LostInputFocus()
 {
 	OnBecameHidden(Self);

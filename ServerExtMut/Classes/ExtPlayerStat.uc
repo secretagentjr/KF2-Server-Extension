@@ -23,6 +23,7 @@ final function bool LoadStatFile(PlayerController Other)
 	Buffer.Length = 0;
 	return false;
 }
+
 final function SaveStatFile(PlayerController Other)
 {
 	local string S;
@@ -51,6 +52,7 @@ function SaveInt(int Value, optional byte MaxVal)
 		}
 	}
 }
+
 function int ReadInt(optional byte MaxVal)
 {
 	local int Res;
@@ -72,6 +74,7 @@ function int ReadInt(optional byte MaxVal)
 	}
 	return Res;
 }
+
 function SaveStr(string S)
 {
 	local int i;
@@ -90,6 +93,7 @@ function SaveStr(string S)
 	}
 	SaveInt((i+1),1);
 }
+
 function string ReadStr()
 {
 	local int i;
@@ -104,26 +108,32 @@ function int TellOffset()
 {
 	return BufferOffset;
 }
+
 function SeekOffset(int Offset)
 {
 	BufferOffset = Clamp(Offset,0,BufferSize);
 }
+
 function int TotalSize()
 {
 	return BufferSize;
 }
+
 function ToEnd()
 {
 	BufferOffset = BufferSize;
 }
+
 function ToStart()
 {
 	BufferOffset = 0;
 }
+
 function bool AtEnd()
 {
 	return (BufferOffset>=BufferSize);
 }
+
 function SkipBytes(int Count)
 {
 	BufferOffset = Clamp(BufferOffset+Count,0,BufferSize);
@@ -183,6 +193,7 @@ function GetData(out array<byte> Res)
 			Res[o++] = Asc(Mid(StrMap[i],j,1));
 	}
 }
+
 function SetData(out array<byte> S)
 {
 	local int i,o,l,j;
@@ -211,6 +222,7 @@ function int GetArVer()
 {
 	return ArVersion;
 }
+
 function SetArVer(int Ver)
 {
 	ArVersion = Ver;
@@ -221,6 +233,7 @@ function PushEOFLimit(int EndOffset)
 	EOFStack.AddItem(BufferSize);
 	BufferSize = EndOffset;
 }
+
 function PopEOFLimit()
 {
 	if (EOFStack.Length==0)
@@ -236,6 +249,7 @@ function int GetSaveVersion()
 {
 	return SaveNum;
 }
+
 function SetSaveVersion(int Num)
 {
 	SaveNum = Num;

@@ -4,6 +4,7 @@ function SpecialMoveStarted(bool bForced, Name PrevMove)
 {
 	KFPOwner.EndSpecialMove();
 }
+
 function SpecialMoveEnded(Name PrevMove, Name NextMove)
 {
 }

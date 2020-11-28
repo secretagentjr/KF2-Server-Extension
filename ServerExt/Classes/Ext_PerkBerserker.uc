@@ -15,6 +15,7 @@ simulated function ModifyMeleeAttackSpeed(out float InDuration)
 	if (ZedTimeMeleeAtkRate<1.f && WorldInfo.TimeDilation<1.f)
 		InDuration *= ZedTimeMeleeAtkRate;
 }
+
 simulated function ModifyRateOfFire(out float InRate, KFWeapon KFW)
 {
 	if (IsWeaponOnPerk(KFW))

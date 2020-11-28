@@ -8,6 +8,7 @@ function DrawHUD(HUD H)
 {
 	//ControllerOwner.RenderMenu(H.Canvas);
 }
+
 function PostRender(Canvas Canvas)
 {
 	if (ControllerOwner.bIsInMenuState)

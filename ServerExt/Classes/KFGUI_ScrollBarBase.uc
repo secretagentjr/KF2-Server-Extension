@@ -19,19 +19,23 @@ final function UpdateScrollSize(int Current, int MxRange, int Stride, int StepSt
 	PageStep = StepStride;
 	SetValue(Current);
 }
+
 final function AddValue(int V)
 {
 	SetValue(CurrentScroll+V);
 }
+
 final function SetValue(int V)
 {
 	CurrentScroll = Clamp((V / ScrollStride) * ScrollStride,0,MaxRange);
 	OnScrollChange(Self,CurrentScroll);
 }
+
 final function int GetValue()
 {
 	return CurrentScroll;
 }
+
 Delegate OnScrollChange(KFGUI_ScrollBarBase Sender, int Value);
 
 // Get UI width.
@@ -40,6 +44,7 @@ function float GetWidth()
 	CalcButtonScale = ButtonScale*Owner.CurrentStyle.DefaultHeight;
 	return CalcButtonScale / (bVertical ? InputPos[2] : InputPos[3]);
 }
+
 function PreDraw()
 {
 	// Auto scale to match width to screen size.
@@ -48,10 +53,12 @@ function PreDraw()
 	else YSize = GetWidth();
 	Super.PreDraw();
 }
+
 function DrawMenu()
 {
 	Owner.CurrentStyle.RenderScrollBar(Self);
 }
+
 function MouseClick(bool bRight)
 {
 	if (bRight || bDisabled)
@@ -84,6 +91,7 @@ function MouseClick(bool bRight)
 		else AddValue(PageStep);
 	}
 }
+
 function MouseRelease(bool bRight)
 {
 	if (!bRight)

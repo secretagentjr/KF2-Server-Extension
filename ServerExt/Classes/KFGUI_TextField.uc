@@ -33,6 +33,7 @@ final function SetText(string S)
 	OrgLines.Length = 0;
 	bTextParsed = false;
 }
+
 final function string GetText()
 {
 	return Text;
@@ -90,6 +91,7 @@ final function ParseTextLines()
 	}
 	OrgLines = Lines; // Create a backup.
 }
+
 final function byte GrabHexValue(string S)
 {
 	local byte n;
@@ -98,6 +100,7 @@ final function byte GrabHexValue(string S)
 	S = Mid(S,2);
 	return n;
 }
+
 final function byte HexToInt(byte n)
 {
 	if (n>=48 && n<=57) // '0' - '9'
@@ -254,6 +257,7 @@ final function int FindSplitPoint(string S, float X, float ClipX)
 	}
 	return l;
 }
+
 final function string StripWhiteSpaces(string S)
 {
 	if (Left(S,1)==" ")

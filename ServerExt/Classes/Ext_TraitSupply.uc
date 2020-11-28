@@ -6,10 +6,12 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 {
 	Ext_TraitSupplyData(Data).SpawnSupplier(Player);
 }
+
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_TraitSupplyData(Data).RemoveSupplier();
 }
+
 static function PlayerDied(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_TraitSupplyData(Data).RemoveSupplier();

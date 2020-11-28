@@ -71,6 +71,7 @@ final function InitBehindviewKey()
 	}
 	KeyBindButton.ButtonText = (CurKeybind!='' ? string(CurKeybind) : NotSetText);
 }
+
 final function KFGUI_CheckBox AddCheckBox(string Cap, string TT, name IDN, bool bDefault)
 {
 	local KFGUI_CheckBox CB;
@@ -84,6 +85,7 @@ final function KFGUI_CheckBox AddCheckBox(string Cap, string TT, name IDN, bool 
 	CB.OnCheckChange = CheckChange;
 	return CB;
 }
+
 final function KFGUI_Button AddButton(string ButtonText, string Cap, string TT, name IDN, out KFGUI_TextLable Label)
 {
 	local KFGUI_Button CB;
@@ -150,6 +152,7 @@ function CheckChange(KFGUI_CheckBox Sender)
 	}
 	PC.SaveConfig();
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)
@@ -164,10 +167,12 @@ function ButtonClicked(KFGUI_Button Sender)
 		break;
 	}
 }
+
 function Timer()
 {
 	bDelayedSet = false;
 }
+
 function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
 	if (Event==IE_Pressed && !bDelayedSet && InStr(Caps(string(Key)),"MOUSE")==-1)
@@ -178,12 +183,14 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 	}
 	return true;
 }
+
 function LostKeyFocus()
 {
 	KeyBindButton.SetDisabled(false);
 	bSetKeybind = false;
 	InitBehindviewKey();
 }
+
 final function BindNewKey(name Key, string Cmd)
 {
 	local int i;

@@ -8,10 +8,12 @@ function InitMenu()
 	Super.InitMenu();
 	ValidateValue();
 }
+
 final function int GetValueInt()
 {
 	return int(Value);
 }
+
 final function float GetValueFloat()
 {
 	return float(Value);
@@ -22,6 +24,7 @@ function ChangeValue(string V)
 	Super.ChangeValue(V);
 	ValidateValue();
 }
+
 final function ValidateValue()
 {
 	if (bFloatValue)

@@ -86,6 +86,7 @@ function PostBeginPlay()
 	SetTimer(0.15,false,'SetupBroadcast');
 	SetTimer(1,true,'CheckEndGameEnded');
 }
+
 function AddMutator(Mutator M)
 {
 	if (M!=Self) // Make sure we don't get added twice.
@@ -126,6 +127,7 @@ function SetupBroadcast()
 		else `Log("X-VoteWebAdmin ERROR: No WebServer object found!");
 	}
 }
+
 final function AddVote(int Count, int MapIndex, int GameIndex)
 {
 	local int i,j;
@@ -156,6 +158,7 @@ final function AddVote(int Count, int MapIndex, int GameIndex)
 	for (j=(ActiveVoters.Length-1); j>=0; --j)
 		ActiveVoters[j].ClientReceiveVote(GameIndex,MapIndex,Count);
 }
+
 final function LogoutPlayer(PlayerController PC)
 {
 	local int i;
@@ -167,6 +170,7 @@ final function LogoutPlayer(PlayerController PC)
 			break;
 		}
 }
+
 final function LoginPlayer(PlayerController PC)
 {
 	local xVotingReplication R;
@@ -187,6 +191,7 @@ function NotifyLogout(Controller Exiting)
 	if (NextMutator != None)
 		NextMutator.NotifyLogout(Exiting);
 }
+
 function NotifyLogin(Controller NewPlayer)
 {
 	if (PlayerController(NewPlayer)!=None)
@@ -233,6 +238,7 @@ function ClientDownloadInfo(xVotingReplication V)
 	++V.DownloadStage;
 	V.DownloadIndex = 0;
 }
+
 function ClientCastVote(xVotingReplication V, int GameIndex, int MapIndex, bool bAdminForce)
 {
 	local int i;
@@ -259,10 +265,12 @@ function ClientCastVote(xVotingReplication V, int GameIndex, int MapIndex, bool 
 		ActiveVoters[i].ClientNotifyVote(V.PlayerOwner.PlayerReplicationInfo,GameIndex,MapIndex);
 	TallyVotes();
 }
+
 function ClientRankMap(xVotingReplication V, bool bUp)
 {
 	class'xMapVoteHistory'.Static.AddMapKarma(iCurrentHistory,bUp);
 }
+
 function ClientDisconnect(xVotingReplication V)
 {
 	ActiveVoters.RemoveItem(V);
@@ -278,6 +286,7 @@ final function float GetPctOf(int Nom, int Denom)
 	R = float(Nom) / float(Denom);
 	return R;
 }
+
 final function TallyVotes(optional bool bForce)
 {
 	local int i,NumVotees,c,j;
@@ -351,6 +360,7 @@ final function TallyVotes(optional bool bForce)
 	if (!bMapVoteTimer && NumVotees>0 && GetPctOf(c,NumVotees)>=MidGameVotePct)
 		StartMidGameVote(true);
 }
+
 final function StartMidGameVote(bool bMidGame)
 {
 	local int i;
@@ -367,6 +377,7 @@ final function StartMidGameVote(bool bMidGame)
 	VoteTimeLeft = Max(VoteTime,10);
 	SetTimer(1,true);
 }
+
 function CheckEndGameEnded()
 {
 	if (KF==None)
@@ -383,12 +394,14 @@ function CheckEndGameEnded()
 		WorldInfo.Game.ClearTimer('ShowPostGameMenu');
 	}
 }
+
 function bool HandleRestartGame()
 {
 	if (!bMapVoteTimer)
 		StartMidGameVote(false);
 	return true;
 }
+
 function Timer()
 {
 	local int i;
@@ -433,6 +446,7 @@ function Timer()
 		}
 	}
 }
+
 final function SwitchToLevel(int GameIndex, int MapIndex, bool bAdminForce)
 {
 	local int i;
@@ -466,6 +480,7 @@ final function SwitchToLevel(int GameIndex, int MapIndex, bool bAdminForce)
 	`Log("MapVote: Switch map to "$PendingMapURL);
 	SetTimer(FMax(MapChangeDelay,0.1),false,'PendingSwitch');
 }
+
 function Pendingswitch ()
 {
 	WorldInfo.ServerTravel(PendingMapURL,false);
@@ -499,6 +514,7 @@ final function ParseCommand(string Cmd, PlayerController PC)
 		else PC.ClientMessage("Map '"$Cmd$"' not found!");
 	}
 }
+
 function ShowMapVote(PlayerController PC)
 {
 	local int i;
@@ -512,6 +528,7 @@ function ShowMapVote(PlayerController PC)
 			return;
 		}
 }
+
 final function AddMap(string M)
 {
 	if (Class'KFGameInfo'.Default.GameMapCycles.Length==0)
@@ -519,6 +536,7 @@ final function AddMap(string M)
 	Class'KFGameInfo'.Default.GameMapCycles[0].Maps.AddItem(M);
 	Class'KFGameInfo'.Static.StaticSaveConfig();
 }
+
 final function bool RemoveMap(string M)
 {
 	local int i,j;

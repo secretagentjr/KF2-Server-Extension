@@ -11,6 +11,7 @@ function PostBeginPlay()
 	ActiveGame.Init();
 	ActiveGame.SetFXTrack(class'MS_PC'.Default.TravelData.PendingFX);
 }
+
 event PostRender()
 {
 	ActiveGame.Canvas = Canvas;

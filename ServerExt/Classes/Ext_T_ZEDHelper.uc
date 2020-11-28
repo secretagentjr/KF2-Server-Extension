@@ -28,6 +28,7 @@ function PostBeginPlay()
 		SetTimer(1+(FRand()*0.1),true);
 	}
 }
+
 function Timer()
 {
 	if (PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.PlayerReplicationInfo==None)
@@ -64,11 +65,13 @@ function Timer()
 	}
 	else NoLiveCounter = 5;
 }
+
 function Destroyed()
 {
 	if (LiveHelper!=None && LiveHelper.Health>0)
 		LiveHelper.Died(None,class'DmgType_Suicided',vect(0,0,0));
 }
+
 final function bool HasLiveZeds()
 {
 	local KFPawn_Monster M;
@@ -81,6 +84,7 @@ final function bool HasLiveZeds()
 			return true;
 	return false;
 }
+
 final function SpawnHelper()
 {
 	local class<KFPawn_Monster> MC;
@@ -188,6 +192,7 @@ final function SetDamageScale(float Sc)
 	if (LiveHelper!=None)
 		LiveHelper.DamageScaling = DamageScale;
 }
+
 final function SetHealthScale(float Sc)
 {
 	HPScale = Default.HPScale*Sc;
@@ -217,6 +222,7 @@ static final function LoadMonsterList()
 			Default.ZedTypes[i].Zeds[Default.ZedTypes[i].Zeds.Length] = Class'KFPawn_ZedClot_Alpha';
 	}
 }
+
 static final function class<KFPawn_Monster> PickRandomMonster(byte Level, bool bNotBoss)
 {
 	local byte i;

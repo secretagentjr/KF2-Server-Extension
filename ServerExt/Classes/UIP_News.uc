@@ -19,6 +19,7 @@ function InitMenu()
 	
 	Timer();
 }
+
 function ShowMenu()
 {
 	local KFGameReplicationInfo GRI;
@@ -32,12 +33,14 @@ function ShowMenu()
 		WebsiteButton.ChangeToolTip(WebsiteButtonToolTip$" "$WebsiteURL);
 	}
 }
+
 function Timer()
 {
 	if (!ExtPlayerController(GetPlayer()).bMOTDReceived)
 		SetTimer(0.2,false);
 	else NewsField.SetText(ExtPlayerController(GetPlayer()).ServerMOTD);
 }
+
 function ButtonClicked(KFGUI_Button Sender)
 {
 	switch (Sender.ID)

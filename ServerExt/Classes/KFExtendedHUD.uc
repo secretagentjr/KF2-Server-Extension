@@ -79,11 +79,13 @@ simulated function PostBeginPlay()
 	
 	SetTimer(300 + FRand()*120.f,false,'CheckForItems');
 }
+
 simulated function Destroyed()
 {
 	Super.Destroyed();
 	NotifyLevelChange();
 }
+
 simulated final function NotifyLevelChange(optional bool bMapswitch)
 {
 	if (OnlineSub!=None)
@@ -96,6 +98,7 @@ simulated final function NotifyLevelChange(optional bool bMapswitch)
 	if (bMapswitch)
 		SetTimer(0.5,false,'PendingMapSwitch');
 }
+
 simulated function PendingMapswitch ()
 {
 	// Make sure we dont garbage collect the game:
@@ -132,6 +135,7 @@ final function AddKillMessage(class<Pawn> Victim, int Value, PlayerReplicationIn
 	KillMessages[i].Name = GetNameOf(Victim);
 	KillMessages[i].MsgColor = GetMsgColor(bDmg,Value);
 }
+
 final function AddDeathMessage(string S, string StrippedMsg)
 {
 	DeathMessages.Insert(0,1);
@@ -139,6 +143,7 @@ final function AddDeathMessage(string S, string StrippedMsg)
 	DeathMessages[0].SMsg = StrippedMsg;
 	DeathMessages[0].MsgTime = WorldInfo.TimeSeconds;
 }
+
 final function ShowProgressMsg(string S, optional bool bDis)
 {
 	if (S=="")
@@ -156,6 +161,7 @@ final function ShowProgressMsg(string S, optional bool bDis)
 		LocalPlayer(KFPlayerOwner.Player).ViewportClient.ViewportConsole.OutputText(Repl(S,"|","\n"));
 	}
 }
+
 static final function string GetNameOf(class<Pawn> Other)
 {
 	local string S;
@@ -178,6 +184,7 @@ static final function string GetNameOf(class<Pawn> Other)
 	S = Repl(S,"_"," ");
 	return S;
 }
+
 static final function string GetNameArticle(string S)
 {
 	switch (Caps(Left(S,1))) // Check if a vowel, then an.
@@ -191,6 +198,7 @@ static final function string GetNameArticle(string S)
 	}
 	return "a";
 }
+
 static final function string StripMsgColors(string S)
 {
 	local int i;
@@ -204,6 +212,7 @@ static final function string StripMsgColors(string S)
 	}
 	return S;
 }
+
 final function color GetMsgColor(bool bDamage, int Count)
 {
 	local float T;
@@ -298,6 +307,7 @@ event PostRender()
 	if (PlayerOwner.Player==None && OnlineSub!=None)
 		NotifyLevelChange();
 }
+
 simulated function CancelConnection()
 {
 	if (!bConfirmDisconnect)
@@ -307,6 +317,7 @@ simulated function CancelConnection()
 	}
 	else class'Engine'.Static.GetEngine().GameViewport.ConsoleCommand("Disconnect");
 }
+
 final function DrawRespawnCounter()
 {
 	local float Sc,XL,YL;
@@ -319,6 +330,7 @@ final function DrawRespawnCounter()
 	Canvas.SetPos((Canvas.ClipX-XL)*0.5,Canvas.ClipY*0.075);
 	Canvas.DrawText(S,,Sc,Sc);
 }
+
 exec function SetShowScores(bool bNewValue)
 {
 	bShowScores = bNewValue;
@@ -329,6 +341,7 @@ exec function SetShowScores(bool bNewValue)
 		else GUIController.CloseMenu(class'UI_Scoreboard_CD');
 	}
 }
+
 final function RenderKillMsg()
 {
 	local float Sc,YL,T,X,Y;
@@ -363,6 +376,7 @@ final function RenderKillMsg()
 		Y+=YL;
 	}
 }
+
 final function RenderDMMessages()
 {
 	local float Sc,YL,XL,T,Y,X;
@@ -424,6 +438,7 @@ final function RenderDMMessages()
 		}
 	}
 }
+
 final function RenderProgress()
 {
 	local float Y,XL,YL,Sc;
@@ -627,6 +642,7 @@ simulated static final function color GetHPColorScale(Pawn P)
 	C.B = 25;
 	return C;
 }
+
 simulated function DrawFriendlyHUDZ(KFPawn_Monster KFPH)
 {
 	local float Percentage;
@@ -662,6 +678,7 @@ simulated function DrawFriendlyHUDZ(KFPawn_Monster KFPH)
 	Canvas.SetPos(ScreenPos.X - (BarLength *0.5f), ScreenPos.Y - BarHeight * 2);
 	Canvas.DrawText(KFPH.PlayerReplicationInfo.PlayerName,,FontScale,FontScale, MyFontRenderInfo);
 }
+
 simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 {
 	local float Percentage;
@@ -781,6 +798,7 @@ simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 
 	return true;
 }
+
 simulated final function DrawPlayerInfoBar(KFPawn P, float BarPercentage, float BarLength, float BarHeight, float XPos, float YPos, Color BarColor, byte FadeAlpha, optional bool bDrawingHealth)
 {
 	//background for status bar
@@ -811,6 +829,7 @@ simulated final function DrawPlayerInfoBar(KFPawn P, float BarPercentage, float 
 		Canvas.DrawTileStretched(PlayerStatusBarBGTexture, BarLength * BarPercentage, BarHeight, 0, 0, 32, 32);
 	}
 }
+
 simulated function DrawPerkIcons(KFPawn_Human KFPH, float PerkIconSize, float PerkIconPosX, float PerkIconPosY, float SupplyIconPosX, float SupplyIconPosY, bool bDropShadow)
 {
 	local byte PrestigeLevel;
@@ -876,6 +895,7 @@ simulated function DrawPerkIcons(KFPawn_Human KFPH, float PerkIconSize, float Pe
 		Canvas.DrawTile(KFPRI.ECurrentPerk.default.BasePerk.static.GetInteractIcon(), (PlayerStatusIconSize * 0.75) * ResModifier, (PlayerStatusIconSize * 0.75) * ResModifier, 0, 0, 256, 256);
 	}
 }
+
 simulated function DrawMonsterHUD(KFPawn KFPH)
 {
 	local float Percentage;
@@ -917,6 +937,7 @@ simulated function DrawMonsterHUD(KFPawn KFPH)
 	Canvas.SetPos(ScreenPos.X - (BarLength * 0.75), ScreenPos.Y - BarHeight * 2);
 	Canvas.DrawRect(PlayerStatusIconSize * FriendlyHudScale,PlayerStatusIconSize * FriendlyHudScale,HealthIconTex);
 }
+
 simulated function DrawPetInfo()
 {
 	local float X,Y,Sc,XL,YL,YS;
@@ -1110,6 +1131,7 @@ simulated function SearchInventoryForNewItem()
 	}
 	bLoadedInitItems = true;
 }
+
 simulated final function string RarityStr(byte R)
 {
 	switch (R)

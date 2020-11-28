@@ -14,6 +14,7 @@ function InitMenu()
 	Super.InitMenu();
 	bClickable = !bDisabled;
 }
+
 function MouseClick(bool bRight)
 {
 	if (!bDisabled)
@@ -22,6 +23,7 @@ function MouseClick(bool bRight)
 		bPressedDown = true;
 	}
 }
+
 function MouseRelease(bool bRight)
 {
 	if (!bDisabled && PressedDown[byte(bRight)]==1)
@@ -31,6 +33,7 @@ function MouseRelease(bool bRight)
 		HandleMouseClick(bRight);
 	}
 }
+
 function MouseLeave()
 {
 	Super.MouseLeave();
@@ -40,6 +43,7 @@ function MouseLeave()
 	PressedDown[1] = 0;
 	bPressedDown = false;
 }
+
 function MouseEnter()
 {
 	Super.MouseEnter();
@@ -74,6 +78,7 @@ function NotifyMousePaused()
 		ToolTipItem.GetInputFocus();
 	}
 }
+
 final function ChangeToolTip(string S)
 {
 	if (ToolTipItem!=None)
