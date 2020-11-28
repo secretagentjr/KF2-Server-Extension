@@ -11,20 +11,20 @@ simulated function TriggerExplosion(Vector HitLocation, Vector HitNormal, Actor 
 	local byte i;
 	local KFProj_MedicGrenade P;
 
-	if(bHasExploded)
+	if (bHasExploded)
 		return;
-	if(InstigatorController==None && WorldInfo.NetMode!=NM_Client) // Prevent Team-Kill.
+	if (InstigatorController==None && WorldInfo.NetMode!=NM_Client) // Prevent Team-Kill.
 	{
 		Destroy();
 		return;
 	}
 	Super.TriggerExplosion(HitLocation,HitNormal,HitActor);
-	if(WorldInfo.NetMode!=NM_Client)
+	if (WorldInfo.NetMode!=NM_Client)
 	{
-		for(i=0; i<NumClusters; ++i)
+		for (i=0; i<NumClusters; ++i)
 		{
 			P = Spawn(class'KFProj_MedicGrenade',,,Location);
-			if(P!=None)
+			if (P!=None)
 			{
 				P.InstigatorController = InstigatorController;
 				P.Init(VRand());
@@ -40,7 +40,7 @@ simulated function Destroyed()
 	local vector HitLocation, HitNormal;
 
 	// Final Failsafe check for explosion effect
-	if(!bHasExploded && WorldInfo.NetMode==NM_Client)
+	if (!bHasExploded && WorldInfo.NetMode==NM_Client)
 	{
 		GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
 		TriggerExplosion(HitLocation, HitNormal, HitActor);

@@ -22,7 +22,7 @@ function SetPerkFilterData(byte FilterIndex)
 			SetInt("selectedIndex", i);
 
 			// Set the title of this filter based on either the perk or the off perk string
-			if(FilterIndex < PrM.UserPerks.Length)
+			if (FilterIndex < PrM.UserPerks.Length)
 			{
 				SetString("filterText", PrM.UserPerks[FilterIndex].PerkName);
 			}

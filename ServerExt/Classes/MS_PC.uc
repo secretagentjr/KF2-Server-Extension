@@ -14,14 +14,14 @@ simulated function HandleNetworkError(bool bConnectionLost)
 
 event PlayerTick(float DeltaTime)
 {
-	if(ConnectionCounter<3 && ++ConnectionCounter==3)
+	if (ConnectionCounter<3 && ++ConnectionCounter==3)
 	{
-		if(TravelData.PendingURL!="")
+		if (TravelData.PendingURL!="")
 		{
 			MS_HUD(myHUD).ShowProgressMsg("Connecting to "$TravelData.PendingURL);
 			ConsoleCommand("Open "$TravelData.PendingURL);
 		}
-		if(TravelData.PendingSong!=None)
+		if (TravelData.PendingSong!=None)
 			StartMusicTrack(TravelData.PendingSong);
 
 		// Reset all cached data.
@@ -35,14 +35,14 @@ simulated final function StartMusicTrack(SoundCue Music)
 {
 	local AudioComponent A;
 
-	if(WorldInfo.MusicComp!=None)
+	if (WorldInfo.MusicComp!=None)
 	{
 		WorldInfo.MusicComp.FadeOut(WorldInfo.CurrentMusicTrack.FadeOutTime,WorldInfo.CurrentMusicTrack.FadeOutVolumeLevel);
 		WorldInfo.MusicComp = None;
 	}
 	Music.SoundClass = 'Music'; // Force music group for this.
 	A = WorldInfo.CreateAudioComponent(Music,false,false,false,,false);
-	if(A!=None)
+	if (A!=None)
 	{
 		// update the new component with the correct settings
 		A.bAutoDestroy = true;
@@ -60,7 +60,7 @@ simulated final function StartMusicTrack(SoundCue Music)
 
 final function AbortConnection()
 {
-	if(bConnectionFailed)
+	if (bConnectionFailed)
 		HandleNetworkError(false);
 	else
 	{
@@ -73,9 +73,9 @@ reliable client event TeamMessage(PlayerReplicationInfo PRI, coerce string S, na
 
 reliable client event bool ShowConnectionProgressPopup(EProgressMessageType ProgressType, string ProgressTitle, string ProgressDescription, bool SuppressPasswordRetry = false)
 {
-	if(bConnectionFailed)
+	if (bConnectionFailed)
 		return false;
-	switch(ProgressType)
+	switch (ProgressType)
 	{
 	case PMT_ConnectionFailure:
 	case PMT_PeerConnectionFailure:
@@ -93,7 +93,7 @@ reliable client event bool ShowConnectionProgressPopup(EProgressMessageType Prog
 
 exec function CustomStartFire(optional byte FireModeNum)
 {
-	if(!MS_HUD(myHUD).ActiveGame.bGameStarted)
+	if (!MS_HUD(myHUD).ActiveGame.bGameStarted)
 		MS_HUD(myHUD).ActiveGame.StartGame();
 }
 

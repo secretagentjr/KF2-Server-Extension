@@ -4,13 +4,13 @@ var array<float> AtkRates;
 
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if(ExtHumanPawn(Player)!=None)
+	if (ExtHumanPawn(Player)!=None)
 		ExtHumanPawn(Player).bMovesFastInZedTime = true;
 	Ext_PerkBerserker(Perk).ZedTimeMeleeAtkRate = 1.f/Default.AtkRates[Level-1];
 }
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if(ExtHumanPawn(Player)!=None)
+	if (ExtHumanPawn(Player)!=None)
 		ExtHumanPawn(Player).bMovesFastInZedTime = false;
 	Ext_PerkBerserker(Perk).ZedTimeMeleeAtkRate = 1.f;
 }

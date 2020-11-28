@@ -6,7 +6,7 @@ var() bool bForceUniform,bChecked;
 function UpdateSizes()
 {
 	Super.UpdateSizes();
-	if(bForceUniform)
+	if (bForceUniform)
 		XSize = (YSize*InputPos[3]) / InputPos[2];
 }
 
@@ -18,7 +18,7 @@ function DrawMenu()
 function HandleMouseClick(bool bRight)
 {
 	bChecked = !bChecked;
-	if(bChecked)
+	if (bChecked)
 		PlayMenuSound(MN_ClickCheckboxOn);
 	else PlayMenuSound(MN_ClickCheckboxOff);
 	OnCheckChange(Self);

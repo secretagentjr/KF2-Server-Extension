@@ -12,22 +12,22 @@ replication
 simulated function ModifyMeleeAttackSpeed(out float InDuration)
 {
 	InDuration *= Modifiers[4];
-	if(ZedTimeMeleeAtkRate<1.f && WorldInfo.TimeDilation<1.f)
+	if (ZedTimeMeleeAtkRate<1.f && WorldInfo.TimeDilation<1.f)
 		InDuration *= ZedTimeMeleeAtkRate;
 }
 simulated function ModifyRateOfFire(out float InRate, KFWeapon KFW)
 {
-	if(IsWeaponOnPerk(KFW))
+	if (IsWeaponOnPerk(KFW))
 	{
 		InRate *= Modifiers[4];
-		if(ZedTimeMeleeAtkRate<1.f && WorldInfo.TimeDilation<1.f)
+		if (ZedTimeMeleeAtkRate<1.f && WorldInfo.TimeDilation<1.f)
 			InRate *= ZedTimeMeleeAtkRate;
 	}
 }
 
 function PlayerKilled(KFPawn_Monster Victim, class<DamageType> DT)
 {
-	if(VampRegenRate>0 && PlayerOwner.Pawn!=None && PlayerOwner.Pawn.Health>0 && class<KFDamageType>(DT)!=None && class<KFDamageType>(DT).Default.ModifierPerkList.Find(BasePerk)>=0)
+	if (VampRegenRate>0 && PlayerOwner.Pawn!=None && PlayerOwner.Pawn.Health>0 && class<KFDamageType>(DT)!=None && class<KFDamageType>(DT).Default.ModifierPerkList.Find(BasePerk)>=0)
 		PlayerOwner.Pawn.HealDamage(Max(PlayerOwner.Pawn.HealthMax*VampRegenRate,1), PlayerOwner, class'KFDT_Healing', false, false);
 }
 

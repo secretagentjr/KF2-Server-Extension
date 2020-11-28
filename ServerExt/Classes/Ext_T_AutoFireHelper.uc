@@ -15,13 +15,13 @@ replication
 function PostBeginPlay()
 {
 	PawnOwner = Pawn(Owner);
-	if(PawnOwner==None)
+	if (PawnOwner==None)
 		Destroy();
 	else SetTimer(0.5+FRand()*0.4,true);
 }
 function Timer()
 {
-	if(PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.InvManager==None)
+	if (PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.InvManager==None)
 		Destroy();
 }
 simulated function Tick(float Delta)
@@ -34,20 +34,20 @@ simulated function Tick(float Delta)
 		return;
 	
 	// Find local playercontroller.
-	if(LocalPC==None)
+	if (LocalPC==None)
 	{
 		LocalPC = PlayerController(PawnOwner.Controller);
-		if(LocalPC==None)
+		if (LocalPC==None)
 			return;
 		bNetworkOwner = (LocalPlayer(LocalPC.Player)!=None);
 	}
-	if(!bNetworkOwner)
+	if (!bNetworkOwner)
 		return;
 
 	// Force always to pending fire.
-	if(LocalPC.bFire!=0 && !PawnOwner.InvManager.IsPendingFire(None,0))
+	if (LocalPC.bFire!=0 && !PawnOwner.InvManager.IsPendingFire(None,0))
 		PawnOwner.Weapon.StartFire(0);
-	else if(LocalPC.bAltFire!=0 && !PawnOwner.InvManager.IsPendingFire(None,1))
+	else if (LocalPC.bAltFire!=0 && !PawnOwner.InvManager.IsPendingFire(None,1))
 		PawnOwner.Weapon.StartFire(1);
 }
 

@@ -29,7 +29,7 @@ simulated function UpdateWeaponGroupOnHUD(byte GroupIndex)
 	for (i = 0; i < WeaponsList.Length; i++)
 	{
 		Index = TraderItems.SaleItems.Find('ClassName', WeaponsList[i].Class.Name);
-		if(Index != -1)
+		if (Index != -1)
 			WPGroup[i] = TraderItems.SaleItems[Index].WeaponDef;
 	}
 
@@ -52,7 +52,7 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
 	{
 		TempObj = CreateObject("Object");
 
-		if(WeaponGroup[i] != None)
+		if (WeaponGroup[i] != None)
 		{
 			TempObj.SetString("weaponName", WeaponGroup[i].static.GetItemLocalization("ItemName"));
 			TempObj.SetString("texturePath", "img://"$WeaponGroup[i].static.GetImagePath());
@@ -69,7 +69,7 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
 		//secondary ammo shenanigans
 		TempObj.SetBool("bUsesSecondaryAmmo", WeaponList[i].UsesSecondaryAmmo()&&WeaponList[i].bCanRefillSecondaryAmmo);
 		TempObj.SetBool("bEnabled", WeaponList[i].HasAnyAmmo());
-		if(WeaponList[i].UsesSecondaryAmmo() && WeaponList[i].bCanRefillSecondaryAmmo)
+		if (WeaponList[i].UsesSecondaryAmmo() && WeaponList[i].bCanRefillSecondaryAmmo)
 		{
 			TempObj.SetBool("bCanRefillSecondaryAmmo", WeaponList[i].SpareAmmoCapacity[1] > 0);
 			TempObj.SetInt("secondaryAmmoCount", WeaponList[i].AmmoCount[1]);

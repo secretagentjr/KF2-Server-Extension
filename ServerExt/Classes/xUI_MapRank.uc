@@ -35,7 +35,7 @@ function CloseMenu()
 
 function ButtonClicked(KFGUI_Button Sender)
 {
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Yes':
 		RepInfo.ServerRankMap(true);

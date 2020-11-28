@@ -26,13 +26,13 @@ simulated static function bool AllowedForAllPerks()
 
 simulated function ConsumeAmmo(byte FireModeNum)
 {
-	if(FireModeNum == ALTFIRE_FIREMODE)
+	if (FireModeNum == ALTFIRE_FIREMODE)
 		super.ConsumeAmmo(FireModeNum);
 }
 
 simulated static event class<KFPerk> GetWeaponPerkClass(class<KFPerk> InstigatorPerkClass)
 {
-	if(InstigatorPerkClass != None)
+	if (InstigatorPerkClass != None)
 		return InstigatorPerkClass;
 
 	return default.AssociatedPerkClasses[0];
@@ -40,7 +40,7 @@ simulated static event class<KFPerk> GetWeaponPerkClass(class<KFPerk> Instigator
 
 simulated function KFPerk GetPerk()
 {
-	if(KFPlayer != None)
+	if (KFPlayer != None)
 		return KFPlayer.GetPerk();
 	return super.GetPerk();
 }

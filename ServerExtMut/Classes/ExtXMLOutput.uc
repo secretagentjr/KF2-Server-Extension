@@ -19,7 +19,7 @@ function WriteValue(string Key, string Value)
 }
 function StartIntendent(string Section, optional string Key, optional string Value)
 {
-	if(Key!="")
+	if (Key!="")
 		Logf(Intendent$"-<"$Section$" "$Key$"=\""$Value$"\">");
 	else Logf(Intendent$"-<"$Section$">");
 	Intendent $= Chr(9);

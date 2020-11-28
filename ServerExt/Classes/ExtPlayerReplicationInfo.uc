@@ -81,11 +81,11 @@ simulated function PostBeginPlay()
 
 	Super.PostBeginPlay();
 	SetTimer(1,true,'TickPT');
-	if(WorldInfo.NetMode!=NM_DedicatedServer)
+	if (WorldInfo.NetMode!=NM_DedicatedServer)
 	{
 		HUDPerkColor = PickPerkColor();
 		PC = GetALocalPlayerController();
-		if(PC!=None)
+		if (PC!=None)
 			LocalOwnerPRI = ExtPlayerReplicationInfo(PC.PlayerReplicationInfo);
 	}
 	else LocalOwnerPRI = Self; // Dedicated server can use self PRI.
@@ -108,7 +108,7 @@ simulated function ClientInitialize(Controller C)
 
 	Super.ClientInitialize(C);
 	
-	if(WorldInfo.NetMode!=NM_DedicatedServer)
+	if (WorldInfo.NetMode!=NM_DedicatedServer)
 	{
 		LocalOwnerPRI = Self;
 
@@ -125,7 +125,7 @@ simulated function TickPT()
 
 simulated event ReplicatedEvent(name VarName)
 {
-	switch(VarName)
+	switch (VarName)
 	{
 	case 'RepLevelProgress':
 		HUDPerkColor = PickPerkColor();
@@ -163,7 +163,7 @@ function OverrideWith(PlayerReplicationInfo PRI)
 }
 simulated final function UpdateNameTag()
 {
-	if(NameTag!="")
+	if (NameTag!="")
 		TaggedPlayerName = "["$NameTag$"] "$PlayerName;
 	else TaggedPlayerName = PlayerName;
 }
@@ -177,7 +177,7 @@ final function SetLevelProgress(int CurLevel, int CurPrest, int MinLevel, int Ma
 	RepLevelProgress = V;
 	bForceNetUpdate = true;
 
-	if(WorldInfo.NetMode!=NM_DedicatedServer)
+	if (WorldInfo.NetMode!=NM_DedicatedServer)
 		HUDPerkColor = PickPerkColor();
 }
 simulated final function string GetPerkLevelStr()
@@ -189,20 +189,20 @@ simulated final function color PickPerkColor()
 	local float P;
 	local byte i;
 	
-	if(RepLevelProgress==0)
+	if (RepLevelProgress==0)
 		return MakeColor(255,255,255,255);
 	P = float(RepLevelProgress) / 255.f;
-	if(P<0.25f) // White - Blue
+	if (P<0.25f) // White - Blue
 	{
 		i = 255 - (P*1020.f);
 		return MakeColor(i,i,255,255);
 	}
-	if(P<0.5f) // Blue - Green
+	if (P<0.5f) // Blue - Green
 	{
 		i = ((P-0.25f)*1020.f);
 		return MakeColor(0,i,255-i,255);
 	}
-	if(P<0.75f) // Green - Red
+	if (P<0.75f) // Green - Red
 	{
 		i = ((P-0.5f)*1020.f);
 		return MakeColor(i,255-i,0,255);
@@ -231,10 +231,10 @@ Delegate bool OnRepNextItem(ExtPlayerReplicationInfo PRI, int RepIndex)
 simulated reliable client function ClientAddTraderItem(int Index, FCustomTraderItem Item)
 {
 	// Make sure to not execute on server.
-	if(WorldInfo.NetMode!=NM_Client && (PlayerController(Owner)==None || LocalPlayer(PlayerController(Owner).Player)==None))
+	if (WorldInfo.NetMode!=NM_Client && (PlayerController(Owner)==None || LocalPlayer(PlayerController(Owner).Player)==None))
 		return;
 
-	if(CustomList==None)
+	if (CustomList==None)
 	{
 		CustomList = CreateNewList();
 		RecheckGRI();
@@ -259,12 +259,12 @@ simulated static final function SetWeaponInfo(bool bDedicated, int Index, FCusto
 	local array<STraderItemWeaponStats> S;
 	local int i;
 
-	if(List.SaleItems.Length<=Index)
+	if (List.SaleItems.Length<=Index)
 		List.SaleItems.Length = Index+1;
 
 	List.SaleItems[Index].WeaponDef = Item.WeaponDef;
 	List.SaleItems[Index].ClassName = Item.WeaponClass.Name;
-	if(class<KFWeap_DualBase>(Item.WeaponClass)!=None && class<KFWeap_DualBase>(Item.WeaponClass).Default.SingleClass!=None)
+	if (class<KFWeap_DualBase>(Item.WeaponClass)!=None && class<KFWeap_DualBase>(Item.WeaponClass).Default.SingleClass!=None)
 		List.SaleItems[Index].SingleClassName = class<KFWeap_DualBase>(Item.WeaponClass).Default.SingleClass.Name;
 	else List.SaleItems[Index].SingleClassName = '';
 	List.SaleItems[Index].DualClassName = Item.WeaponClass.Default.DualClass!=None ? Item.WeaponClass.Default.DualClass.Name : '';
@@ -278,13 +278,13 @@ simulated static final function SetWeaponInfo(bool bDedicated, int Index, FCusto
 
 	List.SaleItems[Index].InitialSecondaryAmmo = Item.WeaponClass.Default.InitialSpareMags[1];
 	List.SaleItems[Index].WeaponUpgradeDmgMultiplier[0] = 1.0;
-	for(i = 0;i<Min(Item.WeaponClass.Default.WeaponUpgrades.Length, 5);i++)
+	for (i = 0;i<Min(Item.WeaponClass.Default.WeaponUpgrades.Length, 5);i++)
 	{
 		List.SaleItems[Index].WeaponUpgradeWeight[i+1] = Item.WeaponClass.Static.GetUpgradeStatAdd(EWUS_Weight, i+1);
 		List.SaleItems[Index].WeaponUpgradeDmgMultiplier[i+1] = Item.WeaponClass.Static.GetUpgradeStatScale(EWUS_Damage0, i+1);
 	}
 
-	if(!bDedicated)
+	if (!bDedicated)
 	{
 		List.SaleItems[Index].SecondaryAmmoImagePath = Item.WeaponClass.Default.SecondaryAmmoTexture!=None ? PathName(Item.WeaponClass.Default.SecondaryAmmoTexture) : "UI_SecondaryAmmo_TEX.GasTank";
 		List.SaleItems[Index].TraderFilter = Item.WeaponClass.Static.GetTraderFilter();
@@ -299,14 +299,14 @@ simulated function RecheckGRI()
 {
 	local ExtPlayerController PC;
 
-	if(KFGameReplicationInfo(WorldInfo.GRI)==None)
+	if (KFGameReplicationInfo(WorldInfo.GRI)==None)
 		SetTimer(0.1,false,'RecheckGRI');
 	else
 	{
 		KFGameReplicationInfo(WorldInfo.GRI).TraderItems = CustomList;
 		foreach LocalPlayerControllers(class'ExtPlayerController',PC)
 		{
-			if(PC.PurchaseHelper!=None)
+			if (PC.PurchaseHelper!=None)
 			{
 				PC.PurchaseHelper.TraderItems = CustomList;
 			}
@@ -320,7 +320,7 @@ simulated final function bool ShowAdminName()
 }
 simulated function string GetAdminName()
 {
-	switch(AdminType)
+	switch (AdminType)
 	{
 	case 0:
 		return "Super Admin";
@@ -337,7 +337,7 @@ simulated function string GetAdminName()
 }
 simulated function string GetAdminNameAbr()
 {
-	switch(AdminType)
+	switch (AdminType)
 	{
 	case 0:
 		return "S";
@@ -354,7 +354,7 @@ simulated function string GetAdminNameAbr()
 }
 simulated function string GetAdminColor()
 {
-	switch(AdminType)
+	switch (AdminType)
 	{
 	case 0:
 		return "FF6600";
@@ -371,7 +371,7 @@ simulated function string GetAdminColor()
 }
 simulated function color GetAdminColorC()
 {
-	switch(AdminType)
+	switch (AdminType)
 	{
 	case 0:
 		return MakeColor(255,102,0,255);
@@ -406,15 +406,15 @@ simulated final function string GetDesc()
 {
 	local string S;
 	
-	if((FixedData & 1)!=0)
+	if ((FixedData & 1)!=0)
 		S = "A.";
-	if((FixedData & 2)!=0)
+	if ((FixedData & 2)!=0)
 		S $= "WF.";
-	if((FixedData & 4)!=0)
+	if ((FixedData & 4)!=0)
 		S $= "G.";
-	if((FixedData & 8)!=0)
+	if ((FixedData & 8)!=0)
 		S $= "NW.";
-	if((FixedData & 16)!=0)
+	if ((FixedData & 16)!=0)
 		S $= "WA.";
 	return S;
 }
@@ -424,12 +424,12 @@ simulated final function bool LoadPlayerCharacter(byte CharIndex, out FMyCustomC
 {
 	local KFCharacterInfo_Human C;
 
-	if(CharIndex>=(CharacterArchetypes.Length+CustomCharList.Length))
+	if (CharIndex>=(CharacterArchetypes.Length+CustomCharList.Length))
 		return false;
 
-	if(SaveDataObjects.Length<=CharIndex)
+	if (SaveDataObjects.Length<=CharIndex)
 		SaveDataObjects.Length = CharIndex+1;
-	if(SaveDataObjects[CharIndex]==None)
+	if (SaveDataObjects[CharIndex]==None)
 	{
 		C = (CharIndex<CharacterArchetypes.Length) ? CharacterArchetypes[CharIndex] : CustomCharList[CharIndex-CharacterArchetypes.Length].Char;
 		SaveDataObjects[CharIndex] = new(None,PathName(C)) class'ExtCharDataInfo';
@@ -441,12 +441,12 @@ simulated final function bool SavePlayerCharacter()
 {
 	local KFCharacterInfo_Human C;
 
-	if(CustomCharacter.CharacterIndex>=(CharacterArchetypes.Length+CustomCharList.Length))
+	if (CustomCharacter.CharacterIndex>=(CharacterArchetypes.Length+CustomCharList.Length))
 		return false;
 
-	if(SaveDataObjects.Length<=CustomCharacter.CharacterIndex)
+	if (SaveDataObjects.Length<=CustomCharacter.CharacterIndex)
 		SaveDataObjects.Length = CustomCharacter.CharacterIndex+1;
-	if(SaveDataObjects[CustomCharacter.CharacterIndex]==None)
+	if (SaveDataObjects[CustomCharacter.CharacterIndex]==None)
 	{
 		C = (CustomCharacter.CharacterIndex<CharacterArchetypes.Length) ? CharacterArchetypes[CustomCharacter.CharacterIndex] : CustomCharList[CustomCharacter.CharacterIndex-CharacterArchetypes.Length].Char;
 		SaveDataObjects[CustomCharacter.CharacterIndex] = new(None,PathName(C)) class'ExtCharDataInfo';
@@ -459,34 +459,34 @@ simulated function ChangeCharacter(byte CharIndex, optional bool bFirstSet)
 	local FMyCustomChar NewChar;
 	local byte i;
 
-	if(CharIndex>=(CharacterArchetypes.Length+CustomCharList.Length) || IsClientCharLocked(CharIndex))
+	if (CharIndex>=(CharacterArchetypes.Length+CustomCharList.Length) || IsClientCharLocked(CharIndex))
 		CharIndex = 0;
 
-	if(bFirstSet && RepCustomizationInfo.CharacterIndex==CharIndex)
+	if (bFirstSet && RepCustomizationInfo.CharacterIndex==CharIndex)
 	{
 		// Copy properties from default character info.
 		NewChar.HeadMeshIndex = RepCustomizationInfo.HeadMeshIndex;
 		NewChar.HeadSkinIndex = RepCustomizationInfo.HeadSkinIndex;
 		NewChar.BodyMeshIndex = RepCustomizationInfo.BodyMeshIndex;
 		NewChar.BodySkinIndex = RepCustomizationInfo.BodySkinIndex;
-		for(i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
+		for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 		{
 			NewChar.AttachmentMeshIndices[i] = RepCustomizationInfo.AttachmentMeshIndices[i];
 			NewChar.AttachmentSkinIndices[i] = RepCustomizationInfo.AttachmentSkinIndices[i];
 		}
 	}
-	if(LoadPlayerCharacter(CharIndex,NewChar))
+	if (LoadPlayerCharacter(CharIndex,NewChar))
 	{
 		NewChar.CharacterIndex = CharIndex;
 		CustomCharacter = NewChar;
 		ServerSetCharacterX(NewChar);
-		if(WorldInfo.NetMode==NM_Client)
+		if (WorldInfo.NetMode==NM_Client)
 			CharacterCustomizationChanged();
 	}
 }
 simulated function UpdateCustomization(byte Type, byte MeshIndex, byte SkinIndex, optional byte SlotIndex)
 {
-	switch(Type)
+	switch (Type)
 	{
 	case CO_Head:
 		CustomCharacter.HeadMeshIndex = MeshIndex;
@@ -503,26 +503,26 @@ simulated function UpdateCustomization(byte Type, byte MeshIndex, byte SkinIndex
 	}
 	SavePlayerCharacter();
 	ServerSetCharacterX(CustomCharacter);
-	if(WorldInfo.NetMode==NM_Client)
+	if (WorldInfo.NetMode==NM_Client)
 		CharacterCustomizationChanged();
 }
 simulated final function RemoveAttachments()
 {
 	local byte i;
 
-	for(i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
+	for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 	{
 		CustomCharacter.AttachmentMeshIndices[i] = `CLEARED_ATTACHMENT_INDEX;
 		CustomCharacter.AttachmentSkinIndices[i] = 0;
 	}
 	SavePlayerCharacter();
 	ServerSetCharacterX(CustomCharacter);
-	if(WorldInfo.NetMode==NM_Client)
+	if (WorldInfo.NetMode==NM_Client)
 		CharacterCustomizationChanged();
 }
 simulated function ClearCharacterAttachment(int AttachmentIndex)
 {
-	if(UsesCustomChar())
+	if (UsesCustomChar())
 	{
 		CustomCharacter.AttachmentMeshIndices[AttachmentIndex] = `CLEARED_ATTACHMENT_INDEX;
 		CustomCharacter.AttachmentSkinIndices[AttachmentIndex] = 0;
@@ -532,7 +532,7 @@ simulated function ClearCharacterAttachment(int AttachmentIndex)
 
 reliable server final function ServerSetCharacterX(FMyCustomChar NewMeshInfo)
 {
-	if(NewMeshInfo.CharacterIndex>=(CharacterArchetypes.Length+CustomCharList.Length) || IsClientCharLocked(NewMeshInfo.CharacterIndex))
+	if (NewMeshInfo.CharacterIndex>=(CharacterArchetypes.Length+CustomCharList.Length) || IsClientCharLocked(NewMeshInfo.CharacterIndex))
 		return;
 
 	CustomCharacter = NewMeshInfo;
@@ -544,7 +544,7 @@ reliable server final function ServerSetCharacterX(FMyCustomChar NewMeshInfo)
 }
 simulated final function bool IsClientCharLocked(byte Index)
 {
-	if(Index<CharacterArchetypes.Length)
+	if (Index<CharacterArchetypes.Length)
 		return false;
 	Index-=CharacterArchetypes.Length;
 	return (Index<CustomCharList.Length && CustomCharList[Index].bLock && !ShowAdminName());
@@ -552,20 +552,20 @@ simulated final function bool IsClientCharLocked(byte Index)
 
 simulated reliable client function ReceivedCharacter(byte Index, FCustomCharEntry C)
 {
-	if(WorldInfo.NetMode==NM_DedicatedServer)
+	if (WorldInfo.NetMode==NM_DedicatedServer)
 		return;
 
-	if(CustomCharList.Length<=Index)
+	if (CustomCharList.Length<=Index)
 		CustomCharList.Length = Index+1;
 	CustomCharList[Index] = C;
 }
 
 simulated reliable client function AllCharReceived()
 {
-	if(WorldInfo.NetMode==NM_DedicatedServer)
+	if (WorldInfo.NetMode==NM_DedicatedServer)
 		return;
 
-	if(!bClientInitChars)
+	if (!bClientInitChars)
 	{
 		OnCharListDone();
 		NotifyCharListDone();
@@ -581,16 +581,16 @@ simulated final function NotifyCharListDone()
 	foreach WorldInfo.AllPawns(class'KFPawn_Human', KFP)
 	{
 		EPRI = ExtPlayerReplicationInfo(KFP.PlayerReplicationInfo);
-		if(EPRI!=None)
+		if (EPRI!=None)
 		{
 			NewCharArch = EPRI.GetSelectedArch();
 
-			if(NewCharArch != KFP.CharacterArch)
+			if (NewCharArch != KFP.CharacterArch)
 			{
 				// selected a new character
 				KFP.SetCharacterArch(NewCharArch);
 			}
-			else if(WorldInfo.NetMode != NM_DedicatedServer)
+			else if (WorldInfo.NetMode != NM_DedicatedServer)
 			{
 				// refresh cosmetics only
 				class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch(NewCharArch, KFP, EPRI);
@@ -604,7 +604,7 @@ simulated delegate OnCharListDone();
 // Player has a server specific setting for a character selected.
 simulated final function bool UsesCustomChar()
 {
-	if(LocalOwnerPRI==None)
+	if (LocalOwnerPRI==None)
 		return false; // Not yet init on client.
 	return CustomCharacter.CharacterIndex<(LocalOwnerPRI.CustomCharList.Length+CharacterArchetypes.Length);
 }
@@ -612,13 +612,13 @@ simulated final function bool UsesCustomChar()
 // Client uses a server specific custom character.
 simulated final function bool ReallyUsingCustomChar()
 {
-	if(!UsesCustomChar())
+	if (!UsesCustomChar())
 		return false;
 	return (CustomCharacter.CharacterIndex>=CharacterArchetypes.Length);
 }
 simulated final function KFCharacterInfo_Human GetSelectedArch()
 {
-	if(UsesCustomChar())
+	if (UsesCustomChar())
 		return (CustomCharacter.CharacterIndex<CharacterArchetypes.Length) ? CharacterArchetypes[CustomCharacter.CharacterIndex] : LocalOwnerPRI.CustomCharList[CustomCharacter.CharacterIndex-CharacterArchetypes.Length].Char;
 	return CharacterArchetypes[RepCustomizationInfo.CharacterIndex];
 }
@@ -630,16 +630,16 @@ simulated event CharacterCustomizationChanged()
 
 	foreach WorldInfo.AllPawns(class'KFPawn_Human', KFP)
 	{
-		if(KFP.PlayerReplicationInfo == self || (KFP.DrivenVehicle != None && KFP.DrivenVehicle.PlayerReplicationInfo == self))
+		if (KFP.PlayerReplicationInfo == self || (KFP.DrivenVehicle != None && KFP.DrivenVehicle.PlayerReplicationInfo == self))
 		{
 			NewCharArch = GetSelectedArch();
 
-			if(NewCharArch != KFP.CharacterArch)
+			if (NewCharArch != KFP.CharacterArch)
 			{
 				// selected a new character
 				KFP.SetCharacterArch(NewCharArch);
 			}
-			else if(WorldInfo.NetMode != NM_DedicatedServer)
+			else if (WorldInfo.NetMode != NM_DedicatedServer)
 			{
 				// refresh cosmetics only
 				class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch(NewCharArch, KFP, self);
@@ -655,10 +655,10 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 	local string S;
 
 	// Write the name of custom character.
-	if(UsesCustomChar())
+	if (UsesCustomChar())
 		S = string(GetSelectedArch().Name);
 	Data.SaveStr(S);
-	if(S=="")
+	if (S=="")
 		return;
 	
 	// Write selected accessories.
@@ -668,9 +668,9 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 	Data.SaveInt(CustomCharacter.BodySkinIndex);
 	
 	c = 0;
-	for(i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
+	for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 	{
-		if(CustomCharacter.AttachmentMeshIndices[i]!=`CLEARED_ATTACHMENT_INDEX)
+		if (CustomCharacter.AttachmentMeshIndices[i]!=`CLEARED_ATTACHMENT_INDEX)
 			++c;
 	}
 
@@ -678,9 +678,9 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 	Data.SaveInt(c);
 	
 	// Write attachments.
-	for(i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
+	for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 	{
-		if(CustomCharacter.AttachmentMeshIndices[i]!=`CLEARED_ATTACHMENT_INDEX)
+		if (CustomCharacter.AttachmentMeshIndices[i]!=`CLEARED_ATTACHMENT_INDEX)
 		{
 			Data.SaveInt(i);
 			Data.SaveInt(CustomCharacter.AttachmentMeshIndices[i]);
@@ -693,30 +693,30 @@ final function LoadCustomCharacter(ExtSaveDataBase Data)
 	local string S;
 	local byte i,n,j;
 
-	if(Data.GetArVer()>=2)
+	if (Data.GetArVer()>=2)
 		S = Data.ReadStr();
-	if(S=="") // Stock skin.
+	if (S=="") // Stock skin.
 		return;
 
-	for(i=0; i<CharacterArchetypes.Length; ++i)
+	for (i=0; i<CharacterArchetypes.Length; ++i)
 	{
-		if(string(CharacterArchetypes[i].Name)~=S)
+		if (string(CharacterArchetypes[i].Name)~=S)
 			break;
 	}
 	
-	if(i==CharacterArchetypes.Length)
+	if (i==CharacterArchetypes.Length)
 	{
-		for(i=0; i<CustomCharList.Length; ++i)
+		for (i=0; i<CustomCharList.Length; ++i)
 		{
-			if(string(CustomCharList[i].Char.Name)~=S)
+			if (string(CustomCharList[i].Char.Name)~=S)
 				break;
 		}
-		if(i==CharacterArchetypes.Length)
+		if (i==CharacterArchetypes.Length)
 		{
 			// Character not found = Skip data.
 			Data.SkipBytes(4);
 			n = Data.ReadInt();
-			for(i=0; i<n; ++i)
+			for (i=0; i<n; ++i)
 				Data.SkipBytes(3);
 			return;
 		}
@@ -730,7 +730,7 @@ final function LoadCustomCharacter(ExtSaveDataBase Data)
 	CustomCharacter.BodySkinIndex = Data.ReadInt();
 
 	n = Data.ReadInt();
-	for(i=0; i<n; ++i)
+	for (i=0; i<n; ++i)
 	{
 		j = Min(Data.ReadInt(),`MAX_COSMETIC_ATTACHMENTS-1);
 		CustomCharacter.AttachmentMeshIndices[j] = Data.ReadInt();
@@ -745,14 +745,14 @@ static final function DummyLoadChar(ExtSaveDataBase Data)
 	local string S;
 	local byte i,n;
 
-	if(Data.GetArVer()>=2)
+	if (Data.GetArVer()>=2)
 		S = Data.ReadStr();
-	if(S=="") // Stock skin.
+	if (S=="") // Stock skin.
 		return;
 
 	Data.SkipBytes(4);
 	n = Data.ReadInt();
-	for(i=0; i<n; ++i)
+	for (i=0; i<n; ++i)
 		Data.SkipBytes(3);
 }
 static final function DummySaveChar(ExtSaveDataBase Data)
@@ -762,7 +762,7 @@ static final function DummySaveChar(ExtSaveDataBase Data)
 
 simulated function Texture2D GetCurrentIconToDisplay()
 {
-	if(CurrentVoiceCommsRequest == VCT_NONE && ECurrentPerk != none)
+	if (CurrentVoiceCommsRequest == VCT_NONE && ECurrentPerk != none)
 	{
 		return ECurrentPerk.default.PerkIcon;
 	}
@@ -773,7 +773,7 @@ simulated function Texture2D GetCurrentIconToDisplay()
 // Set admin levels without having to hard-reference to this mod.
 event BeginState(Name N)
 {
-	switch(N)
+	switch (N)
 	{
 	case 'Global':
 		AdminType = 0;

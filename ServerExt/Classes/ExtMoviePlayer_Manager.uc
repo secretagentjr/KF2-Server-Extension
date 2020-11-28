@@ -11,7 +11,7 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 	{
 	case 'gearMenu':
 		PC = GetPC();
-		if(PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun)
+		if (PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun)
 			return true;
 		if (EGearMenu == none)
 		{
@@ -35,13 +35,13 @@ function LaunchMenus(optional bool bForceSkipLobby)
 	WidgetBinding.WidgetClass = class'ExtWidget_PartyInGame';
 	ManagerObject.SetBool("backgroundVisible", false);
 	ManagerObject.SetBool("IISMovieVisible", false);
-	if(bSkippedLobby)
+	if (bSkippedLobby)
 		CurrentBackgroundMovie.Stop();
 
 	WidgetBindings.AddItem(WidgetBinding);
 
 	// Load the platform-specific graphics options menu
-	switch(class'KFGameEngine'.static.GetPlatform())
+	switch (class'KFGameEngine'.static.GetPlatform())
 	{
 		case PLATFORM_PC_DX10:
 			WidgetBinding.WidgetName = 'optionsGraphicsMenu';
@@ -62,7 +62,7 @@ function LaunchMenus(optional bool bForceSkipLobby)
 	}
 
 	// do this stuff in case CheckSkipLobby failed
-	if(bForceSkipLobby)
+	if (bForceSkipLobby)
 	{
 		bAfterLobby = true;
 		CloseMenus(true);
@@ -77,10 +77,10 @@ function OpenMenu(byte NewMenuIndex, optional bool bShowWidgets = true)
 	
 	Super.OpenMenu(NewMenuIndex, bShowWidgets);
 	
-	if(bAfterLobby)
+	if (bAfterLobby)
 		return;
 	
-	if(NewMenuIndex == UI_Perks)
+	if (NewMenuIndex == UI_Perks)
 	{
 		PerksPage = GUIController.OpenMenu(class'ExtGUI_PerkSelectionPage');
 		SetMovieCanReceiveInput(false);
@@ -93,7 +93,7 @@ function CloseMenus(optional bool bForceClose=false)
 {
 	local KF2GUIController GUIController;
 	
-	if(PerksPage != None)
+	if (PerksPage != None)
 	{
 		GUIController = class'KF2GUIController'.Static.GetGUIController(GetPC());
 		GUIController.CloseMenu(class'ExtGUI_PerkSelectionPage');
@@ -106,7 +106,7 @@ function OnMenuOpen(name WidgetPath, KFGFxObject_Menu Widget)
 {
 	Super.OnMenuOpen(WidgetPath, Widget);
 	
-	if(!bAfterLobby && Widget == PerksMenu)
+	if (!bAfterLobby && Widget == PerksMenu)
 		PerksMenu.ActionScriptVoid("closeContainer");
 }
 

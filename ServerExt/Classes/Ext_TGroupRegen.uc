@@ -15,15 +15,15 @@ static function bool GroupLimited(Ext_PerkBase Perk, class<Ext_TraitBase> Trait)
 	local byte n;
 
 	n = GetMaxLimit(Perk);
-	for(i=0; i<Perk.PerkTraits.Length; ++i)
-		if(Perk.PerkTraits[i].CurrentLevel>0 && Perk.PerkTraits[i].TraitType!=Trait && Perk.PerkTraits[i].TraitType.Default.TraitGroup==Default.Class && --n==0)
+	for (i=0; i<Perk.PerkTraits.Length; ++i)
+		if (Perk.PerkTraits[i].CurrentLevel>0 && Perk.PerkTraits[i].TraitType!=Trait && Perk.PerkTraits[i].TraitType.Default.TraitGroup==Default.Class && --n==0)
 			return true;
 	return false;
 }
 
 static final function byte GetMaxLimit(Ext_PerkBase Perk)
 {
-	if(Perk.CurrentPrestige<1 || Perk.CurrentLevel<100)
+	if (Perk.CurrentPrestige<1 || Perk.CurrentLevel<100)
 		return 1;
 	return ((Perk.CurrentPrestige<5 || Perk.CurrentLevel<150) ? 2 : 3);
 }

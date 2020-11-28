@@ -8,17 +8,17 @@ function PreDraw()
 	local byte j;
 
 	ComputeCoords();
-	if(CurrentComponent<0 || CurrentComponent>=Components.Length)
+	if (CurrentComponent<0 || CurrentComponent>=Components.Length)
 		return;
 	Components[CurrentComponent].Canvas = Canvas;
-	for(j=0; j<4; ++j)
+	for (j=0; j<4; ++j)
 		Components[CurrentComponent].InputPos[j] = CompPos[j];
 	Components[CurrentComponent].PreDraw();
 }
 
 function bool CaptureMouse()
 {
-	if((CurrentComponent>=0 || CurrentComponent<Components.Length) && Components[CurrentComponent].CaptureMouse())
+	if ((CurrentComponent>=0 || CurrentComponent<Components.Length) && Components[CurrentComponent].CaptureMouse())
 	{
 		MouseArea = Components[CurrentComponent];
 		return true;
@@ -33,7 +33,7 @@ final function int GetSelectedPage()
 }
 final function name GetSelectedPageID()
 {
-	if(CurrentComponent<Components.Length)
+	if (CurrentComponent<Components.Length)
 		return Components[CurrentComponent].ID;
 	return '';
 }
@@ -41,11 +41,11 @@ final function bool SelectPageID(name PageID)
 {
 	local int i;
 	
-	if(Components[CurrentComponent].ID==PageID)
+	if (Components[CurrentComponent].ID==PageID)
 		return false;
 
-	for(i=0; i<Components.Length; ++i)
-		if(Components[i].ID==PageID)
+	for (i=0; i<Components.Length; ++i)
+		if (Components[i].ID==PageID)
 		{
 			Components[CurrentComponent].CloseMenu();
 			CurrentComponent = i;
@@ -56,10 +56,10 @@ final function bool SelectPageID(name PageID)
 }
 final function bool SelectPageIndex(int Num)
 {
-	if(CurrentComponent==Num)
+	if (CurrentComponent==Num)
 		return false;
 
-	if(Num>=0 && Num<Components.Length)
+	if (Num>=0 && Num<Components.Length)
 	{
 		Components[CurrentComponent].CloseMenu();
 		CurrentComponent = Num;
@@ -71,11 +71,11 @@ final function bool SelectPageIndex(int Num)
 
 function ShowMenu()
 {
-	if(CurrentComponent<Components.Length)
+	if (CurrentComponent<Components.Length)
 		Components[CurrentComponent].ShowMenu();
 }
 function CloseMenu()
 {
-	if(CurrentComponent<Components.Length)
+	if (CurrentComponent<Components.Length)
 		Components[CurrentComponent].CloseMenu();
 }

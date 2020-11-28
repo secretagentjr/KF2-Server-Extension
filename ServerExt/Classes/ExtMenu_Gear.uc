@@ -25,11 +25,11 @@ function InitCharacterMenu()
 {
 	ExtPRI = ExtPlayerReplicationInfo(GetPC().PlayerReplicationInfo);
 	
-	if(ExtPRI!=None && ExtPRI.bClientInitChars)
+	if (ExtPRI!=None && ExtPRI.bClientInitChars)
 		CharListRecieved();
-	else if(ExtPRI==None)
+	else if (ExtPRI==None)
 	{
-		if(GetPC().PlayerReplicationInfo!=None) // Faulty mod setup.
+		if (GetPC().PlayerReplicationInfo!=None) // Faulty mod setup.
 		{
 			bWaitingCharList = true;
 			return;
@@ -45,7 +45,7 @@ function InitCharacterMenu()
 
 event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 {	
-	switch(WidgetName)
+	switch (WidgetName)
 	{
 	case 'perkSelectionContainer':
 		if (PerkSelectionContainer == none)
@@ -64,7 +64,7 @@ function OnOpen()
 	local PlayerController PC;
 
 	PC = GetPC();
-	if(PC == none)
+	if (PC == none)
 		return;
 		
 	CheckForCustomizationPawn(PC);
@@ -82,10 +82,10 @@ function CheckForCustomizationPawn(PlayerController PC)
 {
 	local KFPlayerController KFPC;
 
-	if(PC.Pawn == None || (!PC.Pawn.IsAliveAndWell() && KFPawn_Customization(PC.Pawn) == None))
+	if (PC.Pawn == None || (!PC.Pawn.IsAliveAndWell() && KFPawn_Customization(PC.Pawn) == None))
 	{
 		KFPC = KFPlayerController(PC);
-		if(KFPC != None)
+		if (KFPC != None)
 		{
 			KFPC.SpawnMidGameCustomizationPawn();
 		}
@@ -157,7 +157,7 @@ function UpdateCharacterList()
 	bWaitingCharList = false;
 	ItemIndex = 0;
 	DataProvider = CreateArray();
-	for(i=0; i<ExtPRI.CharacterArchetypes.length; i++)
+	for (i=0; i<ExtPRI.CharacterArchetypes.length; i++)
 	{
 		SlotObject = CreateObject("Object");
 		SlotObject.SetInt("ItemIndex", i);
@@ -168,9 +168,9 @@ function UpdateCharacterList()
 		DataProvider.SetElementObject(ItemIndex, SlotObject);
 		ItemIndex++;
 	}
-	for(i=0; i<ExtPRI.CustomCharList.length; i++)
+	for (i=0; i<ExtPRI.CustomCharList.length; i++)
 	{
-		if(!ExtPRI.IsClientCharLocked(ExtPRI.CharacterArchetypes.length+i))
+		if (!ExtPRI.IsClientCharLocked(ExtPRI.CharacterArchetypes.length+i))
 		{
 			SlotObject = CreateObject("Object");
 			SlotObject.SetInt("ItemIndex", (ExtPRI.CharacterArchetypes.length+i));
@@ -188,7 +188,7 @@ function UpdateCharacterList()
 
 function UpdateGear()
 {
-	if(bWaitingCharList)
+	if (bWaitingCharList)
 		return;
 
 	CurrentCharInfo = ExtPRI.GetSelectedArch();
@@ -216,7 +216,7 @@ final function string GetMenuNameStr(string ObjName)
 	local int i;
 	
 	i = InStr(ObjName,".",true);
-	if(i!=-1)
+	if (i!=-1)
 		ObjName = Mid(ObjName,i+1);
 	return Repl(ObjName,"_"," ");
 }
@@ -236,7 +236,7 @@ function UpdateMeshList(string OutfitKey, string SkinKey, array<OutfitVariants> 
 		Outfit = Outfits[i];
 		
 		OutfitName = Localize(CharInfoPath, OutfitKey$i, class'KFGFxMenu_Gear'.Default.KFCharacterInfoString);
-		if(bIsCustomChar)
+		if (bIsCustomChar)
 			OutfitName = GetMenuNameStr(Outfit.MeshName);
 			
 		if (InStr(OutfitName, "?INT?") != -1)
@@ -247,7 +247,7 @@ function UpdateMeshList(string OutfitKey, string SkinKey, array<OutfitVariants> 
 		SlotObject.SetString("label", OutfitName);
 		SlotObject.SetBool("enabled", true);
 		FirstSkin = UpdateOutfitVariants(OutfitKey, SkinKey, Outfit.SkinVariations, i, SlotObject);
-		if(string(FirstSkin.UITexture) == "Bad")
+		if (string(FirstSkin.UITexture) == "Bad")
 			continue;
 			
 		TexturePath = "img://"$PathName(FirstSkin.UITexture);
@@ -277,7 +277,7 @@ function SkinVariant UpdateOutfitVariants(string OutfitKey, string KeyName, out 
 	for (i = 0; i < SkinVariations.length; i++)
 	{
 		Skin = SkinVariations[i];
-		if(!bFoundFirst)
+		if (!bFoundFirst)
 		{
 			FirstSkin = Skin;
 			bFoundFirst = true;
@@ -358,7 +358,7 @@ function SkinVariant UpdateCosmeticVariants(string OutfitKey, string KeyName, KF
 	for (i = 0; i < Attachment.SkinVariations.length; i++)
 	{
 		Skin = Attachment.SkinVariations[i];
-		if(!bFoundFirst)
+		if (!bFoundFirst)
 		{
 			FirstSkin = Skin;
 			bFoundFirst = true;
@@ -393,7 +393,7 @@ function SetCurrentCharacterButtons()
 	HeadSkinIndex = ExtPRI.RepCustomizationInfo.HeadSkinIndex;
 	BodyMeshIndex = ExtPRI.RepCustomizationInfo.BodyMeshIndex;
 	BodySkinIndex = ExtPRI.RepCustomizationInfo.BodySkinIndex;
-	if(bCustom)
+	if (bCustom)
 	{
 		CharacterIndex = ExtPRI.CustomCharacter.CharacterIndex;
 		HeadMeshIndex = ExtPRI.CustomCharacter.HeadMeshIndex;
@@ -426,7 +426,7 @@ function SetEmoteButton()
 	EmoteIndex = class'ExtEmoteList'.static.GetEmoteIndex(class'ExtEmoteList'.static.GetEquippedEmoteId(ExtPlayerController(GetPC())));
 
 	DataObject = CreateObject("Object");
-	if(EmoteIndex == 255)
+	if (EmoteIndex == 255)
 	{
 		DataObject.SetString("selectedEmote", "");
 		DataObject.SetInt("selectedEmoteIndex", 0);
@@ -449,18 +449,18 @@ function SetGearButtons(int MeshIndex, int SkinIndex, string MeshKey, string Ski
 	local string SkinName, MeshName;
 	local GFxObject DataObject;
 
-	if(bWaitingCharList)
+	if (bWaitingCharList)
 		return;
 
 	DataObject = CreateObject("Object");
 
-	if(MeshIndex == `CLEARED_ATTACHMENT_INDEX)
+	if (MeshIndex == `CLEARED_ATTACHMENT_INDEX)
 	{
 		DataObject.SetString(sectionFunctionName, class'KFGFxMenu_Gear'.Default.NoneString);
 	}
-	else if(bIsCustomChar)
+	else if (bIsCustomChar)
 	{
-		if(MeshKey==class'KFGFxMenu_Gear'.Default.HeadMeshKey)
+		if (MeshKey==class'KFGFxMenu_Gear'.Default.HeadMeshKey)
 		{
 			SkinName = GetMenuName(CurrentCharInfo.HeadVariants[MeshIndex].SkinVariations[SkinIndex].Skin);
 			MeshName = GetMenuNameStr(CurrentCharInfo.HeadVariants[MeshIndex].MeshName);
@@ -496,16 +496,16 @@ function SetAttachmentButtons(string AttachmentMeshKey, string sectionFunctionNa
 	local int i, AttachmentIndex;
 	local bool bCustom;
 	
-	if(bWaitingCharList)
+	if (bWaitingCharList)
 		return;
 	
 	bCustom = ExtPRI.UsesCustomChar();
 	DataObject = CreateObject("Object");
 
-	for(i = 0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
+	for (i = 0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
 	{
 		AttachmentIndex = bCustom ? ExtPRI.CustomCharacter.AttachmentMeshIndices[i] : ExtPRI.RepCustomizationInfo.AttachmentMeshIndices[i];		
-		if(AttachmentIndex == `CLEARED_ATTACHMENT_INDEX)
+		if (AttachmentIndex == `CLEARED_ATTACHMENT_INDEX)
 		{
 			DataObject.SetString("selectedAttachment_"$i, "----");
 		}
@@ -533,7 +533,7 @@ event OnClose()
 
 	// If we are alive, in game, with a playable pawn. switch back to first person view when leaving this menu
 	PC = GetPC();
-	if(PC != none && PC.WorldInfo.GRI.bMatchHasBegun && PC.Pawn != none && !PC.Pawn.IsA('KFPawn_Customization'))
+	if (PC != none && PC.WorldInfo.GRI.bMatchHasBegun && PC.Pawn != none && !PC.Pawn.IsA('KFPawn_Customization'))
 	{
 		PC.ServerCamera('FirstPerson');
 	}
@@ -560,7 +560,7 @@ function Callback_Emote(int Index)
 	local KFPlayerController KFPC;
 
 	KFPC = KFPlayerController(GetPC());
-	if(KFPC != none)
+	if (KFPC != none)
 	{
 		class'ExtEmoteList'.static.SaveEquippedEmote(EmoteList[Index].ID, ExtPlayerController(KFPC));
 
@@ -596,7 +596,7 @@ function Callback_Weapon(int ItemIndex, int SkinIndex)
 	local KFPawn_Customization KFP;
 
 	KFP = KFPawn_Customization(GetPC().Pawn);
-	if(KFP != none)
+	if (KFP != none)
 		KFP.AttachWeaponByItemDefinition(SkinIndex);
 }
 
@@ -620,7 +620,7 @@ function Callback_Character(int Index)
 
 function Callback_Head(int MeshIndex, int SkinIndex)
 {
-	if(!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
+	if (!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
 		ExtPRI.ChangeCharacter(ExtPRI.RepCustomizationInfo.CharacterIndex,true);
 	ExtPRI.UpdateCustomization(CO_Head, MeshIndex, SkinIndex);
 	SetGearButtons(MeshIndex, SkinIndex, class'KFGFxMenu_Gear'.Default.HeadMeshKey, class'KFGFxMenu_Gear'.Default.HeadSkinKey, class'KFGFxMenu_Gear'.Default.HeadFunctionKey);
@@ -628,7 +628,7 @@ function Callback_Head(int MeshIndex, int SkinIndex)
 
 function Callback_Body(int MeshIndex, int SkinIndex)
 {
-	if(!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
+	if (!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
 		ExtPRI.ChangeCharacter(ExtPRI.RepCustomizationInfo.CharacterIndex,true);
 	
 	ExtPRI.UpdateCustomization(CO_Body, MeshIndex, SkinIndex);
@@ -646,19 +646,19 @@ function Callback_Attachment(int MeshIndex, int SkinIndex)
 	local int SlotIndex;
 	local KFPawn KFP;
 
-	if(!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
+	if (!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
 		ExtPRI.ChangeCharacter(ExtPRI.RepCustomizationInfo.CharacterIndex,true);
 
 	KFP = KFPawn(GetPC().Pawn);
-	if(KFP!=None && ExtPRI!=None)
+	if (KFP!=None && ExtPRI!=None)
 	{
-		if(MeshIndex==`CLEARED_ATTACHMENT_INDEX)
+		if (MeshIndex==`CLEARED_ATTACHMENT_INDEX)
 			ExtPRI.RemoveAttachments();
 		else
 		{
 			class'ExtCharacterInfo'.Static.DetachConflictingAttachments(CurrentCharInfo, MeshIndex, KFP, ExtPRI);
 			SlotIndex =  class'ExtCharacterInfo'.Static.GetAttachmentSlotIndex(CurrentCharInfo, MeshIndex, KFP, ExtPRI);
-			if(SlotIndex == INDEX_NONE)
+			if (SlotIndex == INDEX_NONE)
 			{
 				return;
 			}

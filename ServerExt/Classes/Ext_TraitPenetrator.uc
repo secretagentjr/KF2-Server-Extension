@@ -13,14 +13,14 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
 	local int i;
 
-	if(Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
+	if (Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
 		return false;
 	
-	for(i=0; i<Perk.PerkTraits.Length; ++i)
+	for (i=0; i<Perk.PerkTraits.Length; ++i)
 	{
-		if(Perk.PerkTraits[i].TraitType==Class'Ext_TraitAPShots')
+		if (Perk.PerkTraits[i].TraitType==Class'Ext_TraitAPShots')
 		{
-			if(Perk.PerkTraits[i].CurrentLevel <= 0)
+			if (Perk.PerkTraits[i].CurrentLevel <= 0)
 				return false;
 			else break;
 		}

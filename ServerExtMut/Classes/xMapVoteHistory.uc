@@ -15,14 +15,14 @@ static final function int GetMapHistory(string MapName, string MapTitle)
 
 	MapName = Caps(MapName);
 	i = Default.M.Find(MapName);
-	if(i==-1)
+	if (i==-1)
 	{
 		i = Default.M.Length;
 		Default.M.Length = i+1;
 		Default.M[i] = MapName;
 		Default.N.Length = i+1;
 	}
-	if(!(MapTitle~=MapName) && MapTitle!=Class'WorldInfo'.Default.Title && MapTitle!="")
+	if (!(MapTitle~=MapName) && MapTitle!=Class'WorldInfo'.Default.Title && MapTitle!="")
 		Default.N[i].T = MapTitle;
 	return i;
 }
@@ -39,9 +39,9 @@ static final function UpdateMapHistory(int iWon)
 {
 	local int i;
 	
-	for(i=(Default.M.Length-1); i>=0; --i)
+	for (i=(Default.M.Length-1); i>=0; --i)
 	{
-		if(i==iWon)
+		if (i==iWon)
 		{
 			++Default.N[i].N;
 			Default.N[i].S = 0;
@@ -51,7 +51,7 @@ static final function UpdateMapHistory(int iWon)
 }
 static final function AddMapKarma(int i, bool bUp)
 {
-	if(bUp)
+	if (bUp)
 		++Default.N[i].U;
 	else ++Default.N[i].D;
 }

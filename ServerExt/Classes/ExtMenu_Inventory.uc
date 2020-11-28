@@ -7,14 +7,14 @@ function bool IsItemActive(int ItemDefinition)
 
 	ItemIndex = class'ExtWeaponSkinList'.default.Skins.Find('Id', ItemDefinition);
 
-	if(ItemIndex == INDEX_NONE)
+	if (ItemIndex == INDEX_NONE)
 	{
 		return false;
 	}
 
 	WeaponDef = class'ExtWeaponSkinList'.default.Skins[ItemIndex].WeaponDef;
 
-	if(WeaponDef != none)
+	if (WeaponDef != none)
 	{
 		return class'ExtWeaponSkinList'.Static.IsSkinEquip(WeaponDef, ItemDefinition, ExtPlayerController(KFPC));
 	}
@@ -29,20 +29,20 @@ function Callback_Equip(int ItemDefinition)
 
 	ItemIndex = class'ExtWeaponSkinList'.default.Skins.Find('Id', ItemDefinition);
 
-	if(ItemIndex == INDEX_NONE)
+	if (ItemIndex == INDEX_NONE)
 	{
 		return;
 	}
 
 	WeaponDef = class'ExtWeaponSkinList'.default.Skins[ItemIndex].WeaponDef;
 
-	if(WeaponDef != none)
+	if (WeaponDef != none)
 	{
-		if(IsItemActive(ItemDefinition))
+		if (IsItemActive(ItemDefinition))
 		{
 			class'ExtWeaponSkinList'.Static.SaveWeaponSkin(WeaponDef, 0, ExtPlayerController(KFPC));
 
-			if(class'WorldInfo'.static.IsConsoleBuild())
+			if (class'WorldInfo'.static.IsConsoleBuild())
 			{
 				Manager.CachedProfile.ClearWeaponSkin(WeaponDef.default.WeaponClassPath);
 			}
@@ -50,7 +50,7 @@ function Callback_Equip(int ItemDefinition)
 		else
 		{
 			class'ExtWeaponSkinList'.Static.SaveWeaponSkin(WeaponDef, ItemDefinition, ExtPlayerController(KFPC));
-			if(class'WorldInfo'.static.IsConsoleBuild())
+			if (class'WorldInfo'.static.IsConsoleBuild())
 			{
 				Manager.CachedProfile.SaveWeaponSkin(WeaponDef.default.WeaponClassPath, ItemDefinition);
 			}

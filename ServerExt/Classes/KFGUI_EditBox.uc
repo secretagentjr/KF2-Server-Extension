@@ -31,21 +31,21 @@ function DrawMenu()
 
 	Owner.CurrentStyle.RenderEditBox(Self);
 
-	if(bDisabled)
+	if (bDisabled)
 		C = TextColor*(0.5f);
 	else C = TextColor;
 
 	X = TextHeight*0.025f + 5.f;
 	Y = (CompPos[3]-TextHeight)*0.5f;
 	
-	if(bIsTyping)
+	if (bIsTyping)
 	{
 		XS = Owner.MenuTime % 1.f;
-		if(XS>0.5f)
+		if (XS>0.5f)
 			XS = (1.f-XS);
 		Canvas.DrawColor = C*(Sin(XS*2.f*Pi)*0.45f);
 		
-		if(bAllSelected)
+		if (bAllSelected)
 		{
 			Canvas.TextSize(Mid(Value,ScrollOffset),XS,YS,TextScale,TextScale);
 			Canvas.SetPos(X,Y);
@@ -53,14 +53,14 @@ function DrawMenu()
 		}
 		else
 		{
-			if(ScrollOffset>(TypePos-4))
+			if (ScrollOffset>(TypePos-4))
 				ScrollOffset = Max(TypePos-4,0);
 
 Retry:
 			Canvas.TextSize(Mid(Value,ScrollOffset,TypePos-ScrollOffset),XS,YS,TextScale,TextScale);
 			Canvas.SetPos(X+XS,Y);
 
-			if(Canvas.CurX<(CompPos[2]-X))
+			if (Canvas.CurX<(CompPos[2]-X))
 				Canvas.DrawText("|",,TextScale,TextScale,TextFontInfo);
 			else
 			{
@@ -69,11 +69,11 @@ Retry:
 			}
 		}
 	}
-	if(Value!="")
+	if (Value!="")
 	{
 		Canvas.DrawColor = C;
 		Canvas.SetPos(X,Y);
-		if(ScrollOffset>5)
+		if (ScrollOffset>5)
 			ScrollOffset = Min(ScrollOffset,Len(Value)-6);
 		DrawClippedText(Mid(Value,ScrollOffset),TextScale,CompPos[2]);
 		
@@ -86,61 +86,61 @@ Retry:
 
 function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
-	if(Owner.CheckMouse(Key,Event))
+	if (Owner.CheckMouse(Key,Event))
 		return true;
-	if(Key=='LeftControl')
+	if (Key=='LeftControl')
 	{
 		bHoldCtrl = (Event!=IE_Released);
 	}
-	else if(Event == IE_Released)
+	else if (Event == IE_Released)
 	{
-		if(Key=='Escape' || Key=='Enter')
+		if (Key=='Escape' || Key=='Enter')
 		{
-			if(Key=='Enter' && OnHitEnter(Self))
+			if (Key=='Enter' && OnHitEnter(Self))
 				return true;
 			ReleaseKeyFocus();
 		}
 	}
-	else if(Event==IE_Pressed || Event==IE_Repeat)
+	else if (Event==IE_Pressed || Event==IE_Repeat)
 	{
-		if(Key=='backspace')
+		if (Key=='backspace')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bTextDirty = (Value!="");
 				Value = "";
 				TypePos = 0;
 				bAllSelected = false;
 			}
-			else if(TypePos>0)
+			else if (TypePos>0)
 			{
 				bTextDirty = true;
-				if(TypePos==Len(Value))
+				if (TypePos==Len(Value))
 					Value = Left(Value,TypePos-1);
 				else Value = Left(Value,TypePos-1)$Mid(Value,TypePos);
 				--TypePos;
 			}
 		}
-		else if(Key=='delete')
+		else if (Key=='delete')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bTextDirty = (Value!="");
 				Value = "";
 				TypePos = 0;
 				bAllSelected = false;
 			}
-			else if(TypePos<Len(Value))
+			else if (TypePos<Len(Value))
 			{
 				bTextDirty = true;
-				if(TypePos==0)
+				if (TypePos==0)
 					Value = Mid(Value,1);
 				else Value = Left(Value,TypePos)$Mid(Value,TypePos+1);
 			}
 		}
 		else if (Key=='left')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bAllSelected = false;
 				TypePos = 0;
@@ -149,36 +149,36 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 		}
 		else if (Key=='right')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bAllSelected = false;
 				TypePos = Len(Value);
 			}
 			else TypePos = Min(TypePos+1,Len(Value));
 		}
-		else if(Key=='home')
+		else if (Key=='home')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bAllSelected = false;
 				TypePos = 0;
 			}
 			else TypePos = 0;
 		}
-		else if(Key=='end')
+		else if (Key=='end')
 		{
-			if(bAllSelected)
+			if (bAllSelected)
 			{
 				bAllSelected = false;
 				TypePos = Len(Value);
 			}
 			else TypePos = Len(Value);
 		}
-		else if(Key=='C' && bHoldCtrl)
+		else if (Key=='C' && bHoldCtrl)
 			GetPlayer().CopyToClipboard(Value);
-		else if(Key=='V' && bHoldCtrl)
+		else if (Key=='V' && bHoldCtrl)
 			PasteText();
-		else if(Key=='X' && bHoldCtrl)
+		else if (Key=='X' && bHoldCtrl)
 		{
 			bTextDirty = true;
 			GetPlayer().CopyToClipboard(Value);
@@ -193,34 +193,34 @@ final function PasteText()
 	local string S;
 	
 	S = GetPlayer().PasteFromClipboard();
-	if((bAllSelected ? (Len(Value)+Len(S)) : Len(S))>MaxTextLength)
+	if ((bAllSelected ? (Len(Value)+Len(S)) : Len(S))>MaxTextLength)
 		return;
 	bTextDirty = true;
-	if(bAllSelected)
+	if (bAllSelected)
 	{
 		bAllSelected = false;
 		Value = S;
 		TypePos = 0;
 	}
-	else if(TypePos==Len(Value))
+	else if (TypePos==Len(Value))
 		Value $= S;
 	else Value = Left(Value,TypePos) $ S $ Mid(Value,TypePos);
 	TypePos+=Len(S);
 }
 function bool NotifyInputChar(int ControllerId, string Unicode)
 {
-	if((!bAllSelected && Len(Value)>=MaxTextLength) || (bHoldCtrl && (Unicode~="C" || Unicode~="X" || Unicode~="V")))
+	if ((!bAllSelected && Len(Value)>=MaxTextLength) || (bHoldCtrl && (Unicode~="C" || Unicode~="X" || Unicode~="V")))
 		return true;
-	if(Asc(Unicode)>=32) // Skip system characters.
+	if (Asc(Unicode)>=32) // Skip system characters.
 	{
 		bTextDirty = true;
-		if(bAllSelected)
+		if (bAllSelected)
 		{
 			bAllSelected = false;
 			Value = Unicode;
 			TypePos = 0;
 		}
-		else if(TypePos==Len(Value))
+		else if (TypePos==Len(Value))
 			Value $= Unicode;
 		else Value = Left(Value,TypePos) $ Unicode $ Mid(Value,TypePos);
 		++TypePos;
@@ -231,9 +231,9 @@ function bool NotifyInputChar(int ControllerId, string Unicode)
 function HandleMouseClick(bool bRight)
 {
 	PlayMenuSound(MN_ClickButton);
-	if(bIsTyping)
+	if (bIsTyping)
 	{
-		if(Value!="")
+		if (Value!="")
 			bAllSelected = !bAllSelected;
 	}
 	else
@@ -247,7 +247,7 @@ function HandleMouseClick(bool bRight)
 
 function LostKeyFocus()
 {
-	if(bTextDirty)
+	if (bTextDirty)
 	{
 		OnTextChange(Self);
 		bTextDirty = false;

@@ -5,7 +5,7 @@ static function bool PreventDeath(KFPawn_Human Player, Controller Instigator, Cl
 	local ExtProj_SUPERGrenade P;
 	
 	P = Player.Spawn(class'ExtProj_SUPERGrenade');
-	if(P!=None)
+	if (P!=None)
 	{
 		P.bExplodeOnContact = false; // Nope!
 		P.InstigatorController = Player.Controller;

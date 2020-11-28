@@ -6,9 +6,9 @@ var transient byte MoneyTossCount;
 
 reliable server function ServerThrowMoney()
 {
-	if(MoneyTossTime>WorldInfo.TimeSeconds)
+	if (MoneyTossTime>WorldInfo.TimeSeconds)
 	{
-		if(MoneyTossCount>=10)
+		if (MoneyTossCount>=10)
 			return;
 		++MoneyTossCount;
 		MoneyTossTime = FMax(MoneyTossTime,WorldInfo.TimeSeconds+0.5);
@@ -29,9 +29,9 @@ simulated function Inventory CreateInventory(class<Inventory> NewInventoryItemCl
 	SupClass = Super.CreateInventory(NewInventoryItemClass, bDoNotActivate);
 	Wep = KFWeapon(SupClass);
 	
-	if(Wep != none)
+	if (Wep != none)
 	{
-		if(KFWeap_Pistol_Dual9mm(Wep) != None && ExtWeap_Pistol_Dual9mm(Wep) == None)
+		if (KFWeap_Pistol_Dual9mm(Wep) != None && ExtWeap_Pistol_Dual9mm(Wep) == None)
 		{
 			Wep.Destroy();
 			return Super.CreateInventory(class'ExtWeap_Pistol_Dual9mm', bDoNotActivate);
@@ -47,7 +47,7 @@ simulated function CheckForExcessRemoval(KFWeapon NewWeap)
 {
 	local Inventory RemoveInv, Inv;
 	
-	if(KFWeap_Pistol_Dual9mm(NewWeap) != None)
+	if (KFWeap_Pistol_Dual9mm(NewWeap) != None)
 	{
 		for (Inv = InventoryChain; Inv != None; Inv = Inv.Inventory)
 		{

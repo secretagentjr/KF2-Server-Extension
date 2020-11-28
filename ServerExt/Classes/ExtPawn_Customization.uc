@@ -2,7 +2,7 @@ class ExtPawn_Customization extends KFPawn_Customization;
 
 simulated function KFCharacterInfoBase GetCharacterInfo()
 {
-	if(ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
+	if (ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		return ExtPlayerReplicationInfo(PlayerReplicationInfo).GetSelectedArch();
 	return Super.GetCharacterInfo();
 }
@@ -35,9 +35,9 @@ simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bFor
 		}
 	}
 
-	if(CharacterArch != none)
+	if (CharacterArch != none)
 	{
-		if(CharacterArch.VoiceGroupArchName != "")
+		if (CharacterArch.VoiceGroupArchName != "")
 			VoiceGroupArch = class<KFPawnVoiceGroup>(class'ExtCharacterInfo'.Static.SafeLoadObject(CharacterArch.VoiceGroupArchName, class'Class'));
 	}
 }
@@ -74,7 +74,7 @@ function AttachWeaponByItemDefinition(int ItemDefinition)
 	//find weapon def
 	ItemIndex = class'ExtWeaponSkinList'.default.Skins.Find('Id', ItemDefinition);
 
-	if(ItemIndex ==  INDEX_NONE)
+	if (ItemIndex ==  INDEX_NONE)
 	{
 		`log("Could not find item" @ItemDefinition);
 		return;
@@ -82,7 +82,7 @@ function AttachWeaponByItemDefinition(int ItemDefinition)
 
 	WeaponDef = class'ExtWeaponSkinList'.default.Skins[ItemIndex].WeaponDef;
 
-	if(WeaponDef == none)
+	if (WeaponDef == none)
 	{
 		`log("Weapon def NONE for : " @ItemDefinition);
 		return;

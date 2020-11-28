@@ -29,10 +29,10 @@ function Init()
 	local int i;
 
 	Super.Init();
-	if(Data!=0)
+	if (Data!=0)
 		i = Data ^ InverseXOr;
 	Score = (i >> 16) & 32767;
-	if(Score>31767)
+	if (Score>31767)
 		Score = Score-32768;
 	NumPlays = i & 65535;
 	SetAIRating();
@@ -49,21 +49,21 @@ function SetFXTrack(Object O)
 	local ObjectReferencer R;
 	local int i;
 
-	if(SoundCue(O)!=None)
+	if (SoundCue(O)!=None)
 	{
 		HitSoundsA.AddItem(SoundCue(O));
 		HitSoundsB.AddItem(SoundCue(O));
 	}
-	else if(ObjectReferencer(O)!=None)
+	else if (ObjectReferencer(O)!=None)
 	{
 		R = ObjectReferencer(O);
-		if(R.ReferencedObjects.Length<2)
+		if (R.ReferencedObjects.Length<2)
 			return;
 		MissSound[0] = SoundCue(R.ReferencedObjects[0]);
 		MissSound[1] = SoundCue(R.ReferencedObjects[1]);
-		for(i=2; i<R.ReferencedObjects.Length; ++i)
+		for (i=2; i<R.ReferencedObjects.Length; ++i)
 		{
-			if((i & 1)==0)
+			if ((i & 1)==0)
 				HitSoundsA.AddItem(SoundCue(R.ReferencedObjects[i]));
 			else HitSoundsB.AddItem(SoundCue(R.ReferencedObjects[i]));
 		}
@@ -86,7 +86,7 @@ function Render(float XPos, float YPos, float XSize, float YSize)
 	H = WorldInfo.RealTimeSeconds * 0.6;
 	Canvas.Font = Canvas.GetDefaultCanvasFont();
 	W = FMin(YSize/200.f,3.f);
-	if(!bGameStarted)
+	if (!bGameStarted)
 	{
 		Canvas.SetDrawColor(128,64,64,Abs(Sin(H))*96.f+128);
 		Canvas.SetPos(XPos+XSize*0.4,YPos+YSize*0.2);
@@ -165,38 +165,38 @@ final function NewRound()
 
 final function PlayHitSound(bool bPlayer)
 {
-	if(bPlayer)
+	if (bPlayer)
 	{
-		if(HitSoundsA.Length==0)
+		if (HitSoundsA.Length==0)
 			return;
-		if(HitSoundsA[HitSoundIndex[0]]!=None)
+		if (HitSoundsA[HitSoundIndex[0]]!=None)
 			PlaySound(HitSoundsA[HitSoundIndex[0]],true);
-		if(++HitSoundIndex[0]==HitSoundsA.Length)
+		if (++HitSoundIndex[0]==HitSoundsA.Length)
 			HitSoundIndex[0] = 0;
 	}
 	else
 	{
-		if(HitSoundsB.Length==0)
+		if (HitSoundsB.Length==0)
 			return;
-		if(HitSoundsB[HitSoundIndex[1]]!=None)
+		if (HitSoundsB[HitSoundIndex[1]]!=None)
 			PlaySound(HitSoundsB[HitSoundIndex[1]],true);
-		if(++HitSoundIndex[1]==HitSoundsB.Length)
+		if (++HitSoundIndex[1]==HitSoundsB.Length)
 			HitSoundIndex[1] = 0;
 	}
 }
 final function PlayerScored(bool bPlayer)
 {
 	++NumPlays;
-	if(bPlayer)
+	if (bPlayer)
 	{
 		++Score;
-		if(MissSound[1]!=None)
+		if (MissSound[1]!=None)
 			PlaySound(MissSound[1],true);
 	}
 	else
 	{
 		--Score;
-		if(MissSound[0]!=None)
+		if (MissSound[0]!=None)
 			PlaySound(MissSound[0],true);
 	}
 	HitSoundIndex[0] = 0;
@@ -214,7 +214,7 @@ final function CalcEndPosition()
 	local float T,DY;
 	local vector P,V;
 	
-	if(BallVel.X<=0.f) // Never.
+	if (BallVel.X<=0.f) // Never.
 		return;
 	
 	V = BallVel;
@@ -224,12 +224,12 @@ final function CalcEndPosition()
 	T = (EnemyPad.X - PadWidth - (BallWidth*0.5) - P.X) / V.X;
 
 	// Now take bounces into account.
-	while(true)
+	while (true)
 	{
-		if(V.Y<0.f) // Bottom.
+		if (V.Y<0.f) // Bottom.
 		{
 			DY = (LevelBoarderSize + (BallHeight*0.5) - P.Y) / V.Y; // Calc intersection time.
-			if(DY<T)
+			if (DY<T)
 			{
 				P+=(V*DY);
 				V.Y = -V.Y;
@@ -237,10 +237,10 @@ final function CalcEndPosition()
 			}
 			else break; // No more wallhits.
 		}
-		else if(V.Y>0.f) // Top.
+		else if (V.Y>0.f) // Top.
 		{
 			DY = (1.f - LevelBoarderSize - (BallHeight*0.5) - P.Y) / V.Y;
-			if(DY<T)
+			if (DY<T)
 			{
 				P+=(V*DY);
 				V.Y = -V.Y;
@@ -261,26 +261,26 @@ function Tick(float Delta)
 
 	// Check collision unless out of bounds already.
 	V = BallVel*Delta;
-	if(BallHeading!=BH_None)
+	if (BallHeading!=BH_None)
 	{
 		// Check paddles
-		switch(BallHeading)
+		switch (BallHeading)
 		{
 		case BH_ToPlayer:
-			if(BallPos.X<0.f)
+			if (BallPos.X<0.f)
 				PlayerScored(false);
-			else if((BallPos.X+V.X)<0.05)
+			else if ((BallPos.X+V.X)<0.05)
 			{
 				ExtA.X = PadWidth*0.5;
 				ExtA.Y = PadHeight*0.5;
 				ExtB.X = BallWidth*0.5;
 				ExtB.Y = BallHeight*0.5;
-				if(Box8DirTrace(BallPos,V,PlayerPad+vect(0.5,0,0)*PadWidth,ExtB,ExtA,HN,DY))
+				if (Box8DirTrace(BallPos,V,PlayerPad+vect(0.5,0,0)*PadWidth,ExtB,ExtA,HN,DY))
 				{
 					BallPos+=(V*DY);
 					V = vect(0,0,0);
 
-					if(HN.X<0.25) // Hit edge of the paddle
+					if (HN.X<0.25) // Hit edge of the paddle
 					{
 						PlayerScored(false);
 						BallVel = MirrorVectorByNormal(BallVel,HN);
@@ -288,7 +288,7 @@ function Tick(float Delta)
 					else
 					{
 						AITrajOffset = 0.f;
-						if(AITactic>3)
+						if (AITactic>3)
 							AITrajOffset = FMin((AITactic-3)*0.35,0.97)*(0.5-FRand())*(PadHeight+BallWidth); // Randomly chose to throw ball in the corners to give angular momentum.
 						BallHeading = BH_ToEnemy;
 						BallVel.X *= -1.05;
@@ -300,20 +300,20 @@ function Tick(float Delta)
 			}
 			break;
 		case BH_ToEnemy:
-			if(BallPos.X>1.f)
+			if (BallPos.X>1.f)
 				PlayerScored(true);
-			else if((BallPos.X+V.X)>0.95)
+			else if ((BallPos.X+V.X)>0.95)
 			{
 				ExtA.X = PadWidth*0.5;
 				ExtA.Y = PadHeight*0.5;
 				ExtB.X = BallWidth*0.5;
 				ExtB.Y = BallHeight*0.5;
-				if(Box8DirTrace(BallPos,V,EnemyPad-vect(0.5,0,0)*PadWidth,ExtB,ExtA,HN,DY))
+				if (Box8DirTrace(BallPos,V,EnemyPad-vect(0.5,0,0)*PadWidth,ExtB,ExtA,HN,DY))
 				{
 					BallPos+=(V*DY);
 					V = vect(0,0,0);
 
-					if(HN.X>-0.25) // Hit edge of the paddle
+					if (HN.X>-0.25) // Hit edge of the paddle
 					{
 						PlayerScored(true);
 						BallVel = MirrorVectorByNormal(BallVel,HN);
@@ -332,10 +332,10 @@ function Tick(float Delta)
 
 		// Check edges
 		// Top.
-		if(V.Y<0.f)
+		if (V.Y<0.f)
 		{
 			DY = LevelBoarderSize + (BallHeight*0.5) - BallPos.Y;
-			if(DY>V.Y)
+			if (DY>V.Y)
 			{
 				DY = DY / V.Y; // Calc intersection time.
 				BallPos+=(V*DY);
@@ -346,10 +346,10 @@ function Tick(float Delta)
 			}
 		}
 		// Bottom
-		if(V.Y>0.f)
+		if (V.Y>0.f)
 		{
 			DY = 1.f - LevelBoarderSize - (BallHeight*0.5) - BallPos.Y;
-			if(DY<V.Y)
+			if (DY<V.Y)
 			{
 				DY = DY / V.Y;
 				BallPos+=(V*DY);
@@ -361,26 +361,26 @@ function Tick(float Delta)
 		}
 
 		bRand = true;
-		if(AITactic>0.f) // Directly follow ball
+		if (AITactic>0.f) // Directly follow ball
 		{
 			bTraj = false;
-			if(AITactic<1.f)
+			if (AITactic<1.f)
 			{
-				if(BallHeading==BH_ToEnemy)
+				if (BallHeading==BH_ToEnemy)
 					bRand = BallPos.X>AITactic;
 			}
 			else
 			{
 				bRand = false;
-				if(AITactic>2.f && BallHeading==BH_ToEnemy)
+				if (AITactic>2.f && BallHeading==BH_ToEnemy)
 					bTraj = (AITactic>=4.f || BallPos.X>(2.f - AITactic*0.5));
 			}
 
-			if(!bRand)
+			if (!bRand)
 			{
-				if(bTraj)
+				if (bTraj)
 				{
-					if(BallPos.X>0.5)
+					if (BallPos.X>0.5)
 						HN.Y = BallTrajectory.Y+AITrajOffset-EnemyPad.Y;
 					else HN.Y = BallTrajectory.Y-EnemyPad.Y;
 					HN.X = FMin(2.f + ((AITactic-1.f)*3.f),13.f); // Calc paddle changespeed rate
@@ -398,27 +398,27 @@ function Tick(float Delta)
 		}
 		
 		// Update AI
-		if(bRand) // Random motion.
+		if (bRand) // Random motion.
 		{
-			if(AITacticTimer<WorldInfo.TimeSeconds)
+			if (AITacticTimer<WorldInfo.TimeSeconds)
 			{
 				bAIRandom = (Rand(2)==0);
 				AITacticTimer = WorldInfo.TimeSeconds+FRand();
 			}
 			DY = FMax(FMin(Delta,0.65f-Abs(EnemyPadVel)),0.f);
-			if(bAIRandom)
+			if (bAIRandom)
 				EnemyPadVel += DY;
 			else EnemyPadVel -= DY;
 		}
 		
 		// Apply by velocity and limit movement.
 		EnemyPad.Y = EnemyPad.Y+(EnemyPadVel*Delta);
-		if(EnemyPad.Y<PadMoveLimit)
+		if (EnemyPad.Y<PadMoveLimit)
 		{
 			EnemyPad.Y = PadMoveLimit;
 			EnemyPadVel = FMax(EnemyPadVel,0.f);
 		}
-		else if(EnemyPad.Y>(1.f-PadMoveLimit))
+		else if (EnemyPad.Y>(1.f-PadMoveLimit))
 		{
 			EnemyPad.Y = 1.f-PadMoveLimit;
 			EnemyPadVel = FMin(EnemyPadVel,0.f);

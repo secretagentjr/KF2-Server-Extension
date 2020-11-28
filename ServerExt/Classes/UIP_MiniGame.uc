@@ -10,7 +10,7 @@ function ShowMenu()
 	
 	Level = GetPlayer().WorldInfo;
 	LastUpdateTime = Level.RealTimeSeconds;
-	if(ActiveGame==None)
+	if (ActiveGame==None)
 	{
 		ActiveGame = new (GetPlayer()) class'MX_PongGame';
 		ActiveGame.Init();

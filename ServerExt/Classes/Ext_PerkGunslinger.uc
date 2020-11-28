@@ -23,10 +23,10 @@ simulated function float GetZedTimeModifier(KFWeapon W)
 {
 	local name StateName;
 	
-	if(bHasFanfire && IsWeaponOnPerk(W))
+	if (bHasFanfire && IsWeaponOnPerk(W))
 	{
 		StateName = W.GetStateName();
-		if(BasePerk.Default.ZedTimeModifyingStates.Find(StateName) != INDEX_NONE || StateName == 'Reloading')
+		if (BasePerk.Default.ZedTimeModifyingStates.Find(StateName) != INDEX_NONE || StateName == 'Reloading')
 			return 1.f;
 	}
 

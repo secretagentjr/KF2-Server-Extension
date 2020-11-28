@@ -31,7 +31,7 @@ final function IncludeFile(WebAdminQuery q, string file)
 {
 	local string S;
 	
-	if(webadmin.HTMLSubDirectory!="")
+	if (webadmin.HTMLSubDirectory!="")
 	{
 		S = webadmin.Path $ "/" $ webadmin.HTMLSubDirectory $ "/" $ file;
 		if (q.response.FileExists(S))
@@ -72,7 +72,7 @@ final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, 
 	local string S;
 	
 	S = "<abbr title=\""$Tooltip$"\"><TD>"$InfoStr$":</TD><TD><input class=\"textbox\" class=\"text\" name=\""$ResponseVar$"\" size=\""$Min(100,MaxLen)$"\" value=\""$CurVal$"\" maxlength=\""$MaxLen$"\"></TD></abbr>";
-	if(!bNoTR)
+	if (!bNoTR)
 		S = "<TR>"$S$"</TR>";
 	q.response.SendText(S);
 }
@@ -86,7 +86,7 @@ function handleMapVotes(WebAdminQuery q)
 	local string S;
 
 	S = q.request.getVariable("edit");
-	if(S=="Submit")
+	if (S=="Submit")
 	{
 		class'xVotingHandler'.Default.VoteTime = int(q.request.getVariable("VT",string(class'xVotingHandler'.Default.VoteTime)));
 		class'xVotingHandler'.Default.MidGameVotePct = float(q.request.getVariable("MV",string(class'xVotingHandler'.Default.MidGameVotePct)));
@@ -96,7 +96,7 @@ function handleMapVotes(WebAdminQuery q)
 		class'xVotingHandler'.Static.StaticSaveConfig();
 		EditSettingLine = -1;
 	}
-	else if(S=="New")
+	else if (S=="New")
 	{
 		i = class'xVotingHandler'.Default.GameModes.Length;
 		class'xVotingHandler'.Default.GameModes.Length = i+1;
@@ -106,9 +106,9 @@ function handleMapVotes(WebAdminQuery q)
 		EditSettingLine = i;
 		class'xVotingHandler'.Static.StaticSaveConfig();
 	}
-	else if(S=="Save")
+	else if (S=="Save")
 	{
-		if(EditSettingLine>=0 && EditSettingLine<class'xVotingHandler'.Default.GameModes.Length)
+		if (EditSettingLine>=0 && EditSettingLine<class'xVotingHandler'.Default.GameModes.Length)
 		{
 			i = EditSettingLine;
 			class'xVotingHandler'.Default.GameModes[i].GameName = q.request.getVariable("GN",class'xVotingHandler'.Default.GameModes[i].GameName);
@@ -123,17 +123,17 @@ function handleMapVotes(WebAdminQuery q)
 	}
 	else
 	{
-		for(i=0; i<class'xVotingHandler'.Default.GameModes.Length; ++i)
+		for (i=0; i<class'xVotingHandler'.Default.GameModes.Length; ++i)
 		{
 			S = q.request.getVariable("edit"$i);
-			if(S=="Delete")
+			if (S=="Delete")
 			{
 				class'xVotingHandler'.Default.GameModes.Remove(i,1);
 				class'xVotingHandler'.Static.StaticSaveConfig();
 				EditSettingLine = -1;
 				break;
 			}
-			else if(S=="Edit")
+			else if (S=="Edit")
 			{
 				EditSettingLine = i;
 				break;
@@ -154,9 +154,9 @@ function handleMapVotes(WebAdminQuery q)
 	q.response.SendText("<form method=\"post\" action=\""$webadmin.Path$MapVoterURL$"\"><table id=\"settings\" class=\"grid\">");
 	q.response.SendText("<thead><tr><th colspan=7>Mapvote game modes</th></tr></thead><tbody>");
 	q.response.SendText("<tr><th>Game Name</th><th>Game Short Name</th><th>Game Class</th><th>Mutators</th><th>Options</th><th>Map Prefix</th><th></th></tr>");
-	for(i=0; i<class'xVotingHandler'.Default.GameModes.Length; ++i)
+	for (i=0; i<class'xVotingHandler'.Default.GameModes.Length; ++i)
 	{
-		if(EditSettingLine==i)
+		if (EditSettingLine==i)
 		{
 			q.response.SendText("<tr>",false);
 			AddInLineEditbox(q,class'xVotingHandler'.Default.GameModes[i].GameName,48,"GN","Game type long display name");

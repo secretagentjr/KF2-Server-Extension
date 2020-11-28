@@ -42,10 +42,10 @@ function InitMenu()
 	AddMenuButton('Disconnect',DisconnectButtonText,DisconnectButtonToolTip);
 	AddMenuButton('Exit',ExitButtonText,ExitButtonToolTip);
 	
-	for(i=0; i<Pages.Length; ++i)
+	for (i=0; i<Pages.Length; ++i)
 	{
 		PageSwitcher.AddPage(Pages[i],B).InitMenu();
-		if(Pages[i]==Class'UIP_AdminMenu')
+		if (Pages[i]==Class'UIP_AdminMenu')
 			AdminButton = B;
 	}
 }
@@ -55,11 +55,11 @@ function Timer()
 	local PlayerReplicationInfo PRI;
 	
 	PRI = GetPlayer().PlayerReplicationInfo;
-	if(PRI==None)
+	if (PRI==None)
 		return;
 	AdminButton.SetDisabled(!PRI.bAdmin && PRI.WorldInfo.NetMode==NM_Client);
 	SkipTraderButton.SetDisabled(!SkipTraderIsAviable(PRI));
-	if(!bInitSpectate || bOldSpectate!=PRI.bOnlySpectator)
+	if (!bInitSpectate || bOldSpectate!=PRI.bOnlySpectator)
 	{
 		bInitSpectate = true;
 		bOldSpectate = PRI.bOnlySpectator;
@@ -87,7 +87,7 @@ function ShowMenu()
 	Super.ShowMenu();
 	AdminButton.SetDisabled(true);
 	SkipTraderButton.SetDisabled(false);
-	if(GetPlayer().WorldInfo.GRI!=None)
+	if (GetPlayer().WorldInfo.GRI!=None)
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
 	
 	// Update spectate button info text.
@@ -100,7 +100,7 @@ function CloseMenu()
 }
 function ButtonClicked(KFGUI_Button Sender)
 {
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Mapvote':
 		OpenUpMapvote();
@@ -151,10 +151,10 @@ final function KFGUI_Button AddMenuButton(name ButtonID, string Text, optional s
 	B.YPosition = 0.92+NumButtonRows*0.04;
 	B.YSize = 0.0399;
 
-	if(NumButtons>0 && PrevButton!=None)
+	if (NumButtons>0 && PrevButton!=None)
 		PrevButton.ExtravDir = 1;
 	PrevButton = B;
-	if(++NumButtons>8)
+	if (++NumButtons>8)
 	{
 		++NumButtonRows;
 		NumButtons = 0;

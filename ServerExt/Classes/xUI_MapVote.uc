@@ -81,7 +81,7 @@ function DrawMenu()
 {
 	Super.DrawMenu();
 	
-	if(RepInfo!=None && RepInfo.bListDirty)
+	if (RepInfo!=None && RepInfo.bListDirty)
 	{
 		RepInfo.bListDirty = false;
 		UpdateList();
@@ -94,12 +94,12 @@ final function UpdateList()
 	local float V;
 	local KFGUI_ListItem Item,SItem;
 
-	if(GameModeCombo.Values.Length!=RepInfo.GameModes.Length)
+	if (GameModeCombo.Values.Length!=RepInfo.GameModes.Length)
 	{
 		GameModeCombo.Values.Length = RepInfo.GameModes.Length;
-		for(i=0; i<GameModeCombo.Values.Length; ++i)
+		for (i=0; i<GameModeCombo.Values.Length; ++i)
 			GameModeCombo.Values[i] = RepInfo.GameModes[i].GameName;
-		if(!bFirstTime)
+		if (!bFirstTime)
 		{
 			bFirstTime = true;
 			GameModeCombo.SelectedIndex = RepInfo.ClientCurrentGame;
@@ -109,11 +109,11 @@ final function UpdateList()
 	Item = CurrentVotes.GetFromIndex(CurrentVotes.SelectedRowIndex);
 	Sel = (Item!=None ? Item.Value : -1);
 	CurrentVotes.EmptyList();
-	for(i=0; i<RepInfo.ActiveVotes.Length; ++i)
+	for (i=0; i<RepInfo.ActiveVotes.Length; ++i)
 	{
 		g = RepInfo.ActiveVotes[i].GameIndex;
 		m = RepInfo.ActiveVotes[i].MapIndex;
-		if(RepInfo.Maps[m].NumPlays==0)
+		if (RepInfo.Maps[m].NumPlays==0)
 			Item = CurrentVotes.AddLine(RepInfo.GameModes[g].GameName$"\n"$RepInfo.Maps[m].MapTitle$"\n"$RepInfo.ActiveVotes[i].NumVotes$"\n** NEW **",m,
 										RepInfo.GameModes[g].GameName$"\n"$RepInfo.Maps[m].MapTitle$"\n"$MakeSortStr(RepInfo.ActiveVotes[i].NumVotes)$"\n"$MakeSortStr(0));
 		else
@@ -122,7 +122,7 @@ final function UpdateList()
 			Item = CurrentVotes.AddLine(RepInfo.GameModes[g].GameName$"\n"$RepInfo.Maps[m].MapTitle$"\n"$RepInfo.ActiveVotes[i].NumVotes$"\n"$int(V)$"% ("$RepInfo.Maps[m].UpVotes$"/"$(RepInfo.Maps[m].UpVotes+RepInfo.Maps[m].DownVotes)$")",m,
 										RepInfo.GameModes[g].GameName$"\n"$RepInfo.Maps[m].MapTitle$"\n"$MakeSortStr(RepInfo.ActiveVotes[i].NumVotes)$"\n"$MakeSortStr(int(V*100.f)));
 		}
-		if(Sel>=0 && Sel==m)
+		if (Sel>=0 && Sel==m)
 			SItem = Item;
 	}
 
@@ -134,21 +134,21 @@ function ChangeToMaplist(KFGUI_ComboBox Sender)
 	local int i,g;
 	local float V;
 
-	if(RepInfo!=None)
+	if (RepInfo!=None)
 	{
 		MapList.EmptyList();
 		g = Sender.SelectedIndex;
-		for(i=0; i<RepInfo.Maps.Length; ++i)
+		for (i=0; i<RepInfo.Maps.Length; ++i)
 		{
-			if(!BelongsToPrefix(RepInfo.Maps[i].MapName,RepInfo.GameModes[g].Prefix))
+			if (!BelongsToPrefix(RepInfo.Maps[i].MapName,RepInfo.GameModes[g].Prefix))
 				continue;
-			if(RepInfo.Maps[i].NumPlays==0)
+			if (RepInfo.Maps[i].NumPlays==0)
 				MapList.AddLine(RepInfo.Maps[i].MapTitle$"\n"$RepInfo.Maps[i].Sequence$"\n"$RepInfo.Maps[i].NumPlays$"\n** NEW **",i,
 								RepInfo.Maps[i].MapTitle$"\n"$MakeSortStr(RepInfo.Maps[i].Sequence)$"\n"$MakeSortStr(RepInfo.Maps[i].NumPlays)$"\n"$MakeSortStr(0));
 			else
 			{
 				V = RepInfo.Maps[i].UpVotes+RepInfo.Maps[i].DownVotes;
-				if(V==0)
+				if (V==0)
 					V = 100.f;
 				else V = (float(RepInfo.Maps[i].UpVotes) / V) * 100.f;
 				MapList.AddLine(RepInfo.Maps[i].MapTitle$"\n"$RepInfo.Maps[i].Sequence$"\n"$RepInfo.Maps[i].NumPlays$"\n"$int(V)$"% ("$RepInfo.Maps[i].UpVotes$"/"$(RepInfo.Maps[i].UpVotes+RepInfo.Maps[i].DownVotes)$")",i,
@@ -164,7 +164,7 @@ static final function bool BelongsToPrefix(string MN, string Prefix)
 
 function ButtonClicked(KFGUI_Button Sender)
 {
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Close':
 		DoClose();
@@ -174,7 +174,7 @@ function ButtonClicked(KFGUI_Button Sender)
 
 function ClickedRow(int RowNum)
 {
-	if(RowNum==0) // Vote this map.
+	if (RowNum==0) // Vote this map.
 	{
 		RepInfo.ServerCastVote(GameModeCombo.SelectedIndex,SelectedMapIndex,false);
 	}
@@ -185,13 +185,13 @@ function ClickedRow(int RowNum)
 }
 function SelectedVoteRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
-	if(bRight)
+	if (bRight)
 	{
 		SelectedMapIndex = Item.Value;
 		MapRightClick.ItemRows[1].bDisabled = (!GetPlayer().PlayerReplicationInfo.bAdmin);
 		MapRightClick.OpenMenu(Self);
 	}
-	else if(bDblClick)
+	else if (bDblClick)
 		RepInfo.ServerCastVote(GameModeCombo.SelectedIndex,Item.Value,false);
 }
 

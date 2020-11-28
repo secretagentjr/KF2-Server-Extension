@@ -36,11 +36,11 @@ static function bool IsEnabled(Ext_PerkBase Perk)
 static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
 	// First check level.
-	if(Perk.CurrentLevel<Default.MinLevel)
+	if (Perk.CurrentLevel<Default.MinLevel)
 		return false;
 	
 	// Then check grouping.
-	if(Lvl==0 && Default.TraitGroup!=None && Default.TraitGroup.Static.GroupLimited(Perk,Default.Class))
+	if (Lvl==0 && Default.TraitGroup!=None && Default.TraitGroup.Static.GroupLimited(Perk,Default.Class))
 		return false;
 	return true;
 }
@@ -51,14 +51,14 @@ static function string GetPerkDescription()
 	local string S;
 	local byte i;
 	
-	for(i=0; i<Default.NumLevels; ++i)
+	for (i=0; i<Default.NumLevels; ++i)
 	{
-		if(i==0)
+		if (i==0)
 			S = string(GetTraitCost(i));
 		else S $= ", "$GetTraitCost(i);
 	}
 	S = "Max level: #{9FF781}"$Default.NumLevels$"#{DEF}|Level costs: #{F3F781}"$S$"#{DEF}";
-	if(Default.MinLevel>0)
+	if (Default.MinLevel>0)
 		S = "Min perk level: #{FF4000}"$Default.MinLevel$"#{DEF}|"$S;
 	return Default.Description$"||"$S;
 }
@@ -72,9 +72,9 @@ static function string GetTooltipInfo()
 // Return level specific trait prices.
 static function int GetTraitCost(byte LevelNum)
 {
-	if(Default.LevelCosts.Length>0)
+	if (Default.LevelCosts.Length>0)
 	{
-		if(LevelNum<Default.LevelCosts.Length)
+		if (LevelNum<Default.LevelCosts.Length)
 			return Default.LevelCosts[LevelNum];
 		return Default.LevelCosts[Default.LevelCosts.Length-1];
 	}
@@ -82,12 +82,12 @@ static function int GetTraitCost(byte LevelNum)
 }
 
 // Trait initialization/cleanup.
-static function Ext_TraitDataStore InitializeFor(Ext_PerkBase Perk, ExtPlayerController Player)
+static function Ext_TraitDataStore Initializefor (Ext_PerkBase Perk, ExtPlayerController Player)
 {
 	local Ext_TraitDataStore T;
 
 	T = None;
-	if(Default.TraitData!=None)
+	if (Default.TraitData!=None)
 	{
 		T = Player.Spawn(Default.TraitData,Player);
 		T.Perk = Perk;
@@ -98,7 +98,7 @@ static function Ext_TraitDataStore InitializeFor(Ext_PerkBase Perk, ExtPlayerCon
 }
 static function CleanupTrait(ExtPlayerController Player, Ext_PerkBase Perk, optional Ext_TraitDataStore Data)
 {
-	if(Data!=None)
+	if (Data!=None)
 		Data.Destroy();
 }
 
@@ -122,7 +122,7 @@ static function AddDefaultInventory(KFPawn Player, Ext_PerkBase Perk, byte Level
 // Data that server should replicate to client.
 static final function string IntToStr(int Value, optional byte MaxVal) // Helper function to put integer into one character of string.
 {
-	switch(MaxVal)
+	switch (MaxVal)
 	{
 	case 0: // 0-65535
 		return Chr(Max(Value,0)+1);
@@ -138,7 +138,7 @@ static final function int StrToInt(out string Value, optional byte MaxVal) // Re
 {
 	local int Res;
 
-	switch(MaxVal)
+	switch (MaxVal)
 	{
 	case 0: // 0-65535
 		Res = Asc(Left(Value,1))-1;
@@ -168,7 +168,7 @@ static function string GetRepData()
 	local int i;
 	
 	S = IntToStr(Default.MinLevel)$IntToStr(Default.LevelCosts.Length);
-	for(i=0; i<Default.LevelCosts.Length; ++i)
+	for (i=0; i<Default.LevelCosts.Length; ++i)
 		S $= IntToStr(Default.LevelCosts[i]);
 	return S;
 }
@@ -178,7 +178,7 @@ static function string ClientSetRepData(string S)
 
 	Default.MinLevel = StrToInt(S);
 	Default.LevelCosts.Length = StrToInt(S);
-	for(i=0; i<Default.LevelCosts.Length; ++i)
+	for (i=0; i<Default.LevelCosts.Length; ++i)
 		Default.LevelCosts[i] = StrToInt(S);
 	return S;
 }
@@ -186,7 +186,7 @@ static function string ClientSetRepData(string S)
 // Configure initialization.
 static function CheckConfig()
 {
-	if(Default.ConfigVersion!=Default.CurrentConfigVer)
+	if (Default.ConfigVersion!=Default.CurrentConfigVer)
 	{
 		UpdateConfigs(Default.ConfigVersion);
 		Default.ConfigVersion = Default.CurrentConfigVer;
@@ -195,7 +195,7 @@ static function CheckConfig()
 }
 static function UpdateConfigs(int OldVer)
 {
-	if(OldVer==0)
+	if (OldVer==0)
 	{
 		Default.LevelCosts = Default.DefLevelCosts;
 		Default.MinLevel = Default.DefMinLevel;
@@ -209,7 +209,7 @@ static function InitWebAdmin(ExtWebAdmin_UI UI)
 }
 static function string GetValue(name PropName, int ElementIndex)
 {
-	switch(PropName)
+	switch (PropName)
 	{
 	case 'MinLevel':
 		return string(Default.MinLevel);
@@ -221,13 +221,13 @@ static function string GetValue(name PropName, int ElementIndex)
 }
 static function ApplyValue(name PropName, int ElementIndex, string Value)
 {
-	switch(PropName)
+	switch (PropName)
 	{
 	case 'MinLevel':
 		Default.MinLevel = int(Value);		break;
 	case 'LevelCosts':
 		Default.LevelCosts.Length = Default.DefLevelCosts.Length;
-		if(Value!="#DELETE" && ElementIndex<Default.LevelCosts.Length)
+		if (Value!="#DELETE" && ElementIndex<Default.LevelCosts.Length)
 			Default.LevelCosts[ElementIndex] = int(Value);
 		break;
 	case 'bDisabled':

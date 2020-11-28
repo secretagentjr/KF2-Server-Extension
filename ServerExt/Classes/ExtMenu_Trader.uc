@@ -14,11 +14,11 @@ function int GetPerkIndex()
 }
 function UpdatePlayerInfo()
 {
-	if(ExtKFPC != none && PlayerInfoContainer != none)
+	if (ExtKFPC != none && PlayerInfoContainer != none)
 	{
 		PlayerInfoContainer.SetPerkInfo();
 		PlayerInfoContainer.SetPerkList();
-		if(ExtKFPC.ActivePerkManager!=None && ExtKFPC.ActivePerkManager.CurrentPerk!=ExLastPerkClass)
+		if (ExtKFPC.ActivePerkManager!=None && ExtKFPC.ActivePerkManager.CurrentPerk!=ExLastPerkClass)
 		{
 			ExLastPerkClass = ExtKFPC.ActivePerkManager.CurrentPerk;
 			OnPerkChanged(GetPerkIndex());
@@ -33,7 +33,7 @@ function Callback_PerkChanged(int PerkIndex)
 	ExtKFPC.PendingPerkClass = ExtKFPC.ActivePerkManager.UserPerks[PerkIndex].Class;
 	ExtKFPC.SwitchToPerk(ExtKFPC.PendingPerkClass);
 		
-	if(PlayerInventoryContainer != none)
+	if (PlayerInventoryContainer != none)
 	{
 		PlayerInventoryContainer.UpdateLock();
 	}

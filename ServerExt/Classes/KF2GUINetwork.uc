@@ -12,7 +12,7 @@ static function OpenMenuForClient(PlayerController PC, class<KFGUI_Page> Page)
 	
 	foreach PC.ChildActors(class'KF2GUINetwork',G)
 		break;
-	if(G==None)
+	if (G==None)
 		G = PC.Spawn(class'KF2GUINetwork',PC);
 	G.ClientOpenMenu(Page);
 }
@@ -22,24 +22,24 @@ static function CloseMenuForClient(PlayerController PC, class<KFGUI_Page> Page, 
 	
 	foreach PC.ChildActors(class'KF2GUINetwork',G)
 		break;
-	if(G==None)
+	if (G==None)
 		G = PC.Spawn(class'KF2GUINetwork',PC);
 	G.ClientCloseMenu(Page,bCloseAll);
 }
 
 simulated reliable client function ClientOpenMenu(class<KFGUI_Page> Page)
 {
-	if(!bLocalClient)
+	if (!bLocalClient)
 		return;
-	if(GUIController==None)
+	if (GUIController==None)
 		GUIController = Class'KF2GUIController'.Static.GetGUIController(PlayerOwner);
 	GUIController.OpenMenu(Page);
 }
 simulated reliable client function ClientCloseMenu(class<KFGUI_Page> Page, bool bCloseAll)
 {
-	if(!bLocalClient)
+	if (!bLocalClient)
 		return;
-	if(GUIController==None)
+	if (GUIController==None)
 		GUIController = Class'KF2GUIController'.Static.GetGUIController(PlayerOwner);
 	GUIController.CloseMenu(Page,bCloseAll);
 }
@@ -47,10 +47,10 @@ simulated reliable client function ClientCloseMenu(class<KFGUI_Page> Page, bool 
 simulated function PostBeginPlay()
 {
 	PlayerOwner = PlayerController(Owner);
-	if(WorldInfo.NetMode==NM_Client || (PlayerOwner!=None && LocalPlayer(PlayerOwner.Player)!=None))
+	if (WorldInfo.NetMode==NM_Client || (PlayerOwner!=None && LocalPlayer(PlayerOwner.Player)!=None))
 	{
 		bLocalClient = true;
-		if(PlayerOwner==None)
+		if (PlayerOwner==None)
 			PlayerOwner = GetALocalPlayerController();
 	}
 }

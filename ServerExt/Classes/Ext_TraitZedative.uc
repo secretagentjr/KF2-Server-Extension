@@ -13,13 +13,13 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
 	local int i;
 
-	if(Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
+	if (Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
 		return false;
 	
-	if(Lvl==0)
+	if (Lvl==0)
 	{
 		i = Perk.PerkStats.Find('StatType','Heal');
-		if(i>=0)
+		if (i>=0)
 			return (Perk.PerkStats[i].CurrentValue>=25);
 	}
 	

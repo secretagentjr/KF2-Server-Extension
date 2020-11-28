@@ -24,7 +24,7 @@ function ChangeValue(string V)
 }
 final function ValidateValue()
 {
-	if(bFloatValue)
+	if (bFloatValue)
 		Value = string(FClamp(float(Value),MinValue,MaxValue));
 	else Value = string(Clamp(int(Value),MinValue,MaxValue));
 }
@@ -32,7 +32,7 @@ final function ValidateValue()
 function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	ControllerId = Asc(Unicode);
-	if((ControllerId>=48 && ControllerId<=57) || ControllerId==46)
+	if ((ControllerId>=48 && ControllerId<=57) || ControllerId==46)
 		Super.NotifyInputChar(ControllerId,Unicode);
 	return true;
 }

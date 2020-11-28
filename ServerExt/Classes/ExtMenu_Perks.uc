@@ -6,17 +6,17 @@ var Ext_PerkBase ExtPrevPerk;
 function OnOpen()
 {
 	KFPC = KFPlayerController(GetPC());
-	if(ExtKFPC == none)
+	if (ExtKFPC == none)
 		ExtKFPC = ExtPlayerController(KFPC);
 
-	if(ExtKFPC.ActivePerkManager==None)
+	if (ExtKFPC.ActivePerkManager==None)
 	{
 		ExtKFPC.SetTimer(0.25,true,'OnOpen',Self);
 		return;
 	}
 	ExtKFPC.ClearTimer('OnOpen',Self);
 
-	if(ExtPrevPerk==None)
+	if (ExtPrevPerk==None)
 		ExtPrevPerk = ExtKFPC.ActivePerkManager.CurrentPerk;
 
 	ExUpdateContainers(ExtPrevPerk); 
@@ -53,7 +53,7 @@ function PerkChanged(byte NewPerkIndex, bool bClickedIndex)
 
 function OneSecondLoop()
 {
-	if(ExtPrevPerk!=None && LastPerkLevel!=ExtPrevPerk.CurrentLevel)
+	if (ExtPrevPerk!=None && LastPerkLevel!=ExtPrevPerk.CurrentLevel)
 		ExUpdateContainers(ExtPrevPerk);
 }
 

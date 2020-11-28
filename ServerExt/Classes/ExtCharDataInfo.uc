@@ -9,7 +9,7 @@ final function FMyCustomChar LoadData()
 {
 	local FMyCustomChar R;
 	
-	if(HasInit==0)
+	if (HasInit==0)
 	{
 		AttachmentMesh0 = 255;
 		AttachmentMesh1 = 255;

@@ -20,7 +20,7 @@ function PostBeginPlay()
 {
 	PawnOwner = Pawn(Owner);
 	bNeedsKillZed = true;
-	if(PawnOwner==None)
+	if (PawnOwner==None)
 		Destroy();
 	else
 	{
@@ -30,30 +30,30 @@ function PostBeginPlay()
 }
 function Timer()
 {
-	if(PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.PlayerReplicationInfo==None)
+	if (PawnOwner==None || PawnOwner.Health<=0 || PawnOwner.PlayerReplicationInfo==None)
 		Destroy();
-	else if(bNeedsKillZed)
+	else if (bNeedsKillZed)
 	{
-		if(RespawnHelperTime>1)
+		if (RespawnHelperTime>1)
 			--RespawnHelperTime;
-		if(OldKillsValue==PawnOwner.PlayerReplicationInfo.Kills)
+		if (OldKillsValue==PawnOwner.PlayerReplicationInfo.Kills)
 			return;
 		bNeedsKillZed = false;
 	}
-	else if(RespawnHelperTime>0)
+	else if (RespawnHelperTime>0)
 	{
-		if(--RespawnHelperTime==0)
+		if (--RespawnHelperTime==0)
 			SpawnHelper();
 	}
-	else if(LiveHelper==None || LiveHelper.Health<=0)
+	else if (LiveHelper==None || LiveHelper.Health<=0)
 	{
 		OldKillsValue = PawnOwner.PlayerReplicationInfo.Kills;
 		bNeedsKillZed = true;
 		RespawnHelperTime = 60;
 	}
-	else if(!HasLiveZeds())
+	else if (!HasLiveZeds())
 	{
-		if(NoLiveCounter==0)
+		if (NoLiveCounter==0)
 		{
 			PrevMonster = LiveHelper.Class;
 			PrevMonsterHP = (float(LiveHelper.Health) / LiveHelper.HealthMax);
@@ -66,18 +66,18 @@ function Timer()
 }
 function Destroyed()
 {
-	if(LiveHelper!=None && LiveHelper.Health>0)
+	if (LiveHelper!=None && LiveHelper.Health>0)
 		LiveHelper.Died(None,class'DmgType_Suicided',vect(0,0,0));
 }
 final function bool HasLiveZeds()
 {
 	local KFPawn_Monster M;
 	
-	if(KFGameReplicationInfo(WorldInfo.GRI).WaveNum>=KFGameReplicationInfo(WorldInfo.GRI).WaveMax) // No pets on possible bonus waves.
+	if (KFGameReplicationInfo(WorldInfo.GRI).WaveNum>=KFGameReplicationInfo(WorldInfo.GRI).WaveMax) // No pets on possible bonus waves.
 		return false;
 
 	foreach WorldInfo.AllPawns(Class'KFPawn_Monster',M)
-		if(M.Health>0 && M.GetTeamNum()!=0)
+		if (M.Health>0 && M.GetTeamNum()!=0)
 			return true;
 	return false;
 }
@@ -92,41 +92,41 @@ final function SpawnHelper()
 	local AkBaseSoundObject TempSound;
 	local bool bFinalWave;
 	
-	if(PawnOwner.PlayerReplicationInfo==None || !HasLiveZeds())
+	if (PawnOwner.PlayerReplicationInfo==None || !HasLiveZeds())
 	{
 		RespawnHelperTime = 3;
 		return;
 	}
 	NoLiveCounter = 5;
 	bFinalWave = KFGameReplicationInfo(WorldInfo.GRI).IsFinalWave();
-	if(bFinalWave && Class<KFPawn_MonsterBoss>(PrevMonster)!=None)
+	if (bFinalWave && Class<KFPawn_MonsterBoss>(PrevMonster)!=None)
 		PrevMonster = None;
 	MC = (PrevMonster!=None ? PrevMonster : PickRandomMonster(CurLevel,bFinalWave));
 
-	if(MC!=None)
+	if (MC!=None)
 	{
 		R.Yaw = Rand(65536);
-		if(MC.Default.SoundGroupArch!=None)
+		if (MC.Default.SoundGroupArch!=None)
 		{
 			// Make no entrance roam (for FP's and Scrakes).
 			TempSound = MC.Default.SoundGroupArch.EntranceSound;
 			MC.Default.SoundGroupArch.EntranceSound = None;
 		}
-		for(i=0; i<40; ++i)
+		for (i=0; i<40; ++i)
 		{
 			V = PawnOwner.Location;
 			V.X += (FRand()*300.f-150.f);
 			V.Y += (FRand()*300.f-150.f);
-			if(!PawnOwner.FastTrace(V,PawnOwner.Location))
+			if (!PawnOwner.FastTrace(V,PawnOwner.Location))
 				continue;
 			LiveHelper = Spawn(MC,,,V,R);
-			if(LiveHelper!=None)
+			if (LiveHelper!=None)
 				break;
 		}
-		if(MC.Default.SoundGroupArch!=None)
+		if (MC.Default.SoundGroupArch!=None)
 			MC.Default.SoundGroupArch.EntranceSound = TempSound;
 	}
-	if(LiveHelper==None)
+	if (LiveHelper==None)
 		RespawnHelperTime = 2;
 	else
 	{
@@ -136,7 +136,7 @@ final function SpawnHelper()
 		
 		// Setup AI
 		C = Spawn(LiveHelper.ControllerClass);
-		if(KFAIController(C)!=None)
+		if (KFAIController(C)!=None)
 		{
 			KFAIController(C).bCanTeleportCloser = false;
 			KFAIController(C).DefaultCommandClass = class'Ext_AICommandBasePet';
@@ -155,14 +155,14 @@ final function SpawnHelper()
 		LiveHelper.bCanGrabAttack = false;
 		
 		// Scale by previous zed HP.
-		if(PrevMonster!=None)
+		if (PrevMonster!=None)
 		{
 			LiveHelper.Health *= PrevMonsterHP;
 			PrevMonster = None;
 		}
 
 		// Setup PRI.
-		if(C.PlayerReplicationInfo!=None)
+		if (C.PlayerReplicationInfo!=None)
 			C.PlayerReplicationInfo.Destroy();
 		PRI = Spawn(class'Ext_T_MonsterPRI',LiveHelper);
 		LiveHelper.PlayerReplicationInfo = PRI;
@@ -174,10 +174,10 @@ final function SpawnHelper()
 		PRI.MonsterType = MC;
 		PRI.PlayerName = PawnOwner.PlayerReplicationInfo.PlayerName$"'s "$PRI.MonsterName;
 		PRI.OwnerController = PawnOwner.Controller;
-		if(PawnOwner.PlayerReplicationInfo.Team!=None)
+		if (PawnOwner.PlayerReplicationInfo.Team!=None)
 			PawnOwner.PlayerReplicationInfo.Team.AddToTeam(C);
 		PRI.Timer();
-		if(WorldInfo.NetMode!=NM_DedicatedServer)
+		if (WorldInfo.NetMode!=NM_DedicatedServer)
 			PRI.NotifyOwner();
 	}
 }
@@ -185,7 +185,7 @@ final function SpawnHelper()
 final function SetDamageScale(float Sc)
 {
 	DamageScale = Default.DamageScale*Sc;
-	if(LiveHelper!=None)
+	if (LiveHelper!=None)
 		LiveHelper.DamageScaling = DamageScale;
 }
 final function SetHealthScale(float Sc)
@@ -201,19 +201,19 @@ static final function LoadMonsterList()
 	
 	Default.ZedTypes.Length = class'Ext_TraitZED_Summon'.Default.ZedTypes.Length;
 	
-	for(i=0; i<Default.ZedTypes.Length; ++i)
+	for (i=0; i<Default.ZedTypes.Length; ++i)
 	{
 		SA.Length = 0;
 		ParseStringIntoArray(class'Ext_TraitZED_Summon'.Default.ZedTypes[i],SA,",",true);
 		
-		for(j=0; j<SA.Length; ++j)
+		for (j=0; j<SA.Length; ++j)
 		{
 			C = class<KFPawn_Monster>(DynamicLoadObject(SA[j],Class'Class'));
-			if(C==None)
+			if (C==None)
 				continue;
 			Default.ZedTypes[i].Zeds[Default.ZedTypes[i].Zeds.Length] = C;
 		}
-		if(Default.ZedTypes[i].Zeds.Length==0)
+		if (Default.ZedTypes[i].Zeds.Length==0)
 			Default.ZedTypes[i].Zeds[Default.ZedTypes[i].Zeds.Length] = Class'KFPawn_ZedClot_Alpha';
 	}
 }
@@ -223,13 +223,13 @@ static final function class<KFPawn_Monster> PickRandomMonster(byte Level, bool b
 	local class<KFPawn_Monster> Res;
 	
 	Level = Min(Default.ZedTypes.Length-1,Level);
-	for(i=0; i<5; ++i)
+	for (i=0; i<5; ++i)
 	{
 		Res = Default.ZedTypes[Level].Zeds[Rand(Default.ZedTypes[Level].Zeds.Length)];
-		if(!bNotBoss || class<KFPawn_MonsterBoss>(Res)==None)
+		if (!bNotBoss || class<KFPawn_MonsterBoss>(Res)==None)
 			break;
 	}
-	if(bNotBoss && class<KFPawn_MonsterBoss>(Res)!=None)
+	if (bNotBoss && class<KFPawn_MonsterBoss>(Res)!=None)
 		Res = Class'KFPawn_ZedFleshpound';
 	return Res;
 }

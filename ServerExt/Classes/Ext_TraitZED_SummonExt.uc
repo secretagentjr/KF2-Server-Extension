@@ -7,14 +7,14 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	local byte MaxLevel;
 
 	MaxLevel = 0;
-	for(i=0; i<Perk.PerkTraits.Length; ++i)
-		if(Perk.PerkTraits[i].TraitType==Class'Ext_TraitZED_Summon')
+	for (i=0; i<Perk.PerkTraits.Length; ++i)
+		if (Perk.PerkTraits[i].TraitType==Class'Ext_TraitZED_Summon')
 		{
 			MaxLevel = Max(Perk.PerkTraits[i].CurrentLevel,1)-1;
 			break;
 		}
 
-	switch(Level)
+	switch (Level)
 	{
 	case 3:
 		AddHelperType(MaxLevel*0.8,Player);
@@ -29,8 +29,8 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	}
 	
 	// Make other traits refresh (apply HP/damage scalers).
-	for(i=0; i<Perk.PerkTraits.Length; ++i)
-		if(Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
+	for (i=0; i<Perk.PerkTraits.Length; ++i)
+		if (Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
 			Perk.PerkTraits[i].TraitType.Static.ApplyEffectOn(Player,Perk,Level,Data);
 }
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
@@ -38,7 +38,7 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 	local Ext_T_ZEDHelper H;
 
 	foreach Player.ChildActors(class'Ext_T_ZEDHelper',H)
-		if(H.bIsExtra)
+		if (H.bIsExtra)
 			H.Destroy();
 }
 static final function AddHelperType(byte Lv, KFPawn_Human Player)
@@ -46,7 +46,7 @@ static final function AddHelperType(byte Lv, KFPawn_Human Player)
 	local Ext_T_ZEDHelper H;
 	
 	H = Player.Spawn(class'Ext_T_ZEDHelper',Player);
-	if(H!=None)
+	if (H!=None)
 	{
 		H.CurLevel = Lv;
 		H.bIsExtra = true;

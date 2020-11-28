@@ -5,7 +5,7 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
 	Super.PostInitAnimTree(SkelComp);
 
-	if(bCanHeadTrack)
+	if (bCanHeadTrack)
 	{
 		IK_Look_Head		= SkelControlLookAt(Mesh.FindSkelControl('HeadLook'));
 		//IK_Look_Spine	   = SkelControlLookAt(Mesh.FindSkelControl('SpineLook'));
@@ -14,7 +14,7 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 
 simulated function float StartAttackAnim(byte Num) // Return animation duration.
 {
-	if(FPHandModel!=None)
+	if (FPHandModel!=None)
 		FPHandModel.PlayHandsAnim('Atk_Combo1_V1');
 	return PlayBodyAnim('Atk_Combo1_V1',EAS_UpperBody);
 }

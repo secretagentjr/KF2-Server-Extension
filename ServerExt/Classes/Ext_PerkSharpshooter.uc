@@ -12,13 +12,13 @@ replication
 
 simulated function float GetReloadRateScale(KFWeapon KFW)
 {
-	if(bHasDireReload && PlayerOwner.Pawn!=None && PlayerOwner.Pawn.Health<40)
+	if (bHasDireReload && PlayerOwner.Pawn!=None && PlayerOwner.Pawn.Health<40)
 		return Super.GetReloadRateScale(KFW)*DireReloadSpeed;
 	return Super.GetReloadRateScale(KFW);
 }
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
 {
-	if(ZEDTimeStunPower>0 && HitZoneIdx==HZI_Head && WorldInfo.TimeDilation<1.f && (class<KFDamageType>(DamageType)!=None && class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
+	if (ZEDTimeStunPower>0 && HitZoneIdx==HZI_Head && WorldInfo.TimeDilation<1.f && (class<KFDamageType>(DamageType)!=None && class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
 		return Super.GetStunPowerModifier(DamageType,HitZoneIdx) + ZEDTimeStunPower;
 	return Super.GetStunPowerModifier(DamageType,HitZoneIdx);
 }

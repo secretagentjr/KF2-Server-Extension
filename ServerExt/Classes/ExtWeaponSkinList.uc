@@ -27,28 +27,28 @@ static function array<MaterialInterface> GetWeaponSkin(int ItemId, EWeaponSkinTy
 	local string FirstPMat;
 	
 	i = default.Skins.Find('Id', ItemId);
-	if(i > -1)
+	if (i > -1)
 	{
-		switch(Type)
+		switch (Type)
 		{
 		case WST_FirstPerson:
 			foreach default.Skins[i].MIC_1P(FirstPMat)
 			{
 				LoadedMat = MaterialInterface(DynamicLoadObject(FirstPMat, class'MaterialInterface'));
-				if(LoadedMat != None)
+				if (LoadedMat != None)
 					Mats.AddItem(LoadedMat);
 			}
 		
 			break;
 		case WST_ThirdPerson:
 			LoadedMat = MaterialInterface(DynamicLoadObject(default.Skins[i].MIC_3P, class'MaterialInterface'));
-			if(LoadedMat != None)
+			if (LoadedMat != None)
 				Mats.AddItem(LoadedMat);
 		
 			break;
 		case WST_Pickup:
 			LoadedMat = MaterialInterface(DynamicLoadObject(default.Skins[i].MIC_Pickup, class'MaterialInterface'));
-			if(LoadedMat != None)
+			if (LoadedMat != None)
 				Mats.AddItem(LoadedMat);
 		
 			break;
@@ -63,7 +63,7 @@ static function SaveWeaponSkin(class<KFWeaponDefinition> WeaponDef, int ID, ExtP
 	local int ALen, i;
 	
 	i = PC.SavedWeaponSkins.Find('WepDef', WeaponDef);
-	if(i > -1)
+	if (i > -1)
 		PC.SavedWeaponSkins.Remove(i, 1);
 	
 	ALen = PC.SavedWeaponSkins.Length;
@@ -77,7 +77,7 @@ static function bool IsSkinEquip(class<KFWeaponDefinition> WeaponDef, int ID, Ex
 {
 	local int i;
 	i = PC.SavedWeaponSkins.Find('ID', ID);
-	if(i > -1)
+	if (i > -1)
 		return true;
 
 	return false;

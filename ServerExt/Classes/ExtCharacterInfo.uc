@@ -10,18 +10,18 @@ static final function CloneMIC(MaterialInstanceConstant B)
 	local LinearColor C;
 	
 	M = MaterialInstanceConstant(B.Parent);
-	if(M==None)
+	if (M==None)
 		return;
 	B.SetParent(M.Parent);
 	
-	for(i=0; i<M.TextureParameterValues.Length; ++i)
-		if(M.TextureParameterValues[i].ParameterValue!=None)
+	for (i=0; i<M.TextureParameterValues.Length; ++i)
+		if (M.TextureParameterValues[i].ParameterValue!=None)
 			B.SetTextureParameterValue(M.TextureParameterValues[i].ParameterName,M.TextureParameterValues[i].ParameterValue);
 
-	for(i=0; i<M.ScalarParameterValues.Length; ++i)
+	for (i=0; i<M.ScalarParameterValues.Length; ++i)
 		B.SetScalarParameterValue(M.ScalarParameterValues[i].ParameterName,M.ScalarParameterValues[i].ParameterValue);
 	
-	for(i=0; i<M.VectorParameterValues.Length; ++i)
+	for (i=0; i<M.VectorParameterValues.Length; ++i)
 	{
 		C = M.VectorParameterValues[i].ParameterValue;
 		B.SetVectorParameterValue(M.VectorParameterValues[i].ParameterName,C);
@@ -40,7 +40,7 @@ static function InitCharacterMICs(KFCharacterInfo_Human C, KFPawn P, optional bo
 {
 	local int i;
 
-	if(P.WorldInfo.NetMode == NM_DedicatedServer)
+	if (P.WorldInfo.NetMode == NM_DedicatedServer)
 	{
 		return;
 	}
@@ -55,7 +55,7 @@ static function InitCharacterMICs(KFCharacterInfo_Human C, KFPawn P, optional bo
 	}
 
 	// head MIC
-	if(P.ThirdPersonHeadMeshComponent != None)
+	if (P.ThirdPersonHeadMeshComponent != None)
 	{
 		P.CharacterMICs[1] = P.ThirdPersonHeadMeshComponent.CreateAndSetMaterialInstanceConstant(C.HeadMaterialID);
 
@@ -67,9 +67,9 @@ static function InitCharacterMICs(KFCharacterInfo_Human C, KFPawn P, optional bo
 	}
 
 	// attachment MIC
-	for(i=0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
+	for (i=0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
 	{
-		if(P.ThirdPersonAttachments[i] != none)
+		if (P.ThirdPersonAttachments[i] != none)
 		{
 			P.CharacterMICs.AddItem(P.ThirdPersonAttachments[i].CreateAndSetMaterialInstanceConstant(0));
 		}
@@ -115,14 +115,14 @@ static final function SetCharacterMeshFromArch(KFCharacterInfo_Human C, KFPawn K
 	{
 		// Must clear all attachments before trying to attach new ones, 
 		// otherwise we might accidentally remove things we're not supposed to
-		for(AttachmentIdx=0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
+		for (AttachmentIdx=0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 		{
 			// Clear any previous attachments from other characters
 			C.DetachAttachment(AttachmentIdx, KFP);
 		}
 
 		// Cosmetic attachment mesh & skin. Index of 255 implies don't use any attachments (default)
-		for(AttachmentIdx=0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
+		for (AttachmentIdx=0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 		{
 			CosmeticMeshIdx = bCustom ? EPRI.CustomCharacter.AttachmentMeshIndices[AttachmentIdx] : KFPRI.RepCustomizationInfo.AttachmentMeshIndices[AttachmentIdx];
 			if (CosmeticMeshIdx != `CLEARED_ATTACHMENT_INDEX && CosmeticMeshIdx != INDEX_NONE)
@@ -159,7 +159,7 @@ static final function SetBodyMeshAndSkin(KFCharacterInfo_Human C,
 	}
 
 	// Character Mesh
-	if(C.BodyVariants.length > 0)
+	if (C.BodyVariants.length > 0)
 	{
 		// Assign a skin to the body mesh as a material override
 		CurrentBodyMeshIndex = (CurrentBodyMeshIndex < C.BodyVariants.length) ? CurrentBodyMeshIndex : 0;
@@ -199,7 +199,7 @@ static final function SetBodySkinMaterial(KFCharacterInfo_Human C, OutfitVariant
 
 	if (KFP.WorldInfo.NetMode != NM_DedicatedServer)
 	{
-		if(CurrentVariant.SkinVariations.length > 0)
+		if (CurrentVariant.SkinVariations.length > 0)
 		{
 			// Assign a skin to the body mesh as a material override
 			NewSkinIndex = (NewSkinIndex < CurrentVariant.SkinVariations.length) ? NewSkinIndex : 0;
@@ -208,7 +208,7 @@ static final function SetBodySkinMaterial(KFCharacterInfo_Human C, OutfitVariant
 		else
 		{
 			// Use material specified in the mesh asset
-			for(i=0; i<KFP.Mesh.GetNumElements(); i++)
+			for (i=0; i<KFP.Mesh.GetNumElements(); i++)
 			{
 				KFP.Mesh.SetMaterial(i, none);
 			}
@@ -222,7 +222,7 @@ static final function SetHeadSkinMaterial(KFCharacterInfo_Human C, OutfitVariant
 
 	if (KFP.WorldInfo.NetMode != NM_DedicatedServer)
 	{
-		if(CurrentVariant.SkinVariations.length > 0)
+		if (CurrentVariant.SkinVariations.length > 0)
 		{
 			// Assign a skin to the body mesh as a material override
 			NewSkinIndex = (NewSkinIndex < CurrentVariant.SkinVariations.length) ? NewSkinIndex : 0;
@@ -231,7 +231,7 @@ static final function SetHeadSkinMaterial(KFCharacterInfo_Human C, OutfitVariant
 		else
 		{
 			// Use material specified in the mesh asset
-			for(i=0; i<KFP.ThirdPersonHeadMeshComponent.GetNumElements(); i++)
+			for (i=0; i<KFP.ThirdPersonHeadMeshComponent.GetNumElements(); i++)
 			{
 				KFP.ThirdPersonHeadMeshComponent.SetMaterial(i, none);
 			}
@@ -287,7 +287,7 @@ static final function SetAttachmentSkinMaterial(KFCharacterInfo_Human C,
 	local int i;
 	if (KFP.WorldInfo.NetMode != NM_DedicatedServer)
 	{
-		if(CurrentVariant.AttachmentItem.SkinVariations.length > 0)
+		if (CurrentVariant.AttachmentItem.SkinVariations.length > 0)
 		{
 			// Assign a skin to the attachment mesh as a material override
 			if (NewSkinIndex < CurrentVariant.AttachmentItem.SkinVariations.length)
@@ -329,7 +329,7 @@ static final function SetAttachmentSkinMaterial(KFCharacterInfo_Human C,
 			else
 			{
 				// Use material specified in the mesh asset
-				for(i=0; i < KFP.ThirdPersonAttachments[PawnAttachmentIndex].GetNumElements(); i++)
+				for (i=0; i < KFP.ThirdPersonAttachments[PawnAttachmentIndex].GetNumElements(); i++)
 				{
 					KFP.ThirdPersonAttachments[PawnAttachmentIndex].SetMaterial(i, none);
 				}
@@ -392,7 +392,7 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 		}
 
 		// Set First Person Cosmetic if mesh exists for it.
-		if(CharAttachmentMeshName != "")
+		if (CharAttachmentMeshName != "")
 		{
 			// Set Cosmetic Mesh
 			SetAttachmentMesh(C, CurrentAttachmentMeshIndex, AttachmentSlotIndex, CharAttachmentMeshName, CharAttachmentSocketName, AttachmentMesh, KFP, bIsFirstPerson);
@@ -400,7 +400,7 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 		else
 		{
 			// Make sure to clear out attachment if we're replacing with nothing.
-			if(bIsFirstPerson)
+			if (bIsFirstPerson)
 			{
 				KFP.FirstPersonAttachments[AttachmentSlotIndex] = none;
 				KFP.FirstPersonAttachmentSocketNames[AttachmentSlotIndex] = '';
@@ -418,7 +418,7 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 	}
 
 	// Treat `CLEARED_ATTACHMENT_INDEX as special value (for client detachment)
-	if(CurrentAttachmentMeshIndex == `CLEARED_ATTACHMENT_INDEX)
+	if (CurrentAttachmentMeshIndex == `CLEARED_ATTACHMENT_INDEX)
 	{
 		C.RemoveAttachmentMeshAndSkin(AttachmentSlotIndex, KFP, KFPRI);
 	}
@@ -463,7 +463,7 @@ static final function SetAttachmentMesh(KFCharacterInfo_Human C, int CurrentAtta
 			}
 			SkeletalAttachment.SetActorCollision(false, false);
 
-			if(bIsFirstPerson)
+			if (bIsFirstPerson)
 			{
 				KFP.FirstPersonAttachments[AttachmentSlotIndex] = SkeletalAttachment;
 			}
@@ -503,7 +503,7 @@ static final function SetAttachmentMesh(KFCharacterInfo_Human C, int CurrentAtta
 			StaticAttachment = new(KFP) class'StaticMeshComponent';
 			StaticAttachment.SetActorCollision(false, false);
 
-			if(bIsFirstPerson)
+			if (bIsFirstPerson)
 			{
 				KFP.FirstPersonAttachments[AttachmentSlotIndex] = StaticAttachment;
 			}
@@ -533,7 +533,7 @@ static final function SetAttachmentMesh(KFCharacterInfo_Human C, int CurrentAtta
 			AttachmentSocket.RelativeScale * AttachmentScaleRelativeToSocket);
 	}
 
-	if(bIsFirstPerson)
+	if (bIsFirstPerson)
 	{
 		KFP.FirstPersonAttachmentSocketNames[AttachmentSlotIndex] = CharAttachmentSocketName;
 	}
@@ -563,14 +563,14 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 		// The socket that this attachment requires
 		NewAttachmentSocketName = C.CosmeticVariants[NewAttachmentMeshIndex].AttachmentItem.SocketName;
 
-		for(i=0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
+		for (i=0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
 		{
 			CurrentAttachmentIdx = EPRI.CustomCharacter.AttachmentMeshIndices[i];
 			if (CurrentAttachmentIdx == `CLEARED_ATTACHMENT_INDEX)
 				continue;
 
 			// Remove the object if it is taking up our desired slot
-			if(KFP.ThirdPersonAttachmentSocketNames[i] != '' &&
+			if (KFP.ThirdPersonAttachmentSocketNames[i] != '' &&
 				KFP.ThirdPersonAttachmentSocketNames[i] == NewAttachmentSocketName)
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);	
@@ -578,14 +578,14 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 			}
 
 			// Remove the object if it cannot exist at the same time as another equipped item
-			if(C.GetOverrideCase(CurrentAttachmentIdx, NewAttachmentMeshIndex))
+			if (C.GetOverrideCase(CurrentAttachmentIdx, NewAttachmentMeshIndex))
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);
 				continue;
 			}
 
 			// Check inverse override
-			if(C.GetOverrideCase(NewAttachmentMeshIndex, CurrentAttachmentIdx))
+			if (C.GetOverrideCase(NewAttachmentMeshIndex, CurrentAttachmentIdx))
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);
 				continue;
@@ -633,7 +633,7 @@ static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn
 	}
 	
 	// Hack fix for a material bug on KF2
-	if(bCustom && KFP.ArmsMesh.SkeletalMesh!=None && KFP.ArmsMesh.GetMaterial(0)!=None)
+	if (bCustom && KFP.ArmsMesh.SkeletalMesh!=None && KFP.ArmsMesh.GetMaterial(0)!=None)
 	{
 		M = KFP.ArmsMesh.CreateAndSetMaterialInstanceConstant(0);
 		CloneMIC(M);
@@ -650,7 +650,7 @@ static function int GetAttachmentSlotIndex(
 	local ExtPlayerReplicationInfo EPRI;
 	local bool bCustom;
 
-	if(KFPRI == None)
+	if (KFPRI == None)
 	{
 		`warn("GetAttachmentSlotIndex - NO KFPRI");
 		return INDEX_NONE;
@@ -660,10 +660,10 @@ static function int GetAttachmentSlotIndex(
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);
 	
 	// Return the next available attachment index or the index that matches this mesh
-	for(AttachmentIdx = 0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
+	for (AttachmentIdx = 0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 	{
 		CosmeticMeshIdx = bCustom ? EPRI.CustomCharacter.AttachmentMeshIndices[AttachmentIdx] : KFPRI.RepCustomizationInfo.AttachmentMeshIndices[AttachmentIdx];
-		if(CosmeticMeshIdx == INDEX_NONE || CosmeticMeshIdx == CurrentAttachmentMeshIndex)
+		if (CosmeticMeshIdx == INDEX_NONE || CosmeticMeshIdx == CurrentAttachmentMeshIndex)
 		{
 			return AttachmentIdx;
 		}

@@ -4,13 +4,13 @@ static function bool PreventDeath(KFPawn_Human Player, Controller Instigator, Cl
 {
 	local Controller C;
 
-	if((Instigator==None || Instigator==Player.Controller) && DamType==Class'DmgType_Suicided')
+	if ((Instigator==None || Instigator==Player.Controller) && DamType==Class'DmgType_Suicided')
 		return false; // Allow normal suicide to go ahead.
 
-	if(Ext_T_GhostHelper(Data).CanResPlayer(Player,Level))
+	if (Ext_T_GhostHelper(Data).CanResPlayer(Player,Level))
 	{
 		// Abort current special move
-		if(Player.IsDoingSpecialMove())
+		if (Player.IsDoingSpecialMove())
 			Player.SpecialMoveHandler.EndSpecialMove();
 
 		// Notify AI to stop hunting me.

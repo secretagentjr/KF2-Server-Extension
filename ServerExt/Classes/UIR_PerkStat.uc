@@ -46,11 +46,11 @@ function SetActivePerk(Ext_PerkBase P)
 }
 function Timer()
 {
-	if(OldValue!=MyPerk.PerkStats[StatIndex].CurrentValue || bCostDirty)
+	if (OldValue!=MyPerk.PerkStats[StatIndex].CurrentValue || bCostDirty)
 	{
 		bCostDirty = false;
 		OldValue = MyPerk.PerkStats[StatIndex].CurrentValue;
-		if(CurrentCost != 0)
+		if (CurrentCost != 0)
 			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$CostText$" "$CurrentCost$", "$ProgressStr$"%]:");
 		else
 			InfoText.SetText(MyPerk.GetStatUIStr(StatIndex)$" ["$OldValue$"/"$MaxStatValue$", "$ProgressStr$"%]:");
@@ -62,7 +62,7 @@ function BuyStatPoint(KFGUI_Button Sender)
 }
 function EditBoxChange(KFGUI_EditBox Sender)
 {
-	if(MyPerk.PerkStats[StatIndex].CostPerValue > 1)
+	if (MyPerk.PerkStats[StatIndex].CostPerValue > 1)
 		CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
 	else
 		CurrentCost = 0;
@@ -78,13 +78,13 @@ final function CheckBuyLimit()
 
 	i = Max(Min(MyPerk.CurrentSP/MyPerk.PerkStats[StatIndex].CostPerValue,MyPerk.PerkStats[StatIndex].MaxValue-MyPerk.PerkStats[StatIndex].CurrentValue),0);
 	StatCountBox.MaxValue = i;
-	if(i==0)
+	if (i==0)
 		StatCountBox.MinValue = 0;
 	else StatCountBox.MinValue = 1;
 
 	// Make the value clamped.
 	StatCountBox.ChangeValue(StatCountBox.Value);
-	if(MyPerk.PerkStats[StatIndex].CostPerValue > 1)
+	if (MyPerk.PerkStats[StatIndex].CostPerValue > 1)
 		CurrentCost = StatCountBox.GetValueInt()*MyPerk.PerkStats[StatIndex].CostPerValue;
 	else
 		CurrentCost = 0;
@@ -106,9 +106,9 @@ final function string ChopExtraDigits(float Value)
 	bLoop = true;
 
 	// Chop off float digits that aren't needed.
-	while(bLoop)
+	while (bLoop)
 	{
-		switch(Right(S,1))
+		switch (Right(S,1))
 		{
 		case "0":
 			S = Left(S,Len(S)-1);

@@ -29,7 +29,7 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 	DefValue = Super.ApplyEffect(Type, Value, Progress);
 	MyPRI = KFPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo);
 	
-	if(MyPRI != None && Type == 'KnockDown')
+	if (MyPRI != None && Type == 'KnockDown')
 		MyPRI.bConcussiveActive = Modifiers[7] > 1.5;
 	
 	return DefValue;
@@ -42,16 +42,16 @@ function OnWaveEnded()
 
 simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
-	if(BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))))
+	if (BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))))
 	{
-		if(bDirectHit && class<KFDT_Ballistic_Shell>(DamageType) != none)
+		if (bDirectHit && class<KFDT_Ballistic_Shell>(DamageType) != none)
 			InDamage *= 1.25;
 
-		if(bCriticalHit && MyKFPM != none && IsCriticalHitZone(MyKFPM, HitZoneIdx))
+		if (bCriticalHit && MyKFPM != none && IsCriticalHitZone(MyKFPM, HitZoneIdx))
 			InDamage *= 1.5f;
 	}
 	
-	if(class<KFDT_DemoNuke_Toxic_Lingering>(DamageType) != None)
+	if (class<KFDT_DemoNuke_Toxic_Lingering>(DamageType) != None)
 		InDamage *= NukeDamageMult;
 	
 	Super.ModifyDamageGiven(InDamage, DamageCauser, MyKFPM, DamageInstigator, DamageType, HitZoneIdx);
@@ -59,7 +59,7 @@ simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCaus
 
 function bool IsCriticalHitZone(KFPawn TestPawn, int HitZoneIndex)
 {
-	if(TestPawn != none && HitzoneIndex >= 0 && HitzoneIndex < TestPawn.HitZones.length)
+	if (TestPawn != none && HitzoneIndex >= 0 && HitzoneIndex < TestPawn.HitZones.length)
 		return TestPawn.HitZones[HitZoneIndex].DmgScale > 1.f;
 
 	return false;
@@ -67,7 +67,7 @@ function bool IsCriticalHitZone(KFPawn TestPawn, int HitZoneIndex)
 
 simulated function ModifySpareAmmoAmount(KFWeapon KFW, out int PrimarySpareAmmo, optional const out STraderItem TraderItem, optional bool bSecondary)
 {
-	if(KFW != None && KFWeap_Thrown_C4(KFW) != None)
+	if (KFW != None && KFWeap_Thrown_C4(KFW) != None)
 		PrimarySpareAmmo += (1 + Modifiers[11]);
 	
 	Super.ModifySpareAmmoAmount(KFW, PrimarySpareAmmo, TraderItem, bSecondary);

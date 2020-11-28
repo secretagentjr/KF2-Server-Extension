@@ -10,7 +10,7 @@ function DrawHUD(HUD H)
 }
 function PostRender(Canvas Canvas)
 {
-	if(ControllerOwner.bIsInMenuState)
+	if (ControllerOwner.bIsInMenuState)
 		ControllerOwner.HandleDrawMenu();
 		//ControllerOwner.RenderMenu(Canvas);
 }
@@ -21,7 +21,7 @@ function PlayerInput(float DeltaTime)
 	// Do not move.
 	ControllerOwner.MenuInput(DeltaTime);
 	
-	if(!ControllerOwner.bAbsorbInput)
+	if (!ControllerOwner.bAbsorbInput)
 	{
 		aMouseX = 0;
 		aMouseY = 0;

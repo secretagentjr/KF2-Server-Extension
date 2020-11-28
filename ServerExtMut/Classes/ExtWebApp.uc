@@ -10,7 +10,7 @@ function cleanup()
 {
 	webadmin = None;
 	MyMutator = None;
-	if(ExtAdminUI!=None)
+	if (ExtAdminUI!=None)
 	{
 		ExtAdminUI.Cleanup();
 		ExtAdminUI = None;
@@ -39,7 +39,7 @@ final function IncludeFile(WebAdminQuery q, string file)
 {
 	local string S;
 	
-	if(webadmin.HTMLSubDirectory!="")
+	if (webadmin.HTMLSubDirectory!="")
 	{
 		S = webadmin.Path $ "/" $ webadmin.HTMLSubDirectory $ "/" $ file;
 		if (q.response.FileExists(S))
@@ -80,7 +80,7 @@ final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, 
 	local string S;
 	
 	S = "<TR><TD><abbr title=\""$Tooltip$"\">"$InfoStr$":</abbr></TD><TD><input class=\"textbox\" class=\"text\" name=\""$ResponseVar$"\" value=\""$CurVal$"\"></TD>";
-	if(!bSkipTrail)
+	if (!bSkipTrail)
 		S $= "</TR>";
 	q.response.SendText(S);
 }
@@ -109,7 +109,7 @@ function handleExtMod(WebAdminQuery q)
 	local delegate<ExtWebAdmin_UI.OnSetValue> SetV;
 	local bool bEditArray;
 
-	if(ExtAdminUI==None)
+	if (ExtAdminUI==None)
 	{
 		ExtAdminUI = new (None) class'ExtWebAdmin_UI';
 		MyMutator.InitWebAdmin(ExtAdminUI);
@@ -117,19 +117,19 @@ function handleExtMod(WebAdminQuery q)
 
 	// First check if user is trying to get to another page.
 	S = q.request.getVariable("GoToPage");
-	if(S!="")
+	if (S!="")
 	{
-		if(S=="Main Menu")
+		if (S=="Main Menu")
 			EditPageIndex = -1;
 		else EditPageIndex = ExtAdminUI.ConfigList.Find('PageName',S);
 	}
 
-	if(EditPageIndex<0 || EditPageIndex>=ExtAdminUI.ConfigList.Length)
+	if (EditPageIndex<0 || EditPageIndex>=ExtAdminUI.ConfigList.Length)
 	{
 		// Show main links page.
 		SendHeader(q,"Ext Server Links page");
 		q.response.SendText("<table id=\"settings\" class=\"grid\"><thead><tr><th>Links</th></tr></thead><tbody>");
-		for(i=0; i<ExtAdminUI.ConfigList.Length; ++i)
+		for (i=0; i<ExtAdminUI.ConfigList.Length; ++i)
 			q.response.SendText("<tr><td><form action=\""$webadmin.Path$ExtWebURL$"\"><input class=\"button\" name=\"GoToPage\" type=\"submit\" value=\""$ExtAdminUI.ConfigList[i].PageName$"\"></form></td></tr>");
 		q.response.SendText("</tbody></table></div></div></body></html>");
 	}
@@ -137,51 +137,51 @@ function handleExtMod(WebAdminQuery q)
 	{
 		S = q.request.getVariable("edit"$EditPageIndex);
 		bEditArray = false;
-		if(S=="Submit")
+		if (S=="Submit")
 		{
 			// Read setting values.
-			for(i=0; i<ExtAdminUI.ConfigList[EditPageIndex].Configs.Length; ++i)
+			for (i=0; i<ExtAdminUI.ConfigList[EditPageIndex].Configs.Length; ++i)
 			{
 				S = q.request.getVariable("PR"$i,"#NULL");
-				if(S!="#NULL")
+				if (S!="#NULL")
 				{
 					SetV = ExtAdminUI.ConfigList[EditPageIndex].SetValue;
 					SetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,0,S);
 				}
-				else if(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType==1) // Checkboxes return nothing if unchecked.
+				else if (ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType==1) // Checkboxes return nothing if unchecked.
 				{
 					SetV = ExtAdminUI.ConfigList[EditPageIndex].SetValue;
 					SetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,0,"0");
 				}
 			}
 		}
-		else if(Left(S,5)=="Edit ")
+		else if (Left(S,5)=="Edit ")
 		{
 			i = ExtAdminUI.ConfigList[EditPageIndex].Configs.Find('UIName',Mid(S,5));
-			if(i!=-1 && ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Check if valid.
+			if (i!=-1 && ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Check if valid.
 			{
 				// Edit dynamic array.
 				bEditArray = true;
 			}
 		}
-		else if(Left(S,7)=="Submit ")
+		else if (Left(S,7)=="Submit ")
 		{
 			i = ExtAdminUI.ConfigList[EditPageIndex].Configs.Find('UIName',Mid(S,7));
-			if(i!=-1 && ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Check if valid.
+			if (i!=-1 && ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Check if valid.
 			{
 				// Submitted dynamic array values.
 				GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 				SetV = ExtAdminUI.ConfigList[EditPageIndex].SetValue;
 				z = int(GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,-1));
 				
-				for(j=z; j>=0; --j)
+				for (j=z; j>=0; --j)
 				{
-					if(q.request.getVariable("DEL"$j)=="1")
+					if (q.request.getVariable("DEL"$j)=="1")
 						SetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,j,"#DELETE");
 					else
 					{
 						S = q.request.getVariable("PR"$j,"New Line");
-						if(S!="New Line")
+						if (S!="New Line")
 							SetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,j,S);
 					}
 				}
@@ -192,29 +192,29 @@ function handleExtMod(WebAdminQuery q)
 		SendHeader(q,ExtAdminUI.ConfigList[EditPageIndex].PageName$" ("$PathName(ExtAdminUI.ConfigList[EditPageIndex].ObjClass)$")");
 		q.response.SendText("<form method=\"post\" action=\""$webadmin.Path$ExtWebURL$"\"><table id=\"settings\" class=\"grid\">");
 
-		if(bEditArray)
+		if (bEditArray)
 		{
 			q.response.SendText("<table id=\"settings\" class=\"grid\"><thead><tr><th><abbr title=\""$ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIDesc$"\">Edit Array "$ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIName$"</abbr></th><th></th><th>Delete Line</th></tr></thead><tbody>");
 			
 			GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 			z = int(GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,-1));
 
-			for(j=0; j<=z; ++j)
+			for (j=0; j<=z; ++j)
 			{
-				if(j<z)
+				if (j<z)
 					S = GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,j);
 				else S = "New Line";
-				switch(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType)
+				switch (ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType)
 				{
 				case 0: // int
 					AddConfigEditbox(q,"["$j$"]",S,8,"PR"$j,"",true);
-					if(j<z)
+					if (j<z)
 						q.response.SendText("<TD><input type=\"checkbox\" name=\"DEL"$j$"\" value=\"1\" "$S$"></TD></TR>");
 					else q.response.SendText("<TD></TD></TR>");
 					break;
 				case 2: // string
 					AddConfigEditbox(q,"["$j$"]",S,80,"PR"$j,"",true);
-					if(j<z)
+					if (j<z)
 						q.response.SendText("<TD><input type=\"checkbox\" name=\"DEL"$j$"\" value=\"1\" "$S$"></TD></TR>");
 					else q.response.SendText("<TD></TD></TR>");
 					break;
@@ -226,9 +226,9 @@ function handleExtMod(WebAdminQuery q)
 		else
 		{
 			q.response.SendText("<table id=\"settings\" class=\"grid\"><thead><tr><th>Settings</th></tr></thead><tbody>");
-			for(i=0; i<ExtAdminUI.ConfigList[EditPageIndex].Configs.Length; ++i)
+			for (i=0; i<ExtAdminUI.ConfigList[EditPageIndex].Configs.Length; ++i)
 			{
-				if(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Dynamic array.
+				if (ExtAdminUI.ConfigList[EditPageIndex].Configs[i].NumElements==-1) // Dynamic array.
 				{
 					GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 					j = int(GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,-1));
@@ -238,7 +238,7 @@ function handleExtMod(WebAdminQuery q)
 				{
 					GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 					S = GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,0);
-					switch(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType)
+					switch (ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropType)
 					{
 					case 0: // Int
 						AddConfigEditbox(q,ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIName,S,8,"PR"$i,ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIDesc);

@@ -45,7 +45,7 @@ final function AddSettingsPage(string PageName, class<Object> Obj, const out arr
 	local int i;
 	
 	i = ConfigList.Find('PageName',PageName);
-	if(i>=0) // Make sure no dupe pages.
+	if (i>=0) // Make sure no dupe pages.
 		PageName $= "_"$(ConfigList[i].Dupes++);
 
 	i = ConfigList.Length;
@@ -56,7 +56,7 @@ final function AddSettingsPage(string PageName, class<Object> Obj, const out arr
 	ConfigList[i].GetValue = GetFunc;
 	ConfigList[i].SetValue = SetFunc;
 }
-final function bool HasConfigFor(class<Object> Obj)
+final function bool HasConfigfor (class<Object> Obj)
 {
 	return (ConfigList.Find('ObjClass',Obj)>=0);
 }

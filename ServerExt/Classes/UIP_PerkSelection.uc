@@ -67,31 +67,31 @@ function Timer()
 	local int i;
 
 	CurrentManager = ExtPlayerController(GetPlayer()).ActivePerkManager;
-	if(CurrentManager!=None)
+	if (CurrentManager!=None)
 	{
-		if(PrevPendingPerk!=None)
+		if (PrevPendingPerk!=None)
 		{
 			PendingPerk = CurrentManager.FindPerk(PrevPendingPerk);
 			PrevPendingPerk = None;
 		}
 		PerkList.ChangeListSize(CurrentManager.UserPerks.Length);
-		if(PendingPerk!=None && !PendingPerk.bPerkNetReady)
+		if (PendingPerk!=None && !PendingPerk.bPerkNetReady)
 			return;
 		
 		// Huge code block to handle stat updating, but actually pretty well optimized.
-		if(PendingPerk!=OldUsedPerk)
+		if (PendingPerk!=OldUsedPerk)
 		{
 			OldUsedPerk = PendingPerk;
-			if(PendingPerk!=None)
+			if (PendingPerk!=None)
 			{
 				OldPerkPoints = -1;
-				if(StatsList.ItemComponents.Length!=PendingPerk.PerkStats.Length)
+				if (StatsList.ItemComponents.Length!=PendingPerk.PerkStats.Length)
 				{
-					if(StatsList.ItemComponents.Length<PendingPerk.PerkStats.Length)
+					if (StatsList.ItemComponents.Length<PendingPerk.PerkStats.Length)
 					{
-						for(i=StatsList.ItemComponents.Length; i<PendingPerk.PerkStats.Length; ++i)
+						for (i=StatsList.ItemComponents.Length; i<PendingPerk.PerkStats.Length; ++i)
 						{
-							if(i>=StatBuyers.Length)
+							if (i>=StatBuyers.Length)
 							{
 								StatBuyers[StatBuyers.Length] = UIR_PerkStat(StatsList.AddListComponent(class'UIR_PerkStat'));
 								StatBuyers[i].StatIndex = i;
@@ -104,41 +104,41 @@ function Timer()
 							}
 						}
 					}
-					else if(StatsList.ItemComponents.Length>PendingPerk.PerkStats.Length)
+					else if (StatsList.ItemComponents.Length>PendingPerk.PerkStats.Length)
 					{
-						for(i=PendingPerk.PerkStats.Length; i<StatsList.ItemComponents.Length; ++i)
+						for (i=PendingPerk.PerkStats.Length; i<StatsList.ItemComponents.Length; ++i)
 							StatBuyers[i].CloseMenu();
 						StatsList.ItemComponents.Length = PendingPerk.PerkStats.Length;
 					}
 				}
 				OldPerkPoints = PendingPerk.CurrentSP;
 				PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
-				for(i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
+				for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				{
 					StatBuyers[i].SetActivePerk(PendingPerk);
 					StatBuyers[i].CheckBuyLimit();
 				}
 				B_Prestige.SetDisabled(!PendingPerk.CanPrestige());
-				if(PendingPerk.MinLevelForPrestige<0)
+				if (PendingPerk.MinLevelForPrestige<0)
 					B_Prestige.ChangeToolTip(PrestigeButtonDisabledToolTip);
 				else B_Prestige.ChangeToolTip(PrestigeButtonToolTip$" "$PendingPerk.MinLevelForPrestige);
 				UpdateTraits();
 			}
 			else // Empty out if needed.
 			{
-				for(i=0; i<StatsList.ItemComponents.Length; ++i)
+				for (i=0; i<StatsList.ItemComponents.Length; ++i)
 					StatBuyers[i].CloseMenu();
 				StatsList.ItemComponents.Length = 0;
 				PerkLabel.SetText(NoPerkSelected);
 			}
 		}
-		else if(PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)
+		else if (PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)
 		{
 			B_Prestige.SetDisabled(!PendingPerk.CanPrestige());
 
 			OldPerkPoints = PendingPerk.CurrentSP;
 			PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
-			for(i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
+			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
 			
 			// Update traits list.
@@ -162,32 +162,32 @@ final function UpdateTraits()
 	CatList.AddItem(None);
 
 	// First gather all the categories available.
-	for(i=0; i<PendingPerk.PerkTraits.Length; ++i)
+	for (i=0; i<PendingPerk.PerkTraits.Length; ++i)
 	{
 		N = PendingPerk.PerkTraits[i].TraitType.Default.TraitGroup;
-		if(N!=None && CatList.Find(N)==-1)
+		if (N!=None && CatList.Find(N)==-1)
 			CatList.AddItem(N);
 	}
 	
-	for(j=0; j<CatList.Length; ++j)
+	for (j=0; j<CatList.Length; ++j)
 	{
 		N = CatList[j];
-		if(j>0)
+		if (j>0)
 		{
 			TraitsList.AddLine("--"$N.Static.GetUIInfo(PendingPerk),-1);
 			TraitsList.ToolTip.AddItem(N.Static.GetUIDesc());
 		}
-		for(i=0; i<PendingPerk.PerkTraits.Length; ++i)
+		for (i=0; i<PendingPerk.PerkTraits.Length; ++i)
 		{
 			TC = PendingPerk.PerkTraits[i].TraitType;
-			if(TC.Default.TraitGroup==N)
+			if (TC.Default.TraitGroup==N)
 			{
-				if(PendingPerk.PerkTraits[i].CurrentLevel>=TC.Default.NumLevels)
+				if (PendingPerk.PerkTraits[i].CurrentLevel>=TC.Default.NumLevels)
 					S = MaxStr$"\n"$NotAviable;
 				else
 				{
 					S = PendingPerk.PerkTraits[i].CurrentLevel$"/"$TC.Default.NumLevels$"\n";
-					if(TC.Static.MeetsRequirements(PendingPerk.PerkTraits[i].CurrentLevel,PendingPerk))
+					if (TC.Static.MeetsRequirements(PendingPerk.PerkTraits[i].CurrentLevel,PendingPerk))
 						S $= string(TC.Static.GetTraitCost(PendingPerk.PerkTraits[i].CurrentLevel));
 					else S $= NotAviable;
 				}
@@ -203,20 +203,20 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 	local Ext_PerkBase P;
 	local float Sc;
 
-	if(CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
+	if (CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
 		return;
 	P = CurrentManager.UserPerks[Index];
-	if(P.Class==ExtPlayerReplicationInfo(GetPlayer().PlayerReplicationInfo).ECurrentPerk)
+	if (P.Class==ExtPlayerReplicationInfo(GetPlayer().PlayerReplicationInfo).ECurrentPerk)
 	{
-		if(PendingPerk==None)
+		if (PendingPerk==None)
 			PendingPerk = P;
 		C.SetDrawColor(164,164,32);
 	}
-	else if(P==PendingPerk)
+	else if (P==PendingPerk)
 		C.SetDrawColor(164,86,32);
 	else C.SetDrawColor(32,32,128);
 	
-	if(bFocus)
+	if (bFocus)
 	{
 		C.DrawColor.R+=15;
 		C.DrawColor.G+=15;
@@ -238,7 +238,7 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 }
 function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)
 {
-	if(CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
+	if (CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
 		return;
 	
 	PendingPerk = CurrentManager.UserPerks[Index];
@@ -247,7 +247,7 @@ function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)
 function ShowTraitInfo(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
 	local UIR_TraitInfoPopup T;
-	if((bRight || bDblClick) && Item.Value>=0)
+	if ((bRight || bDblClick) && Item.Value>=0)
 	{
 		T = UIR_TraitInfoPopup(Owner.OpenMenu(class'UIR_TraitInfoPopup'));
 		T.ShowTraitInfo(Item.Value,PendingPerk);
@@ -257,24 +257,24 @@ function ButtonClicked(KFGUI_Button Sender)
 {
 	local KFGUI_Page T;
 
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Reset':
-		if(PendingPerk!=None)
+		if (PendingPerk!=None)
 		{
 			T = Owner.OpenMenu(class'UI_ResetWarning');
 			UI_ResetWarning(T).SetupTo(PendingPerk);
 		}
 		break;
 	case 'Unload':
-		if(PendingPerk!=None)
+		if (PendingPerk!=None)
 		{
 			T = Owner.OpenMenu(class'UI_UnloadInfo');
 			UI_UnloadInfo(T).SetupTo(PendingPerk.Class);
 		}
 		break;
 	case 'Prestige':
-		if(PendingPerk!=None)
+		if (PendingPerk!=None)
 		{
 			T = Owner.OpenMenu(class'UI_PrestigeNote');
 			UI_PrestigeNote(T).SetupTo(PendingPerk);

@@ -25,7 +25,7 @@ var transient bool bShowScrollbar,bTextParsed;
 
 final function SetText(string S)
 {
-	if(Text==S)
+	if (Text==S)
 		return;
 	Text = S;
 	OldSize[0] = -1; // Force to refresh.
@@ -48,29 +48,29 @@ final function ParseTextLines()
 	ParseStringIntoArray(Text,SA,LineSplitter,false);
 	Lines.Length = SA.Length;
 	C.A = 0;
-	for(i=0; i<SA.Length; ++i)
+	for (i=0; i<SA.Length; ++i)
 	{
 		Lines[i].Text.Length = 0;
 		S = SA[i];
-		if(S=="")
+		if (S=="")
 			continue;
 		
 		z = 0;
-		while(true)
+		while (true)
 		{
 			j = InStr(S,"#{");
-			if(j>0)
+			if (j>0)
 			{
 				Lines[i].Text.Length = z+1;
 				Lines[i].Text[z].S = Left(S,j);
 				Lines[i].Text[z].C = C;
 				++z;
 			}
-			else if(j==-1)
+			else if (j==-1)
 				break;
 
 			S = Mid(S,j+2);
-			if(Left(S,4)=="DEF}")
+			if (Left(S,4)=="DEF}")
 			{
 				C.A = 0;
 				S = Mid(S,4);
@@ -100,11 +100,11 @@ final function byte GrabHexValue(string S)
 }
 final function byte HexToInt(byte n)
 {
-	if(n>=48 && n<=57) // '0' - '9'
+	if (n>=48 && n<=57) // '0' - '9'
 		return n-48;
-	if(n>=65 && n<=70) // 'A' - 'F'
+	if (n>=65 && n<=70) // 'A' - 'F'
 		return n-55; // 'A' - 10
-	if(n>=97 && n<=102) // 'a' - 'f'
+	if (n>=97 && n<=102) // 'a' - 'f'
 		return n-87; // 'a' - 10
 	return 0;
 }
@@ -116,7 +116,7 @@ function InitSize()
 
 	OldSize[0] = CompPos[2];
 	OldSize[1] = CompPos[3];
-	if(!bTextParsed)
+	if (!bTextParsed)
 	{
 		ParseTextLines();
 		bTextParsed = true;
@@ -135,9 +135,9 @@ function InitSize()
 	bClickable = bShowScrollbar;
 	bCanFocus = bShowScrollbar;
 	
-	if(bShowScrollbar)
+	if (bShowScrollbar)
 	{
-		if(ScrollBar==None)
+		if (ScrollBar==None)
 		{
 			ScrollBar = new(Self) class'KFGUI_ScrollBarV';
 			ScrollBar.SetPosition(0.9,0.0,0.1,1.0);
@@ -147,7 +147,7 @@ function InitSize()
 		}
 		
 		// Compute scrollbar size and X-position.
-		for(i=0; i<4; ++i)
+		for (i=0; i<4; ++i)
 			ScrollBar.InputPos[i] = CompPos[i];
 		ScrollWidth = ScrollBar.GetWidth();
 		ScrollBar.XPosition = 1.f - ScrollWidth;
@@ -159,12 +159,12 @@ function InitSize()
 		Lines = OrgLines;
 		ParseLines((CompPos[2]-ScrollWidth) / InitFontScale);
 
-		if(Components.Find(ScrollBar)==-1)
+		if (Components.Find(ScrollBar)==-1)
 			Components.AddItem(ScrollBar);
 		MaxHeight = (Lines.Length * TextHeight);
 		ScrollBar.UpdateScrollSize(0,Max(((MaxHeight-CompPos[3])/TextHeight)+1,1),1,1);
 	}
-	else if(ScrollBar!=None)
+	else if (ScrollBar!=None)
 		Components.RemoveItem(ScrollBar);
 }
 
@@ -174,16 +174,16 @@ final function ParseLines(float ClipX)
 	local float X,XS,YS;
 	local int i,j,z,n;
 
-	for(i=0; i<Lines.Length; ++i)
+	for (i=0; i<Lines.Length; ++i)
 	{
 		Lines[i].Y = i*TextHeight;
 		X = 0.f;
-		for(j=0; j<Lines[i].Text.Length; ++j)
+		for (j=0; j<Lines[i].Text.Length; ++j)
 		{
 			Lines[i].Text[j].X = (X*InitFontScale);
 			Canvas.TextSize(Lines[i].Text[j].S,XS,YS);
 
-			if((X+XS)>ClipX)
+			if ((X+XS)>ClipX)
 			{
 				z = FindSplitPoint(Lines[i].Text[j].S,X,ClipX);
 
@@ -191,7 +191,7 @@ final function ParseLines(float ClipX)
 				Lines.Insert(i+1,1);
 				
 				// Append the remaining lines there.
-				for(n=j; n<Lines[i].Text.Length; ++n)
+				for (n=j; n<Lines[i].Text.Length; ++n)
 					Lines[i+1].Text.AddItem(Lines[i].Text[n]);
 				
 				// Split the string at wrapping point.
@@ -201,7 +201,7 @@ final function ParseLines(float ClipX)
 				Lines[i+1].Text[0].S = StripWhiteSpaces(Lines[i+1].Text[0].S);
 				
 				// If empty, clean it up.
-				if(Lines[i+1].Text[0].S=="")
+				if (Lines[i+1].Text[0].S=="")
 					Lines[i+1].Text.Remove(0,1);
 				
 				// End the current line at wrapping point.
@@ -228,11 +228,11 @@ final function int FindSplitPoint(string S, float X, float ClipX)
 	l = Len(S);
 	PrevWord = 0;
 	bWasWhite = true;
-	while(i<l)
+	while (i<l)
 	{
-		if(Mid(S,i,1)==" ")
+		if (Mid(S,i,1)==" ")
 		{
-			if(!bWasWhite)
+			if (!bWasWhite)
 			{
 				PrevWord = i;
 				bWasWhite = true;
@@ -244,9 +244,9 @@ final function int FindSplitPoint(string S, float X, float ClipX)
 		}
 		Canvas.TextSize(Mid(S,i,1),XL,YL);
 		X+=XL;
-		if(X>ClipX) // Split here if possible.
+		if (X>ClipX) // Split here if possible.
 		{
-			if(PrevWord==0)
+			if (PrevWord==0)
 				return (bStartedZero ? i : 0); // No wrap.
 			return PrevWord;
 		}
@@ -256,7 +256,7 @@ final function int FindSplitPoint(string S, float X, float ClipX)
 }
 final function string StripWhiteSpaces(string S)
 {
-	if(Left(S,1)==" ")
+	if (Left(S,1)==" ")
 		S = Mid(S,1);
 	return S;
 }
@@ -271,36 +271,36 @@ function DrawMenu()
 	local int i,j;
 	local float Y;
 
-	if(Text=="")
+	if (Text=="")
 		return;
 
 	// Need to figure out best fitting font.
-	if(OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3])
+	if (OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3])
 		InitSize();
 
 	Canvas.Font = InitFont;
 
-	if(bShowScrollbar)
+	if (bShowScrollbar)
 	{
 		Canvas.SetClip(CompPos[0]+(CompPos[2]-ScrollWidth),CompPos[1]+CompPos[3]);
 		i = ScrollBar.GetValue();
 	}
 	else i = 0;
 	
-	if(i<Lines.Length)
+	if (i<Lines.Length)
 	{
 		Y = Lines[i].Y;
-		for(i=i; i<Lines.Length; ++i)
+		for (i=i; i<Lines.Length; ++i)
 		{
-			if(Lines[i].Text.Length!=0)
+			if (Lines[i].Text.Length!=0)
 			{
-				if((Lines[i].Y-Y+TextHeight)>=CompPos[3])
+				if ((Lines[i].Y-Y+TextHeight)>=CompPos[3])
 					break;
-				for(j=0; j<Lines[i].Text.Length; ++j)
+				for (j=0; j<Lines[i].Text.Length; ++j)
 				{
 					// Set text color.
 					Canvas.DrawColor = Lines[i].Text[j].C;
-					if(Canvas.DrawColor.A==0)
+					if (Canvas.DrawColor.A==0)
 						Canvas.DrawColor = TextColor;
 
 					Canvas.SetPos(Lines[i].Text[j].X,Lines[i].Y-Y);
@@ -318,7 +318,7 @@ function bool CaptureMouse()
 
 function ScrollMouseWheel(bool bUp)
 {
-	if(bShowScrollbar)
+	if (bShowScrollbar)
 		ScrollBar.ScrollMouseWheel(bUp);
 }
 

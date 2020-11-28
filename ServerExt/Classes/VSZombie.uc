@@ -16,7 +16,7 @@ var() bool bBoss;
 
 replication
 {
-	if(true)
+	if (true)
 		ServerAttackMode;
 }
 
@@ -34,8 +34,8 @@ function bool IsFiring()
 {
 	local byte i;
 	
-	for(i=0; i<ArrayCount(IsFiringMode); ++i)
-		if(IsFiringMode[i]!=0)
+	for (i=0; i<ArrayCount(IsFiringMode); ++i)
+		if (IsFiringMode[i]!=0)
 			return true;
 	return false;
 }
@@ -43,7 +43,7 @@ function bool StopFiring()
 {
 	local byte i;
 	
-	for(i=0; i<ArrayCount(IsFiringMode); ++i)
+	for (i=0; i<ArrayCount(IsFiringMode); ++i)
 		IsFiringMode[i] = 0;
 	return true;
 }
@@ -54,7 +54,7 @@ function bool HasRangedAttack()
 
 simulated function ModifyPlayerInput(PlayerController PC, float DeltaTime)
 {
-	if(bLockMovement)
+	if (bLockMovement)
 	{
 		PC.PlayerInput.aForward = 0;
 		PC.PlayerInput.aStrafe = 0;
@@ -67,7 +67,7 @@ function SetSprinting(bool bNewSprintStatus);
 // Handle animation input.
 function PlayAttackAnim(byte Num)
 {
-	if(!bAttacking)
+	if (!bAttacking)
 		ServerAttackAnim(Num);
 }
 simulated function float StartAttackAnim(byte Num) // Return animation duration.
@@ -80,12 +80,12 @@ simulated function AttackFinished()
 
 	bAttacking = false;
 	bLockMovement = false; // Usually at this point enable movement.
-	if(WorldInfo.NetMode!=NM_Client)
+	if (WorldInfo.NetMode!=NM_Client)
 	{
 		// Attack again.
-		for(i=0; i<ArrayCount(IsFiringMode); ++i)
+		for (i=0; i<ArrayCount(IsFiringMode); ++i)
 		{
-			if(IsFiringMode[i]!=0)
+			if (IsFiringMode[i]!=0)
 			{
 				PlayAttackAnim(i);
 				break;
@@ -97,15 +97,15 @@ simulated function AttackFinished()
 // Handle fire input.
 reliable server function ServerModeFire(bool bStart, byte Mode)
 {
-	if((bStart && bNoWeaponFiring) || Mode>=ArrayCount(IsFiringMode) || WorldInfo.NetMode==NM_Client)
+	if ((bStart && bNoWeaponFiring) || Mode>=ArrayCount(IsFiringMode) || WorldInfo.NetMode==NM_Client)
 		return;
 	IsFiringMode[Mode] = byte(bStart);
-	if(bStart)
+	if (bStart)
 		PlayAttackAnim(Mode);
 }
 simulated function StartFire(byte FireModeNum)
 {
-	if(bNoWeaponFiring)
+	if (bNoWeaponFiring)
 		return;
 	ServerModeFire(true,FireModeNum);
 }
@@ -123,10 +123,10 @@ function ServerAttackAnim(byte Num)
 	bAttacking = true;
 	F = StartAttackAnim(Num);
 	SetTimer(F,false,'AttackFinished');
-	if(WorldInfo.NetMode!=NM_StandAlone)
+	if (WorldInfo.NetMode!=NM_StandAlone)
 	{
 		Num+=1;
-		if(Num==ServerAttackMode)
+		if (Num==ServerAttackMode)
 			ServerAttackMode = ServerAttackMode | 128;
 		else ServerAttackMode = Num;
 		SetTimer(F+0.5,false,'ResetAttackTimer');
@@ -138,10 +138,10 @@ function ResetAttackTimer()
 }
 simulated event ReplicatedEvent(name VarName)
 {
-	switch(VarName)
+	switch (VarName)
 	{
 	case 'ServerAttackMode':
-		if(ServerAttackMode!=0)
+		if (ServerAttackMode!=0)
 		{
 			ServerAttackMode = (ServerAttackMode & 127)-1;
 			bAttacking = true;
@@ -156,7 +156,7 @@ simulated event ReplicatedEvent(name VarName)
 // Handle melee damage.
 simulated function MeleeImpactNotify(KFAnimNotify_MeleeImpact Notify)
 {
-	if(WorldInfo.NetMode!=NM_Client)
+	if (WorldInfo.NetMode!=NM_Client)
 		MeleeDamageTarget(vector(Rotation)*MeleeDamage*500.f);
 }
 
@@ -167,19 +167,19 @@ function bool MeleeDamageTarget(vector pushdir)
 	local byte T;
 	local bool bResult,bHitActors;
 
-	if(WorldInfo.NetMode==NM_Client || Controller==None)
+	if (WorldInfo.NetMode==NM_Client || Controller==None)
 		Return False; // Never should be done on client.
 
 	Start = GetPawnViewLocation();
-	Dir = vector(GetAdjustedAimFor(None,Start));
+	Dir = vector(GetAdjustedAimfor (None,Start));
 	T = GetTeamNum();
 	
 	// First try if can hit with a small extent trace.
 	foreach TraceActors(Class'Actor',A,HL,HN,Start+Dir*120.f,Start,vect(8,8,8))
 	{
-		if(A.bWorldGeometry || A==WorldInfo)
+		if (A.bWorldGeometry || A==WorldInfo)
 		{
-			if(KFDoorActor(A)!=None)
+			if (KFDoorActor(A)!=None)
 			{
 				DamageDoor(KFDoorActor(A),HL,pushdir);
 				bHitActors = true;
@@ -187,9 +187,9 @@ function bool MeleeDamageTarget(vector pushdir)
 			bResult = true;
 			break;
 		}
-		else if(Pawn(A)!=None)
+		else if (Pawn(A)!=None)
 		{
-			if(Pawn(A).Health>0 && (Pawn(A).GetTeamNum()!=T || WorldInfo.Game.bGameEnded))
+			if (Pawn(A).Health>0 && (Pawn(A).GetTeamNum()!=T || WorldInfo.Game.bGameEnded))
 			{
 				DealMeleeDamage(A,HL,pushdir);
 				bResult = true;
@@ -198,7 +198,7 @@ function bool MeleeDamageTarget(vector pushdir)
 		}
 	}
 
-	if(!bHitActors)
+	if (!bHitActors)
 	{
 		// Then try with large extent.
 		HN.X = GetCollisionRadius()*0.75;
@@ -206,17 +206,17 @@ function bool MeleeDamageTarget(vector pushdir)
 		HN.Z = GetCollisionHeight()*0.5;
 		foreach TraceActors(Class'Actor',A,HL,HN,Location+Dir*120.f,Location,HN)
 		{
-			if(A.bWorldGeometry || A==WorldInfo)
+			if (A.bWorldGeometry || A==WorldInfo)
 			{
-				if(KFDoorActor(A)!=None)
+				if (KFDoorActor(A)!=None)
 					DamageDoor(KFDoorActor(A),HL,pushdir);
 				else DealMeleeDamage(A,HL,pushdir);
 				bResult = true;
 				break;
 			}
-			else if(Pawn(A)!=None)
+			else if (Pawn(A)!=None)
 			{
-				if(Pawn(A).Health>0 && (Pawn(A).GetTeamNum()!=T || WorldInfo.Game.bGameEnded))
+				if (Pawn(A).Health>0 && (Pawn(A).GetTeamNum()!=T || WorldInfo.Game.bGameEnded))
 				{
 					DealMeleeDamage(A,HL,pushdir);
 					bResult = true;
@@ -229,7 +229,7 @@ function bool MeleeDamageTarget(vector pushdir)
 }
 function DealMeleeDamage(Actor Other, vector HL, vector pushdir)
 {
-	if(KFPawn_Monster(Other)!=None && KFPawn_Monster(Other).GetTeamNum()==0)
+	if (KFPawn_Monster(Other)!=None && KFPawn_Monster(Other).GetTeamNum()==0)
 		Other.TakeDamage(MeleeDamage*5, Controller, HL, pushdir, MeleeHitDT,,Self); // Almost insta-kill pet zeds.
 	else Other.TakeDamage(MeleeDamage, Controller, HL, pushdir, MeleeHitDT,,Self);
 }
@@ -262,10 +262,10 @@ function TakeHitZoneDamage(float Damage, class<DamageType> DamageType, int HitZo
 	if (HitZoneIdx == HZI_Head)
 	{
 		// Based on head health, calculate number of head chunks we're allowed to remove
-		if(!bPlayedDeath && !bIsHeadless && !bTearOff)
+		if (!bPlayedDeath && !bIsHeadless && !bTearOff)
 		{
 			HeadHealthPercentage = GetHeadHealthPercent();
-			if(HeadHealthPercentage > 0.5)
+			if (HeadHealthPercentage > 0.5)
 			{
 				MaxHeadChunkGoreWhileAlive = 1;
 			}
@@ -291,23 +291,23 @@ simulated function SetMeshVisibility(bool bVisible)
 simulated function DrawHUD(HUD H)
 {
 	Super.DrawHUD(H);
-	if(Health<=0)
+	if (Health<=0)
 		return;
-	if(!bShowFPHands)
+	if (!bShowFPHands)
 	{
-		if(FPHandModel!=None && !FPHandModel.bHidden)
+		if (FPHandModel!=None && !FPHandModel.bHidden)
 			FPHandModel.SetHidden(true);
 	}
 	else
 	{
-		if(FPHandModel==None)
+		if (FPHandModel==None)
 		{
 			FPHandModel = Spawn(class'VSFPZedHands',Self);
 			FPHandModel.InitHands(Mesh);
 			FPHandModel.Mesh.SetLightingChannels(PawnLightingChannel);
 			InitFPHands();
 		}
-		if(FPHandModel.bHidden)
+		if (FPHandModel.bHidden)
 			FPHandModel.SetHidden(false);
 		FPHandModel.SetRotation(GetViewRotation());
 		FPHandModel.SetLocation(GetPawnViewLocation()+(FPHandOffset >> FPHandModel.Rotation));
@@ -323,14 +323,14 @@ simulated function InitFPHands()
 simulated function Destroyed()
 {
 	DisableNightVision();
-	if(FPHandModel!=None)
+	if (FPHandModel!=None)
 		FPHandModel.Destroy();
 	Super.Destroyed();
 }
 simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
 {
 	DisableNightVision();
-	if(FPHandModel!=None)
+	if (FPHandModel!=None)
 		FPHandModel.Destroy();
 	Super.PlayDying(DamageType,HitLoc);
 }
@@ -343,10 +343,10 @@ simulated final function DisableNightVision()
 {
 	local KFPlayerController KFPC;
 
-	if(IsLocallyControlled())
+	if (IsLocallyControlled())
 	{
 		KFPC = KFPlayerController(Controller);
-		if(KFPC!=None && KFPC.bNightVisionActive)
+		if (KFPC!=None && KFPC.bNightVisionActive)
 			KFPC.SetNightVision(false);
 	}
 }
@@ -371,31 +371,31 @@ function AdjustDamage(out int InDamage, out vector Momentum, Controller Instigat
 
 	// is vulnerable?
 	DamageMod = 1.f;
-	if(IsVulnerableTo(DamageType,DamageMod))
+	if (IsVulnerableTo(DamageType,DamageMod))
 	{
 		TempDamage *= DamageMod;
 	}
-	else if(IsResistantTo(DamageType,DamageMod))
+	else if (IsResistantTo(DamageType,DamageMod))
 	{
 		TempDamage *= DamageMod;
 	}
 
 	// Cached hit params
-	if(HitInfo.BoneName!='' && class<KFDT_Bludgeon>(DamageType)==None && class<KFDT_Slashing>(DamageType)==None)
+	if (HitInfo.BoneName!='' && class<KFDT_Bludgeon>(DamageType)==None && class<KFDT_Slashing>(DamageType)==None)
 	{
 		HitZoneIdx = HitZones.Find('ZoneName', HitInfo.BoneName);
-		if(HitZoneIdx>=0)
+		if (HitZoneIdx>=0)
 			TempDamage *= HitZones[HitZoneIdx].DmgScale;
 	}
 
 	InDamage = FCeil(TempDamage);
 	
-	if(InstigatedBy!=None && InstigatedBy!=Controller && InstigatedBy.GetTeamNum()==0)
+	if (InstigatedBy!=None && InstigatedBy!=Controller && InstigatedBy.GetTeamNum()==0)
 	{
 		// Give credits to pets owner.
-		if(Ext_T_MonsterPRI(InstigatedBy.PlayerReplicationInfo)!=None)
+		if (Ext_T_MonsterPRI(InstigatedBy.PlayerReplicationInfo)!=None)
 			InstigatedBy = Ext_T_MonsterPRI(InstigatedBy.PlayerReplicationInfo).OwnerController;
-		if(InstigatedBy!=None)
+		if (InstigatedBy!=None)
 			AddTakenDamage(InstigatedBy, FMin(Health, InDamage), DamageCauser, class<KFDamageType>(DamageType));
 	}
 }
@@ -413,7 +413,7 @@ event Landed(vector HitNormal, actor FloorActor)
 
 function bool DoJump(bool bUpdating)
 {
-	if(bJumpCapable && (Physics == PHYS_Walking || Physics == PHYS_Ladder || Physics == PHYS_Spider))
+	if (bJumpCapable && (Physics == PHYS_Walking || Physics == PHYS_Ladder || Physics == PHYS_Spider))
 	{
 		if (Physics == PHYS_Spider)
 			Velocity = Velocity + (JumpZ * Floor);

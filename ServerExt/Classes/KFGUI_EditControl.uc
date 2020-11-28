@@ -13,7 +13,7 @@ var(Lable) bool bScaleByFontSize; // Scale this component height by font height.
 
 function InitMenu()
 {
-	if(LableString=="")
+	if (LableString=="")
 		TextLable = None;
 	else
 	{
@@ -37,7 +37,7 @@ function InitMenu()
 function UpdateSizes()
 {
 	// Update height.
-	if(bScaleByFontSize)
+	if (bScaleByFontSize)
 		YSize = ((TextHeight*1.05) + 6) / InputPos[3];
 }
 
@@ -53,11 +53,11 @@ function PreDraw()
 	UpdateSizes();
 
 	Super.PreDraw();
-	if(TextLable!=None)
+	if (TextLable!=None)
 	{
 		TextLable.YSize = YSize;
 		TextLable.Canvas = Canvas;
-		for(i=0; i<4; ++i)
+		for (i=0; i<4; ++i)
 			TextLable.InputPos[i] = InputPos[i];
 		TextLable.PreDraw();
 	}
@@ -69,10 +69,10 @@ final function DrawClippedText(string S, float TScale, float MaxX)
 	local float X,XL,YL;
 	
 	l = Len(S);
-	for(i=0; i<l; ++i)
+	for (i=0; i<l; ++i)
 	{
 		Canvas.TextSize(Mid(S,i,1),XL,YL,TScale,TScale);
-		if((Canvas.CurX+X+XL)>MaxX)
+		if ((Canvas.CurX+X+XL)>MaxX)
 		{
 			--i;
 			break;

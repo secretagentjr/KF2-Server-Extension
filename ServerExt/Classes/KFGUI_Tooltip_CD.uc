@@ -5,16 +5,16 @@ function PreDraw()
 	local int i;
 	local float X,Y,XS,YS,TX,TY,TS;
 	
-	if(Owner.CurrentStyle == None)
+	if (Owner.CurrentStyle == None)
 		return;
 
 	Canvas.Font = Owner.CurrentStyle.PickFont(Owner.CurrentStyle.DefaultFontSize,TS);
 
 	// First compute textbox size.
 	TY = Owner.CurrentStyle.DefaultHeight*Lines.Length;
-	for(i=0; i<Lines.Length; ++i)
+	for (i=0; i<Lines.Length; ++i)
 	{
-		if(Lines[i]!="")
+		if (Lines[i]!="")
 			Canvas.TextSize(Lines[i],XS,YS);
 		TX = FMax(XS,TX);
 	}
@@ -28,12 +28,12 @@ function PreDraw()
 	Y = CompPos[1]+24.f;
 
 	// Then check if too close to window edge, then move it to another pivot.
-	if((X+TX)>Owner.ScreenSize.X)
+	if ((X+TX)>Owner.ScreenSize.X)
 		X = Owner.ScreenSize.X-TX;
-	if((Y+TY)>Owner.ScreenSize.Y)
+	if ((Y+TY)>Owner.ScreenSize.Y)
 		Y = CompPos[1]-TY;
 	
-	if(CurrentAlpha<255)
+	if (CurrentAlpha<255)
 		CurrentAlpha = Min(CurrentAlpha+25,255);
 
 	// Reset clipping.
@@ -54,7 +54,7 @@ function PreDraw()
 	Canvas.SetDrawColor(255,255,255,CurrentAlpha);
 	X+=KF2Style(Owner.CurrentStyle).TOOLTIP_BORDER;
 	Y+=KF2Style(Owner.CurrentStyle).TOOLTIP_BORDER;
-	for(i=0; i<Lines.Length; ++i)
+	for (i=0; i<Lines.Length; ++i)
 	{
 		Canvas.SetPos(X,Y);
 		Canvas.DrawText(Lines[i],,TS,TS,TextFontInfo);

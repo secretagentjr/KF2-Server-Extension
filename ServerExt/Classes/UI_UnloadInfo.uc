@@ -44,7 +44,7 @@ final function SetupTo(class<Ext_PerkBase> P)
 }
 function ButtonClicked(KFGUI_Button Sender)
 {
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Yes':
 		ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(0,PerkToReset,true);
@@ -64,10 +64,10 @@ function CloseMenu()
 
 function ReceivedInfo(byte CallID, byte Code, int DataA, int DataB)
 {
-	if(CurCallCode!=CallID)
+	if (CurCallCode!=CallID)
 		return;
 	
-	switch(Code)
+	switch (Code)
 	{
 	case 0:
 		InfoLabel.SetText(ResetDisabledWarn);

@@ -5,31 +5,31 @@ function Timer()
 	local int i;
 
 	CurrentManager = ExtPlayerController(GetPlayer()).ActivePerkManager;
-	if(CurrentManager!=None)
+	if (CurrentManager!=None)
 	{
-		if(PrevPendingPerk!=None)
+		if (PrevPendingPerk!=None)
 		{
 			PendingPerk = CurrentManager.FindPerk(PrevPendingPerk);
 			PrevPendingPerk = None;
 		}
 		PerkList.ChangeListSize(CurrentManager.UserPerks.Length);
-		if(PendingPerk!=None && !PendingPerk.bPerkNetReady)
+		if (PendingPerk!=None && !PendingPerk.bPerkNetReady)
 			return;
 		
 		// Huge code block to handle stat updating, but actually pretty well optimized.
-		if(PendingPerk!=OldUsedPerk)
+		if (PendingPerk!=OldUsedPerk)
 		{
 			OldUsedPerk = PendingPerk;
-			if(PendingPerk!=None)
+			if (PendingPerk!=None)
 			{
 				OldPerkPoints = -1;
-				if(StatsList.ItemComponents.Length!=PendingPerk.PerkStats.Length)
+				if (StatsList.ItemComponents.Length!=PendingPerk.PerkStats.Length)
 				{
-					if(StatsList.ItemComponents.Length<PendingPerk.PerkStats.Length)
+					if (StatsList.ItemComponents.Length<PendingPerk.PerkStats.Length)
 					{
-						for(i=StatsList.ItemComponents.Length; i<PendingPerk.PerkStats.Length; ++i)
+						for (i=StatsList.ItemComponents.Length; i<PendingPerk.PerkStats.Length; ++i)
 						{
-							if(i>=StatBuyers.Length)
+							if (i>=StatBuyers.Length)
 							{
 								StatBuyers[StatBuyers.Length] = UIR_PerkStat(StatsList.AddListComponent(class'UIR_PerkStat'));
 								StatBuyers[i].StatIndex = i;
@@ -42,16 +42,16 @@ function Timer()
 							}
 						}
 					}
-					else if(StatsList.ItemComponents.Length>PendingPerk.PerkStats.Length)
+					else if (StatsList.ItemComponents.Length>PendingPerk.PerkStats.Length)
 					{
-						for(i=PendingPerk.PerkStats.Length; i<StatsList.ItemComponents.Length; ++i)
+						for (i=PendingPerk.PerkStats.Length; i<StatsList.ItemComponents.Length; ++i)
 							StatBuyers[i].CloseMenu();
 						StatsList.ItemComponents.Length = PendingPerk.PerkStats.Length;
 					}
 				}
 				OldPerkPoints = PendingPerk.CurrentSP;
 				PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
-				for(i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
+				for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				{
 					StatBuyers[i].SetActivePerk(PendingPerk);
 					StatBuyers[i].CheckBuyLimit();
@@ -60,17 +60,17 @@ function Timer()
 			}
 			else // Empty out if needed.
 			{
-				for(i=0; i<StatsList.ItemComponents.Length; ++i)
+				for (i=0; i<StatsList.ItemComponents.Length; ++i)
 					StatBuyers[i].CloseMenu();
 				StatsList.ItemComponents.Length = 0;
 				PerkLabel.SetText("<No perk selected>");
 			}
 		}
-		else if(PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)
+		else if (PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)
 		{
 			OldPerkPoints = PendingPerk.CurrentSP;
 			PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
-			for(i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
+			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
 			
 			// Update traits list.

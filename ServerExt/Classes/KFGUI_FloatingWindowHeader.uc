@@ -8,12 +8,12 @@ function PreDraw()
 }
 function MouseClick(bool bRight)
 {
-	if(!bRight)
+	if (!bRight)
 		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(true);
 }
 function MouseRelease(bool bRight)
 {
-	if(!bRight)
+	if (!bRight)
 		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(false);
 }
 

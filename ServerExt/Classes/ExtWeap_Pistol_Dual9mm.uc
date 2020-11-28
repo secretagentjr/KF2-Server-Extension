@@ -24,7 +24,7 @@ simulated function ConsumeAmmo(byte FireModeNum)
 
 simulated static event class<KFPerk> GetWeaponPerkClass(class<KFPerk> InstigatorPerkClass)
 {
-	if(InstigatorPerkClass != None)
+	if (InstigatorPerkClass != None)
 		return InstigatorPerkClass;
 
 	return default.AssociatedPerkClasses[0];

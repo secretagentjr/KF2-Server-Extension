@@ -1,6 +1,6 @@
 class ExtPerksContainer_Details extends KFGFxPerksContainer_Details;
 
-`define AddWeaponsInfo(InClassDef) if(`InClassDef!=None) AddWeaponInfo(WeaponNames, WeaponSources, `InClassDef.static.GetItemName(), `InClassDef.static.GetImagePath())
+`define AddWeaponsInfo(InClassDef) if (`InClassDef!=None) AddWeaponInfo(WeaponNames, WeaponSources, `InClassDef.static.GetItemName(), `InClassDef.static.GetImagePath())
 
 final function ExUpdateDetails(Ext_PerkBase PerkClass)
 {
@@ -21,7 +21,7 @@ final function ExUpdateDetails(Ext_PerkBase PerkClass)
 		
 		DetailsProvider.SetString("ExperienceMessage", ExperienceString @ PerkClass.CurrentEXP);
 
-		if(KFGRI != none)
+		if (KFGRI != none)
 		{
 			`AddWeaponsInfo(PerkClass.PrimaryWeaponDef);
 			`AddWeaponsInfo(PerkClass.SecondaryWeaponDef);
@@ -49,7 +49,7 @@ final function ExUpdatePassives(Ext_PerkBase PerkClass)
 	local int i;
 
 	PassivesProvider = CreateArray();
-	for(i=0; i<PerkClass.PerkStats.Length; ++i)
+	for (i=0; i<PerkClass.PerkStats.Length; ++i)
 	{
 		PassiveObject = CreateObject("Object");
 		PassiveObject.SetString("PassiveTitle", PerkClass.GetStatUIStr(i));

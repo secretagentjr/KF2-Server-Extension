@@ -43,7 +43,7 @@ replication
 final function SetGrenadeCap(byte AddedCap)
 {
 	MaxGrenadeCount = Default.MaxGrenadeCount + AddedCap;
-	if(RepState==REP_Done)
+	if (RepState==REP_Done)
 		ClientSetGrenadeCap(MaxGrenadeCount);
 }
 simulated reliable client function ClientSetGrenadeCap(byte NewCap)
@@ -55,8 +55,8 @@ function bool ApplyPerkClass(class<Ext_PerkBase> P)
 {
 	local int i;
 	
-	for(i=0; i<UserPerks.Length; ++i)
-		if(UserPerks[i].Class==P)
+	for (i=0; i<UserPerks.Length; ++i)
+		if (UserPerks[i].Class==P)
 		{
 			ApplyPerk(UserPerks[i]);
 			return true;
@@ -67,8 +67,8 @@ function bool ApplyPerkName(string S)
 {
 	local int i;
 	
-	for(i=0; i<UserPerks.Length; ++i)
-		if(string(UserPerks[i].Class.Name)~=S)
+	for (i=0; i<UserPerks.Length; ++i)
+		if (string(UserPerks[i].Class.Name)~=S)
 		{
 			ApplyPerk(UserPerks[i]);
 			return true;
@@ -82,13 +82,13 @@ function ApplyPerk(Ext_PerkBase P)
 	local Ext_T_ZEDHelper H;
 	local int i;
 	
-	if(P==None)
+	if (P==None)
 		return;
 		
-	if(PlayerOwner.Pawn != None)
+	if (PlayerOwner.Pawn != None)
 	{
 		InvMan = KFInventoryManager(PlayerOwner.Pawn.InvManager);
-		if(InvMan != None)
+		if (InvMan != None)
 			InvMan.MaxCarryBlocks = InvMan.Default.MaxCarryBlocks;
 			
 		foreach PlayerOwner.Pawn.ChildActors(class'Ext_T_ZEDHelper',H)
@@ -97,15 +97,15 @@ function ApplyPerk(Ext_PerkBase P)
 		}
 		
 		HP = KFPawn_Human(PlayerOwner.Pawn);
-		if(HP != None)
+		if (HP != None)
 			HP.DefaultInventory = HP.Default.DefaultInventory;
 	}
 	
-	if(CurrentPerk != None)
+	if (CurrentPerk != None)
 	{
 		CurrentPerk.DeactivateTraits();
 		
-		for(i=0; i<CurrentPerk.PerkTraits.Length; ++i)
+		for (i=0; i<CurrentPerk.PerkTraits.Length; ++i)
 		{
 			CurrentPerk.PerkTraits[i].TraitType.Static.CancelEffectOn(KFPawn_Human(PlayerOwner.Pawn),CurrentPerk,CurrentPerk.PerkTraits[i].CurrentLevel,CurrentPerk.PerkTraits[i].Data);
 		}
@@ -114,21 +114,21 @@ function ApplyPerk(Ext_PerkBase P)
 	bStatsDirty = true;
 	CurrentPerk = P;
 	
-	if(PRIOwner!=None)
+	if (PRIOwner!=None)
 	{
 		PRIOwner.ECurrentPerk = P.Class;
 		PRIOwner.FCurrentPerk = P;
 		P.UpdatePRILevel();
 	}
 	
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 	{
 		CurrentPerk.ActivateTraits();
 		
-		if(PlayerOwner.Pawn != None)
+		if (PlayerOwner.Pawn != None)
 		{
 			HP = KFPawn_Human(PlayerOwner.Pawn);
-			if(HP != None)
+			if (HP != None)
 			{
 				HP.HealthMax = HP.default.Health;
 				HP.MaxArmor = HP.default.MaxArmor;
@@ -136,8 +136,8 @@ function ApplyPerk(Ext_PerkBase P)
 				ModifyHealth(HP.HealthMax);
 				ModifyArmor(HP.MaxArmor);
 				
-				if(HP.Health > HP.HealthMax) HP.Health = HP.HealthMax;
-				if(HP.Armor > HP.MaxArmor) HP.Armor = HP.MaxArmor;
+				if (HP.Health > HP.HealthMax) HP.Health = HP.HealthMax;
+				if (HP.Armor > HP.MaxArmor) HP.Armor = HP.MaxArmor;
 			}
 		}
 	}
@@ -146,8 +146,8 @@ simulated final function Ext_PerkBase FindPerk(class<Ext_PerkBase> P)
 {
 	local int i;
 	
-	for(i=0; i<UserPerks.Length; ++i)
-		if(UserPerks[i].Class==P)
+	for (i=0; i<UserPerks.Length; ++i)
+		if (UserPerks[i].Class==P)
 			return UserPerks[i];
 	return None;
 }
@@ -155,7 +155,7 @@ simulated final function Ext_PerkBase FindPerk(class<Ext_PerkBase> P)
 simulated function PostBeginPlay()
 {
 	SetTimer(0.01,false,'InitPerks');
-	if(WorldInfo.NetMode!=NM_Client)
+	if (WorldInfo.NetMode!=NM_Client)
 		SetTimer(1,true,'CheckPlayTime');
 }
 
@@ -163,18 +163,18 @@ simulated function InitPerks()
 {
 	local Ext_PerkBase P;
 	
-	if(WorldInfo.NetMode==NM_Client)
+	if (WorldInfo.NetMode==NM_Client)
 	{
 		foreach DynamicActors(class'Ext_PerkBase',P)
-			if(P.PerkManager!=Self)
+			if (P.PerkManager!=Self)
 				RegisterPerk(P);
 	}
-	else if(PRIOwner!=PlayerOwner.PlayerReplicationInfo) // See if was assigned an inactive PRI.
+	else if (PRIOwner!=PlayerOwner.PlayerReplicationInfo) // See if was assigned an inactive PRI.
 	{
 		PRIOwner = ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo);
-		if(PRIOwner!=None)
+		if (PRIOwner!=None)
 		{
-			if(CurrentPerk!=None)
+			if (CurrentPerk!=None)
 			{
 				PRIOwner.ECurrentPerk = CurrentPerk.Class;
 				CurrentPerk.UpdatePRILevel();
@@ -194,13 +194,13 @@ function ServerInitPerks()
 {
 	local int i;
 	
-	for(i=0; i<UserPerks.Length; ++i)
+	for (i=0; i<UserPerks.Length; ++i)
 		UserPerks[i].SetInitialLevel();
 	bServerReady = true;
 	CurrentPerk = None;
-	if(StrPerkName!="")
+	if (StrPerkName!="")
 		ApplyPerkName(StrPerkName);
-	if(CurrentPerk==None)
+	if (CurrentPerk==None)
 		ApplyPerk(UserPerks[Rand(UserPerks.Length)]);
 }
 
@@ -219,7 +219,7 @@ function Destroyed()
 {
 	local int i;
 	
-	for(i=(UserPerks.Length-1); i>=0; --i)
+	for (i=(UserPerks.Length-1); i>=0; --i)
 	{
 		UserPerks[i].PerkManager = None;
 		UserPerks[i].Destroy();
@@ -229,25 +229,25 @@ function Destroyed()
 function EarnedEXP(int EXP, optional byte Mode)
 {
 	// `log("EarnedEXP" @ GetScriptTrace());
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 	{
 		// Limit how much EXP we got for healing and welding.
-		switch(Mode)
+		switch (Mode)
 		{
 		case 1:
 			ExpUpStatus[0]+=EXP;
 			EXP = ExpUpStatus[0]/CurrentPerk.WeldExpUpNum;
-			if(EXP>0)
+			if (EXP>0)
 				ExpUpStatus[0]-=(EXP*CurrentPerk.WeldExpUpNum);
 			break;
 		case 2:
 			ExpUpStatus[1]+=EXP;
 			EXP = ExpUpStatus[1]/CurrentPerk.HealExpUpNum;
-			if(EXP>0)
+			if (EXP>0)
 				ExpUpStatus[1]-=(EXP*CurrentPerk.HealExpUpNum);
 			break;
 		}
-		if(EXP>0 && CurrentPerk.EarnedEXP(EXP))
+		if (EXP>0 && CurrentPerk.EarnedEXP(EXP))
 		{
 			TotalEXP+=EXP;
 			PRIOwner.RepEXP+=EXP;
@@ -268,13 +268,13 @@ function OutputXML(ExtStatWriter Data)
 	Data.WriteValue("exp",string(TotalEXP));
 	Data.WriteValue("kills",string(TotalKills));
 	Data.WriteValue("time",string(TotalPlayTime));
-	if(ExtPlayerController(Owner)!=None && ExtPlayerController(Owner).PendingPerkClass!=None)
+	if (ExtPlayerController(Owner)!=None && ExtPlayerController(Owner).PendingPerkClass!=None)
 		S = string(ExtPlayerController(Owner).PendingPerkClass.Name);
 	else S = (CurrentPerk!=None ? string(CurrentPerk.Class.Name) : "None");
 	Data.WriteValue("activeperk",S);
 
-	for(i=0; i<UserPerks.Length; ++i)
-		if(UserPerks[i].HasAnyProgress())
+	for (i=0; i<UserPerks.Length; ++i)
+		if (UserPerks[i].HasAnyProgress())
 			UserPerks[i].OutputXML(Data);
 
 	Data.EndIntendent();
@@ -295,28 +295,28 @@ function SaveData(ExtSaveDataBase Data)
 	Data.SaveInt(TotalPlayTime,3);
 	
 	// Write character.
-	if(PRIOwner!=None)
+	if (PRIOwner!=None)
 		PRIOwner.SaveCustomCharacter(Data);
 	else class'ExtPlayerReplicationInfo'.Static.DummySaveChar(Data);
 
 	// Write selected perk.
-	if(ExtPlayerController(Owner)!=None && ExtPlayerController(Owner).PendingPerkClass!=None)
+	if (ExtPlayerController(Owner)!=None && ExtPlayerController(Owner).PendingPerkClass!=None)
 		Data.SaveStr(string(ExtPlayerController(Owner).PendingPerkClass.Name));
 	else Data.SaveStr(CurrentPerk!=None ? string(CurrentPerk.Class.Name) : "");
 
 	// Count how many progressed perks we have.
 	o = 0;
-	for(i=0; i<UserPerks.Length; ++i)
-		if(UserPerks[i].HasAnyProgress())
+	for (i=0; i<UserPerks.Length; ++i)
+		if (UserPerks[i].HasAnyProgress())
 			++o;
 	
 	// Then write count we have.
 	Data.SaveInt(o);
 	
 	// Then perk stats.
-	for(i=0; i<UserPerks.Length; ++i)
+	for (i=0; i<UserPerks.Length; ++i)
 	{
-		if(!UserPerks[i].HasAnyProgress()) // Skip this perk.
+		if (!UserPerks[i].HasAnyProgress()) // Skip this perk.
 			continue;
 
 		Data.SaveStr(string(UserPerks[i].Class.Name));
@@ -346,7 +346,7 @@ function LoadData(ExtSaveDataBase Data)
 	TotalPlayTime = Data.ReadInt(3);
 
 	// Read character.
-	if(PRIOwner!=None)
+	if (PRIOwner!=None)
 	{
 		PRIOwner.RepKills = TotalKills;
 		PRIOwner.RepEXP = TotalEXP;
@@ -360,13 +360,13 @@ function LoadData(ExtSaveDataBase Data)
 	StrPerkName = Data.ReadStr();
 
 	l = Data.ReadInt(); // Perk stats length.
-	for(i=0; i<l; ++i)
+	for (i=0; i<l; ++i)
 	{
 		S = Data.ReadStr();
 		o = Data.ReadInt(1); // Read skip offset.
 		Data.PushEOFLimit(o);
-		for(j=0; j<UserPerks.Length; ++j)
-			if(S~=string(UserPerks[j].Class.Name))
+		for (j=0; j<UserPerks.Length; ++j)
+			if (S~=string(UserPerks[j].Class.Name))
 			{
 				UserPerks[j].LoadData(Data);
 				break;
@@ -381,29 +381,29 @@ function AddDefaultInventory(KFPawn P)
 {
 	local KFInventoryManager KFIM;
 
-	if(P != none && P.InvManager != none)
+	if (P != none && P.InvManager != none)
 	{
 		KFIM = KFInventoryManager(P.InvManager);
-		if(KFIM != none)
+		if (KFIM != none)
 		{
 			//Grenades added on spawn
 			KFIM.GiveInitialGrenadeCount();
 		}
 
-		if(CurrentPerk!=None)
+		if (CurrentPerk!=None)
 			CurrentPerk.AddDefaultInventory(P);
 	}
 }
 
 simulated function PlayerDied()
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.PlayerDied();
 }
 
 function PreNotifyPlayerLeave()
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.DeactivateTraits();
 }
 
@@ -417,10 +417,10 @@ function InitiateClientRep()
 }
 function ReplicateTimer()
 {
-	switch(RepState)
+	switch (RepState)
 	{
 	case REP_CustomCharacters: // Replicate custom characters.
-		if(RepIndex>=PRIOwner.CustomCharList.Length)
+		if (RepIndex>=PRIOwner.CustomCharList.Length)
 		{
 			PRIOwner.AllCharReceived();
 			RepIndex = 0;
@@ -433,7 +433,7 @@ function ReplicateTimer()
 		}
 		break;
 	case REP_CustomInventory: // Replicate custom trader inventory
-		if(!PRIOwner.OnRepNextItem(PRIOwner,RepIndex))
+		if (!PRIOwner.OnRepNextItem(PRIOwner,RepIndex))
 		{
 			RepIndex = 0;
 			++RepState;
@@ -441,20 +441,20 @@ function ReplicateTimer()
 		else ++RepIndex;
 		break;
 	case REP_PerkClasses: // Open up all actor channel connections.
-		if(RepIndex>=UserPerks.Length)
+		if (RepIndex>=UserPerks.Length)
 		{
 			RepIndex = 0;
 			++RepState;
 		}
-		else if(UserPerks[RepIndex].bClientAuthorized)
+		else if (UserPerks[RepIndex].bClientAuthorized)
 		{
-			if(UserPerks[RepIndex].bPerkNetReady)
+			if (UserPerks[RepIndex].bPerkNetReady)
 				++RepIndex;
 		}
 		else
 		{
 			UserPerks[RepIndex].RemoteRole = ROLE_SimulatedProxy;
-			if(UserPerks[RepIndex].NextAuthTime<WorldInfo.RealTimeSeconds)
+			if (UserPerks[RepIndex].NextAuthTime<WorldInfo.RealTimeSeconds)
 			{
 				UserPerks[RepIndex].NextAuthTime = WorldInfo.RealTimeSeconds+0.5;
 				UserPerks[RepIndex].ClientAuth();
@@ -462,7 +462,7 @@ function ReplicateTimer()
 		}
 		break;
 	default:
-		if(MaxGrenadeCount!=Default.MaxGrenadeCount)
+		if (MaxGrenadeCount!=Default.MaxGrenadeCount)
 			ClientSetGrenadeCap(MaxGrenadeCount);
 		ClearTimer('ReplicateTimer');
 	}
@@ -475,32 +475,32 @@ function bool CanEarnSmallRadiusKillXP(class<DamageType> DT)
 
 simulated function ModifySpeed(out float Speed)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		Speed *= CurrentPerk.Modifiers[0];
 }
 function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyDamageGiven(InDamage,DamageCauser,MyKFPM,DamageInstigator,DamageType,HitZoneIdx);
 }
 simulated function ModifyDamageTaken(out int InDamage, optional class<DamageType> DamageType, optional Controller InstigatedBy)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyDamageTaken(InDamage,DamageType,InstigatedBy);
 }
 simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyRecoil(CurrentRecoilModifier,KFW);
 }
 simulated function ModifySpread(out float InSpread)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpread(InSpread);
 }
 simulated function ModifyRateOfFire(out float InRate, KFWeapon KFW)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyRateOfFire(InRate,KFW);
 }
 simulated function float GetReloadRateScale(KFWeapon KFW)
@@ -513,12 +513,12 @@ simulated function bool GetUsingTactialReload(KFWeapon KFW)
 }
 function ModifyHealth(out int InHealth)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyHealth(InHealth);
 }
 function ModifyArmor(out byte MaxArmor)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyArmor(MaxArmor);
 }
 function float GetKnockdownPowerModifier(optional class<DamageType> DamageType, optional byte BodyPart, optional bool bIsSprinting=false)
@@ -535,7 +535,7 @@ function float GetStunPowerModifier(optional class<DamageType> DamageType, optio
 }
 simulated function ModifyMeleeAttackSpeed(out float InDuration, KFWeapon KFW)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyMeleeAttackSpeed(InDuration);
 }
 simulated function class<KFProj_Grenade> GetGrenadeClass()
@@ -544,7 +544,7 @@ simulated function class<KFProj_Grenade> GetGrenadeClass()
 }
 simulated function ModifyWeldingRate(out float FastenRate, out float UnfastenRate)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyWeldingRate(FastenRate,UnfastenRate);
 }
 simulated function bool HasNightVision()
@@ -565,17 +565,17 @@ function bool CanNotBeGrabbed()
 }
 simulated function ModifyMagSizeAndNumber(KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyMagSizeAndNumber(KFW,MagazineCapacity,WeaponPerkClass,bSecondary,WeaponClassname);
 }
 simulated function ModifySpareAmmoAmount(KFWeapon KFW, out int PrimarySpareAmmo, optional const out STraderItem TraderItem, optional bool bSecondary=false)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpareAmmoAmount(KFW,PrimarySpareAmmo,TraderItem,bSecondary);
 }
 simulated function ModifyMaxSpareAmmoAmount(KFWeapon KFW, out int SpareAmmoCapacity, optional const out STraderItem TraderItem, optional bool bSecondary=false)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifySpareAmmoAmount(KFW,SpareAmmoCapacity,TraderItem,bSecondary);
 }
 simulated function bool ShouldMagSizeModifySpareAmmo(KFWeapon KFW, optional Class<KFPerk> WeaponPerkClass)
@@ -584,7 +584,7 @@ simulated function bool ShouldMagSizeModifySpareAmmo(KFWeapon KFW, optional Clas
 }
 simulated function ModifyHealerRechargeTime(out float RechargeRate)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyHealerRechargeTime(RechargeRate);
 }
 simulated function bool CanExplosiveWeld()
@@ -597,7 +597,7 @@ simulated function bool IsOnContactActive()
 }
 function bool CanSpreadNapalm()
 {
-	if(CurrentPerk!=None && CurrentPerk.bNapalmFire && LastNapalmTime!=WorldInfo.TimeSeconds)
+	if (CurrentPerk!=None && CurrentPerk.bNapalmFire && LastNapalmTime!=WorldInfo.TimeSeconds)
 	{
 		LastNapalmTime = WorldInfo.TimeSeconds; // Avoid infinite script recursion in KFPawn_Monster.
 		return true;
@@ -610,17 +610,17 @@ simulated function bool IsRangeActive()
 }
 simulated function DrawSpecialPerkHUD(Canvas C)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.DrawSpecialPerkHUD(C);
 }
 function PlayerKilled(KFPawn_Monster Victim, class<DamageType> DamageType)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.PlayerKilled(Victim,DamageType);
 }
 function ModifyBloatBileDoT(out float DoTScaler)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyBloatBileDoT(DoTScaler);
 }
 simulated function bool GetIsUberAmmoActive(KFWeapon KFW)
@@ -629,12 +629,12 @@ simulated function bool GetIsUberAmmoActive(KFWeapon KFW)
 }
 function UpdatePerkHeadShots(ImpactInfo Impact, class<DamageType> DamageType, int NumHit)
 {
-	if(CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.UpdatePerkHeadShots(Impact,DamageType,NumHit);
 }
 function CheckForAirborneAgent(KFPawn HealTarget, class<DamageType> DamType, int HealAmount)
 {
-	if(!bCurrentlyHealing && CurrentPerk!=None)
+	if (!bCurrentlyHealing && CurrentPerk!=None)
 	{
 		// Using boolean to avoid infinite recursion.
 		bCurrentlyHealing = true;
@@ -654,7 +654,7 @@ function bool IsAcidicCompoundActive()
 }
 function ModifyACDamage(out int InDamage)
 {
-	if(CurrentPerk!=None && CurrentPerk.bToxicDart)
+	if (CurrentPerk!=None && CurrentPerk.bToxicDart)
 		InDamage += CurrentPerk.ToxicDartDamage;
 }
 
@@ -723,7 +723,7 @@ simulated function bool ShouldNeverDud()
 }
 function NotifyPerkSacrificeExploded()
 {
-	if(Ext_PerkDemolition(CurrentPerk) != none) Ext_PerkDemolition(CurrentPerk).bUsedSacrifice = true;
+	if (Ext_PerkDemolition(CurrentPerk) != none) Ext_PerkDemolition(CurrentPerk).bUsedSacrifice = true;
 }
 simulated function float GetAoERadiusModifier()
 {
@@ -777,12 +777,12 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 // Other
 function ApplySkillsToPawn()
 {
-	if(CheckOwnerPawn())
+	if (CheckOwnerPawn())
 	{
 		OwnerPawn.UpdateGroundSpeed();
 		OwnerPawn.bMovesFastInZedTime = false;
 
-		if(MyPRI == none)
+		if (MyPRI == none)
 			MyPRI = KFPlayerReplicationInfo(OwnerPawn.PlayerReplicationInfo);
 
 		ApplyWeightLimits();

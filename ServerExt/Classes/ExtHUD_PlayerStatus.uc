@@ -16,7 +16,7 @@ function UpdatePerk()
 	local Ext_PerkBase CurrentPerk;
 	local GFxObject PerkIconObject;
 
-	if(ExPC == none || ExPC.ActivePerkManager==None || ExPC.ActivePerkManager.CurrentPerk==None)
+	if (ExPC == none || ExPC.ActivePerkManager==None || ExPC.ActivePerkManager.CurrentPerk==None)
 		return;
 
 	CurrentPerk = ExPC.ActivePerkManager.CurrentPerk;
@@ -24,7 +24,7 @@ function UpdatePerk()
 	CurrentPerkEXP = CurrentPerk.CurrentEXP;
 	
 	// Update the perk class.
-	if((ExLastPerkClass != CurrentPerk.Class) || (LastPerkLevel != CurrentPerkLevel))
+	if ((ExLastPerkClass != CurrentPerk.Class) || (LastPerkLevel != CurrentPerkLevel))
 	{
 		CurPerkPath = CurrentPerk.GetPerkIconPath(CurrentPerkLevel);
 		
@@ -33,7 +33,7 @@ function UpdatePerk()
 		SetObject("playerPerkIcon", PerkIconObject);
 		
 		SetInt("playerPerkXPPercent", CurrentPerk.GetProgressPercent() * 100.f);
-		if(LastPerkLevel != CurrentPerkLevel && ExLastPerkClass==CurrentPerk.Class)
+		if (LastPerkLevel != CurrentPerkLevel && ExLastPerkClass==CurrentPerk.Class)
 		{
 			SetBool("bLevelUp", true);
 			ShowXPBark(CurrentPerkEXP-LastEXPValue,CurPerkPath,true);
@@ -44,7 +44,7 @@ function UpdatePerk()
 		LastPerkLevel = CurrentPerkLevel;
 		LastEXPValue = CurrentPerkEXP;
 	}
-	else if(LastEXPValue!=CurrentPerkEXP)
+	else if (LastEXPValue!=CurrentPerkEXP)
 	{
 		SetBool("bLevelUp", false);
 		SetInt("playerPerkXPPercent", CurrentPerk.GetProgressPercent() * 100.f);
@@ -59,12 +59,12 @@ function ShowXPBark(int DeltaXP, string IconPath, bool bIsCurrentPerk)
 
 function UpdateHealth()
 {
-	if(MyPC.Pawn == none)
+	if (MyPC.Pawn == none)
 	{
 		LastHealth = 0;
 		SetInt("playerHealth" , LastHealth);
 	}
-	else if(LastHealth != MyPC.Pawn.Health)
+	else if (LastHealth != MyPC.Pawn.Health)
 	{
 		LastHealth = MyPC.Pawn.Health;
 		SetInt("playerHealth" , LastHealth);

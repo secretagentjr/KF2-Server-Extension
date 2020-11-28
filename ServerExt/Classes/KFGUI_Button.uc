@@ -15,7 +15,7 @@ function DrawMenu()
 function HandleMouseClick(bool bRight)
 {
 	PlayMenuSound(MN_ClickButton);
-	if(bRight)
+	if (bRight)
 		OnClickRight(Self);
 	else OnClickLeft(Self);
 }

@@ -11,7 +11,7 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 	EKFPC = ExtPlayerController(KFPC);
 	if (EKFPC!=none && EKFPC.ActivePerkManager!=None)
 	{
-		if(FilterIndex<EKFPC.ActivePerkManager.UserPerks.Length)
+		if (FilterIndex<EKFPC.ActivePerkManager.UserPerks.Length)
 			TargetPerkClass = EKFPC.ActivePerkManager.UserPerks[FilterIndex].BasePerk;
 
 		SlotIndex = 0;
@@ -30,7 +30,7 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 			}
 			else
 			{
-				if(ItemList[i].AssociatedPerkClasses.length > 0)
+				if (ItemList[i].AssociatedPerkClasses.length > 0)
 				{
 					switch (ItemList[i].AssociatedPerkClasses.Find(TargetPerkClass))
 					{

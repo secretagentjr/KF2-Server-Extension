@@ -48,9 +48,9 @@ function CloseMenu(); // Menu was closed.
 
 function MenuTick(float DeltaTime)
 {
-	if(bTimerActive && (TimerCounter-=DeltaTime)<=0.f)
+	if (bTimerActive && (TimerCounter-=DeltaTime)<=0.f)
 	{
-		if(bLoopTimer)
+		if (bLoopTimer)
 			TimerCounter = TimerRate;
 		else bTimerActive = false;
 		Timer();
@@ -59,7 +59,7 @@ function MenuTick(float DeltaTime)
 final function SetTimer(float Rate, optional bool bLoop)
 {
 	bTimerActive = (Rate>0.f);
-	if(bTimerActive)
+	if (bTimerActive)
 	{
 		bLoopTimer = bLoop;
 		TimerRate = Rate;
@@ -116,14 +116,14 @@ final function KFGUI_Base GetMouseFocus()
 {
 	local KFGUI_Base M;
 	
-	for(M=Self; M.MouseArea!=None; M=M.MouseArea)
+	for (M=Self; M.MouseArea!=None; M=M.MouseArea)
 	{}
 	return M;
 }
 
 function DoClose()
 {
-	if(ParentComponent!=None)
+	if (ParentComponent!=None)
 		ParentComponent.DoClose();
 	else Owner.PopCloseMenu(Self);
 }
@@ -135,13 +135,13 @@ function byte GetCursorStyle()
 
 function UserPressedEsc() // user pressed escape while this menu was active.
 {
-	if(ParentComponent!=None)
+	if (ParentComponent!=None)
 		ParentComponent.UserPressedEsc();
 	else DoClose();
 }
 function bool BringPageToFront()
 {
-	if(ParentComponent!=None)
+	if (ParentComponent!=None)
 		return ParentComponent.BringPageToFront();
 	return true; // Allow user to bring this page to front.
 }
@@ -153,32 +153,32 @@ final function KFGUI_Page GetPageTop()
 {
 	local KFGUI_Base M;
 	
-	for(M=Self; M.ParentComponent!=None; M=M.ParentComponent)
+	for (M=Self; M.ParentComponent!=None; M=M.ParentComponent)
 	{}
 	return KFGUI_Page(M);
 }
 function KFGUI_Base FindComponentID(name InID)
 {
-	if(ID==InID)
+	if (ID==InID)
 		return Self;
 	return None;
 }
 function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 {
-	if(ID==InID)
+	if (ID==InID)
 		Res[Res.Length] = Self;
 }
 function RemoveComponent(KFGUI_Base B);
 
 function GetInputFocus()
 {
-	if(Owner.InputFocus!=None)
+	if (Owner.InputFocus!=None)
 		Owner.InputFocus.LostInputFocus();
 	Owner.InputFocus = Self;
 }
 function DropInputFocus()
 {
-	if(Owner.InputFocus==Self)
+	if (Owner.InputFocus==Self)
 	{
 		Owner.InputFocus.LostInputFocus();
 		Owner.InputFocus = None;
@@ -193,7 +193,7 @@ final function GrabKeyFocus()
 }
 final function ReleaseKeyFocus()
 {
-	if(Owner.KeyboardFocus==Self)
+	if (Owner.KeyboardFocus==Self)
 		Owner.GrabInputFocus(None);
 }
 function LostKeyFocus();
@@ -228,7 +228,7 @@ simulated final function PlayMenuSound(EMenuSound Slot)
 {
 	/*local SoundCue S;
 	
-	switch(Slot)
+	switch (Slot)
 	{
 	case MN_Focus:
 		S = SoundCue'a_interface.menu.UT3MenuMouseOverCue';
@@ -252,7 +252,7 @@ simulated final function PlayMenuSound(EMenuSound Slot)
 		S = SoundCue'a_interface.menu.UT3MenuNavigateUpCue';
 		break;
 	}
-	if(S!=None)
+	if (S!=None)
 		GetPlayer().PlaySound(S,true,,false);*/
 }
 
@@ -275,7 +275,7 @@ static final function string MakeSortStr(int Value)
 	// Prefix with zeroes to properly sort this string.
 	S = string(Value);
 	i = Len(S);
-	if(i<10)
+	if (i<10)
 		return Mid("0000000000",i)$S;
 	return S;
 }

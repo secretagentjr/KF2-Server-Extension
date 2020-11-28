@@ -33,7 +33,7 @@ function SetupTo(Ext_PerkBase P)
 }
 function ButtonClicked(KFGUI_Button Sender)
 {
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Yes':
 		ExtPlayerController(GetPlayer()).ServerResetPerk(PerkToReset,bIsPrestige);

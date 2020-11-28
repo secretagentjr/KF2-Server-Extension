@@ -20,18 +20,18 @@ function UpdatePlayerInfo(optional bool bForceUpdate)
 	local GFxObject TempObject;
 	local ExtPlayerReplicationInfo E;
 	
-	if(SpectatedKFPRI == None)
+	if (SpectatedKFPRI == None)
 		return;
 	
 	E = ExtPlayerReplicationInfo(SpectatedKFPRI);
 
-	if(LastPerkLevel != E.ECurrentPerkLevel || LastPerkLevel != E.ECurrentPerkLevel || bForceUpdate)
+	if (LastPerkLevel != E.ECurrentPerkLevel || LastPerkLevel != E.ECurrentPerkLevel || bForceUpdate)
 	{
 		LastPerkLevel = E.ECurrentPerkLevel;
 		ExtLastPerkClass = E.ECurrentPerk;
 		TempObject = CreateObject("Object");
 		TempObject.SetString("playerName", SpectatedKFPRI.GetHumanReadableName());
-		if(ExtLastPerkClass!=None && TempObject !=None)
+		if (ExtLastPerkClass!=None && TempObject !=None)
 		{
 			TempObject.SetString("playerPerk", SpectatedKFPRI.CurrentPerkClass.default.LevelString @LastPerkLevel @ExtLastPerkClass.default.PerkName);
 			TempObject.SetString("iconPath", ExtLastPerkClass.Static.GetPerkIconPath(LastPerkLevel));

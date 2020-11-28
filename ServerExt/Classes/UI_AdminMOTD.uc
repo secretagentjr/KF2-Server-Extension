@@ -34,7 +34,7 @@ function InitMenu()
 }
 function Timer()
 {
-	if(!ExtPlayerController(GetPlayer()).bMOTDReceived)
+	if (!ExtPlayerController(GetPlayer()).bMOTDReceived)
 		SetTimer(0.2,false);
 	else
 	{
@@ -46,11 +46,11 @@ function ButtonClicked(KFGUI_Button Sender)
 {
 	local string S;
 
-	switch(Sender.ID)
+	switch (Sender.ID)
 	{
 	case 'Yes':
 		S = EditField.Value;
-		while(Len(S)>510)
+		while (Len(S)>510)
 		{
 			ExtPlayerController(GetPlayer()).ServerSetMOTD(Left(S,500),false);
 			S = Mid(S,500);

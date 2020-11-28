@@ -43,7 +43,7 @@ function float GetWidth()
 function PreDraw()
 {
 	// Auto scale to match width to screen size.
-	if(bVertical)
+	if (bVertical)
 		XSize = GetWidth();
 	else YSize = GetWidth();
 	Super.PreDraw();
@@ -54,39 +54,39 @@ function DrawMenu()
 }
 function MouseClick(bool bRight)
 {
-	if(bRight || bDisabled)
+	if (bRight || bDisabled)
 		return;
 	bPressedDown = true;
 	PlayMenuSound(MN_ClickButton);
 	
-	if(bVertical)
+	if (bVertical)
 	{
-		if(Owner.MousePosition.Y>=(CompPos[1]+ButtonOffset) && Owner.MousePosition.Y<=(CompPos[1]+ButtonOffset+SliderScale)) // Grabbed scrollbar!
+		if (Owner.MousePosition.Y>=(CompPos[1]+ButtonOffset) && Owner.MousePosition.Y<=(CompPos[1]+ButtonOffset+SliderScale)) // Grabbed scrollbar!
 		{
 			GrabbedOffset = Owner.MousePosition.Y - (CompPos[1]+ButtonOffset);
 			bGrabbedScroller = true;
 			GetInputFocus();
 		}
-		else if(Owner.MousePosition.Y<(CompPos[1]+ButtonOffset)) // Page up.
+		else if (Owner.MousePosition.Y<(CompPos[1]+ButtonOffset)) // Page up.
 			AddValue(-PageStep);
 		else AddValue(PageStep);
 	}
 	else
 	{
-		if(Owner.MousePosition.X>=(CompPos[0]+ButtonOffset) && Owner.MousePosition.X<=(CompPos[0]+ButtonOffset+SliderScale)) // Grabbed scrollbar!
+		if (Owner.MousePosition.X>=(CompPos[0]+ButtonOffset) && Owner.MousePosition.X<=(CompPos[0]+ButtonOffset+SliderScale)) // Grabbed scrollbar!
 		{
 			GrabbedOffset = Owner.MousePosition.X - (CompPos[0]+ButtonOffset);
 			bGrabbedScroller = true;
 			GetInputFocus();
 		}
-		else if(Owner.MousePosition.X<(CompPos[0]+ButtonOffset)) // Page left.
+		else if (Owner.MousePosition.X<(CompPos[0]+ButtonOffset)) // Page left.
 			AddValue(-PageStep);
 		else AddValue(PageStep);
 	}
 }
 function MouseRelease(bool bRight)
 {
-	if(!bRight)
+	if (!bRight)
 		DropInputFocus();
 }
 
@@ -98,9 +98,9 @@ function LostInputFocus()
 
 function ScrollMouseWheel(bool bUp)
 {
-	if(bDisabled)
+	if (bDisabled)
 		return;
-	if(bUp)
+	if (bUp)
 		AddValue(-ScrollStride);
 	else AddValue(ScrollStride);
 }

@@ -19,10 +19,10 @@ static function bool GroupLimited(Ext_PerkBase Perk, class<Ext_TraitBase> Trait)
 {
 	local int i;
 
-	if(Default.bLimitToOne)
+	if (Default.bLimitToOne)
 	{
-		for(i=0; i<Perk.PerkTraits.Length; ++i)
-			if(Perk.PerkTraits[i].CurrentLevel>0 && Perk.PerkTraits[i].TraitType!=Trait && Perk.PerkTraits[i].TraitType.Default.TraitGroup==Default.Class)
+		for (i=0; i<Perk.PerkTraits.Length; ++i)
+			if (Perk.PerkTraits[i].CurrentLevel>0 && Perk.PerkTraits[i].TraitType!=Trait && Perk.PerkTraits[i].TraitType.Default.TraitGroup==Default.Class)
 				return true;
 	}
 	return false;

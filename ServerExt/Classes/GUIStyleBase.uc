@@ -10,7 +10,7 @@ var transient Canvas Canvas;
 function InitStyle()
 {
 	ItemTex = Texture2D(DynamicLoadObject("UI_LevelChevrons_TEX.UI_LevelChevron_Icon_02",class'Texture2D'));
-	if(ItemTex==None)
+	if (ItemTex==None)
 		ItemTex = Texture2D'EngineMaterials.DefaultWhiteGrid';
 }
 function RenderFramedWindow(KFGUI_FloatingWindow P);
@@ -32,13 +32,13 @@ function PickDefaultFontSize(float YRes)
 	local string S;
 
 	DefaultFontSize = 0;
-	if(YRes>800)
+	if (YRes>800)
 		++DefaultFontSize;
-	if(YRes>1000)
+	if (YRes>1000)
 		++DefaultFontSize;
-	//if(YRes>1200)
+	//if (YRes>1200)
 		//++DefaultFontSize;
-	//if(YRes>1300)
+	//if (YRes>1300)
 		//++DefaultFontSize;
 
 	S = "ABC";
@@ -55,7 +55,7 @@ final function DrawText(byte Res, string S)
 
 final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir) // Draw non-uniform corner.
 {
-	switch(Dir)
+	switch (Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,77,15,-66,58);
@@ -72,7 +72,7 @@ final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir) // Draw non-unifo
 }
 final function DrawCornerTex(int Size, byte Dir)
 {
-	switch(Dir)
+	switch (Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,Size,Size,77,15,-66,58);
@@ -94,7 +94,7 @@ final function DrawWhiteBox(int XS, int YS)
 
 final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte Extrav)
 {
-	if(Extrav==2)
+	if (Extrav==2)
 		Edge = Min(FMin(Edge,(XS)*0.5),YS);// Verify size.
 	else Edge = Min(FMin(Edge,(XS)*0.5),(YS)*0.5);// Verify size.
 
@@ -102,9 +102,9 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 	Canvas.SetPos(X,Y);
 	DrawCornerTex(Edge,0);
 	
-	if(Extrav<=1)
+	if (Extrav<=1)
 	{
-		if(Extrav==0)
+		if (Extrav==0)
 		{
 			// Top right
 			Canvas.SetPos(X+XS-Edge,Y);
@@ -122,7 +122,7 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 			Canvas.SetPos(X+XS-Edge,Y+Edge);
 			DrawWhiteBox(Edge,YS-Edge*2);
 		}
-		else if(Extrav==1)
+		else if (Extrav==1)
 		{
 			// Top right
 			Canvas.SetPos(X+XS,Y);

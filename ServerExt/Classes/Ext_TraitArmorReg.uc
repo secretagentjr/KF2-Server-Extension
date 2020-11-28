@@ -5,7 +5,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	local Ext_T_ArmorRegHelp H;
 	
 	H = Player.Spawn(class'Ext_T_ArmorRegHelp',Player);
-	if(H!=None)
+	if (H!=None)
 		H.RegCount = Default.RegenValues[Level-1];
 }
 static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)

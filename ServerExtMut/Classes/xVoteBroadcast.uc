@@ -10,14 +10,14 @@ function UpdateSentText()
 
 function Broadcast(Actor Sender, coerce string Msg, optional name Type)
 {
-	if((Type=='Say' || Type=='TeamSay') && Left(Msg,1)=="!" && PlayerController(Sender)!=None)
+	if ((Type=='Say' || Type=='TeamSay') && Left(Msg,1)=="!" && PlayerController(Sender)!=None)
 		Handler.ParseCommand(Mid(Msg,1),PlayerController(Sender));
 	NextBroadcaster.Broadcast(Sender,Msg,Type);
 }
 
 function BroadcastTeam(Controller Sender, coerce string Msg, optional name Type)
 {
-	if((Type=='Say' || Type=='TeamSay') && Left(Msg,1)=="!" && PlayerController(Sender)!=None)
+	if ((Type=='Say' || Type=='TeamSay') && Left(Msg,1)=="!" && PlayerController(Sender)!=None)
 		Handler.ParseCommand(Mid(Msg,1),PlayerController(Sender));
 	NextBroadcaster.BroadcastTeam(Sender,Msg,Type);
 }

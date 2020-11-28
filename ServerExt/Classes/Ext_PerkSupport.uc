@@ -23,7 +23,7 @@ simulated function bool CanRepairDoors()
 simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
 {
 	local float PenetrationPower;
-	if(!bForce && (DamageType == none || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE)))
+	if (!bForce && (DamageType == none || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE)))
 		return 0;
 
 	PenetrationPower = bUseAPShot ? APShotMul : 0.f;
