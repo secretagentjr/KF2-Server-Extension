@@ -4,14 +4,14 @@ var byte HeadShotComboCount,MaxRhythmCombo;
 var float RhythmComboDmg;
 var private const float HeadShotCountdownIntervall;
 
-simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
+simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
 	Super.ModifyDamageGiven(InDamage,DamageCauser,MyKFPM,DamageInstigator,DamageType,HitZoneIdx);
-	if( RhythmComboDmg>0 && BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || IsWeaponOnPerk(KFWeapon(DamageCauser)) )
+	if(RhythmComboDmg>0 && BasePerk==None || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || IsWeaponOnPerk(KFWeapon(DamageCauser)))
 		InDamage *= (1.f+RhythmComboDmg);
 }
 
-final function SetMaxRhythm( byte MaxCombo )
+final function SetMaxRhythm(byte MaxCombo)
 {
 	MaxRhythmCombo = MaxCombo;
 }
@@ -25,21 +25,21 @@ final function ResetRhythm()
 
 function SubstractHeadShotCombo()
 {
-	if( HeadShotComboCount > 0 )
+	if(HeadShotComboCount > 0)
 		UpdateDmgScale(false);
 	else
-		ClearTimer( nameOf( SubstractHeadShotCombo ) );
+		ClearTimer(nameOf(SubstractHeadShotCombo));
 }
 
-final function UpdateDmgScale( bool bUp )
+final function UpdateDmgScale(bool bUp)
 {
-	if( bUp )
+	if(bUp)
 	{
 		HeadShotComboCount = Min(HeadShotComboCount+1,MaxRhythmCombo);
 		HeadShotMessage(HeadShotComboCount,false,MaxRhythmCombo);
-		SetTimer( HeadShotCountdownIntervall, true, nameOf( SubstractHeadShotCombo ) );
+		SetTimer(HeadShotCountdownIntervall, true, nameOf(SubstractHeadShotCombo));
 	}
-	else if( HeadShotComboCount>0)
+	else if(HeadShotComboCount>0)
 	{
 		--HeadShotComboCount;
 		HeadShotMessage(HeadShotComboCount,true,MaxRhythmCombo);
@@ -48,31 +48,31 @@ final function UpdateDmgScale( bool bUp )
 	RhythmComboDmg = HeadShotComboCount*0.075;
 }
 
-function UpdatePerkHeadShots( ImpactInfo Impact, class<DamageType> DamageType, int NumHit )
+function UpdatePerkHeadShots(ImpactInfo Impact, class<DamageType> DamageType, int NumHit)
 {
 	local int HitZoneIdx;
    	local KFPawn_Monster KFPM;
 
-	if( MaxRhythmCombo<=0 )
+	if(MaxRhythmCombo<=0)
 		return;
    	KFPM = KFPawn_Monster(Impact.HitActor);
-   	if( KFPM==none || KFPM.GetTeamNum()==0 )
+   	if(KFPM==none || KFPM.GetTeamNum()==0)
    		return;
 
    	HitZoneIdx = KFPM.HitZones.Find('ZoneName', Impact.HitInfo.BoneName);
-   	if( HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell() )
+   	if(HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell())
 	{
-		if( class<KFDamageType>(DamageType)!=None && (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
+		if(class<KFDamageType>(DamageType)!=None && (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
 			UpdateDmgScale(true);
 	}
 }
-reliable client function HeadShotMessage( byte HeadShotNum, bool bMissed, byte MaxHits )
+reliable client function HeadShotMessage(byte HeadShotNum, bool bMissed, byte MaxHits)
 {
 	local AkEvent TempAkEvent;
 	local KFPlayerController PC;
 
 	PC = KFPlayerController(PlayerOwner);
-	if( PC==none || PC.MyGFxHUD==none )
+	if(PC==none || PC.MyGFxHUD==none)
 	{
 		return;
 	}
@@ -80,25 +80,25 @@ reliable client function HeadShotMessage( byte HeadShotNum, bool bMissed, byte M
 	PC.MyGFxHUD.RhythmCounterWidget.SetInt("count", HeadShotNum);
 	PC.MyGFxHUD.RhythmCounterWidget.SetBonusPercentage(float(HeadShotNum) / float(MaxHits));
 
-	if( HeadshotNum==0 )
+	if(HeadshotNum==0)
 		TempAkEvent = AkEvent'WW_UI_PlayerCharacter.Play_R_Method_Reset';
-	else if( HeadShotNum<MaxHits )
+	else if(HeadShotNum<MaxHits)
 	{
-		if( !bMissed )
+		if(!bMissed)
 		{				
 			//PC.ClientSpawnCameraLensEffect(class'KFCameraLensEmit_RackemHeadShot');
 			TempAkEvent = AkEvent'WW_UI_PlayerCharacter.Play_R_Method_Hit';
 		}
 	}
-	else if( !bMissed )
+	else if(!bMissed)
 	{
 		//PC.ClientSpawnCameraLensEffect(class'KFCameraLensEmit_RackemHeadShotPing');
 		TempAkEvent = AkEvent'WW_UI_PlayerCharacter.Play_R_Method_Top';
 		HeadshotNum = 6;
 	}
 
-	if( TempAkEvent != none )
-		PC.PlayRMEffect( TempAkEvent, 'R_Method', HeadshotNum );
+	if(TempAkEvent != none)
+		PC.PlayRMEffect(TempAkEvent, 'R_Method', HeadshotNum);
 }
 
 defaultproperties

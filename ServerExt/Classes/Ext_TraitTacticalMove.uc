@@ -1,10 +1,10 @@
 Class Ext_TraitTacticalMove extends Ext_TraitBase;
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkSWAT(Perk).RepTacticalMove = Level;
 }
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkSWAT(Perk).RepTacticalMove = 0;
 }

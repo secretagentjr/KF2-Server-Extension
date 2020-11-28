@@ -9,7 +9,7 @@ var int NumButtons,CurrentPageNum,PageComponentIndex;
 var array<KFGUI_Button> PageButtons;
 
 // Remember to call InitMenu() on the newly created page after.
-final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, optional out KFGUI_Button Button )
+final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, optional out KFGUI_Button Button)
 {
 	local KFGUI_Base P;
 	local KFGUI_Base C;
@@ -31,29 +31,29 @@ final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, optional out KFG
 	B.OnClickRight = PageSwitched;
 	B.IDValue = NumButtons;
 	
-	if( ButtonPosition<2 )
+	if(ButtonPosition<2)
 	{
 		B.XPosition = NumButtons*ButtonAxisSize;
 		B.XSize = ButtonAxisSize*0.99;
 
-		if( ButtonPosition==0 )
+		if(ButtonPosition==0)
 			B.YPosition = 0.f;
 		else B.YPosition = YSize-BorderWidth*0.99;
 		B.YSize = BorderWidth*0.99;
 		
-		if( NumButtons>0 )
+		if(NumButtons>0)
 			PageButtons[PageButtons.Length-1].ExtravDir = 1;
 	}
 	else
 	{
-		if( ButtonPosition==2 )
+		if(ButtonPosition==2)
 			B.XPosition = 0.f;
 		else B.XPosition = XSize-BorderWidth*0.99;
 		B.XSize = BorderWidth*0.99;
 		
 		B.YPosition = NumButtons*ButtonAxisSize;
 		B.YSize = ButtonAxisSize*0.99;
-		if( NumButtons>0 )
+		if(NumButtons>0)
 			PageButtons[PageButtons.Length-1].ExtravDir = 2;
 	}
 
@@ -64,14 +64,14 @@ final function KFGUI_Base AddPage( class<KFGUI_Base> PageClass, optional out KFG
 	return P;
 }
 
-function PageSwitched( KFGUI_Button Sender )
+function PageSwitched(KFGUI_Button Sender)
 {
 	SelectPage(Sender.IDValue);
 }
 
-final function SelectPage( int Index )
+final function SelectPage(int Index)
 {
-	if( CurrentPageNum>=0 )
+	if(CurrentPageNum>=0)
 	{
 		PageButtons[CurrentPageNum].bIsHighlighted = false;
 		SubPages[CurrentPageNum].CloseMenu();
@@ -79,7 +79,7 @@ final function SelectPage( int Index )
 		PageComponentIndex = -1;
 	}
 	CurrentPageNum = (Index>=0 && Index<SubPages.Length) ? Index : -1;
-	if( CurrentPageNum>=0 )
+	if(CurrentPageNum>=0)
 	{
 		PageButtons[CurrentPageNum].bIsHighlighted = true;
 		SubPages[CurrentPageNum].ShowMenu();
@@ -93,20 +93,20 @@ function PreDraw()
 	local int i;
 	local byte j;
 
-	if( CurrentPageNum==-1 && NumButtons>0 )
+	if(CurrentPageNum==-1 && NumButtons>0)
 		SelectPage(0);
 	ComputeCoords();
 	Canvas.SetOrigin(CompPos[0],CompPos[1]);
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
-	for( i=0; i<Components.Length; ++i )
+	for(i=0; i<Components.Length; ++i)
 	{
 		Components[i].Canvas = Canvas;
-		for( j=0; j<4; ++j )
+		for(j=0; j<4; ++j)
 			Components[i].InputPos[j] = CompPos[j];
-		if( i==PageComponentIndex )
+		if(i==PageComponentIndex)
 		{
-			switch( ButtonPosition )
+			switch(ButtonPosition)
 			{
 			case 0:
 				Components[i].InputPos[1] += (InputPos[3]*BorderWidth);

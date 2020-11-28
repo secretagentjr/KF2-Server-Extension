@@ -34,7 +34,7 @@ function InitMenu()
 }
 function Timer()
 {
-	if( !ExtPlayerController(GetPlayer()).bMOTDReceived )
+	if(!ExtPlayerController(GetPlayer()).bMOTDReceived)
 		SetTimer(0.2,false);
 	else
 	{
@@ -42,15 +42,15 @@ function Timer()
 		MOTDEdited(EditField);
 	}
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
 	local string S;
 
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Yes':
 		S = EditField.Value;
-		while( Len(S)>510 )
+		while(Len(S)>510)
 		{
 			ExtPlayerController(GetPlayer()).ServerSetMOTD(Left(S,500),false);
 			S = Mid(S,500);
@@ -63,7 +63,7 @@ function ButtonClicked( KFGUI_Button Sender )
 		break;
 	}
 }
-function MOTDEdited( KFGUI_EditBox Sender )
+function MOTDEdited(KFGUI_EditBox Sender)
 {
 	NewsField.SetText(MotdPreviewText$"|"$Sender.Value);
 }

@@ -2,23 +2,23 @@ class ExtPawn_Customization extends KFPawn_Customization;
 
 simulated function KFCharacterInfoBase GetCharacterInfo()
 {
-	if( ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None )
+	if(ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		return ExtPlayerReplicationInfo(PlayerReplicationInfo).GetSelectedArch();
 	return Super.GetCharacterInfo();
 }
 
-simulated function SetCharacterArch( KFCharacterInfoBase Info, optional bool bForce )
+simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bForce)
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo(PlayerReplicationInfo);
 	if (Info != CharacterArch || bForce)
 	{
 		// Set Family Info
 		CharacterArch = Info;
-		CharacterArch.SetCharacterFromArch( self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
+		CharacterArch.SetCharacterFromArch(self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
 
 		SetCharacterAnimationInfo();
 
@@ -35,9 +35,9 @@ simulated function SetCharacterArch( KFCharacterInfoBase Info, optional bool bFo
 		}
 	}
 
-	if( CharacterArch != none )
+	if(CharacterArch != none)
 	{
-		if( CharacterArch.VoiceGroupArchName != "" )
+		if(CharacterArch.VoiceGroupArchName != "")
 			VoiceGroupArch = class<KFPawnVoiceGroup>(class'ExtCharacterInfo'.Static.SafeLoadObject(CharacterArch.VoiceGroupArchName, class'Class'));
 	}
 }
@@ -54,18 +54,18 @@ simulated function PlayEmoteAnimation(optional bool bNewCharacter)
 	local name AnimName;
 	local float BlendInTime;
 
-	AnimName = class'ExtEmoteList'.static.GetUnlockedEmote( class'ExtEmoteList'.static.GetEquippedEmoteId(ExtPlayerController(Controller)), ExtPlayerController(Controller) );	
+	AnimName = class'ExtEmoteList'.static.GetUnlockedEmote(class'ExtEmoteList'.static.GetEquippedEmoteId(ExtPlayerController(Controller)), ExtPlayerController(Controller));	
 
 	BlendInTime = (bNewCharacter) ? 0.f : 0.4;
 
 	// Briefly turn off notify so that PlayCustomAnim won't call OnAnimEnd (e.g. character swap)
-	BodyStanceNodes[EAS_FullBody].SetActorAnimEndNotification( FALSE );
+	BodyStanceNodes[EAS_FullBody].SetActorAnimEndNotification(FALSE);
 
 	BodyStanceNodes[EAS_FullBody].PlayCustomAnim(AnimName, 1.f, BlendInTime, 0.4, false, true);
-	BodyStanceNodes[EAS_FullBody].SetActorAnimEndNotification( TRUE );
+	BodyStanceNodes[EAS_FullBody].SetActorAnimEndNotification(TRUE);
 }
 
-function AttachWeaponByItemDefinition( int ItemDefinition )
+function AttachWeaponByItemDefinition(int ItemDefinition)
 {
 	local class<KFWeaponDefinition> WeaponDef;
 	local int ItemINdex;
@@ -89,7 +89,7 @@ function AttachWeaponByItemDefinition( int ItemDefinition )
 	}
 
 	//load in and add object .  
-	WeaponPreview = KFWeaponAttachment ( DynamicLoadObject( WeaponDef.default.AttachmentArchtypePath, class'KFWeaponAttachment' ) );
+	WeaponPreview = KFWeaponAttachment (DynamicLoadObject(WeaponDef.default.AttachmentArchtypePath, class'KFWeaponAttachment'));
 
 	//attatch it to player
 	WeaponAttachmentTemplate = WeaponPreview;

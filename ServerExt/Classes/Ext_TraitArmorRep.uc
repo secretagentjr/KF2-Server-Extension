@@ -1,10 +1,10 @@
 Class Ext_TraitArmorRep extends Ext_TraitBase;
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkFieldMedic(Perk).RepairArmorRate = float(Level)*0.05f;
 }
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkFieldMedic(Perk).RepairArmorRate = 0;
 }

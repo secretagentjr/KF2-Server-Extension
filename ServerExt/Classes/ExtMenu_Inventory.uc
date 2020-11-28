@@ -22,7 +22,7 @@ function bool IsItemActive(int ItemDefinition)
 	return false;
 }
 
-function Callback_Equip( int ItemDefinition )
+function Callback_Equip(int ItemDefinition)
 {
 	local class<KFWeaponDefinition> WeaponDef;
 	local int ItemIndex;
@@ -42,7 +42,7 @@ function Callback_Equip( int ItemDefinition )
 		{
 			class'ExtWeaponSkinList'.Static.SaveWeaponSkin(WeaponDef, 0, ExtPlayerController(KFPC));
 
-			if(class'WorldInfo'.static.IsConsoleBuild( ))
+			if(class'WorldInfo'.static.IsConsoleBuild())
 			{
 				Manager.CachedProfile.ClearWeaponSkin(WeaponDef.default.WeaponClassPath);
 			}
@@ -50,7 +50,7 @@ function Callback_Equip( int ItemDefinition )
 		else
 		{
 			class'ExtWeaponSkinList'.Static.SaveWeaponSkin(WeaponDef, ItemDefinition, ExtPlayerController(KFPC));
-			if(class'WorldInfo'.static.IsConsoleBuild( ))
+			if(class'WorldInfo'.static.IsConsoleBuild())
 			{
 				Manager.CachedProfile.SaveWeaponSkin(WeaponDef.default.WeaponClassPath, ItemDefinition);
 			}

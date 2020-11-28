@@ -18,17 +18,17 @@ var byte HealingShieldMod,HealingSpeedBoostMod,HealingDamageBoostMod;
 
 replication
 {
-	if( true )
+	if(true)
 		bFeigningDeath,RepRegenHP,BackpackWeaponClass;
-	if( bNetOwner )
+	if(bNetOwner)
 		bHasBunnyHop;
-	if( bNetDirty )
+	if(bNetDirty)
 		HealingSpeedBoostMod, HealingDamageBoostMod, HealingShieldMod;
 }
 
 function TakeDamage(int Damage, Controller InstigatedBy, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 {
-	if( KnockbackResist<1 )
+	if(KnockbackResist<1)
 		Momentum *= KnockbackResist;
 	Super.TakeDamage(Damage,InstigatedBy,HitLocation,Momentum,DamageType,HitInfo,DamageCauser);
 }
@@ -40,9 +40,9 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 	local PlayerReplicationInfo KillerPRI;
 	local SeqAct_Latent Action;
 
-	if( WorldInfo.NetMode!=NM_Client && PlayerReplicationInfo!=None )
+	if(WorldInfo.NetMode!=NM_Client && PlayerReplicationInfo!=None)
 	{
-		if( Killer==None || Killer==Controller )
+		if(Killer==None || Killer==Controller)
 		{
 			KillerPRI = PlayerReplicationInfo;
 			KillerPawn = None;
@@ -50,10 +50,10 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 		else
 		{
 			KillerPRI = Killer.PlayerReplicationInfo;
-			if( KillerPRI==None || KillerPRI.Team!=PlayerReplicationInfo.Team )
+			if(KillerPRI==None || KillerPRI.Team!=PlayerReplicationInfo.Team)
 			{
 				KillerPawn = Killer.Pawn!=None ? Killer.Pawn.Class : None;
-				if( PlayerController(Killer)==None ) // If was killed by a monster, don't broadcast PRI along with it.
+				if(PlayerController(Killer)==None) // If was killed by a monster, don't broadcast PRI along with it.
 					KillerPRI = None;
 			}
 			else KillerPawn = None;
@@ -62,12 +62,12 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 			C.ClientKillMessage(damageType,PlayerReplicationInfo,KillerPRI,KillerPawn);
 	}
 	// If got killed by a zombie, turn player into a ragdoll and let em take control of a newly spawned ZED over the ragdoll.
-	if( bRedeadMode && WorldInfo.NetMode!=NM_Client && damageType!=None && Killer!=None && Killer!=Controller && Killer.GetTeamNum()!=0 )
+	if(bRedeadMode && WorldInfo.NetMode!=NM_Client && damageType!=None && Killer!=None && Killer!=Controller && Killer.GetTeamNum()!=0)
 	{
-		if ( bDeleteMe || WorldInfo.Game == None || WorldInfo.Game.bLevelChange )
+		if (bDeleteMe || WorldInfo.Game == None || WorldInfo.Game.bLevelChange)
 			return FALSE;
 		bPendingRedead = true;
-		if ( WorldInfo.Game.PreventDeath(self, Killer, damageType, HitLocation) )
+		if (WorldInfo.Game.PreventDeath(self, Killer, damageType, HitLocation))
 		{
 			bPendingRedead = false;
 			Health = max(Health, 1);
@@ -76,15 +76,15 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 		Health = 0;
 		foreach LatentActions(Action)
 			Action.AbortFor(self);
-		if ( Controller != None )
+		if (Controller != None)
 			WorldInfo.Game.Killed(Killer, Controller, self, damageType);
 		else WorldInfo.Game.Killed(Killer, Controller(Owner), self, damageType);
 		
-		if ( InvManager != None )
+		if (InvManager != None)
 			InvManager.OwnerDied();
 		
 		Health = 1;
-		if( !bFeigningDeath )
+		if(!bFeigningDeath)
 			PlayFeignDeath(true,,true);
 		Health = 0;
 		ClearTimer('UnsetFeignDeath');
@@ -93,15 +93,15 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 	}
 	return Super.Died(Killer, DamageType, HitLocation);
 }
-simulated function BroadcastDeathMessage( Controller Killer );
+simulated function BroadcastDeathMessage(Controller Killer);
 
-function SetBatteryRate( float Rate )
+function SetBatteryRate(float Rate)
 {
 	BatteryDrainRate = Default.BatteryDrainRate*Rate;
 	NVGBatteryDrainRate = Default.NVGBatteryDrainRate*Rate;
 	ClientSetBatteryRate(Rate);
 }
-simulated reliable client function ClientSetBatteryRate( float Rate )
+simulated reliable client function ClientSetBatteryRate(float Rate)
 {
 	BatteryDrainRate = Default.BatteryDrainRate*Rate;
 	NVGBatteryDrainRate = Default.NVGBatteryDrainRate*Rate;
@@ -123,92 +123,92 @@ event bool HealDamage(int Amount, Controller Healer, class<DamageType> DamageTyp
 	InstigatorPC = ExtPlayerController(Healer);
 	InstigatorPerk = InstigatorPC.GetPerk();
 	
-	if( InstigatorPerk != None && bCanRepairArmor )
-		bRepairedArmor = InstigatorPC.GetPerk().RepairArmor( self );
+	if(InstigatorPerk != None && bCanRepairArmor)
+		bRepairedArmor = InstigatorPC.GetPerk().RepairArmor(self);
 	
 	EPRI = ExtPlayerReplicationInfo(InstigatorPC.PlayerReplicationInfo);
-	if( EPRI != none )
+	if(EPRI != none)
 	{
 		InstigatorExtPerk = ExtPlayerController(Controller).ActivePerkManager.CurrentPerk;
-		if( InstigatorExtPerk != none && Ext_PerkFieldMedic(InstigatorExtPerk) != none )
+		if(InstigatorExtPerk != none && Ext_PerkFieldMedic(InstigatorExtPerk) != none)
 		{
-			if( Ext_PerkFieldMedic(InstigatorExtPerk).bHealingBoost )
+			if(Ext_PerkFieldMedic(InstigatorExtPerk).bHealingBoost)
 				UpdateHealingSpeedBoostMod(InstigatorPC);
 
-			if( Ext_PerkFieldMedic(InstigatorExtPerk).bHealingDamageBoost )
+			if(Ext_PerkFieldMedic(InstigatorExtPerk).bHealingDamageBoost)
 				UpdateHealingDamageBoostMod(InstigatorPC);
 
-			if( Ext_PerkFieldMedic(InstigatorExtPerk).bHealingShield )
+			if(Ext_PerkFieldMedic(InstigatorExtPerk).bHealingShield)
 				UpdateHealingShieldMod(InstigatorPC);
 		}
 	}
 
-	if( Amount > 0 && IsAliveAndWell() && Health < HealthMax )
+	if(Amount > 0 && IsAliveAndWell() && Health < HealthMax)
 	{
 		// Play any healing effects attached to this damage type
 		KFDT = class<KFDamageType>(DamageType);
-		if( KFDT != none && KFDT.default.bNoPain )
-			PlayHeal( KFDT );
+		if(KFDT != none && KFDT.default.bNoPain)
+			PlayHeal(KFDT);
 
-		if( Role == ROLE_Authority )
+		if(Role == ROLE_Authority)
 		{
-			if( Healer==None || Healer.PlayerReplicationInfo == None )
+			if(Healer==None || Healer.PlayerReplicationInfo == None)
 				return false;
 
 			InstigatorPRI = KFPlayerReplicationInfo(Healer.PlayerReplicationInfo);
 			ScAmount = Amount;
-			if( InstigatorPerk != none )
-				InstigatorPerk.ModifyHealAmount( ScAmount );
+			if(InstigatorPerk != none)
+				InstigatorPerk.ModifyHealAmount(ScAmount);
 			UsedHealAmount = ScAmount;
 
 			// You can never have a HealthToRegen value that's greater than HealthMax
-			if( Health + HealthToRegen + UsedHealAmount > HealthMax )
+			if(Health + HealthToRegen + UsedHealAmount > HealthMax)
 				UsedHealAmount = Min(HealthMax - (Health + HealthToRegen),255-HealthToRegen);
 			else UsedHealAmount = Min(UsedHealAmount,255-HealthToRegen);
 
 			HealthToRegen += UsedHealAmount;
 			RepRegenHP = HealthToRegen;
-			if( !IsTimerActive('GiveHealthOverTime') )
+			if(!IsTimerActive('GiveHealthOverTime'))
 				SetTimer(HealthRegenRate, true, 'GiveHealthOverTime');
 
 			// Give the healer money/XP for helping a teammate
-			if( Healer.Pawn != none && Healer.Pawn != self )
+			if(Healer.Pawn != none && Healer.Pawn != self)
 			{
-				DoshEarned = ( UsedHealAmount / float(HealthMax) ) * HealerRewardScaler;
-				if( InstigatorPRI!=None )
+				DoshEarned = (UsedHealAmount / float(HealthMax)) * HealerRewardScaler;
+				if(InstigatorPRI!=None)
 					InstigatorPRI.AddDosh(Max(DoshEarned, 0), true);
-				if( InstigatorPC!=None )
-					InstigatorPC.AddHealPoints( UsedHealAmount );
+				if(InstigatorPC!=None)
+					InstigatorPC.AddHealPoints(UsedHealAmount);
 			}
 
-			if( Healer.bIsPlayer )
+			if(Healer.bIsPlayer)
 			{
-				if( Healer != Controller )
+				if(Healer != Controller)
 				{
-					if( InstigatorPC!=None )
+					if(InstigatorPC!=None)
 					{
-						if( !InstigatorPC.bClientHideNumbers )
+						if(!InstigatorPC.bClientHideNumbers)
 							InstigatorPC.ClientNumberMsg(UsedHealAmount,Location,DMG_Heal);
-						InstigatorPC.ReceiveLocalizedMessage( class'KFLocalMessage_Game', GMT_HealedPlayer, PlayerReplicationInfo );
+						InstigatorPC.ReceiveLocalizedMessage(class'KFLocalMessage_Game', GMT_HealedPlayer, PlayerReplicationInfo);
 					}
 					KFPC = ExtPlayerController(Controller);
-					if( KFPC!=None )
-						KFPC.ReceiveLocalizedMessage( class'KFLocalMessage_Game', GMT_HealedBy, Healer.PlayerReplicationInfo );
+					if(KFPC!=None)
+						KFPC.ReceiveLocalizedMessage(class'KFLocalMessage_Game', GMT_HealedBy, Healer.PlayerReplicationInfo);
 				}
-				else if( bMessageHealer && InstigatorPC!=None )
-					InstigatorPC.ReceiveLocalizedMessage( class'KFLocalMessage_Game', GMT_HealedSelf, PlayerReplicationInfo );
+				else if(bMessageHealer && InstigatorPC!=None)
+					InstigatorPC.ReceiveLocalizedMessage(class'KFLocalMessage_Game', GMT_HealedSelf, PlayerReplicationInfo);
 			}
 
 			// don't play dialog for healing done through perk skills (e.g. berserker vampire skill)
-			if( bMessageHealer )
+			if(bMessageHealer)
 			{
-				`DialogManager.PlayHealingDialog( KFPawn(Healer.Pawn), self, float(Health + HealthToRegen) / float(HealthMax) );
+				`DialogManager.PlayHealingDialog(KFPawn(Healer.Pawn), self, float(Health + HealthToRegen) / float(HealthMax));
 			}
 
 			// Reduce burn duration and damage in half if you heal while burning
-			for( i = 0; i < DamageOverTimeArray.Length; ++i )
+			for(i = 0; i < DamageOverTimeArray.Length; ++i)
 			{
-				if( DamageOverTimeArray[i].DoT_Type == DOT_Fire )
+				if(DamageOverTimeArray[i].DoT_Type == DOT_Fire)
 				{
 					DamageOverTimeArray[i].Duration *= 0.5;
 					DamageOverTimeArray[i].Damage *= 0.5;
@@ -231,7 +231,7 @@ function GiveHealthOverTime()
 
 simulated event ReplicatedEvent(name VarName)
 {
-	switch( VarName )
+	switch(VarName)
 	{
 	case 'bFeigningDeath':
 		PlayFeignDeath(bFeigningDeath);
@@ -248,11 +248,11 @@ simulated event ReplicatedEvent(name VarName)
 // Feign death triggers:
 function PlayHit(float Damage, Controller InstigatedBy, vector HitLocation, class<DamageType> damageType, vector Momentum, TraceHitInfo HitInfo)
 {
-	if( damageType!=class'DmgType_Fell' ) // Not from falling!
+	if(damageType!=class'DmgType_Fell') // Not from falling!
 	{
-		if( bRagdollFromMomentum && Damage>2 && VSizeSq(Momentum)>1000000.f && Rand(3)==0 ) // Square(1000)
+		if(bRagdollFromMomentum && Damage>2 && VSizeSq(Momentum)>1000000.f && Rand(3)==0) // Square(1000)
 			SetFeignDeath(3.f+FRand()*2.5f); // Randomly knockout a player if hit by a huge force.
-		else if( bRagdollFromBackhit && Damage>20 && VSizeSq(Momentum)>40000.f && (vector(Rotation) Dot Momentum)>0.f && Rand(4)==0 )
+		else if(bRagdollFromBackhit && Damage>20 && VSizeSq(Momentum)>40000.f && (vector(Rotation) Dot Momentum)>0.f && Rand(4)==0)
 			SetFeignDeath(2.f+FRand()*3.f); // Randomly knockout a player if hit from behind.
 	}
 	Super.PlayHit(Damage,InstigatedBy,HitLocation,damageType,Momentum,HitInfo);
@@ -262,10 +262,10 @@ event Landed(vector HitNormal, actor FloorActor)
 	local float ExcessSpeed;
 
 	Super.Landed(HitNormal, FloorActor);
-	if( bRagdollFromFalling )
+	if(bRagdollFromFalling)
 	{
 		ExcessSpeed = Velocity.Z / (-MaxFallSpeed);
-		if( ExcessSpeed>1.25 ) // Knockout a player after landed from too high.
+		if(ExcessSpeed>1.25) // Knockout a player after landed from too high.
 		{
 			Velocity.Z = 0; // Dont go clip through floor now...
 			Velocity.X*=0.5;
@@ -273,27 +273,27 @@ event Landed(vector HitNormal, actor FloorActor)
 			SetFeignDeath((3.f+FRand())*ExcessSpeed);
 		}
 	}
-	else if( BHopAccelSpeed>0 )
+	else if(BHopAccelSpeed>0)
 		SetTimer((IsLocallyControlled() ? 0.17 : 1.f),false,'ResetBHopAccel'); // Replicating from client to server here because Server Tickrate may screw clients over from executing bunny hopping.
 }
 
 // ==================================================================
 // Bunny hopping:
-function bool DoJump( bool bUpdating )
+function bool DoJump(bool bUpdating)
 {
 	local float V;
 
-	if ( Super.DoJump(bUpdating) )
+	if (Super.DoJump(bUpdating))
 	{
 		// Accelerate if bunnyhopping.
-		if( bHasBunnyHop && VSizeSq2D(Velocity)>Square(GroundSpeed*0.75) )
+		if(bHasBunnyHop && VSizeSq2D(Velocity)>Square(GroundSpeed*0.75))
 		{
-			if( BHopAccelSpeed<20 )
+			if(BHopAccelSpeed<20)
 			{
-				if( BHopAccelSpeed==0 )
+				if(BHopAccelSpeed==0)
 					BHopSpeedMod = 1.f;
 
-				if( BHopAccelSpeed<5 )
+				if(BHopAccelSpeed<5)
 					V = 1.15;
 				else
 				{
@@ -313,15 +313,15 @@ function bool DoJump( bool bUpdating )
 	}
 	return false;
 }
-simulated function ResetBHopAccel( optional bool bSkipRep ) // Set on Landed, or Tick if falling 2D speed is too low.
+simulated function ResetBHopAccel(optional bool bSkipRep) // Set on Landed, or Tick if falling 2D speed is too low.
 {
-	if( BHopAccelSpeed>0 )
+	if(BHopAccelSpeed>0)
 	{
 		BHopAccelSpeed = 0;
 		AirControl = Default.AirControl;
 		GroundSpeed /= BHopSpeedMod;
 		UpdateGroundSpeed();
-		if( WorldInfo.NetMode==NM_Client && !bSkipRep )
+		if(WorldInfo.NetMode==NM_Client && !bSkipRep)
 			NotifyHasStopped();
 	}
 }
@@ -330,12 +330,12 @@ function UpdateGroundSpeed()
 	local KFInventoryManager InvM;
 	local float HealthMod;
 
-	if ( Role < ROLE_Authority )
+	if (Role < ROLE_Authority)
 		return;
 
 	InvM = KFInventoryManager(InvManager);
 	HealthMod = (InvM != None) ? InvM.GetEncumbranceSpeedMod() : 1.f * (1.f - LowHealthSpeedPenalty);
-	if( BHopAccelSpeed>0 )
+	if(BHopAccelSpeed>0)
 		HealthMod *= BHopSpeedMod;
 
 	// First reset to default so multipliers do not stack
@@ -344,7 +344,7 @@ function UpdateGroundSpeed()
 	SprintSpeed = default.SprintSpeed * HealthMod;
 
 	// Ask our perk to set the new ground speed based on weapon type
-	if( GetPerk() != none )
+	if(GetPerk() != none)
 	{
 		GetPerk().ModifySpeed(GroundSpeed);
 		GetPerk().ModifySpeed(SprintSpeed);
@@ -358,22 +358,22 @@ reliable server function NotifyHasStopped()
 
 // ==================================================================
 // Feign death (UT3):
-simulated function Tick( float Delta )
+simulated function Tick(float Delta)
 {
 	Super.Tick(Delta);
-	if( bPlayingFeignDeathRecovery )
+	if(bPlayingFeignDeathRecovery)
 	{
 		// interpolate Controller yaw to our yaw so that we don't get our rotation snapped around when we get out of feign death
 		Mesh.PhysicsWeight = FMax(Mesh.PhysicsWeight-(Delta*2.f),0.f);
-		if( Mesh.PhysicsWeight<=0 )
+		if(Mesh.PhysicsWeight<=0)
 			StartFeignDeathRecoveryAnim();
 	}
-	if( BHopAccelSpeed>0 )
+	if(BHopAccelSpeed>0)
 	{
-		if( Physics==PHYS_Falling && VSizeSq2D(Velocity)<Square(GroundSpeed*0.7) )
+		if(Physics==PHYS_Falling && VSizeSq2D(Velocity)<Square(GroundSpeed*0.7))
 			ResetBHopAccel(true);
 	}
-	if( WorldInfo.NetMode!=NM_Client && BackpackWeaponClass!=none && (PlayerOldWeapon==None || PlayerOldWeapon.Instigator==None) )
+	if(WorldInfo.NetMode!=NM_Client && BackpackWeaponClass!=none && (PlayerOldWeapon==None || PlayerOldWeapon.Instigator==None))
 	{
 		PlayerOldWeapon = None;
 		SetBackpackWeapon(None);
@@ -384,13 +384,13 @@ function DelayedRagdoll()
 {
 	SetFeignDeath(2.f+FRand()*3.f);
 }
-exec function FeignDeath( float Time )
+exec function FeignDeath(float Time)
 {
 	SetFeignDeath(Time);
 }
-function SetFeignDeath( float Time )
+function SetFeignDeath(float Time)
 {
-	if( WorldInfo.NetMode!=NM_Client && !bFeigningDeath && Health>0 && bCanBecomeRagdoll && NoRagdollChance<1.f && (NoRagdollChance==0.f || FRand()>NoRagdollChance) )
+	if(WorldInfo.NetMode!=NM_Client && !bFeigningDeath && Health>0 && bCanBecomeRagdoll && NoRagdollChance<1.f && (NoRagdollChance==0.f || FRand()>NoRagdollChance))
 	{
 		Time = FMax(1.f,Time);
 		PlayFeignDeath(true);
@@ -399,25 +399,25 @@ function SetFeignDeath( float Time )
 }
 function UnsetFeignDeath()
 {
-	if( bFeigningDeath )
+	if(bFeigningDeath)
 		PlayFeignDeath(false);
 }
 
-simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional bool bTransformMode )
+simulated function PlayFeignDeath(bool bEnable, optional bool bForce, optional bool bTransformMode)
 {
 	local vector FeignLocation, HitLocation, HitNormal, TraceEnd, Impulse;
 	local rotator NewRotation;
 	local float UnFeignZAdjust;
 
-	if( Health<=0 && WorldInfo.NetMode!=NM_Client )
+	if(Health<=0 && WorldInfo.NetMode!=NM_Client)
 		return; // If dead, don't do it.
 
 	NotifyOutOfBattery(); // Stop nightvision on client.
 
 	bFeigningDeath = bEnable;
-	if ( bEnable )
+	if (bEnable)
 	{
-		if( bFPLegsAttached )
+		if(bFPLegsAttached)
 		{
 			bFPLegsAttached = false;
 			DetachComponent(FPBodyMesh);
@@ -427,7 +427,7 @@ simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional 
 		
 		bPlayingFeignDeathRecovery = false;
 		ClearTimer('OnWakeUpFinished');
-		if( !bTransformMode )
+		if(!bTransformMode)
 			GotoState('FeigningDeath');
 
 		// if we had some other rigid body thing going on, cancel it
@@ -452,9 +452,9 @@ simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional 
 
 		Mesh.SetHasPhysicsAssetInstance(false);
 		
-		if( !InitRagdoll() ) // Ragdoll error!
+		if(!InitRagdoll()) // Ragdoll error!
 		{
-			if( PlayerController(Controller)!=None )
+			if(PlayerController(Controller)!=None)
 				PlayerController(Controller).ClientMessage("Error: InitRagdoll() failed!");
 			return;
 		}
@@ -467,7 +467,7 @@ simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional 
 		// Set all kinematic bodies to the current root velocity, since they may not have been updated during normal animation
 		// and therefore have zero derived velocity (this happens in 1st person camera mode).
 		UnFeignZAdjust = VSize(Velocity);
-		if( UnFeignZAdjust>700.f ) // Limit by a maximum velocity force to prevent from going through walls.
+		if(UnFeignZAdjust>700.f) // Limit by a maximum velocity force to prevent from going through walls.
 			Mesh.SetRBLinearVelocity((Velocity/UnFeignZAdjust)*700.f, false);
 		else Mesh.SetRBLinearVelocity(Velocity, false);
 
@@ -485,14 +485,14 @@ simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional 
 		FeignLocation = Location;
 		CollisionComponent = CylinderComponent;
 		TraceEnd = Location + vect(0,0,1) * GetCollisionHeight();
-		if (Trace(HitLocation, HitNormal, TraceEnd, Location, true, GetCollisionExtent()) == None )
+		if (Trace(HitLocation, HitNormal, TraceEnd, Location, true, GetCollisionExtent()) == None)
 		{
 			HitLocation = TraceEnd;
 		}
-		if ( !SetFeignEndLocation(HitLocation, FeignLocation) && WorldInfo.NetMode!=NM_Client )
+		if (!SetFeignEndLocation(HitLocation, FeignLocation) && WorldInfo.NetMode!=NM_Client)
 		{
 			UnfeignFailedCount++;
-			if ( UnFeignfailedCount > 4 || bForce )
+			if (UnFeignfailedCount > 4 || bForce)
 			{
 				SetLocation(PickNearestNode()); // Just teleport to nearest pathnode.
 			}
@@ -552,7 +552,7 @@ simulated function PlayFeignDeath( bool bEnable, optional bool bForce, optional 
 		else FeignRecoverAnim = 'Getup_F_V1';
 		
 		// Init wakeup anim.
-		if( Mesh.AnimSets.Find(WakeUpAnimSet)==-1 )
+		if(Mesh.AnimSets.Find(WakeUpAnimSet)==-1)
 			Mesh.AnimSets.AddItem(WakeUpAnimSet);
 		BodyStanceNodes[EAS_FullBody].bNoNotifies = true;
 		BodyStanceNodes[EAS_FullBody].PlayCustomAnim(FeignRecoverAnim,0.025f,,,,true);
@@ -568,7 +568,7 @@ final function vector PickNearestNode()
 	foreach WorldInfo.AllNavigationPoints(class'NavigationPoint',N)
 	{
 		Dist = VSizeSq(N.Location-Location);
-		if( Best==None || Dist<BestDist )
+		if(Best==None || Dist<BestDist)
 		{
 			Best = N;
 			BestDist = Dist;
@@ -580,29 +580,29 @@ simulated function bool SetFeignEndLocation(vector HitLocation, vector FeignLoca
 {
 	local vector NewDest;
 
-	if ( SetLocation(HitLocation) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(HitLocation) && CheckValidLocation(FeignLocation))
 	{
 		return true;
 	}
 
 	// try crouching
 	ForceCrouch();
-	if ( SetLocation(HitLocation) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(HitLocation) && CheckValidLocation(FeignLocation))
 	{
 		return true;
 	}
 
 	newdest = HitLocation + GetCollisionRadius() * vect(1,1,0);
-	if ( SetLocation(newdest) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(newdest) && CheckValidLocation(FeignLocation))
 		return true;
 	newdest = HitLocation + GetCollisionRadius() * vect(1,-1,0);
-	if ( SetLocation(newdest) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(newdest) && CheckValidLocation(FeignLocation))
 		return true;
 	newdest = HitLocation + GetCollisionRadius() * vect(-1,1,0);
-	if ( SetLocation(newdest) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(newdest) && CheckValidLocation(FeignLocation))
 		return true;
 	newdest = HitLocation + GetCollisionRadius() * vect(-1,-1,0);
-	if ( SetLocation(newdest) && CheckValidLocation(FeignLocation) )
+	if (SetLocation(newdest) && CheckValidLocation(FeignLocation))
 		return true;
 
 	return false;
@@ -620,8 +620,8 @@ simulated function bool CheckValidLocation(vector FeignLocation)
 	// try trace straight up, then sideways to final location
 	DestFinalZ = FeignLocation;
 	FeignLocation.Z = Location.Z;
-	if ( Trace(HitLocation, HitNormal, DestFinalZ, FeignLocation, false, vect(10,10,10)) == None &&
-		Trace(HitLocation, HitNormal, Location, DestFinalZ, false, vect(10,10,10),, TRACEFLAG_Bullet) == None )
+	if (Trace(HitLocation, HitNormal, DestFinalZ, FeignLocation, false, vect(10,10,10)) == None &&
+		Trace(HitLocation, HitNormal, Location, DestFinalZ, false, vect(10,10,10),, TRACEFLAG_Bullet) == None)
 	{
 		return true;
 	}
@@ -656,7 +656,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 
 	Mesh.SetHasPhysicsAssetInstance(false);
 	Mesh.SetHasPhysicsAssetInstance(true);
-	if( bFPLegsAttached )
+	if(bFPLegsAttached)
 	{
 		bFPLegsAttached = false;
 		DetachComponent(FPBodyMesh);
@@ -667,7 +667,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 
 	PrepareRagdoll();
 
-	if ( InitRagdoll() )
+	if (InitRagdoll())
 	{
 		// Switch to a good RigidBody TickGroup to fix projectiles passing through the mesh
 		// https://udn.unrealengine.com/questions/190581/projectile-touch-not-called.html
@@ -682,7 +682,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 		CheckHitInfo(HitInfo, Mesh, HitDirection, HitLoc);
 
 		// Play ragdoll death animation (bSkipReplication=TRUE)
-		if( CanDoSpecialMove(SM_DeathAnim) && ClassIsChildOf(DamageType, class'KFDamageType') )
+		if(CanDoSpecialMove(SM_DeathAnim) && ClassIsChildOf(DamageType, class'KFDamageType'))
 		{
 			DoSpecialMove(SM_DeathAnim, TRUE,,,TRUE);
 			KFSM_DeathAnim(SpecialMoves[SM_DeathAnim]).PlayDeathAnimation(DamageType, HitDirection, HitInfo.BoneName);
@@ -695,7 +695,7 @@ simulated function PlayRagdollDeath(class<DamageType> DamageType, vector HitLoc)
 }
 simulated function StartFeignDeathRecoveryAnim()
 {
-	if( FPBodyMesh!=None && !bFPLegsAttached && bOnFirstPerson && Class'ExtPlayerController'.Default.bShowFPLegs )
+	if(FPBodyMesh!=None && !bFPLegsAttached && bOnFirstPerson && Class'ExtPlayerController'.Default.bShowFPLegs)
 	{
 		bFPLegsAttached = true;
 		AttachComponent(FPBodyMesh);
@@ -729,7 +729,7 @@ function AddDefaultInventory()
 	local KFPerk MyPerk;
 
 	MyPerk = GetPerk();
-	if( MyPerk != none )
+	if(MyPerk != none)
 		MyPerk.AddDefaultInventory(self);
 
 	Super(KFPawn).AddDefaultInventory();
@@ -737,34 +737,34 @@ function AddDefaultInventory()
 
 simulated event FellOutOfWorld(class<DamageType> dmgType)
 {
-	if ( Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds ) // Make sure to not to spam deathmessages while ghosting.
+	if (Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds) // Make sure to not to spam deathmessages while ghosting.
 		Super.FellOutOfWorld(dmgType);
 }
 simulated event OutsideWorldBounds()
 {
-	if ( Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds )
+	if (Role==ROLE_Authority && NextRedeemTimer<WorldInfo.TimeSeconds)
 		Super.OutsideWorldBounds();
 }
 
 simulated function KFCharacterInfoBase GetCharacterInfo()
 {
-	if( ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None )
+	if(ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		return ExtPlayerReplicationInfo(PlayerReplicationInfo).GetSelectedArch();
 	return Super.GetCharacterInfo();
 }
 
-simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bForce )
+simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bForce)
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo(PlayerReplicationInfo);
 	if (Info != CharacterArch || bForce)
 	{
 		// Set Family Info
 		CharacterArch = Info;
-		CharacterArch.SetCharacterFromArch( self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
+		CharacterArch.SetCharacterFromArch(self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
 
 		SetCharacterAnimationInfo();
 
@@ -779,21 +779,21 @@ simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bFor
 				WeaponAttachmentChanged(true);
 			}
 		}
-		if( WorldInfo.NetMode != NM_DedicatedServer )
+		if(WorldInfo.NetMode != NM_DedicatedServer)
 		{
 			// Attach/Reattach flashlight components when mesh is set
-			if ( Flashlight == None && FlashLightTemplate != None )
+			if (Flashlight == None && FlashLightTemplate != None)
 			{
 				Flashlight = new(self) Class'KFFlashlightAttachment' (FlashLightTemplate);
 			}
-			if ( FlashLight != None )
+			if (FlashLight != None)
 			{
 				Flashlight.AttachFlashlight(Mesh);
 			}
 		}
-		if( CharacterArch != none )
+		if(CharacterArch != none)
 		{
-			if( CharacterArch.VoiceGroupArchName != "" )
+			if(CharacterArch.VoiceGroupArchName != "")
 				VoiceGroupArch = class<KFPawnVoiceGroup>(class'ExtCharacterInfo'.Static.SafeLoadObject(CharacterArch.VoiceGroupArchName, class'Class'));
 		}
 	}
@@ -807,7 +807,7 @@ ignores FaceRotation, SetMovementPhysics;
 	{
 		bIsSprinting = false;
 	}
-	simulated event RigidBodyCollision( PrimitiveComponent HitComponent, PrimitiveComponent OtherComponent, const out CollisionImpactData RigidCollisionData, int ContactIndex )
+	simulated event RigidBodyCollision(PrimitiveComponent HitComponent, PrimitiveComponent OtherComponent, const out CollisionImpactData RigidCollisionData, int ContactIndex)
 	{
 		// only check fall damage for Z axis collisions
 		if (Abs(RigidCollisionData.ContactInfos[0].ContactNormal.Z) > 0.5)
@@ -852,9 +852,9 @@ ignores FaceRotation, SetMovementPhysics;
 	{
 		local rotator NewRotation;
 
-		if( bPlayingFeignDeathRecovery )
+		if(bPlayingFeignDeathRecovery)
 		{
-			if( PlayerController(Controller) != None )
+			if(PlayerController(Controller) != None)
 			{
 				// interpolate Controller yaw to our yaw so that we don't get our rotation snapped around when we get out of feign death
 				NewRotation = Controller.Rotation;
@@ -862,7 +862,7 @@ ignores FaceRotation, SetMovementPhysics;
 				Controller.SetRotation(NewRotation);
 			}
 			Mesh.PhysicsWeight = FMax(Mesh.PhysicsWeight-(DeltaTime*2.f),0.f);
-			if( Mesh.PhysicsWeight<=0 )
+			if(Mesh.PhysicsWeight<=0)
 				StartFeignDeathRecoveryAnim();
 		}
 	}
@@ -872,7 +872,7 @@ ignores FaceRotation, SetMovementPhysics;
 		local KFWeapon UTWeap;
 
 		// Abort current special move
-		if( IsDoingSpecialMove() )
+		if(IsDoingSpecialMove())
 			SpecialMoveHandler.EndSpecialMove();
 
 		bCanPickupInventory = false;
@@ -885,11 +885,11 @@ ignores FaceRotation, SetMovementPhysics;
 			UTWeap.SetIronSights(false);
 			UTWeap.PlayWeaponPutDown(0.5f);
 		}
-		if( WorldInfo.NetMode!=NM_Client )
+		if(WorldInfo.NetMode!=NM_Client)
 		{
-			if( ExtPlayerController(Controller)!=None )
+			if(ExtPlayerController(Controller)!=None)
 				ExtPlayerController(Controller).EnterRagdollMode(true);
-			else if( Controller!=None )
+			else if(Controller!=None)
 				Controller.ReplicatedEvent('RagdollMove');
 		}
 	}
@@ -905,7 +905,7 @@ ignores FaceRotation, SetMovementPhysics;
 	}
 	function bool CanBeRedeemed()
 	{
-		if( bFeigningDeath )
+		if(bFeigningDeath)
 			PlayFeignDeath(false,true);
 		NextRedeemTimer = WorldInfo.TimeSeconds+0.25;
 		return false;
@@ -916,13 +916,13 @@ ignores FaceRotation, SetMovementPhysics;
 
 		Mesh.AnimSets.RemoveItem(WakeUpAnimSet);
 		BodyStanceNodes[EAS_FullBody].bNoNotifies = false;
-		if (NextStateName != 'Dying' )
+		if (NextStateName != 'Dying')
 		{
 			bNoWeaponFiring = default.bNoWeaponFiring;
 			bCanPickupInventory = default.bCanPickupInventory;
 			
 			UTWeap = KFWeapon(Weapon);
-			if ( UTWeap != None )
+			if (UTWeap != None)
 			{
 				WeaponAttachmentTemplate = UTWeap.AttachmentArchetype;
 				UTWeap.PlayWeaponEquip(0.5f);
@@ -930,11 +930,11 @@ ignores FaceRotation, SetMovementPhysics;
 
 			Global.SetMovementPhysics();
 			bPlayingFeignDeathRecovery = false;
-			if( WorldInfo.NetMode!=NM_Client )
+			if(WorldInfo.NetMode!=NM_Client)
 			{
-				if( ExtPlayerController(Controller)!=None )
+				if(ExtPlayerController(Controller)!=None)
 					ExtPlayerController(Controller).EnterRagdollMode(false);
-				else if( Controller!=None )
+				else if(Controller!=None)
 					Controller.ReplicatedEvent('EndRagdollMove');
 			}
 			
@@ -952,9 +952,9 @@ Ignores FaceRotation, SetMovementPhysics, UnsetFeignDeath, Tick, TakeDamage, Die
 	{
 		bCanPickupInventory = false;
 		bNoWeaponFiring = true;
-		if( ExtPlayerController(Controller)!=None )
+		if(ExtPlayerController(Controller)!=None)
 			ExtPlayerController(Controller).EnterRagdollMode(true);
-		else if( Controller!=None )
+		else if(Controller!=None)
 			Controller.ReplicatedEvent('RagdollMove');
 
 		SetTimer(2,false,'TransformToZed');
@@ -970,7 +970,7 @@ Ignores FaceRotation, SetMovementPhysics, UnsetFeignDeath, Tick, TakeDamage, Die
 	{
 		local VS_ZedRecentZed Z;
 
-		if( Controller==None )
+		if(Controller==None)
 		{
 			Destroy();
 			return;
@@ -978,7 +978,7 @@ Ignores FaceRotation, SetMovementPhysics, UnsetFeignDeath, Tick, TakeDamage, Die
 		PlayFeignDeath(false);
 		SetCollision(false,false);
 		Z = Spawn(class'VS_ZedRecentZed',,,Location,Rotation,,true);
-		if( Z==None )
+		if(Z==None)
 		{
 			Super.Died(None,Class'DamageType',Location);
 			return;
@@ -991,15 +991,15 @@ Ignores FaceRotation, SetMovementPhysics, UnsetFeignDeath, Tick, TakeDamage, Die
 			Controller.Possess(Z,false);
 			WorldInfo.Game.ChangeTeam(Controller,255,true);
 			WorldInfo.Game.SetPlayerDefaults(Z);
-			if( ExtPlayerController(Controller)!=None )
+			if(ExtPlayerController(Controller)!=None)
 				Controller.GoToState('RagdollMove');
-			else if( Controller!=None )
+			else if(Controller!=None)
 				Controller.ReplicatedEvent('RagdollMove');
 			Z.WakeUp();
-			if( ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo)!=None )
+			if(ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo)!=None)
 			{
 				ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo).PlayerHealth = Min(Z.Health,255);
-				ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo).PlayerHealthPercent = FloatToByte( float(Z.Health) / float(Z.HealthMax) );
+				ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo).PlayerHealthPercent = FloatToByte(float(Z.Health) / float(Z.HealthMax));
 			}
 		}
 		Controller = None;
@@ -1021,7 +1021,7 @@ simulated final function InitFPLegs()
 	FPBodyMesh.SetNotifyRigidBodyCollision(false);
 	FPBodyMesh.SetTraceBlocking(false, false);
 
-	for( i=0; i<Mesh.Materials.length; i++ )
+	for(i=0; i<Mesh.Materials.length; i++)
 		FPBodyMesh.SetMaterial(i, Mesh.Materials[i]);
 
 	FPBodyMesh.HideBoneByName('neck', PBO_None);
@@ -1035,10 +1035,10 @@ simulated function SetMeshVisibility(bool bVisible)
 {
 	Super.SetMeshVisibility(bVisible);
 
-	if( Health>0 )
+	if(Health>0)
 	{
 		bOnFirstPerson = !bVisible;
-		if( AttachedBackItem!=None )
+		if(AttachedBackItem!=None)
 			AttachedBackItem.SetHidden(bOnFirstPerson);
 		UpdateFPLegs();
 	}
@@ -1046,14 +1046,14 @@ simulated function SetMeshVisibility(bool bVisible)
 
 simulated final function UpdateFPLegs()
 {
-	if( FPBodyMesh!=None )
+	if(FPBodyMesh!=None)
 	{
-		if( !bFPLegsAttached && Physics!=PHYS_RigidBody && bOnFirstPerson && Class'ExtPlayerController'.Default.bShowFPLegs )
+		if(!bFPLegsAttached && Physics!=PHYS_RigidBody && bOnFirstPerson && Class'ExtPlayerController'.Default.bShowFPLegs)
 		{
 			bFPLegsAttached = true;
 			AttachComponent(FPBodyMesh);
 			
-			if( !bFPLegsInit && CharacterArch!=None )
+			if(!bFPLegsInit && CharacterArch!=None)
 				InitFPLegs();
 		}
 		FPBodyMesh.SetHidden(!bOnFirstPerson || !Class'ExtPlayerController'.Default.bShowFPLegs);
@@ -1062,11 +1062,11 @@ simulated final function UpdateFPLegs()
 
 simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
-	if( SkelComp==Mesh ) // Do not allow first person legs eat up animation slots.
+	if(SkelComp==Mesh) // Do not allow first person legs eat up animation slots.
 		Super.PostInitAnimTree(SkelComp);
 }
 
-simulated final function SetBackpackWeapon( class<KFWeapon> WC )
+simulated final function SetBackpackWeapon(class<KFWeapon> WC)
 {
 	local KFCharacterInfo_Human MyCharacter;
 	local Rotator MyRot;
@@ -1075,19 +1075,19 @@ simulated final function SetBackpackWeapon( class<KFWeapon> WC )
 	local int i;
 
 	BackpackWeaponClass = WC;
-	if( WorldInfo.NetMode==NM_DedicatedServer )
+	if(WorldInfo.NetMode==NM_DedicatedServer)
 		return;
 
-	if( WC!=None )
+	if(WC!=None)
 	{
-		if( AttachedBackItem==None )
+		if(AttachedBackItem==None)
 		{
 			AttachedBackItem = new(Self) class'SkeletalMeshComponent';
 			AttachedBackItem.SetHidden(false);
 			AttachedBackItem.SetLightingChannels(PawnLightingChannel);
 		}
 		AttachedBackItem.SetSkeletalMesh(WC.Default.AttachmentArchetype.SkelMesh);
-		for( i=0; i<WC.Default.AttachmentArchetype.SkelMesh.Materials.length; i++ )
+		for(i=0; i<WC.Default.AttachmentArchetype.SkelMesh.Materials.length; i++)
 		{
 			AttachedBackItem.SetMaterial(i, WC.Default.AttachmentArchetype.SkelMesh.Materials[i]);
 		}
@@ -1097,25 +1097,25 @@ simulated final function SetBackpackWeapon( class<KFWeapon> WC )
 		MyCharacter = KFPlayerReplicationInfo(PlayerReplicationInfo).CharacterArchetypes[KFPlayerReplicationInfo(PlayerReplicationInfo).RepCustomizationInfo.CharacterIndex];
 		WM = WC.Default.AttachmentArchetype.SkelMesh.Name;
 		
-		if( ClassIsChildOf(WC, class'KFWeap_Edged_Knife') )
+		if(ClassIsChildOf(WC, class'KFWeap_Edged_Knife'))
 		{
 			MyPos = vect(0,0,10);
 			MyRot = rot(-16384,-8192,0);
 			B = 'LeftUpLeg';
 		}
-		else if( class<KFWeap_Welder>(WC) != none || class<KFWeap_Healer_Syringe>(WC) != none || class<KFWeap_Pistol_Medic>(WC) != none || class<KFWeap_SMG_Medic>(WC) != none || ClassIsChildOf(WC, class'KFWeap_PistolBase') || ClassIsChildOf(WC, class'KFWeap_SMGBase') || ClassIsChildOf(WC, class'KFWeap_ThrownBase') )
+		else if(class<KFWeap_Welder>(WC) != none || class<KFWeap_Healer_Syringe>(WC) != none || class<KFWeap_Pistol_Medic>(WC) != none || class<KFWeap_SMG_Medic>(WC) != none || ClassIsChildOf(WC, class'KFWeap_PistolBase') || ClassIsChildOf(WC, class'KFWeap_SMGBase') || ClassIsChildOf(WC, class'KFWeap_ThrownBase'))
 		{
 			MyPos = vect(0,0,10);
 			MyRot = rot(0,0,16384);
 
 			B = 'LeftUpLeg';
 		}
-		else if( ClassIsChildOf(WC, class'KFWeap_MeleeBase') )
+		else if(ClassIsChildOf(WC, class'KFWeap_MeleeBase'))
 		{
 			MyPos = vect(-5,15,0);
 			MyRot = rot(0,0,0);
 			
-			if( class<KFWeap_Edged_Katana>(WC) != none || class<KFWeap_Edged_Zweihander>(WC) != none )
+			if(class<KFWeap_Edged_Katana>(WC) != none || class<KFWeap_Edged_Zweihander>(WC) != none)
 				MyPos.Z = -20;
 				
 			B = 'Spine';
@@ -1125,10 +1125,10 @@ simulated final function SetBackpackWeapon( class<KFWeapon> WC )
 			MyPos = vect(-18.5,16.5,-18);
 			MyRot = rot(0,0,0);
 
-			if( MyCharacter == KFCharacterInfo_Human'CHR_Playable_ARCH.chr_DJSkully_archetype' )
+			if(MyCharacter == KFCharacterInfo_Human'CHR_Playable_ARCH.chr_DJSkully_archetype')
 				MyRot.Roll = 8192;
 				
-			switch( WM )
+			switch(WM)
 			{
 			case 'Wep_3rdP_MB500_Rig':
 				MyPos.X = -45;
@@ -1153,14 +1153,14 @@ simulated final function SetBackpackWeapon( class<KFWeapon> WC )
 		Mesh.AttachComponent(AttachedBackItem, B);
 		AttachedBackItem.SetHidden(bOnFirstPerson);
 	}
-	else if( AttachedBackItem!=None )
+	else if(AttachedBackItem!=None)
 		AttachedBackItem.SetHidden(true);
 }
 
 simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
 {
 	FPBodyMesh.SetHidden(true);
-	if( AttachedBackItem!=None )
+	if(AttachedBackItem!=None)
 		AttachedBackItem.SetHidden(true);
 	Super.PlayDying(DamageType,HitLoc);
 }
@@ -1169,7 +1169,7 @@ simulated function SetCharacterAnimationInfo()
 {
 	Super.SetCharacterAnimationInfo();
 
-	if( !bFPLegsInit && bFPLegsAttached )
+	if(!bFPLegsInit && bFPLegsAttached)
 		InitFPLegs();
 }
 
@@ -1186,7 +1186,7 @@ simulated function PlayWeaponSwitch(Weapon OldWeapon, Weapon NewWeapon)
 {
 	Super.PlayWeaponSwitch(OldWeapon, NewWeapon);
 
-	if( WorldInfo.NetMode!=NM_Client )
+	if(WorldInfo.NetMode!=NM_Client)
 	{
 		PlayerOldWeapon = KFWeapon(OldWeapon);
 		SetBackpackWeapon(PlayerOldWeapon!=None ? PlayerOldWeapon.Class : None);
@@ -1198,11 +1198,11 @@ simulated function UpdateHealingSpeedBoostMod(ExtPlayerController Healer)
 	local Ext_PerkFieldMedic MedPerk;
 	
 	MedPerk = GetMedicPerk(Healer);
-	if( MedPerk == None )
+	if(MedPerk == None)
 		return;
 	
-	HealingSpeedBoostMod = Min( HealingSpeedBoostMod + MedPerk.GetHealingSpeedBoost(), MedPerk.GetMaxHealingSpeedBoost() );
-	SetTimer( MedPerk.GetHealingSpeedBoostDuration(),, nameOf(ResetHealingSpeedBoost) );
+	HealingSpeedBoostMod = Min(HealingSpeedBoostMod + MedPerk.GetHealingSpeedBoost(), MedPerk.GetMaxHealingSpeedBoost());
+	SetTimer(MedPerk.GetHealingSpeedBoostDuration(),, nameOf(ResetHealingSpeedBoost));
 	
 	UpdateGroundSpeed();
 }
@@ -1217,8 +1217,8 @@ simulated function ResetHealingSpeedBoost()
 	HealingSpeedBoostMod = 0;
 	UpdateGroundSpeed();
 
-	if( IsTimerActive( nameOf( ResetHealingSpeedBoost ) ) )
-		ClearTimer( nameOf( ResetHealingSpeedBoost ) );
+	if(IsTimerActive(nameOf(ResetHealingSpeedBoost)))
+		ClearTimer(nameOf(ResetHealingSpeedBoost));
 }
 
 simulated function UpdateHealingDamageBoostMod(ExtPlayerController Healer)
@@ -1226,11 +1226,11 @@ simulated function UpdateHealingDamageBoostMod(ExtPlayerController Healer)
 	local Ext_PerkFieldMedic MedPerk;
 	
 	MedPerk = GetMedicPerk(Healer);
-	if( MedPerk == None )
+	if(MedPerk == None)
 		return;
 		
-	HealingDamageBoostMod = Min( HealingDamageBoostMod + MedPerk.GetHealingDamageBoost(), MedPerk.GetMaxHealingDamageBoost() );
-	SetTimer( MedPerk.GetHealingDamageBoostDuration(),, nameOf(ResetHealingDamageBoost) );
+	HealingDamageBoostMod = Min(HealingDamageBoostMod + MedPerk.GetHealingDamageBoost(), MedPerk.GetMaxHealingDamageBoost());
+	SetTimer(MedPerk.GetHealingDamageBoostDuration(),, nameOf(ResetHealingDamageBoost));
 }
 
 simulated function float GetHealingDamageBoostModifier()
@@ -1241,8 +1241,8 @@ simulated function float GetHealingDamageBoostModifier()
 simulated function ResetHealingDamageBoost()
 {
 	HealingDamageBoostMod = 0;
-	if( IsTimerActive( nameOf( ResetHealingDamageBoost ) ) )
-		ClearTimer( nameOf( ResetHealingDamageBoost ) );
+	if(IsTimerActive(nameOf(ResetHealingDamageBoost)))
+		ClearTimer(nameOf(ResetHealingDamageBoost));
 }
 
 simulated function UpdateHealingShieldMod(ExtPlayerController Healer)
@@ -1250,11 +1250,11 @@ simulated function UpdateHealingShieldMod(ExtPlayerController Healer)
 	local Ext_PerkFieldMedic MedPerk;
 	
 	MedPerk = GetMedicPerk(Healer);
-	if( MedPerk == None )
+	if(MedPerk == None)
 		return;
 		
-	HealingShieldMod = Min( HealingShieldMod + MedPerk.GetHealingShield(), MedPerk.GetMaxHealingShield() );
-	SetTimer( MedPerk.GetHealingShieldDuration(),, nameOf(ResetHealingShield) );
+	HealingShieldMod = Min(HealingShieldMod + MedPerk.GetHealingShield(), MedPerk.GetMaxHealingShield());
+	SetTimer(MedPerk.GetHealingShieldDuration(),, nameOf(ResetHealingShield));
 }
 
 simulated function float GetHealingShieldModifier()
@@ -1265,8 +1265,8 @@ simulated function float GetHealingShieldModifier()
 simulated function ResetHealingShield()
 {
 	HealingShieldMod = 0;
-	if( IsTimerActive( nameOf( ResetHealingShield ) ) )
-		ClearTimer( nameOf( ResetHealingShield ) );
+	if(IsTimerActive(nameOf(ResetHealingShield)))
+		ClearTimer(nameOf(ResetHealingShield));
 }
 
 function SacrificeExplode()
@@ -1276,7 +1276,7 @@ function SacrificeExplode()
 	Super.SacrificeExplode();
 	
 	DemoPerk = Ext_PerkDemolition(ExtPlayerController(Controller).ActivePerkManager.CurrentPerk);
-	if( DemoPerk != none )
+	if(DemoPerk != none)
 		DemoPerk.bUsedSacrifice = true;
 }
 
@@ -1285,7 +1285,7 @@ simulated function Ext_PerkFieldMedic GetMedicPerk(ExtPlayerController Healer)
 	local Ext_PerkFieldMedic MedPerk;
 	
 	MedPerk = Ext_PerkFieldMedic(ExtPlayerController(Controller).ActivePerkManager.CurrentPerk);
-	if( MedPerk != None ) 
+	if(MedPerk != None) 
 		return MedPerk;
 		
 	return None;

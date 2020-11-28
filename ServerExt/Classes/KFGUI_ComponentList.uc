@@ -6,12 +6,12 @@ var() int NumColumns;
 var array<KFGUI_Base> ItemComponents;
 
 // REMEMBER to call InitMenu() on the newly created component after values are init!!!
-final function KFGUI_Base AddListComponent( class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f )
+final function KFGUI_Base AddListComponent(class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	local KFGUI_Base G;
 	
 	G = new(Self)CompClass;
-	if( G==None )
+	if(G==None)
 		return None;
 	G.XPosition = (1.f - XS) * 0.5f;
 	G.YPosition = (1.f - YS) * 0.5f;
@@ -52,16 +52,16 @@ function PreDraw()
 	
 	// Update list size
 	i = ItemComponents.Length / NumColumns;
-	if( i!=NumColumns )
+	if(i!=NumColumns)
 	{
 		ListCount = i;
 		UpdateListVis();
 	}
 
 	// First draw scrollbar to allow it to resize itself.
-	for( j=0; j<4; ++j )
+	for(j=0; j<4; ++j)
 		ScrollBar.InputPos[j] = CompPos[j];
-	if( OldXSize!=InputPos[2] )
+	if(OldXSize!=InputPos[2])
 	{
 		OldXSize = InputPos[2];
 		ScrollBar.XPosition = 1.f - ScrollBar.GetWidth();
@@ -82,7 +82,7 @@ function PreDraw()
 	YS = CompPos[3] / ListItemsPerPage;
 	VisRange[0] = (ScrollBar.CurrentScroll*NumColumns);
 	VisRange[1] = ItemComponents.Length;
-	for( i=VisRange[0]; i<VisRange[1]; ++i )
+	for(i=VisRange[0]; i<VisRange[1]; ++i)
 	{
 		ItemComponents[i].Canvas = Canvas;
 		ItemComponents[i].InputPos[0] = CompPos[0]+XS*XNum;
@@ -91,10 +91,10 @@ function PreDraw()
 		ItemComponents[i].InputPos[3] = YS;
 		ItemComponents[i].PreDraw();
 
-		if( ++XNum==NumColumns )
+		if(++XNum==NumColumns)
 		{
 			XNum = 0;
-			if( ++r==ListItemsPerPage )
+			if(++r==ListItemsPerPage)
 			{
 				VisRange[1] = i+1;
 				break;
@@ -104,10 +104,10 @@ function PreDraw()
 	CompPos[2] += ScrollBar.CompPos[2];
 }
 
-function ChangeListSize( int NewSize );
+function ChangeListSize(int NewSize);
 
-function MouseClick( bool bRight );
-function MouseRelease( bool bRight );
+function MouseClick(bool bRight);
+function MouseRelease(bool bRight);
 function MouseLeave()
 {
 	Super(KFGUI_Base).MouseLeave();
@@ -121,8 +121,8 @@ function bool CaptureMouse()
 {
 	local int i;
 	
-	for( i=VisRange[0]; i<VisRange[1] && i<ItemComponents.Length; ++i )
-		if( ItemComponents[i].CaptureMouse() )
+	for(i=VisRange[0]; i<VisRange[1] && i<ItemComponents.Length; ++i)
+		if(ItemComponents[i].CaptureMouse())
 		{
 			MouseArea = ItemComponents[i];
 			return true;
@@ -133,7 +133,7 @@ function CloseMenu()
 {
 	local int i;
 	
-	for( i=0; i<ItemComponents.Length; ++i )
+	for(i=0; i<ItemComponents.Length; ++i)
 		ItemComponents[i].CloseMenu();
 	Super.CloseMenu();
 }
@@ -141,16 +141,16 @@ function NotifyLevelChange()
 {
 	local int i;
 	
-	for( i=0; i<ItemComponents.Length; ++i )
+	for(i=0; i<ItemComponents.Length; ++i)
 		ItemComponents[i].NotifyLevelChange();
 	Super.NotifyLevelChange();
 }
-function MenuTick( float DeltaTime )
+function MenuTick(float DeltaTime)
 {
 	local int i;
 
 	Super.MenuTick(DeltaTime);
-	for( i=0; i<ItemComponents.Length; ++i )
+	for(i=0; i<ItemComponents.Length; ++i)
 		ItemComponents[i].MenuTick(DeltaTime);
 }
 

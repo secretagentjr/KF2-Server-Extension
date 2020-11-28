@@ -3,7 +3,7 @@ Class MS_Game extends GameInfo;
 
 event Timer();
 
-event InitGame( string Options, out string ErrorMessage )
+event InitGame(string Options, out string ErrorMessage)
 {
 	MaxPlayers = 99;
 	MaxSpectators = 99;
@@ -23,7 +23,7 @@ event PlayerController Login(string Portal, string Options, const UniqueNetID Un
 	local rotator SpawnRotation;
 
 	// Find a start spot.
-	StartSpot = FindPlayerStart( None, 255, Portal );
+	StartSpot = FindPlayerStart(None, 255, Portal);
 	SpawnRotation.Yaw = StartSpot.Rotation.Yaw;
 	NewPlayer = SpawnPlayerController(StartSpot.Location, SpawnRotation);
 
@@ -31,7 +31,7 @@ event PlayerController Login(string Portal, string Options, const UniqueNetID Un
 	return newPlayer;
 }
 
-event PostLogin( PlayerController NewPlayer )
+event PostLogin(PlayerController NewPlayer)
 {
 	GenericPlayerInitialization(NewPlayer);
 }

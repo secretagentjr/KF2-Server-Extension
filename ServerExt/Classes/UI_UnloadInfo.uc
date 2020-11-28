@@ -32,7 +32,7 @@ function InitMenu()
 	InfoLabel = KFGUI_TextField(FindComponentID('Info'));
 	Super.InitMenu();
 }
-final function SetupTo( class<Ext_PerkBase> P )
+final function SetupTo(class<Ext_PerkBase> P)
 {
 	PerkToReset = P;
 	WindowTitle = ResetPerkNotice$" "$P.Default.PerkName;
@@ -42,9 +42,9 @@ final function SetupTo( class<Ext_PerkBase> P )
 	ExtPlayerController(GetPlayer()).OnClientGetResponse = ReceivedInfo;
 	ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(CurCallCode,PerkToReset,false);
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Yes':
 		ExtPlayerController(GetPlayer()).ServerGetUnloadInfo(0,PerkToReset,true);
@@ -62,12 +62,12 @@ function CloseMenu()
 	ExtPlayerController(GetPlayer()).OnClientGetResponse = ExtPlayerController(GetPlayer()).DefClientResponse;
 }
 
-function ReceivedInfo( byte CallID, byte Code, int DataA, int DataB )
+function ReceivedInfo(byte CallID, byte Code, int DataA, int DataB)
 {
-	if( CurCallCode!=CallID )
+	if(CurCallCode!=CallID)
 		return;
 	
-	switch( Code )
+	switch(Code)
 	{
 	case 0:
 		InfoLabel.SetText(ResetDisabledWarn);

@@ -17,15 +17,15 @@ function InitSize()
 	OldSize[1] = CompPos[3];
 
 	i = Min(FontScale+Owner.CurrentStyle.DefaultFontSize,Owner.CurrentStyle.MaxFontScale);
-	while( true )
+	while(true)
 	{
 		Canvas.Font = Owner.CurrentStyle.PickFont(i,TS);
-		if( TextFontInfo.bClipText )
+		if(TextFontInfo.bClipText)
 			Canvas.TextSize(Text,XL,YL,TS,TS);
 		else
 		{
 			Canvas.SetPos(0,0);
-			if( TS==1 )
+			if(TS==1)
 				Canvas.StrLen(Text,XL,YL);
 			else
 			{
@@ -35,7 +35,7 @@ function InitSize()
 				YL*=TS;
 			}
 		}
-		if( i==0 || (XL<(CompPos[2]*0.99) && YL<(CompPos[3]*0.99)) )
+		if(i==0 || (XL<(CompPos[2]*0.99) && YL<(CompPos[3]*0.99)))
 			break;
 		--i;
 	}
@@ -43,7 +43,7 @@ function InitSize()
 	InitFont = Canvas.Font;
 	InitFontScale = TS;
 	
-	switch( AlignX )
+	switch(AlignX)
 	{
 	case 0:
 		InitOffset[0] = 0;
@@ -54,7 +54,7 @@ function InitSize()
 	default:
 		InitOffset[0] = CompPos[2]-(XL+1);
 	}
-	switch( AlignY )
+	switch(AlignY)
 	{
 	case 0:
 		InitOffset[1] = 0;
@@ -66,9 +66,9 @@ function InitSize()
 		InitOffset[1] = CompPos[3]-YL;
 	}
 }
-function SetText( string S )
+function SetText(string S)
 {
-	if( Text==S )
+	if(Text==S)
 		return;
 	Text = S;
 	OldSize[0] = -1; // Force to refresh.
@@ -80,11 +80,11 @@ final function string GetText()
 
 function DrawMenu()
 {
-	if( Text=="" )
+	if(Text=="")
 		return;
 
 	// Need to figure out best fitting font.
-	if( OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3] )
+	if(OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3])
 		InitSize();
 
 	Canvas.Font = InitFont;

@@ -95,11 +95,11 @@ function CloseMenu()
 	SetTimer(0,false);
 }
 
-function ReceivedStat( byte ListNum, bool bFinal, string N, UniqueNetId UserID, int V )
+function ReceivedStat(byte ListNum, bool bFinal, string N, UniqueNetId UserID, int V)
 {
 	local int i;
 
-	if( bFinal )
+	if(bFinal)
 	{
 		CurrentPageStatus[ListNum] = 1;
 		bDownloadingPage = false;
@@ -114,9 +114,9 @@ function ReceivedStat( byte ListNum, bool bFinal, string N, UniqueNetId UserID, 
 
 function Timer()
 {
-	if( CurrentPageIndex==0 )
+	if(CurrentPageIndex==0)
 		UpdatePlayerList(PlayersList,GetPlayer().WorldInfo.GRI);
-	else if( CurrentPageStatus[CurrentPageIndex-1]==0 && !bDownloadingPage )
+	else if(CurrentPageStatus[CurrentPageIndex-1]==0 && !bDownloadingPage)
 	{
 		bDownloadingPage = true;
 		ExtPlayerController(GetPlayer()).OnClientReceiveStat = ReceivedStat;
@@ -124,28 +124,28 @@ function Timer()
 	}
 }
 
-static final function UpdatePlayerList( KFGUI_ColumnList PL, GameReplicationInfo GRI )
+static final function UpdatePlayerList(KFGUI_ColumnList PL, GameReplicationInfo GRI)
 {
 	local int i;
 	local ExtPlayerReplicationInfo PRI;
 	local string S;
 
 	PL.EmptyList();
-	if( GRI==None )
+	if(GRI==None)
 		return;
-	for( i=0; i<GRI.PRIArray.Length; ++i )
+	for(i=0; i<GRI.PRIArray.Length; ++i)
 	{
 		PRI = ExtPlayerReplicationInfo(GRI.PRIArray[i]);
-		if( PRI==None || PRI.bHiddenUser )
+		if(PRI==None || PRI.bHiddenUser)
 			continue;
 		S = PRI.PlayerName;
-		if( PRI.ShowAdminName() )
+		if(PRI.ShowAdminName())
 			S $= " ("$PRI.GetAdminName()$")";
 		PL.AddLine(S$"\n"$FormatInteger(PRI.RepKills)$"\n"$FormatInteger(PRI.RepEXP)$"\n"$FormatTimeSMH(PRI.RepPlayTime),PRI.PlayerID,S$"\n"$MakeSortStr(PRI.RepKills)$"\n"$MakeSortStr(PRI.RepEXP)$"\n"$MakeSortStr(PRI.RepPlayTime));
 	}
 }
 
-static final function string FormatTimeSMH( float Sec )
+static final function string FormatTimeSMH(float Sec)
 {
 	local int Seconds,Minutes,Hours,Days;
 	local string S;
@@ -163,37 +163,37 @@ static final function string FormatTimeSMH( float Sec )
 	Hours-=(Days*24);
 
 	S = Hours$":"$(Minutes<10 ? "0"$Minutes : string(Minutes))$":"$(Seconds<10 ? "0"$Seconds : string(Seconds));
-	if( Days>0 )
+	if(Days>0)
 		S = Days$"d "$S;
 	return S;
 }
-static final function string FormatInteger( int Val )
+static final function string FormatInteger(int Val)
 {
 	local string S,O;
 
 	S = string(Val);
 	Val = Len(S);
-	if( Val<=3 )
+	if(Val<=3)
 		return S;
-	while( Val>3 )
+	while(Val>3)
 	{
-		if( O=="" )
+		if(O=="")
 			O = Right(S,3);
 		else O = Right(S,3)$","$O;
 		S = Left(S,Val-3);
 		Val-=3;
 	}
-	if( Val>0 )
+	if(Val>0)
 		O = S$","$O;
 	return O;
 }
 
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	if( CurrentPageIndex==Sender.IDValue )
+	if(CurrentPageIndex==Sender.IDValue)
 		return;
 
-	if( PreviousButton!=None )
+	if(PreviousButton!=None)
 		PreviousButton.bIsHighlighted = false;
 	Sender.bIsHighlighted = true;
 	PreviousButton = Sender;
@@ -202,19 +202,19 @@ function ButtonClicked( KFGUI_Button Sender )
 	Timer();
 }
 
-function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick )
+function SelectedRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
 	local UniqueNetId Res;
 	local PlayerReplicationInfo PRI;
 
-	if( bRight || bDblClick )
+	if(bRight || bDblClick)
 	{
-		if( CurrentPageIndex==0 )
+		if(CurrentPageIndex==0)
 		{
 			foreach GetPlayer().WorldInfo.GRI.PRIArray(PRI)
-				if( PRI.PlayerID==Item.Value )
+				if(PRI.PlayerID==Item.Value)
 					break;
-			if( PRI==None || PRI.PlayerID!=Item.Value || PRI.bBot )
+			if(PRI==None || PRI.PlayerID!=Item.Value || PRI.bBot)
 				return;
 			Res = PRI.UniqueId;
 		}

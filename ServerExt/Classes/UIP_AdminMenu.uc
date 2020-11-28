@@ -98,27 +98,27 @@ function Timer()
 	class'UIP_PlayerSpecs'.Static.UpdatePlayerList(PlayersList,GetPlayer().WorldInfo.GRI);
 }
 
-function SelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick )
+function SelectedRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick)
 {
-	if( bRight || bDblClick )
+	if(bRight || bDblClick)
 	{
 		PlayerContext.ItemRows[0].Text = EditPlayer$" "$Item.Columns[0];
 		SelectedID = Item.Value;
 		PlayerContext.OpenMenu(Self);
 	}
 }
-function SelectedRCItem( int Index )
+function SelectedRCItem(int Index)
 {
-	if( Index>0 && !PlayerContext.ItemRows[Index].bSplitter )
+	if(Index>0 && !PlayerContext.ItemRows[Index].bSplitter)
 	{
-		if( PlayerContext.ItemRows[Index].Value>=0 )
+		if(PlayerContext.ItemRows[Index].Value>=0)
 			ExtPlayerController(GetPlayer()).AdminRPGHandle(SelectedID,PlayerContext.ItemRows[Index].Value);
 		else UI_AdminPerkLevel(Owner.OpenMenu(class'UI_AdminPerkLevel')).InitPage(SelectedID,-PlayerContext.ItemRows[Index].Value);
 	}
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'MOTD':
 		Owner.OpenMenu(class'UI_AdminMOTD');

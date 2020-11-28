@@ -14,17 +14,17 @@ function InitMenu()
 	Super.InitMenu();
 	bClickable = !bDisabled;
 }
-function MouseClick( bool bRight )
+function MouseClick(bool bRight)
 {
-	if( !bDisabled )
+	if(!bDisabled)
 	{
 		PressedDown[byte(bRight)] = 1;
 		bPressedDown = true;
 	}
 }
-function MouseRelease( bool bRight )
+function MouseRelease(bool bRight)
 {
-	if( !bDisabled && PressedDown[byte(bRight)]==1 )
+	if(!bDisabled && PressedDown[byte(bRight)]==1)
 	{
 		PressedDown[byte(bRight)] = 0;
 		bPressedDown = (PressedDown[0]!=0 || PressedDown[1]!=0);
@@ -34,7 +34,7 @@ function MouseRelease( bool bRight )
 function MouseLeave()
 {
 	Super.MouseLeave();
-	if( !bDisabled )
+	if(!bDisabled)
 		PlayMenuSound(MN_LostFocus);
 	PressedDown[0] = 0;
 	PressedDown[1] = 0;
@@ -43,11 +43,11 @@ function MouseLeave()
 function MouseEnter()
 {
 	Super.MouseEnter();
-	if( !bDisabled )
+	if(!bDisabled)
 		PlayMenuSound(MN_Focus);
 }
 
-function SetDisabled( bool bDisable )
+function SetDisabled(bool bDisable)
 {
 	Super.SetDisabled(bDisable);
 	bClickable = !bDisable;
@@ -58,9 +58,9 @@ function SetDisabled( bool bDisable )
 
 function NotifyMousePaused()
 {
-	if( Owner.InputFocus==None && ToolTip!="" )
+	if(Owner.InputFocus==None && ToolTip!="")
 	{
-		if( ToolTipItem==None )
+		if(ToolTipItem==None)
 		{
 			ToolTipItem = New(None)Class'KFGUI_Tooltip';
 			ToolTipItem.Owner = Owner;
@@ -74,14 +74,14 @@ function NotifyMousePaused()
 		ToolTipItem.GetInputFocus();
 	}
 }
-final function ChangeToolTip( string S )
+final function ChangeToolTip(string S)
 {
-	if( ToolTipItem!=None )
+	if(ToolTipItem!=None)
 		ToolTipItem.SetText(S);
 	else ToolTip = S;
 }
 
-function HandleMouseClick( bool bRight );
+function HandleMouseClick(bool bRight);
 
 defaultproperties
 {

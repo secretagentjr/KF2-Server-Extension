@@ -9,7 +9,7 @@ static final function Apply()
 	local MS_TMPUI T;
 
 	G = class'Engine'.Static.GetEngine().GameViewport;
-	if( MS_TMPUI(G.UIController)!=None )
+	if(MS_TMPUI(G.UIController)!=None)
 		return;
 	T = new(G)class'MS_TMPUI';
 	T.RealUI = G.UIController;
@@ -23,7 +23,7 @@ static final function Remove()
 
 	G = class'Engine'.Static.GetEngine().GameViewport;
 	T = MS_TMPUI(G.UIController);
-	if( T==None )
+	if(T==None)
 		return;
 	G.UIController = T.RealUI;
 }

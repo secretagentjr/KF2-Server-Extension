@@ -24,10 +24,10 @@ function DoAutoPurchase()
 	GetTraderItems();
 	EP = GetExtPerk();
 
-	if( EP==None || EP.AutoBuyLoadOutPath.length == 0)
+	if(EP==None || EP.AutoBuyLoadOutPath.length == 0)
 		return;
 
-	for( i = 0; i<EP.AutoBuyLoadOutPath.length; i++ )
+	for(i = 0; i<EP.AutoBuyLoadOutPath.length; i++)
 	{
 		ItemIndex = TraderItems.SaleItems.Find('WeaponDef', EP.AutoBuyLoadOutPath[i]);
 		if(ItemIndex != INDEX_NONE)
@@ -38,7 +38,7 @@ function DoAutoPurchase()
 
 	TopTierWeapon = GetTopTierWeapon(OnPerkWeapons);
 	//can I afford my top teir without selling my current weapon?
-	if(!DoIOwnThisWeapon(TopTierWeapon) && GetCanAfford( GetAdjustedBuyPriceFor(TopTierWeapon) + DoshBuffer ) && CanCarry( TopTierWeapon ) )
+	if(!DoIOwnThisWeapon(TopTierWeapon) && GetCanAfford(GetAdjustedBuyPriceFor(TopTierWeapon) + DoshBuffer) && CanCarry(TopTierWeapon))
 	{
 		bUpgradeSuccess = AttemptUpgrade(TotalDosh, OnPerkWeapons, true);
 	}
@@ -80,7 +80,7 @@ function DoAutoPurchase()
 
 	if(MyGFxHUD != none)
 	{
-		MyGFxHUD.ShowNonCriticalMessage( class'KFCommon_LocalizedStrings'.default.AutoTradeCompleteString$AutoFillMessageString );
+		MyGFxHUD.ShowNonCriticalMessage(class'KFCommon_LocalizedStrings'.default.AutoTradeCompleteString$AutoFillMessageString);
 	}
 }
 
@@ -90,11 +90,11 @@ function SellOnPerkWeapons()
 	local class<KFPerk> Perk;
 	
 	Perk = GetBasePerk();
-	if( Perk!=None )
+	if(Perk!=None)
 	{
 		for (i = 0; i < OwnedItemList.length; i++)
 		{
-			if( OwnedItemList[i].DefaultItem.AssociatedPerkClasses.Find(Perk)!=INDEX_NONE && OwnedItemList[i].DefaultItem.BlocksRequired != -1)
+			if(OwnedItemList[i].DefaultItem.AssociatedPerkClasses.Find(Perk)!=INDEX_NONE && OwnedItemList[i].DefaultItem.BlocksRequired != -1)
 			{
 				SellWeapon(OwnedItemList[i], i);
 				i=-1;
@@ -112,7 +112,7 @@ function SellOffPerkWeapons()
 
 	for (i = 0; i < OwnedItemList.length; i++)
 	{
-		if( OwnedItemList[i].DefaultItem.AssociatedPerkClasses.Find(EP.BasePerk)==INDEX_NONE && OwnedItemList[i].DefaultItem.BlocksRequired != -1 && OwnedItemList[i].SellPrice != 0 )
+		if(OwnedItemList[i].DefaultItem.AssociatedPerkClasses.Find(EP.BasePerk)==INDEX_NONE && OwnedItemList[i].DefaultItem.BlocksRequired != -1 && OwnedItemList[i].SellPrice != 0)
 		{
 			if(EP.AutoBuyLoadOutPath.Find(OwnedItemList[i].DefaultItem.WeaponDef) == INDEX_NONE)
 			{
@@ -133,10 +133,10 @@ function InitializeOwnedItemList()
 	EP = GetExtPerk();
 	OwnedItemList.length = 0;
 
-	TraderItems = KFGameReplicationInfo( WorldInfo.GRI ).TraderItems;
+	TraderItems = KFGameReplicationInfo(WorldInfo.GRI).TraderItems;
 
-	KFP = KFPawn_Human( Pawn );
-	if( KFP != none )
+	KFP = KFPawn_Human(Pawn);
+	if(KFP != none)
 	{
 		// init armor purchase values
 		ArmorItem.SpareAmmoCount = KFP.Armor;
@@ -153,13 +153,13 @@ function InitializeOwnedItemList()
 		// @temp: fill in stuff that is normally serialized in the archetype
 		GrenadeItem.DefaultItem.AssociatedPerkClasses[0] = CurrentPerk.Class;
 
-		for ( Inv = MyKFIM.InventoryChain; Inv != none; Inv = Inv.Inventory )
+		for (Inv = MyKFIM.InventoryChain; Inv != none; Inv = Inv.Inventory)
 		{
-			KFW = KFWeapon( Inv );
-			if( KFW != none )
+			KFW = KFWeapon(Inv);
+			if(KFW != none)
 			{
 				// Set the weapon information and add it to the OwnedItemList
-				SetWeaponInformation( KFW );
+				SetWeaponInformation(KFW);
 		 	}
 		}
 
@@ -170,7 +170,7 @@ function InitializeOwnedItemList()
 	}
 }
 
-function int AddItemByPriority( out SItemInformation WeaponInfo )
+function int AddItemByPriority(out SItemInformation WeaponInfo)
 {
 	local byte i;
 	local byte WeaponGroup, WeaponPriority;
@@ -183,23 +183,23 @@ function int AddItemByPriority( out SItemInformation WeaponInfo )
 	WeaponGroup = WeaponInfo.DefaultItem.InventoryGroup;
 	WeaponPriority = WeaponInfo.DefaultItem.GroupPriority;
 
-	for( i = 0; i < OwnedItemList.length; i++ )
+	for(i = 0; i < OwnedItemList.length; i++)
 	{
 		// If the weapon belongs in the group prior to the current weapon, we've found the spot
-		if( WeaponGroup < OwnedItemList[i].DefaultItem.InventoryGroup )
+		if(WeaponGroup < OwnedItemList[i].DefaultItem.InventoryGroup)
 		{
 			BestIndex = i;
 			break;
 		}
-		else if( WeaponGroup == OwnedItemList[i].DefaultItem.InventoryGroup )
+		else if(WeaponGroup == OwnedItemList[i].DefaultItem.InventoryGroup)
 		{
-			if( WeaponPriority > OwnedItemList[i].DefaultItem.GroupPriority )
+			if(WeaponPriority > OwnedItemList[i].DefaultItem.GroupPriority)
 			{
 				// if the weapon is in the same group but has a higher priority, we've found the spot
 				BestIndex = i;
 				break;
 			}
-			else if( WeaponPriority == OwnedItemList[i].DefaultItem.GroupPriority && WeaponInfo.DefaultItem.AssociatedPerkClasses.Find(Perk)>=0 )
+			else if(WeaponPriority == OwnedItemList[i].DefaultItem.GroupPriority && WeaponInfo.DefaultItem.AssociatedPerkClasses.Find(Perk)>=0)
 			{
 				// if the weapons have the same priority give the slot to the on perk weapon
 				BestIndex = i;
@@ -212,17 +212,17 @@ function int AddItemByPriority( out SItemInformation WeaponInfo )
 			BestIndex = i + 1;
 		}
 	}
-	OwnedItemList.InsertItem( BestIndex, WeaponInfo );
+	OwnedItemList.InsertItem(BestIndex, WeaponInfo);
 
 	// Add secondary ammo immediately after the main weapon
-	if( WeaponInfo.DefaultItem.WeaponDef.static.UsesSecondaryAmmo() )
+	if(WeaponInfo.DefaultItem.WeaponDef.static.UsesSecondaryAmmo())
    	{
    		WeaponInfo.bIsSecondaryAmmo = true;
 		WeaponInfo.SellPrice = 0;
-		OwnedItemList.InsertItem( BestIndex + 1, WeaponInfo );
+		OwnedItemList.InsertItem(BestIndex + 1, WeaponInfo);
    	}
 
-	if( MyGfxManager != none && MyGfxManager.TraderMenu != none )
+	if(MyGfxManager != none && MyGfxManager.TraderMenu != none)
 	{
 		MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;	
 	}

@@ -8,7 +8,7 @@ function InitMenu()
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
 	
-	for( i=0; i<Pages.Length; ++i )
+	for(i=0; i<Pages.Length; ++i)
 	{
 		PageSwitcher.AddPage(Pages[i],B).InitMenu();
 	}
@@ -28,14 +28,14 @@ function PreDraw()
 	
 	Viewport = LocalPlayer(GetPlayer().Player).ViewportClient;
 	MovieManager = ExtMoviePlayer_Manager(KFPlayerController(GetPlayer()).MyGFxManager);
-	if( CaptureMouse() )
+	if(CaptureMouse())
 	{
 		Viewport.bDisplayHardwareMouseCursor = true;
 		Viewport.ForceUpdateMouseCursor(true);
 
 		MovieManager.SetMovieCanReceiveInput(false);
 	}
-	else if( Viewport.bDisplayHardwareMouseCursor )
+	else if(Viewport.bDisplayHardwareMouseCursor)
 	{
 		Viewport.bDisplayHardwareMouseCursor = false;
 		Viewport.ForceUpdateMouseCursor(true);

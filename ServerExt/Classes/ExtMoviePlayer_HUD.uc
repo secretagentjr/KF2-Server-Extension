@@ -5,11 +5,11 @@ function TickHud(float DeltaTime)
 	local PlayerController PC;
 
 	PC = GetPC();
-	if( PC!=none && PC.PlayerInput!=None )
+	if(PC!=none && PC.PlayerInput!=None)
 		Super.TickHud(DeltaTime);
 }
 
-final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInfo PRI2, optional string VictimStr, optional bool bDeathMessage = false, optional class<Pawn> PawnOther )
+final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInfo PRI2, optional string VictimStr, optional bool bDeathMessage = false, optional class<Pawn> PawnOther)
 {
 	local GFxObject DataObject;
 	local bool bHumanDeath;
@@ -19,11 +19,11 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 	if(KFPC == none)
 		return;
 
-	if( KFGXHUDManager != none )
+	if(KFGXHUDManager != none)
 	{
 		if(PawnOther != none)
 		{
-			if( bDeathMessage )
+			if(bDeathMessage)
 			{
 				KillerTextColor = ZEDTeamTextColor;
 				KillerName = class'KFExtendedHUD'.Static.GetNameOf(PawnOther);
@@ -34,7 +34,7 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 				bHumanDeath = false;
 			}
 		}
-		if( (PawnOther==None || !bDeathMessage) && PRI1 != none)
+		if((PawnOther==None || !bDeathMessage) && PRI1 != none)
 		{
 			if(PRI1.GetTeamNum() == 255)
 			{
@@ -44,7 +44,7 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 			else
 			{
 				KillerTextColor = HumanTeamTextColor;
-				if( ExtPlayerReplicationInfo(PRI1)!=None && ExtPlayerReplicationInfo(PRI1).ECurrentPerk!=None )
+				if(ExtPlayerReplicationInfo(PRI1)!=None && ExtPlayerReplicationInfo(PRI1).ECurrentPerk!=None)
 					KillerIconpath = ExtPlayerReplicationInfo(PRI1).ECurrentPerk.static.GetPerkIconPath(0);
 			}
 			KillerName = PRI1.PlayerName;			   
@@ -63,10 +63,10 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 				bHumanDeath = false;
 			}
 			KilledName = PRI2.PlayerName;
-			if( ExtPlayerReplicationInfo(PRI2)!=None && ExtPlayerReplicationInfo(PRI2).ECurrentPerk!=None )
+			if(ExtPlayerReplicationInfo(PRI2)!=None && ExtPlayerReplicationInfo(PRI2).ECurrentPerk!=None)
 				KilledIconpath = ExtPlayerReplicationInfo(PRI2).ECurrentPerk.static.GetPerkIconPath(0);
 		}
-		else if( VictimStr!="" )
+		else if(VictimStr!="")
 		{
 			KilledTextColor = HumanTeamTextColor;
 			KilledIconpath = "img://"$class'KFPerk_Monster'.static.GetPerkIconPath();

@@ -13,42 +13,42 @@ var const int StartIndex[5],EndIndex[5];
 var const array<string> CN;
 var const array<FCountryTagEntry> CT;
 
-static final function string GetClientCountryStr( string IP )
+static final function string GetClientCountryStr(string IP)
 {
 	local int i;
 	local array<string> SA;
 
 	// Convert dotted IP-address into integer.
 	ParseStringIntoArray(IP,SA,".",false);
-	if( SA.Length<=1 )
+	if(SA.Length<=1)
 		return "???";
 	i = int(SA[0])<<16 | int(SA[1])<<8 | int(SA[2]);
 
 	return GetClientCountryTag(i);
 }
-static final function string GetClientCountryTag( int IP )
+static final function string GetClientCountryTag(int IP)
 {
 	local byte V;
 	local int End,i;
 
 	V = IP>>16; // Grab last IP value for lookup table.
 
-	if( V<=50 )
+	if(V<=50)
 		V = 0;
-	else if( V<=100 )
+	else if(V<=100)
 		V = 1;
-	else if( V<=150 )
+	else if(V<=150)
 		V = 2;
-	else if( V<=200 )
+	else if(V<=200)
 		V = 3;
 	else V = 4;
 
 	// Speed up using lookup table.
 	End = Default.EndIndex[V];
 
-	for( i=Default.StartIndex[V]; i<End; ++i )
+	for(i=Default.StartIndex[V]; i<End; ++i)
 	{
-		if( IP>=Default.CT[i].S && IP<=Default.CT[i].E ) // See if entered range.
+		if(IP>=Default.CT[i].S && IP<=Default.CT[i].E) // See if entered range.
 			return Default.CN[Default.CT[i].C];
 	}
 	return "???";

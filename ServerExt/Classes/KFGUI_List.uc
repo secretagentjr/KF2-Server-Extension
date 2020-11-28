@@ -13,11 +13,11 @@ var transient int FocusMouseItem,LastFocusItem;
 var byte PressedDown[2];
 var bool bPressedDown;
 
-delegate OnDrawItem( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus );
+delegate OnDrawItem(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus);
 
 // Requires bClickable=true to receive this event.
-delegate OnClickedItem( int Index, bool bRight, int MouseX, int MouseY );
-delegate OnDblClickedItem( int Index, bool bRight, int MouseX, int MouseY );
+delegate OnClickedItem(int Index, bool bRight, int MouseX, int MouseY);
+delegate OnDblClickedItem(int Index, bool bRight, int MouseX, int MouseY);
 
 function InitMenu()
 {
@@ -32,7 +32,7 @@ function DrawMenu()
 	local float Y;
 	local bool bCheckMouse;
 
-	if( bDrawBackground )
+	if(bDrawBackground)
 	{
 		Canvas.DrawColor = BackgroundColor;
 		Canvas.SetPos(0.f,0.f);
@@ -42,19 +42,19 @@ function DrawMenu()
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
 	FocusMouseItem = -1;
-	if( bCheckMouse )
+	if(bCheckMouse)
 		MouseYHit = Owner.MousePosition.Y - CompPos[1];
 
 	n = ScrollBar.CurrentScroll;
 	ItemHeight = CompPos[3] / ListItemsPerPage;
 	Y = 0;
-	for( i=0; i<ListItemsPerPage; ++i )
+	for(i=0; i<ListItemsPerPage; ++i)
 	{
-		if( n>=ListCount )
+		if(n>=ListCount)
 			break;
-		if( bCheckMouse && FocusMouseItem==-1 )
+		if(bCheckMouse && FocusMouseItem==-1)
 		{
-			if( MouseYHit<ItemHeight )
+			if(MouseYHit<ItemHeight)
 				FocusMouseItem = n;
 			else MouseYHit-=ItemHeight;
 		}
@@ -62,9 +62,9 @@ function DrawMenu()
 		Y+=ItemHeight;
 		++n;
 	}
-	if( LastFocusItem!=FocusMouseItem )
+	if(LastFocusItem!=FocusMouseItem)
 	{
-		if( LastFocusItem!=-1 && !bDisabled && bClickable )
+		if(LastFocusItem!=-1 && !bDisabled && bClickable)
 			PlayMenuSound(MN_DropdownChange);
 		LastFocusItem = FocusMouseItem;
 	}
@@ -78,9 +78,9 @@ function PreDraw()
 	ComputeCoords();
 	
 	// First draw scrollbar to allow it to resize itself.
-	for( j=0; j<4; ++j )
+	for(j=0; j<4; ++j)
 		ScrollBar.InputPos[j] = CompPos[j];
-	if( OldXSize!=InputPos[2] )
+	if(OldXSize!=InputPos[2])
 	{
 		OldXSize = InputPos[2];
 		ScrollBar.XPosition = 1.f - ScrollBar.GetWidth();
@@ -96,12 +96,12 @@ function PreDraw()
 	CompPos[2] += ScrollBar.CompPos[2];
 	
 	// Then draw rest of components.
-	for( i=0; i<Components.Length; ++i )
+	for(i=0; i<Components.Length; ++i)
 	{
-		if( Components[i]!=ScrollBar )
+		if(Components[i]!=ScrollBar)
 		{
 			Components[i].Canvas = Canvas;
-			for( j=0; j<4; ++j )
+			for(j=0; j<4; ++j)
 				Components[i].InputPos[j] = CompPos[j];
 			Components[i].PreDraw();
 		}
@@ -109,7 +109,7 @@ function PreDraw()
 }
 function UpdateListVis()
 {
-	if( ListCount<=ListItemsPerPage )
+	if(ListCount<=ListItemsPerPage)
 	{
 		ScrollBar.UpdateScrollSize(0,1,1,1);
 		ScrollBar.SetDisabled(true);
@@ -120,9 +120,9 @@ function UpdateListVis()
 		ScrollBar.SetDisabled(false);
 	}
 }
-function ChangeListSize( int NewSize )
+function ChangeListSize(int NewSize)
 {
-	if( ListCount==NewSize )
+	if(ListCount==NewSize)
 		return;
 	ListCount = NewSize;
 	UpdateListVis();
@@ -132,9 +132,9 @@ final function int GetListSize()
 	return ListCount;
 }
 
-function DoubleMouseClick( bool bRight )
+function DoubleMouseClick(bool bRight)
 {
-	if( !bDisabled && bClickable )
+	if(!bDisabled && bClickable)
 	{
 		PlayMenuSound(MN_ClickButton);
 		PressedDown[byte(bRight)] = 0;
@@ -142,17 +142,17 @@ function DoubleMouseClick( bool bRight )
 		OnDblClickedItem(FocusMouseItem,bRight,Owner.MousePosition.X-CompPos[0],MouseYHit);
 	}
 }
-function MouseClick( bool bRight )
+function MouseClick(bool bRight)
 {
-	if( !bDisabled && bClickable )
+	if(!bDisabled && bClickable)
 	{
 		PressedDown[byte(bRight)] = 1;
 		bPressedDown = true;
 	}
 }
-function MouseRelease( bool bRight )
+function MouseRelease(bool bRight)
 {
-	if( !bDisabled && bClickable && PressedDown[byte(bRight)]==1 )
+	if(!bDisabled && bClickable && PressedDown[byte(bRight)]==1)
 	{
 		PlayMenuSound(MN_ClickButton);
 		PressedDown[byte(bRight)] = 0;
@@ -163,7 +163,7 @@ function MouseRelease( bool bRight )
 function MouseLeave()
 {
 	Super.MouseLeave();
-	if( !bDisabled && bClickable )
+	if(!bDisabled && bClickable)
 		PlayMenuSound(MN_LostFocus);
 	PressedDown[0] = 0;
 	PressedDown[1] = 0;
@@ -173,23 +173,23 @@ function MouseEnter()
 {
 	Super.MouseEnter();
 	LastFocusItem = -1;
-	if( !bDisabled && bClickable )
+	if(!bDisabled && bClickable)
 		PlayMenuSound(MN_Focus);
 }
 
-function ScrollMouseWheel( bool bUp )
+function ScrollMouseWheel(bool bUp)
 {
-	if( !ScrollBar.bDisabled )
+	if(!ScrollBar.bDisabled)
 		ScrollBar.ScrollMouseWheel(bUp);
 }
 
 function NotifyMousePaused()
 {
-	if( Owner.InputFocus==None && FocusMouseItem>=0 )
+	if(Owner.InputFocus==None && FocusMouseItem>=0)
 		OnMouseRest(FocusMouseItem);
 }
 
-Delegate OnMouseRest( int Item );
+Delegate OnMouseRest(int Item);
 
 defaultproperties
 {

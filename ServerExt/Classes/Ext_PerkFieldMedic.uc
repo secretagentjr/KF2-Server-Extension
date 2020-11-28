@@ -12,13 +12,13 @@ var bool bUseToxicDamage,bUseSlug,bUseAirborneAgent;
 
 var const class<KFDamageType> ToxicDmgTypeClass;
 
-simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
+simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
 	local float TempDamage;
 
 	TempDamage = InDamage;
 
-	if( bUseSlug && WorldInfo.TimeDilation < 1.f && DamageType != none && ClassIsChildOf( DamageType, class'KFDT_Toxic' ) )
+	if(bUseSlug && WorldInfo.TimeDilation < 1.f && DamageType != none && ClassIsChildOf(DamageType, class'KFDT_Toxic'))
 		TempDamage += InDamage * 100;
 
 	InDamage = Round(TempDamage);
@@ -26,60 +26,60 @@ simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCau
 	Super.ModifyDamageGiven(InDamage, DamageCauser, MyKFPM, DamageInstigator, DamageType, HitZoneIdx);
 }
 
-simulated function ModifyMagSizeAndNumber( KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname )
+simulated function ModifyMagSizeAndNumber(KFWeapon KFW, out int MagazineCapacity, optional array< Class<KFPerk> > WeaponPerkClass, optional bool bSecondary=false, optional name WeaponClassname)
 {
-	if( MagazineCapacity>2 && (KFW==None ? WeaponPerkClass.Find(BasePerk)>=0 : IsWeaponOnPerk(KFW)) ) // Skip boomstick for this.
+	if(MagazineCapacity>2 && (KFW==None ? WeaponPerkClass.Find(BasePerk)>=0 : IsWeaponOnPerk(KFW))) // Skip boomstick for this.
 		MagazineCapacity = Min(MagazineCapacity*Modifiers[10], bSecondary ? 150 : 255);
 }
 
-function bool RepairArmor( Pawn HealTarget )
+function bool RepairArmor(Pawn HealTarget)
 {
 	local KFPawn_Human KFPH;
 
-	if( RepairArmorRate>0 )
+	if(RepairArmorRate>0)
 	{
 		KFPH = KFPawn_Human(Healtarget);
-		if( KFPH != none && KFPH.Armor < KFPH.MaxArmor )
+		if(KFPH != none && KFPH.Armor < KFPH.MaxArmor)
 		{
-			KFPH.AddArmor( Round( float(KFPH.MaxArmor) * RepairArmorRate ) );
+			KFPH.AddArmor(Round(float(KFPH.MaxArmor) * RepairArmorRate));
 			return true;
 		}
 	}
 	return false;
 }
-function bool ModifyHealAmount( out float HealAmount )
+function bool ModifyHealAmount(out float HealAmount)
 {
 	HealAmount*=Modifiers[9];
 	return (RepairArmorRate>0);
 }
 
 // Di
-// simulated function ModifyHealerRechargeTime( out float RechargeRate )
+// simulated function ModifyHealerRechargeTime(out float RechargeRate)
 // {
 //	super.ModifyHealerRechargeTime(RechargeRate)	
 // 	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
 // }
 
-function CheckForAirborneAgent( KFPawn HealTarget, class<DamageType> DamType, int HealAmount )
+function CheckForAirborneAgent(KFPawn HealTarget, class<DamageType> DamType, int HealAmount)
 {
-	if( (AirborneAgentLevel==1 && WorldInfo.TimeDilation<1.f) || AirborneAgentLevel>1 )
-		GiveMedicAirborneAgentHealth( HealTarget, DamType, HealAmount );
+	if((AirborneAgentLevel==1 && WorldInfo.TimeDilation<1.f) || AirborneAgentLevel>1)
+		GiveMedicAirborneAgentHealth(HealTarget, DamType, HealAmount);
 }
 
-function GiveMedicAirborneAgentHealth( KFPawn HealTarget, class<DamageType> DamType, int HealAmount )
+function GiveMedicAirborneAgentHealth(KFPawn HealTarget, class<DamageType> DamType, int HealAmount)
 {
 	local KFPawn KFP;
 	local int RoundedExtraHealAmount;
 
-	RoundedExtraHealAmount = FCeil( float(HealAmount) * AirborneAgentHealRate );
+	RoundedExtraHealAmount = FCeil(float(HealAmount) * AirborneAgentHealRate);
 
 	foreach WorldInfo.Allpawns(class'KFPawn', KFP, HealTarget.Location, 500.f)
 	{
-		if( KFP.IsAliveAndWell() && WorldInfo.GRI.OnSameTeam( HealTarget, KFP ) )
+		if(KFP.IsAliveAndWell() && WorldInfo.GRI.OnSameTeam(HealTarget, KFP))
 		{
-			if ( HealTarget == KFP )
-				KFP.HealDamage( RoundedExtraHealAmount, PlayerOwner, DamType );	
-			else KFP.HealDamage( RoundedExtraHealAmount + HealAmount, PlayerOwner, DamType );
+			if (HealTarget == KFP)
+				KFP.HealDamage(RoundedExtraHealAmount, PlayerOwner, DamType);	
+			else KFP.HealDamage(RoundedExtraHealAmount + HealAmount, PlayerOwner, DamType);
 		}
 	}
 }
@@ -94,7 +94,7 @@ static function int ModifyToxicDmg(int ToxicDamage)
 	local float TempDamage;
 
 	TempDamage = float(ToxicDamage) * 1.2;
-	return FCeil( TempDamage );
+	return FCeil(TempDamage);
 }
 
 function NotifyZedTimeStarted()
@@ -103,19 +103,19 @@ function NotifyZedTimeStarted()
 	
 	HPawn = KFPawn_Human(PlayerOwner.Pawn);
 	
-	if( bUseAirborneAgent && HPawn != none && HPawn.IsAliveAndWell() )
+	if(bUseAirborneAgent && HPawn != none && HPawn.IsAliveAndWell())
 		HPawn.StartAirBorneAgentEvent();
 }
 
-simulated function float GetSnarePower( optional class<DamageType> DamageType, optional byte HitZoneIdx )
+simulated function float GetSnarePower(optional class<DamageType> DamageType, optional byte HitZoneIdx)
 {
-	if( bUseSlug && WorldInfo.TimeDilation < 1.f && class<KFDamageType>(DamageType)!=None && class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0 )
+	if(bUseSlug && WorldInfo.TimeDilation < 1.f && class<KFDamageType>(DamageType)!=None && class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0)
 		return 100;
 
 	return 0.f;
 }
 
-function AddDefaultInventory( KFPawn P )
+function AddDefaultInventory(KFPawn P)
 {
 	local int i;
 	i = P.DefaultInventory.Find(class'ExtWeap_Pistol_9mm');

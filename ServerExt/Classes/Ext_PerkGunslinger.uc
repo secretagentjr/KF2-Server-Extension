@@ -5,28 +5,28 @@ var bool bHasUberAmmo,bHasFanfire;
 replication
 {
 	// Things the server should send to the client.
-	if ( true )
+	if (true)
 		bHasUberAmmo,bHasFanfire;
 }
 
-simulated function bool GetUsingTactialReload( KFWeapon KFW )
+simulated function bool GetUsingTactialReload(KFWeapon KFW)
 {
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5]<0.8 : false);
 }
 
-simulated function bool GetIsUberAmmoActive( KFWeapon KFW )
+simulated function bool GetIsUberAmmoActive(KFWeapon KFW)
 {
 	return bHasUberAmmo && IsWeaponOnPerk(KFW) && WorldInfo.TimeDilation < 1.f;
 }
 
-simulated function float GetZedTimeModifier( KFWeapon W )
+simulated function float GetZedTimeModifier(KFWeapon W)
 {
 	local name StateName;
 	
-	if( bHasFanfire && IsWeaponOnPerk( W ) )
+	if(bHasFanfire && IsWeaponOnPerk(W))
 	{
 		StateName = W.GetStateName();
-		if( BasePerk.Default.ZedTimeModifyingStates.Find( StateName ) != INDEX_NONE || StateName == 'Reloading' )
+		if(BasePerk.Default.ZedTimeModifyingStates.Find(StateName) != INDEX_NONE || StateName == 'Reloading')
 			return 1.f;
 	}
 

@@ -49,22 +49,22 @@ function PostBeginPlay()
 	RebunchTimer = WorldInfo.TimeSeconds+5.f;
 }
 
-function Tick( float Delta )
+function Tick(float Delta)
 {
-	if( PlayerOwner==None || PlayerOwner.Player==None )
+	if(PlayerOwner==None || PlayerOwner.Player==None)
 	{
 		Destroy();
 		return;
 	}
-	if( !bClientConnected )
+	if(!bClientConnected)
 	{
-		if( RebunchTimer<WorldInfo.TimeSeconds )
+		if(RebunchTimer<WorldInfo.TimeSeconds)
 		{
 			RebunchTimer = WorldInfo.TimeSeconds+0.75;
 			ClientVerify();
 		}
 	}
-	else if( DownloadStage<255 )
+	else if(DownloadStage<255)
 		VoteHandler.ClientDownloadInfo(Self);
 }
 
@@ -80,22 +80,22 @@ unreliable client simulated function ClientVerify()
 
 simulated final function PlayerController GetPlayer()
 {
-	if( PlayerOwner==None )
+	if(PlayerOwner==None)
 		PlayerOwner = GetALocalPlayerController();
 	return PlayerOwner;
 }
-reliable client simulated function ClientReceiveGame( int Index, string GameName, string GameSName, string Prefix )
+reliable client simulated function ClientReceiveGame(int Index, string GameName, string GameSName, string Prefix)
 {
-	if( GameModes.Length<=Index )
+	if(GameModes.Length<=Index)
 		GameModes.Length = Index+1;
 	GameModes[Index].GameName = GameName;
 	GameModes[Index].GameShortName = GameSName;
 	GameModes[Index].Prefix = Prefix;
 	bListDirty = true;
 }
-reliable client simulated function ClientReceiveMap( int Index, string MapName, int UpVote, int DownVote, int Sequence, int NumPlays, optional string MapTitle )
+reliable client simulated function ClientReceiveMap(int Index, string MapName, int UpVote, int DownVote, int Sequence, int NumPlays, optional string MapTitle)
 {
-	if( Maps.Length<=Index )
+	if(Maps.Length<=Index)
 		Maps.Length = Index+1;
 	Maps[Index].MapName = MapName;
 	Maps[Index].MapTitle = (MapTitle!="" ? MapTitle : MapName);
@@ -105,20 +105,20 @@ reliable client simulated function ClientReceiveMap( int Index, string MapName, 
 	Maps[Index].NumPlays = NumPlays;
 	bListDirty = true;
 }
-reliable client simulated function ClientReceiveVote( int GameIndex, int MapIndex, int VoteCount )
+reliable client simulated function ClientReceiveVote(int GameIndex, int MapIndex, int VoteCount)
 {
 	local int i;
 	
-	for( i=0; i<ActiveVotes.Length; ++i )
-		if( ActiveVotes[i].GameIndex==GameIndex && ActiveVotes[i].MapIndex==MapIndex )
+	for(i=0; i<ActiveVotes.Length; ++i)
+		if(ActiveVotes[i].GameIndex==GameIndex && ActiveVotes[i].MapIndex==MapIndex)
 		{
-			if( VoteCount==0 )
+			if(VoteCount==0)
 				ActiveVotes.Remove(i,1);
 			else ActiveVotes[i].NumVotes = VoteCount;
 			bListDirty = true;
 			return;
 		}
-	if( VoteCount==0 )
+	if(VoteCount==0)
 		return;
 	ActiveVotes.Length = i+1;
 	ActiveVotes[i].GameIndex = GameIndex;
@@ -126,66 +126,66 @@ reliable client simulated function ClientReceiveVote( int GameIndex, int MapInde
 	ActiveVotes[i].NumVotes = VoteCount;
 	bListDirty = true;
 }
-reliable client simulated function ClientReady( int CurGame )
+reliable client simulated function ClientReady(int CurGame)
 {
 	ClientCurrentGame = CurGame;
 	bAllReceived = true;
 	MapVoteMsg(MaplistRecvMsg);
 }
 
-simulated final function MapVoteMsg( string S )
+simulated final function MapVoteMsg(string S)
 {
-	if( S!="" )
+	if(S!="")
 		GetPlayer().ClientMessage(ClientMapVoteMsg$" "$S);
 }
-reliable client simulated function ClientNotifyVote( PlayerReplicationInfo PRI, int GameIndex, int MapIndex )
+reliable client simulated function ClientNotifyVote(PlayerReplicationInfo PRI, int GameIndex, int MapIndex)
 {
-	if( bAllReceived )
+	if(bAllReceived)
 		MapVoteMsg((PRI!=None ? PRI.PlayerName : UnknownPlayerName)$" "$VotedForKnownMapMsg$" "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
 	else MapVoteMsg((PRI!=None ? PRI.PlayerName : UnknownPlayerName)$" "$VotedForUnkownMapMsg);
 }
 
-reliable client simulated function ClientNotifyVoteTime( int Time )
+reliable client simulated function ClientNotifyVoteTime(int Time)
 {
-	if( Time==0 )
+	if(Time==0)
 		MapVoteMsg(InitMapVoteMsg);
-	if( Time<=10 )
+	if(Time<=10)
 		MapVoteMsg(string(Time)$"...");
-	else if( Time<60 )
+	else if(Time<60)
 		MapVoteMsg(string(Time)$" "$XSecondsRemainMsg);
-	else if( Time==60 )
+	else if(Time==60)
 		MapVoteMsg(OneMinRemainMsg);
-	else if( Time==120 )
+	else if(Time==120)
 		MapVoteMsg(TwoMinRemainMsg);
 }
-reliable client simulated function ClientNotifyVoteWin( int GameIndex, int MapIndex, bool bAdminForce )
+reliable client simulated function ClientNotifyVoteWin(int GameIndex, int MapIndex, bool bAdminForce)
 {
 	Class'KF2GUIController'.Static.GetGUIController(GetPlayer()).CloseMenu(None,true);
-	if( bAdminForce )
+	if(bAdminForce)
 	{
-		if( bAllReceived )
+		if(bAllReceived)
 			MapVoteMsg(AdminForcedKnownMapswitchMsg$" "$Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$").");
 		else MapVoteMsg(AdminForcedUnknownMapswitchMsg);
 	}
-	else if( bAllReceived )
+	else if(bAllReceived)
 		MapVoteMsg(Maps[MapIndex].MapTitle$" ("$GameModes[GameIndex].GameShortName$") "$KnownMapSwitchMsg);
 	else MapVoteMsg(UnknownMapSwitchMsg);
 }
-reliable client simulated function ClientOpenMapvote( optional bool bShowRank )
+reliable client simulated function ClientOpenMapvote(optional bool bShowRank)
 {
 	local xUI_MapRank R;
 
-	if( bAllReceived )
+	if(bAllReceived)
 		SetTimer(0.001,false,'DelayedOpenMapvote'); // To prevent no-mouse issue when local server host opens it from chat.
-	if( bShowRank )
+	if(bShowRank)
 	{
 		R = xUI_MapRank(Class'KF2GUIController'.Static.GetGUIController(GetPlayer()).OpenMenu(class'xUI_MapRank'));
 		R.RepInfo = Self;
 		
-		if( KFGFxHudWrapper(GetPlayer().myHUD)!=None )
+		if(KFGFxHudWrapper(GetPlayer().myHUD)!=None)
 			KFGFxHudWrapper(GetPlayer().myHUD).HudMovie.DisplayPriorityMessage("MAP VOTE TIME","Cast your votes!",2);
 		
-		if( KFGameReplicationInfo(WorldInfo.GRI)!=none )
+		if(KFGameReplicationInfo(WorldInfo.GRI)!=none)
 			KFGameReplicationInfo(WorldInfo.GRI).ProcessChanceDrop();
 	}
 }
@@ -197,17 +197,17 @@ simulated function DelayedOpenMapvote()
 	U.InitMapvote(Self);
 }
 
-reliable server simulated function ServerCastVote( int GameIndex, int MapIndex, bool bAdminForce )
+reliable server simulated function ServerCastVote(int GameIndex, int MapIndex, bool bAdminForce)
 {
-	if( NextVoteTimer<WorldInfo.TimeSeconds )
+	if(NextVoteTimer<WorldInfo.TimeSeconds)
 	{
 		NextVoteTimer = WorldInfo.TimeSeconds+1.f;
 		VoteHandler.ClientCastVote(Self,GameIndex,MapIndex,bAdminForce);
 	}
 }
-reliable server simulated function ServerRankMap( bool bUp )
+reliable server simulated function ServerRankMap(bool bUp)
 {
-	if( !bClientRanked )
+	if(!bClientRanked)
 	{
 		bClientRanked = true;
 		VoteHandler.ClientRankMap(Self,bUp);

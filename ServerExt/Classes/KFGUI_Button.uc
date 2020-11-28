@@ -12,16 +12,16 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderButton(Self);
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick(bool bRight)
 {
 	PlayMenuSound(MN_ClickButton);
-	if( bRight )
+	if(bRight)
 		OnClickRight(Self);
 	else OnClickLeft(Self);
 }
 
-Delegate OnClickLeft( KFGUI_Button Sender );
-Delegate OnClickRight( KFGUI_Button Sender );
+Delegate OnClickLeft(KFGUI_Button Sender);
+Delegate OnClickRight(KFGUI_Button Sender);
 
 defaultproperties
 {

@@ -7,7 +7,7 @@ function SetPerkInfo()
 	local float V;
 
 	KFPC = ExtPlayerController(GetPC());
-	if( KFPC!=none && KFPC.ActivePerkManager!=None && KFPC.ActivePerkManager.CurrentPerk!=None )
+	if(KFPC!=none && KFPC.ActivePerkManager!=None && KFPC.ActivePerkManager.CurrentPerk!=None)
 	{
 		CurrentPerk = KFPC.ActivePerkManager.CurrentPerk;
  		SetString("perkName", CurrentPerk.PerkName);
@@ -28,14 +28,14 @@ function SetPerkList()
 	local Ext_PerkBase P;
 
 	KFPC = ExtPlayerController(GetPC());
-	if( KFPC != none && KFPC.ActivePerkManager!=None )
+	if(KFPC != none && KFPC.ActivePerkManager!=None)
 	{
 		DataProvider = CreateArray();
 
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{
 			P = KFPC.ActivePerkManager.UserPerks[i];
-			PerkObject = CreateObject( "Object" );
+			PerkObject = CreateObject("Object");
 			PerkObject.SetString("name", P.PerkName);
 			PerkObject.SetString("perkIconSource",  P.GetPerkIconPath(P.CurrentLevel));
 			PerkObject.SetInt("level", P.CurrentLevel);

@@ -35,10 +35,10 @@ function TickHud(float DeltaTime)
 		}
 		
 		// Current wave we're on.
-		if( LastWave!=KFGRI.WaveNum )
+		if(LastWave!=KFGRI.WaveNum)
 		{
 			LastWave = KFGRI.WaveNum;
-			if( LastWave>LastWaveMax )
+			if(LastWave>LastWaveMax)
 			{
 				SetInt("currentWave",0); // Force text to refresh.
 				SetString("finalText", "END");

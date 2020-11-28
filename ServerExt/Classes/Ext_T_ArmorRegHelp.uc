@@ -3,9 +3,9 @@ Class Ext_T_ArmorRegHelp extends Ext_T_HealthRegHelp
 
 function Timer()
 {
-	if( PawnOwner==None || PawnOwner.Health<=0 )
+	if(PawnOwner==None || PawnOwner.Health<=0)
 		Destroy();
-	else if( PawnOwner.Armor<PawnOwner.MaxArmor )
+	else if(PawnOwner.Armor<PawnOwner.MaxArmor)
 	{
 		PawnOwner.Armor = Min(PawnOwner.Armor+RegCount,PawnOwner.MaxArmor);
 	}

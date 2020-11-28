@@ -49,37 +49,37 @@ var globalconfig array<SavedSkins> SavedWeaponSkins;
 replication
 {
 	// Things the server should send to the client.
-	if ( bNetDirty )
+	if (bNetDirty)
 		MidGameMenuClass,ActivePerkManager;
 }
 
 simulated function PostBeginPlay()
 {
 	Super.PostBeginPlay();
-	if( WorldInfo.NetMode!=NM_Client && ActivePerkManager==None )
+	if(WorldInfo.NetMode!=NM_Client && ActivePerkManager==None)
 	{
 		ActivePerkManager = Spawn(class'ExtPerkManager',Self);
 		ActivePerkManager.PlayerOwner = Self;
 		ActivePerkManager.PRIOwner = ExtPlayerReplicationInfo(PlayerReplicationInfo);
-		if( ActivePerkManager.PRIOwner!=None )
+		if(ActivePerkManager.PRIOwner!=None)
 			ActivePerkManager.PRIOwner.PerkManager = ActivePerkManager;
 		SetTimer(0.1,true,'CheckPerk');
 	}
 }
 simulated function Destroyed()
 {
-	if( ActivePerkManager!=None )
+	if(ActivePerkManager!=None)
 		ActivePerkManager.PreNotifyPlayerLeave();
 	Super.Destroyed();
-	if( ActivePerkManager!=None )
+	if(ActivePerkManager!=None)
 		ActivePerkManager.Destroy();
 }
 function CheckPerk()
 {
-	if( CurrentPerk!=ActivePerkManager )
+	if(CurrentPerk!=ActivePerkManager)
 	{
 		CurrentPerk = ActivePerkManager;
-		if( KFPlayerReplicationInfo(PlayerReplicationInfo)!=None )
+		if(KFPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		{
 			KFPlayerReplicationInfo(PlayerReplicationInfo).NetPerkIndex = 0;
 			KFPlayerReplicationInfo(PlayerReplicationInfo).CurrentPerkClass = ActivePerkManager.Class;
@@ -87,14 +87,14 @@ function CheckPerk()
 	}
 }
 
-reliable client function AddAdminCmd( string S )
+reliable client function AddAdminCmd(string S)
 {
 	local int i,j;
 	
 	j = InStr(S,":");
 	i = AdminCommands.Length;
 	AdminCommands.Length = i+1;
-	if( j==-1 )
+	if(j==-1)
 	{
 		AdminCommands[i].Cmd = S;
 		AdminCommands[i].Info = S;
@@ -110,17 +110,17 @@ reliable client function ClientSetHUD(class<HUD> newHUDType)
 	Super.ClientSetHUD(newHUDType);
 	SendServerSettings();
 }
-reliable client function ClientSetBonus( SoundCue C, Object FX )
+reliable client function ClientSetBonus(SoundCue C, Object FX)
 {
 	BonusMusic = C;
 	BonusFX = FX;
 }
 simulated final function SendServerSettings()
 {
-	if( LocalPlayer(Player)!=None )
+	if(LocalPlayer(Player)!=None)
 		ServerSetSettings(bHideKillMsg,bHideDamageMsg,bHideNumberMsg,bNoMonsterPlayer);
 }
-reliable server function ServerSetSettings( bool bHideKill, bool bHideDmg, bool bHideNum, bool bNoZ )
+reliable server function ServerSetSettings(bool bHideKill, bool bHideDmg, bool bHideNum, bool bNoZ)
 {
 	bClientHideKillMsg = bHideKill;
 	bClientHideDamageMsg = bHideDmg;
@@ -128,41 +128,41 @@ reliable server function ServerSetSettings( bool bHideKill, bool bHideDmg, bool 
 	bNoDamageTracking = (bHideDmg && bHideNum);
 	bClientNoZed = bNoZ;
 }
-unreliable server function NotifyFixed( byte Mode )
+unreliable server function NotifyFixed(byte Mode)
 {
-	if( Mode==1 && (Pawn==None || (WorldInfo.TimeSeconds-Pawn.SpawnTime)<5.f) )
+	if(Mode==1 && (Pawn==None || (WorldInfo.TimeSeconds-Pawn.SpawnTime)<5.f))
 		return;
 	OnClientFixed(Self,Mode);
-	if( Default.bRenderModes && ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None )
+	if(Default.bRenderModes && ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		ExtPlayerReplicationInfo(PlayerReplicationInfo).SetFixedData(Mode);
 }
-delegate OnClientFixed( ExtPlayerController PC, byte Mode );
+delegate OnClientFixed(ExtPlayerController PC, byte Mode);
 
-reliable client event ReceiveLocalizedMessage( class<LocalMessage> Message, optional int Switch, optional PlayerReplicationInfo RelatedPRI_1, optional PlayerReplicationInfo RelatedPRI_2, optional Object OptionalObject )
+reliable client event ReceiveLocalizedMessage(class<LocalMessage> Message, optional int Switch, optional PlayerReplicationInfo RelatedPRI_1, optional PlayerReplicationInfo RelatedPRI_2, optional Object OptionalObject)
 {
-	if( Message!=class'KFLocalMessage_PlayerKills' && (Message!=class'KFLocalMessage_Game' || (Switch!=KMT_Suicide && Switch!=KMT_Killed)) )
+	if(Message!=class'KFLocalMessage_PlayerKills' && (Message!=class'KFLocalMessage_Game' || (Switch!=KMT_Suicide && Switch!=KMT_Killed)))
 		Super.ReceiveLocalizedMessage(Message,Switch,RelatedPRI_1,RelatedPRI_2,OptionalObject);
 }
 
-function AddZedKill( class<KFPawn_Monster> MonsterClass, byte Difficulty, class<DamageType> DT, bool bKiller )
+function AddZedKill(class<KFPawn_Monster> MonsterClass, byte Difficulty, class<DamageType> DT, bool bKiller)
 {
 	// Stats.
-	if( ActivePerkManager!=None )
+	if(ActivePerkManager!=None)
 	{
 		ActivePerkManager.TotalKills++;
 		ActivePerkManager.PRIOwner.RepKills++;
 	}
 }
 
-unreliable client function ClientPlayCameraShake( CameraShake Shake, optional float Scale=1.f, optional bool bTryForceFeedback, optional ECameraAnimPlaySpace PlaySpace=CAPS_CameraLocal, optional rotator UserPlaySpaceRot )
+unreliable client function ClientPlayCameraShake(CameraShake Shake, optional float Scale=1.f, optional bool bTryForceFeedback, optional ECameraAnimPlaySpace PlaySpace=CAPS_CameraLocal, optional rotator UserPlaySpaceRot)
 {
-	if( !bNoScreenShake )
+	if(!bNoScreenShake)
 		Super.ClientPlayCameraShake(Shake,Scale,bTryForceFeedback,PlaySpace,UserPlaySpaceRot);
 }
 
-exec final function AwardXP( int XP, optional byte Mode )
+exec final function AwardXP(int XP, optional byte Mode)
 {
-	if( WorldInfo.NetMode!=NM_Client && ActivePerkManager!=None )
+	if(WorldInfo.NetMode!=NM_Client && ActivePerkManager!=None)
 		ActivePerkManager.EarnedEXP(XP,Mode);
 }
 
@@ -172,31 +172,31 @@ function OnPlayerXPAdded(INT XP, class<KFPerk> PerkClass)
 	AwardXP(XP);
 }
 
-function AddSmallRadiusKill( byte Difficulty, class<KFPerk> PerkClass )
+function AddSmallRadiusKill(byte Difficulty, class<KFPerk> PerkClass)
 {
 	AwardXP(class'KFPerk_Berserker'.static.GetSmallRadiusKillXP(Difficulty));
 }
-function AddWeldPoints( int PointsWelded )
+function AddWeldPoints(int PointsWelded)
 {
 	AwardXP(PointsWelded,1);
 }
-function AddHealPoints( int PointsHealed )
+function AddHealPoints(int PointsHealed)
 {
 	AwardXP(PointsHealed,2);
 }
 
-function AddShotsHit( int AddedHits )
+function AddShotsHit(int AddedHits)
 {
 	local KFWeapon W;
 	local float T;
 
 	Super.AddShotsHit(AddedHits);
 	W = KFWeapon(Pawn.Weapon);
-	if( W==None )
+	if(W==None)
 	{
-		if( LastMisfireTime>WorldInfo.TimeSeconds )
+		if(LastMisfireTime>WorldInfo.TimeSeconds)
 		{
-			if( ++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f )
+			if(++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f)
 				NotifyFixed(8);
 			LastMisfireTime = WorldInfo.TimeSeconds+2.f;
 			return;
@@ -206,11 +206,11 @@ function AddShotsHit( int AddedHits )
 		MisfireTimer = WorldInfo.TimeSeconds;
 		return;
 	}
-	if( !W.HasAmmo(W.CurrentFireMode) )
+	if(!W.HasAmmo(W.CurrentFireMode))
 	{
-		if( LastMisfireTime>WorldInfo.TimeSeconds )
+		if(LastMisfireTime>WorldInfo.TimeSeconds)
 		{
-			if( ++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f )
+			if(++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f)
 				NotifyFixed(16);
 			LastMisfireTime = WorldInfo.TimeSeconds+2.f;
 			return;
@@ -222,19 +222,19 @@ function AddShotsHit( int AddedHits )
 	}
 	T = W.GetFireInterval(W.CurrentFireMode);
 	ActivePerkManager.ModifyRateOfFire(T,W);
-	if( (WorldInfo.TimeSeconds-LastFireTime)<(T*0.5) || !W.IsFiring() )
+	if((WorldInfo.TimeSeconds-LastFireTime)<(T*0.5) || !W.IsFiring())
 	{
-		if( (WorldInfo.TimeSeconds-LastFireTime)>4.f )
+		if((WorldInfo.TimeSeconds-LastFireTime)>4.f)
 			MisrateCounter = 0;
 		LastFireTime = WorldInfo.TimeSeconds;
-		if( MisrateCounter<5 )
+		if(MisrateCounter<5)
 		{
 			++MisrateCounter;
 			return;
 		}
-		if( LastMisfireTime>WorldInfo.TimeSeconds )
+		if(LastMisfireTime>WorldInfo.TimeSeconds)
 		{
-			if( ++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f )
+			if(++MisfireCount>15 && (WorldInfo.TimeSeconds-MisfireTimer)>10.f)
 				NotifyFixed(2);
 			LastMisfireTime = WorldInfo.TimeSeconds+1.f;
 			return;
@@ -247,16 +247,16 @@ function AddShotsHit( int AddedHits )
 }
 
 // Message of the day.
-Delegate OnSetMOTD( ExtPlayerController PC, string S );
-reliable client function ReceiveServerMOTD( string S, bool bFinal )
+Delegate OnSetMOTD(ExtPlayerController PC, string S);
+reliable client function ReceiveServerMOTD(string S, bool bFinal)
 {
 	ServerMOTD $= S;
 	bMOTDReceived = bFinal;
 }
-reliable server function ServerSetMOTD( string S, bool bFinal )
+reliable server function ServerSetMOTD(string S, bool bFinal)
 {
 	PendingMOTD $= S;
-	if( bFinal && PendingMOTD!="" )
+	if(bFinal && PendingMOTD!="")
 	{
 		OnSetMOTD(Self,PendingMOTD);
 		PendingMOTD = "";
@@ -264,66 +264,66 @@ reliable server function ServerSetMOTD( string S, bool bFinal )
 }
 
 // TESTING:
-reliable server function ServerItemDropGet( string Item )
+reliable server function ServerItemDropGet(string Item)
 {
-	if( DropCount>5 || Len(Item)>100 )
+	if(DropCount>5 || Len(Item)>100)
 		return;
 	++DropCount;
 	WorldInfo.Game.Broadcast(Self,PlayerReplicationInfo.GetHumanReadableName()$" got item: "$Item);
 }
 
-reliable client function ReceiveLevelUp( Ext_PerkBase Perk, int NewLevel )
+reliable client function ReceiveLevelUp(Ext_PerkBase Perk, int NewLevel)
 {
-	if( Perk!=None )
+	if(Perk!=None)
 		MyGFxHUD.LevelUpNotificationWidget.ShowAchievementNotification(class'KFGFxWidget_LevelUpNotification'.Default.LevelUpString, Perk.PerkName, class'KFGFxWidget_LevelUpNotification'.Default.TierUnlockedString, Perk.GetPerkIconPath(NewLevel), false, NewLevel);
 }
-reliable client function ReceiveKillMessage( class<Pawn> Victim, optional bool bGlobal, optional PlayerReplicationInfo KillerPRI )
+reliable client function ReceiveKillMessage(class<Pawn> Victim, optional bool bGlobal, optional PlayerReplicationInfo KillerPRI)
 {
-	if( bHideKillMsg || (bGlobal && KillerPRI==None) )
+	if(bHideKillMsg || (bGlobal && KillerPRI==None))
 		return;
-	if( bUseKF2KillMessages )
+	if(bUseKF2KillMessages)
 	{
-		if( MyGFxHUD != none )
+		if(MyGFxHUD != none)
 		{
-			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX( (bGlobal ? KillerPRI : None), None, ,false, Victim );
+			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX((bGlobal ? KillerPRI : None), None, ,false, Victim);
 		}
 	}
-	else if( KFExtendedHUD(myHUD)!=None && Victim!=None )
+	else if(KFExtendedHUD(myHUD)!=None && Victim!=None)
 		KFExtendedHUD(myHUD).AddKillMessage(Victim,1,KillerPRI,byte(bGlobal));
 }
-unreliable client function ReceiveDamageMessage( class<Pawn> Victim, int Damage )
+unreliable client function ReceiveDamageMessage(class<Pawn> Victim, int Damage)
 {
-	if( !bHideDamageMsg && KFExtendedHUD(myHUD)!=None && Victim!=None )
+	if(!bHideDamageMsg && KFExtendedHUD(myHUD)!=None && Victim!=None)
 		KFExtendedHUD(myHUD).AddKillMessage(Victim,Damage,None,2);
 }
-unreliable client function ClientNumberMsg( int Count, vector Pos, EDmgMsgType Type )
+unreliable client function ClientNumberMsg(int Count, vector Pos, EDmgMsgType Type)
 {
-	if( !bHideNumberMsg && KFExtendedHUD(myHUD)!=None )
+	if(!bHideNumberMsg && KFExtendedHUD(myHUD)!=None)
 		KFExtendedHUD(myHUD).AddNumberMsg(Count,Pos,Type);
 }
 
-reliable client event TeamMessage( PlayerReplicationInfo PRI, coerce string S, name Type, optional float MsgLifeTime  )
+reliable client event TeamMessage(PlayerReplicationInfo PRI, coerce string S, name Type, optional float MsgLifeTime )
 {
-	//if( ( ( Type == 'Say' ) || (Type == 'TeamSay' ) ) && ( PRI != None ) )
-	//	SpeakTTS( S, PRI ); <- KF built without TTS...
+	//if(((Type == 'Say') || (Type == 'TeamSay')) && (PRI != None))
+	//	SpeakTTS(S, PRI); <- KF built without TTS...
 
 	// since this is on the client, we can assume that if Player exists, it is a LocalPlayer
-	if( Player!=None )
+	if(Player!=None)
 	{
-		if( ( ( Type == 'Say' ) || ( Type == 'TeamSay' ) ) && ( PRI != None ) )
+		if(((Type == 'Say') || (Type == 'TeamSay')) && (PRI != None))
 			S = PRI.GetHumanReadableName()$": "$S;
-		LocalPlayer( Player ).ViewportClient.ViewportConsole.OutputText( "("$Type$") "$S );
+		LocalPlayer(Player).ViewportClient.ViewportConsole.OutputText("("$Type$") "$S);
 	}
 	
 	if (MyGFxManager != none && MyGFxManager.PartyWidget != none)
 	{
-		if( !MyGFxManager.PartyWidget.ReceiveMessage(S) )  //Fails if message is for updating perks in a steam lobby
+		if(!MyGFxManager.PartyWidget.ReceiveMessage(S))  //Fails if message is for updating perks in a steam lobby
 			return;
 	}
 
-	if( MyGFxHUD != none )
+	if(MyGFxHUD != none)
 	{
-		switch( Type )
+		switch(Type)
 		{
 		case 'Log':
 			break; // Console only message.
@@ -338,7 +338,7 @@ reliable client event TeamMessage( PlayerReplicationInfo PRI, coerce string S, n
 			break;
 		case 'Say':
 		case 'TeamSay':
-			if( ExtPlayerReplicationInfo(PRI)!=None && ExtPlayerReplicationInfo(PRI).ShowAdminName() )
+			if(ExtPlayerReplicationInfo(PRI)!=None && ExtPlayerReplicationInfo(PRI).ShowAdminName())
 				MyGFxHUD.HudChatBox.AddChatMessage("("$ExtPlayerReplicationInfo(PRI).GetAdminNameAbr()$")"$S, ExtPlayerReplicationInfo(PRI).GetAdminColor());
 			else MyGFxHUD.HudChatBox.AddChatMessage(S, "64FE2E");
 			break;
@@ -356,7 +356,7 @@ reliable client event TeamMessage( PlayerReplicationInfo PRI, coerce string S, n
 		}
 	}
 }
-final function PopScreenMsg( string S )
+final function PopScreenMsg(string S)
 {
 	local int i;
 	local string L;
@@ -366,14 +366,14 @@ final function PopScreenMsg( string S )
 	
 	// Get lower part.
 	i = InStr(S,"|");
-	if( i!=-1 )
+	if(i!=-1)
 	{
 		L = Mid(S,i+1);
 		S = Left(S,i);
 		
 		// Get time.
 		i = InStr(L,"|");
-		if( i!=-1 )
+		if(i!=-1)
 		{
 			T = float(Mid(L,i+1));
 			L = Left(L,i);
@@ -381,23 +381,23 @@ final function PopScreenMsg( string S )
 	}
 	MyGFxHUD.DisplayPriorityMessage(S,L,T);
 }
-reliable client function ClientKillMessage( class<DamageType> DamType, PlayerReplicationInfo Victim, PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn )
+reliable client function ClientKillMessage(class<DamageType> DamType, PlayerReplicationInfo Victim, PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn)
 {
 	local string Msg,S;
 	local bool bFF;
 
-	if( Player==None || Victim==None )
+	if(Player==None || Victim==None)
 		return;
 	
-	if( bUseKF2DeathMessages && MyGFxHUD!=None )
+	if(bUseKF2DeathMessages && MyGFxHUD!=None)
 	{
-		if( Victim==KillerPRI || (KillerPRI==None && KillerPawn==None) ) // Suicide
-			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX( None, Victim, ,true );
-		else ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX( KillerPRI, Victim, ,true, KillerPawn );
+		if(Victim==KillerPRI || (KillerPRI==None && KillerPawn==None)) // Suicide
+			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX(None, Victim, ,true);
+		else ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX(KillerPRI, Victim, ,true, KillerPawn);
 	}
-	if( Victim==KillerPRI || (KillerPRI==None && KillerPawn==None) ) // Suicide
+	if(Victim==KillerPRI || (KillerPRI==None && KillerPawn==None)) // Suicide
 	{
-		if( Victim.GetTeamNum()==0 )
+		if(Victim.GetTeamNum()==0)
 		{
 			Msg = ParseSuicideMsg(Chr(6)$"O"$Victim.GetHumanReadableName(),DamType);
 			class'KFMusicStingerHelper'.static.PlayPlayerDiedStinger(Self);
@@ -406,7 +406,7 @@ reliable client function ClientKillMessage( class<DamageType> DamType, PlayerRep
 	}
 	else
 	{
-		if( KillerPRI!=None && Victim.Team!=None && Victim.Team==KillerPRI.Team ) // Team-kill
+		if(KillerPRI!=None && Victim.Team!=None && Victim.Team==KillerPRI.Team) // Team-kill
 		{
 			bFF = true;
 			S = KillerPRI.GetHumanReadableName();
@@ -415,14 +415,14 @@ reliable client function ClientKillMessage( class<DamageType> DamType, PlayerRep
 		else // Killed by monster.
 		{
 			bFF = false;
-			if( KillerPRI!=None )
+			if(KillerPRI!=None)
 			{
 				S = KillerPRI.GetHumanReadableName();
 			}
 			else
 			{
 				S = class'KFExtendedHUD'.Static.GetNameOf(KillerPawn);
-				if( class<KFPawn_Monster>(KillerPawn)!=None && class<KFPawn_Monster>(KillerPawn).Default.MinSpawnSquadSizeType==EST_Boss ) // Boss type.
+				if(class<KFPawn_Monster>(KillerPawn)!=None && class<KFPawn_Monster>(KillerPawn).Default.MinSpawnSquadSizeType==EST_Boss) // Boss type.
 					S = "the "$S;
 				else S = class'KFExtendedHUD'.Static.GetNameArticle(S)@S;
 			}
@@ -431,154 +431,154 @@ reliable client function ClientKillMessage( class<DamageType> DamType, PlayerRep
 		Msg = ParseKillMsg(Victim.GetHumanReadableName(),S,bFF,DamType);
 	}
 	S = Class'KFExtendedHUD'.Static.StripMsgColors(Msg);
-	if( !bUseKF2DeathMessages )
+	if(!bUseKF2DeathMessages)
 		KFExtendedHUD(myHUD).AddDeathMessage(Msg,S);
 	ClientMessage(S,'DeathMessage');
 }
-reliable client function ClientZedKillMessage( class<DamageType> DamType, string Victim, optional PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn, optional bool bFFKill )
+reliable client function ClientZedKillMessage(class<DamageType> DamType, string Victim, optional PlayerReplicationInfo KillerPRI, optional class<Pawn> KillerPawn, optional bool bFFKill)
 {
 	local string Msg,S;
 
-	if( Player==None )
+	if(Player==None)
 		return;
-	if( bUseKF2DeathMessages && MyGFxHUD!=None )
+	if(bUseKF2DeathMessages && MyGFxHUD!=None)
 	{
-		if( KillerPRI==None && KillerPawn==None ) // Suicide
-			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX( None, None, Victim, true );
-		else ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX( KillerPRI, None, Victim, true, KillerPawn );
+		if(KillerPRI==None && KillerPawn==None) // Suicide
+			ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX(None, None, Victim, true);
+		else ExtMoviePlayer_HUD(MyGFxHUD).ShowKillMessageX(KillerPRI, None, Victim, true, KillerPawn);
 	}
-	if( KillerPRI==None && KillerPawn==None ) // Suicide
+	if(KillerPRI==None && KillerPawn==None) // Suicide
 	{
 		Msg = ParseSuicideMsg(Chr(6)$"O"$Victim,DamType);
 	}
 	else
 	{
-		if( KillerPRI!=None ) // Team-kill
+		if(KillerPRI!=None) // Team-kill
 		{
 			S = KillerPRI.GetHumanReadableName();
 		}
 		else // Killed by monster.
 		{
 			S = class'KFExtendedHUD'.Static.GetNameOf(KillerPawn);
-			if( class<KFPawn_Monster>(KillerPawn)!=None && class<KFPawn_Monster>(KillerPawn).Default.MinSpawnSquadSizeType==EST_Boss ) // Boss type.
+			if(class<KFPawn_Monster>(KillerPawn)!=None && class<KFPawn_Monster>(KillerPawn).Default.MinSpawnSquadSizeType==EST_Boss) // Boss type.
 				S = "the "$S;
 			else S = class'KFExtendedHUD'.Static.GetNameArticle(S)@S;
 		}
 		Msg = ParseKillMsg(Victim,S,bFFKill,DamType);
 	}
 	S = Class'KFExtendedHUD'.Static.StripMsgColors(Msg);
-	if( !bUseKF2DeathMessages )
+	if(!bUseKF2DeathMessages)
 		KFExtendedHUD(myHUD).AddDeathMessage(Msg,S);
 	ClientMessage(S,'DeathMessage');
 }
-simulated final function string ParseSuicideMsg( string Victim, class<DamageType> DamType )
+simulated final function string ParseSuicideMsg(string Victim, class<DamageType> DamType)
 {
 	local string S;
 
 	S = string(DamType.Name);
-	if( Left(S,15)~="KFDT_Ballistic_" )
+	if(Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
 		return Victim$Chr(6)$"M killed himself with "$S;
 	}
-	else if( class<KFDT_Fire>(DamType)!=None )
+	else if(class<KFDT_Fire>(DamType)!=None)
 		return Victim$Chr(6)$"M was burned to death";
-	else if( class<KFDT_Explosive>(DamType)!=None )
+	else if(class<KFDT_Explosive>(DamType)!=None)
 		return Victim$Chr(6)$"M was blown into pieces";
 	return Victim$Chr(6)$"M had a sudden heart attack";
 }
-simulated final function string ParseKillMsg( string Victim, string Killer, bool bFF, class<DamageType> DamType )
+simulated final function string ParseKillMsg(string Victim, string Killer, bool bFF, class<DamageType> DamType)
 {
 	local string T,S;
 
 	T = (bFF ? "O" : "K");
 	S = string(DamType.Name);
-	if( Left(S,15)~="KFDT_Ballistic_" )
+	if(Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
 		return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer$Chr(6)$"M's "$S;
 	}
-	else if( class<KFDT_Fire>(DamType)!=None )
+	else if(class<KFDT_Fire>(DamType)!=None)
 		return Chr(6)$"O"$Victim$Chr(6)$"M was incinerated by "$Chr(6)$T$Killer;
-	else if( class<KFDT_Explosive>(DamType)!=None )
+	else if(class<KFDT_Explosive>(DamType)!=None)
 		return Chr(6)$"O"$Victim$Chr(6)$"M was blown up by "$Chr(6)$T$Killer;
 	return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer;
 }
 
-reliable server function ServerCamera( name NewMode )
+reliable server function ServerCamera(name NewMode)
 {
 	// <- REMOVED CAMERA LOGGING (PlayerController)
-	if ( NewMode == '1st' )
+	if (NewMode == '1st')
 		NewMode = 'FirstPerson';
-	else if ( NewMode == '3rd' )
+	else if (NewMode == '3rd')
 		NewMode = 'ThirdPerson';
-	SetCameraMode( NewMode );
+	SetCameraMode(NewMode);
 }
-exec function Camera( name NewMode )
+exec function Camera(name NewMode)
 {
-	ServerCamera( PlayerCamera.CameraStyle=='FirstPerson' ? 'ThirdPerson' : 'FirstPerson' );
+	ServerCamera(PlayerCamera.CameraStyle=='FirstPerson' ? 'ThirdPerson' : 'FirstPerson');
 }
-simulated final function ToggleFPBody( bool bEnable )
+simulated final function ToggleFPBody(bool bEnable)
 {
 	bShowFPLegs = bEnable;
 	Class'ExtPlayerController'.Default.bShowFPLegs = bEnable;
 	
-	if( ExtHumanPawn(Pawn)!=None )
+	if(ExtHumanPawn(Pawn)!=None)
 		ExtHumanPawn(Pawn).UpdateFPLegs();
 }
 
-/*exec function KickBan( string S )
+/*exec function KickBan(string S)
 {
-	if( WorldInfo.Game!=None )
+	if(WorldInfo.Game!=None)
 		WorldInfo.Game.KickBan(S);
 }*/
-exec function Kick( string S )
+exec function Kick(string S)
 {
-	if( WorldInfo.Game!=None )
+	if(WorldInfo.Game!=None)
 		WorldInfo.Game.Kick(S);
 }
 reliable server function SkipLobby();
 
-Delegate OnChangePerk( ExtPlayerController PC, class<Ext_PerkBase> NewPerk );
+Delegate OnChangePerk(ExtPlayerController PC, class<Ext_PerkBase> NewPerk);
 
-reliable server function SwitchToPerk( class<Ext_PerkBase> PerkClass )
+reliable server function SwitchToPerk(class<Ext_PerkBase> PerkClass)
 {
-	if( PerkClass!=None )
+	if(PerkClass!=None)
 		OnChangePerk(Self,PerkClass);
 }
 
-Delegate OnBoughtStats( ExtPlayerController PC, class<Ext_PerkBase> PerkClass, int iStat, int Amount );
+Delegate OnBoughtStats(ExtPlayerController PC, class<Ext_PerkBase> PerkClass, int iStat, int Amount);
 
-reliable server function BuyPerkStat( class<Ext_PerkBase> PerkClass, int iStat, int Amount )
+reliable server function BuyPerkStat(class<Ext_PerkBase> PerkClass, int iStat, int Amount)
 {
-	if( PerkClass!=None && Amount>0 && iStat>=0 )
+	if(PerkClass!=None && Amount>0 && iStat>=0)
 		OnBoughtStats(Self,PerkClass,iStat,Amount);
 }
 
-Delegate OnBoughtTrait( ExtPlayerController PC, class<Ext_PerkBase> PerkClass, class<Ext_TraitBase> Trait );
+Delegate OnBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass, class<Ext_TraitBase> Trait);
 
-reliable server function BoughtTrait( class<Ext_PerkBase> PerkClass, class<Ext_TraitBase> Trait )
+reliable server function BoughtTrait(class<Ext_PerkBase> PerkClass, class<Ext_TraitBase> Trait)
 {
-	if( PerkClass!=None && Trait!=None )
+	if(PerkClass!=None && Trait!=None)
 		OnBoughtTrait(Self,PerkClass,Trait);
 }
 
-Delegate OnPerkReset( ExtPlayerController PC, class<Ext_PerkBase> PerkClass, bool bPrestige );
+Delegate OnPerkReset(ExtPlayerController PC, class<Ext_PerkBase> PerkClass, bool bPrestige);
 
-reliable server function ServerResetPerk( class<Ext_PerkBase> PerkClass, bool bPrestige )
+reliable server function ServerResetPerk(class<Ext_PerkBase> PerkClass, bool bPrestige)
 {
-	if( PerkClass!=None )
+	if(PerkClass!=None)
 		OnPerkReset(Self,PerkClass,bPrestige);
 }
 
-Delegate OnAdminHandle( ExtPlayerController PC, int PlayerID, int Action );
+Delegate OnAdminHandle(ExtPlayerController PC, int PlayerID, int Action);
 
-reliable server function AdminRPGHandle( int PlayerID, int Action )
+reliable server function AdminRPGHandle(int PlayerID, int Action)
 {
 	OnAdminHandle(Self,PlayerID,Action);
 }
 
-simulated reliable client event bool ShowConnectionProgressPopup( EProgressMessageType ProgressType, string ProgressTitle, string ProgressDescription, bool SuppressPasswordRetry = false)
+simulated reliable client event bool ShowConnectionProgressPopup(EProgressMessageType ProgressType, string ProgressTitle, string ProgressDescription, bool SuppressPasswordRetry = false)
 {
 	switch(ProgressType)
 	{
@@ -598,16 +598,16 @@ simulated reliable client event bool ShowConnectionProgressPopup( EProgressMessa
 
 simulated function CancelConnection()
 {
-	if( KFExtendedHUD(myHUD)!=None )
+	if(KFExtendedHUD(myHUD)!=None)
 		KFExtendedHUD(myHUD).CancelConnection();
 	else class'Engine'.Static.GetEngine().GameViewport.ConsoleCommand("Disconnect");
 }
 
 function NotifyLevelUp(class<KFPerk> PerkClass, byte PerkLevel, byte NewPrestigeLevel);
 
-function ShowBossNameplate( KFInterface_MonsterBoss KFBoss, optional string PlayerName)
+function ShowBossNameplate(KFInterface_MonsterBoss KFBoss, optional string PlayerName)
 {
-	if( !bNamePlateShown ) // Dont make multiple bosses pop this up multiple times.
+	if(!bNamePlateShown) // Dont make multiple bosses pop this up multiple times.
 	{
 		bNamePlateShown = true;
 		Super.ShowBossNameplate(KFBoss,PlayerName);
@@ -616,40 +616,40 @@ function ShowBossNameplate( KFInterface_MonsterBoss KFBoss, optional string Play
 }
 function HideBossNameplate()
 {	
-	if( !bNamePlateHidden )
+	if(!bNamePlateHidden)
 	{
 		bNamePlateHidden = false;
 		Super.HideBossNameplate();
 		ClearTimer('HideBossNameplate');
-		if( MyGFxHUD!=None )
+		if(MyGFxHUD!=None)
 			MyGFxHUD.MusicNotification.SetVisible(true);
 	}
 }
 
-function UpdateRotation( float DeltaTime )
+function UpdateRotation(float DeltaTime)
 {
-	if( OldViewRot!=Rotation && Pawn!=None && Pawn.IsAliveAndWell() )
+	if(OldViewRot!=Rotation && Pawn!=None && Pawn.IsAliveAndWell())
 		NotifyFixed(1);
 	Super.UpdateRotation(DeltaTime);
 	OldViewRot = Rotation;
 }
 
-reliable server function ServerGetUnloadInfo( byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload )
+reliable server function ServerGetUnloadInfo(byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload)
 {
 	OnRequestUnload(Self,CallID,PerkClass,bUnload);
 }
-delegate OnRequestUnload( ExtPlayerController PC, byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload );
+delegate OnRequestUnload(ExtPlayerController PC, byte CallID, class<Ext_PerkBase> PerkClass, bool bUnload);
 
-reliable client function ClientGotUnloadInfo( byte CallID, byte Code, optional int DataA, optional int DataB )
+reliable client function ClientGotUnloadInfo(byte CallID, byte Code, optional int DataA, optional int DataB)
 {
 	OnClientGetResponse(CallID,Code,DataA,DataB);
 }
-delegate OnClientGetResponse( byte CallID, byte Code, int DataA, int DataB );
-function DefClientResponse( byte CallID, byte Code, int DataA, int DataB );
+delegate OnClientGetResponse(byte CallID, byte Code, int DataA, int DataB);
+function DefClientResponse(byte CallID, byte Code, int DataA, int DataB);
 
-reliable client function ClientUsedAmmo( Ext_T_SupplierInteract S )
+reliable client function ClientUsedAmmo(Ext_T_SupplierInteract S)
 {
-	if( Pawn!=None && S!=None )
+	if(Pawn!=None && S!=None)
 		S.UsedOnClient(Pawn);
 }
 
@@ -657,31 +657,31 @@ unreliable server function ServerNextSpectateMode()
 {
 	local Pawn HumanViewTarget;
 
-	if( !IsSpectating() )
+	if(!IsSpectating())
 		return;
 
 	// switch to roaming if human viewtarget is dead
-	if( CurrentSpectateMode != SMODE_Roaming )
+	if(CurrentSpectateMode != SMODE_Roaming)
 	{
 		HumanViewTarget = Pawn(ViewTarget);
-		if( HumanViewTarget == none || !HumanViewTarget.IsAliveAndWell() )
+		if(HumanViewTarget == none || !HumanViewTarget.IsAliveAndWell())
 		{
 			SpectateRoaming();
 			return;
 		}
 	}
 
-	switch ( CurrentSpectateMode )
+	switch (CurrentSpectateMode)
 	{
 	case SMODE_PawnFreeCam:
-		SpectatePlayer( SMODE_PawnThirdPerson );
+		SpectatePlayer(SMODE_PawnThirdPerson);
 		break;
 	case SMODE_PawnThirdPerson:
-		SpectatePlayer( SMODE_PawnFirstPerson );
+		SpectatePlayer(SMODE_PawnFirstPerson);
 		break;
 	case SMODE_PawnFirstPerson:
 	case SMODE_Roaming:
-		SpectatePlayer( SMODE_PawnFreeCam );
+		SpectatePlayer(SMODE_PawnFreeCam);
 		break;
 	}
 }
@@ -691,37 +691,37 @@ function ViewAPlayer(int dir)
 	local PlayerReplicationInfo PRI;
 
 	PRI = GetNextViewablePlayer(dir);
-	if ( PRI!=None )
+	if (PRI!=None)
 	{
 		SetViewTarget(PRI);
 		ClientMessage("Now viewing from "$PRI.GetHumanReadableName());
 	}
 }
 
-exec function ViewPlayerID( int ID )
+exec function ViewPlayerID(int ID)
 {
 	ServerViewPlayerID(ID);
 }
-reliable server function ServerViewPlayerID( int ID )
+reliable server function ServerViewPlayerID(int ID)
 {
 	local PlayerReplicationInfo PRI;
 
-	if( !IsSpectating() )
+	if(!IsSpectating())
 		return;
 
 	// Find matching player by ID
 	foreach WorldInfo.GRI.PRIArray(PRI)
 	{
-		if ( PRI.PlayerID==ID )
+		if (PRI.PlayerID==ID)
 			break;
 	}
-	if( PRI==None || PRI.PlayerID!=ID || Controller(PRI.Owner)==None || Controller(PRI.Owner).Pawn==None || !WorldInfo.Game.CanSpectate(self, PRI) )
+	if(PRI==None || PRI.PlayerID!=ID || Controller(PRI.Owner)==None || Controller(PRI.Owner).Pawn==None || !WorldInfo.Game.CanSpectate(self, PRI))
 		return;
 	
 	SetViewTarget(PRI);
 	ClientMessage("Now viewing from "$PRI.GetHumanReadableName());
-	if( CurrentSpectateMode==SMODE_Roaming )
-		SpectatePlayer( SMODE_PawnFreeCam );
+	if(CurrentSpectateMode==SMODE_Roaming)
+		SpectatePlayer(SMODE_PawnFreeCam);
 }
 
 reliable server function SpectateRoaming()
@@ -731,14 +731,14 @@ reliable server function SpectateRoaming()
 	P = Pawn(ViewTarget);
 	ClientMessage("Viewing from own camera.");
 	Super.SpectateRoaming();
-	if( P!=None )
+	if(P!=None)
 	{
 		SetLocation(P.Location);
 		SetRotation(P.GetViewRotation());
 		ClientSetLocation(Location,Rotation);
 	}
 }
-reliable client function ClientSetLocation( vector NewLocation, rotator NewRotation )
+reliable client function ClientSetLocation(vector NewLocation, rotator NewRotation)
 {
 	SetLocation(NewLocation);
 	Super.ClientSetLocation(NewLocation,NewRotation);
@@ -746,15 +746,15 @@ reliable client function ClientSetLocation( vector NewLocation, rotator NewRotat
 
 unreliable server function ServerPlayLevelUpDialog()
 {
-	if( NextCommTime<WorldInfo.TimeSeconds )
+	if(NextCommTime<WorldInfo.TimeSeconds)
 	{
 		NextCommTime = WorldInfo.TimeSeconds+2.f;
 		Super.ServerPlayLevelUpDialog();
 	}
 }
-unreliable server function ServerPlayVoiceCommsDialog( int CommsIndex )
+unreliable server function ServerPlayVoiceCommsDialog(int CommsIndex)
 {
-	if( NextCommTime<WorldInfo.TimeSeconds )
+	if(NextCommTime<WorldInfo.TimeSeconds)
 	{
 		NextCommTime = WorldInfo.TimeSeconds+2.f;
 		Super.ServerPlayVoiceCommsDialog(CommsIndex);
@@ -763,19 +763,19 @@ unreliable server function ServerPlayVoiceCommsDialog( int CommsIndex )
 
 // The player wants to fire.
 // Setup bFire/bAltFire so that Auto-Fire trait will work.
-exec function StartFire( optional byte FireModeNum )
+exec function StartFire(optional byte FireModeNum)
 {
-	if( FireModeNum==0 )
+	if(FireModeNum==0)
 		bFire = 1;
-	else if( FireModeNum==1 )
+	else if(FireModeNum==1)
 		bAltFire = 1;
 	Super.StartFire(FireModeNum);
 }
-exec function StopFire( optional byte FireModeNum )
+exec function StopFire(optional byte FireModeNum)
 {
-	if( FireModeNum==0 )
+	if(FireModeNum==0)
 		bFire = 0;
-	else if( FireModeNum==1 )
+	else if(FireModeNum==1)
 		bAltFire = 0;
 	Super.StopFire(FireModeNum);
 }
@@ -791,7 +791,7 @@ state Spectating
 	{
 		Acceleration = Normal(NewAccel) * SpectatorCameraSpeed;
 		Velocity = Acceleration;
-		MoveSmooth( Acceleration * DeltaTime );
+		MoveSmooth(Acceleration * DeltaTime);
 	}
 	function PlayerMove(float DeltaTime)
 	{
@@ -808,7 +808,7 @@ state Spectating
 			ReplicateMove(DeltaTime, Acceleration, DCLICK_None, rot(0,0,0));
 			
 			// only done for clients, as LastActiveTime only affects idle kicking
-			if( (!IsZero(Acceleration) || OldRotation != Rotation) && LastUpdateSpectatorActiveTime<WorldInfo.TimeSeconds )
+			if((!IsZero(Acceleration) || OldRotation != Rotation) && LastUpdateSpectatorActiveTime<WorldInfo.TimeSeconds)
 			{
 				LastUpdateSpectatorActiveTime = WorldInfo.TimeSeconds+UpdateSpectatorActiveInterval;
 				ServerSetSpectatorActive();
@@ -826,42 +826,42 @@ state Spectating
 	exec function SpectatePreviousPlayer()
 	{
 		ServerViewNextPlayer();
-		if( Role == ROLE_Authority )
+		if(Role == ROLE_Authority)
 		{
 			NotifyChangeSpectateViewTarget();
 		}
 	}
 	unreliable server function ServerViewNextPlayer()
 	{
-		if( CurrentSpectateMode==SMODE_Roaming )
+		if(CurrentSpectateMode==SMODE_Roaming)
 		{
 			CurrentSpectateMode = SMODE_PawnFreeCam;
 			SetCameraMode('FreeCam');
 		}
 		Global.ServerViewNextPlayer();
 	}
-	reliable client function ClientSetCameraMode( name NewCamMode )
+	reliable client function ClientSetCameraMode(name NewCamMode)
 	{
 		Global.ClientSetCameraMode(NewCamMode);
-		if( NewCamMode=='FirstPerson' && ViewTarget==Self && MyGFxHUD!=None )
+		if(NewCamMode=='FirstPerson' && ViewTarget==Self && MyGFxHUD!=None)
 			MyGFxHUD.SpectatorInfoWidget.SetSpectatedKFPRI(None); // Possibly went to first person, hide player info.
 	}
 }
 
 // Feign death:
-function EnterRagdollMode( bool bEnable )
+function EnterRagdollMode(bool bEnable)
 {
-	if( bEnable )
+	if(bEnable)
 		GoToState('RagdollMove');
-	else if( Pawn==None )
+	else if(Pawn==None)
 		GotoState('Dead');
-	else if ( Pawn.PhysicsVolume.bWaterVolume )
+	else if (Pawn.PhysicsVolume.bWaterVolume)
 		GotoState(Pawn.WaterMovementState);
 	else GotoState(Pawn.LandMovementState);
 }
 
 // Optional dramatic end-game camera!
-simulated function EndGameCamFocus( vector Pos )
+simulated function EndGameCamFocus(vector Pos)
 {
 	local vector CamPos;
 	local rotator CamRot;
@@ -873,14 +873,14 @@ simulated function EndGameCamFocus( vector Pos )
 	EndGameCamRot = CamRot;
 	EndGameCamTimer = WorldInfo.RealTimeSeconds;
 	
-	if( LocalPlayer(Player)==None )
+	if(LocalPlayer(Player)==None)
 		ClientFocusView(Pos);
-	else if( KFPawn(ViewTarget)!=None )
+	else if(KFPawn(ViewTarget)!=None)
 		KFPawn(ViewTarget).SetMeshVisibility(true);
 }
-reliable client function ClientFocusView( vector Pos )
+reliable client function ClientFocusView(vector Pos)
 {
-	if( WorldInfo.NetMode==NM_Client )
+	if(WorldInfo.NetMode==NM_Client)
 		EndGameCamFocus(Pos);
 }
 final function bool CalcEndGameCam()
@@ -888,15 +888,15 @@ final function bool CalcEndGameCam()
 	local float T,RT;
 	local vector HL,HN;
 
-	if( LastPlayerCalcView==WorldInfo.TimeSeconds )
+	if(LastPlayerCalcView==WorldInfo.TimeSeconds)
 		return true;
 
 	T = WorldInfo.RealTimeSeconds-EndGameCamTimer;
 	
-	if( T>=20.f ) // Finished view.
+	if(T>=20.f) // Finished view.
 	{
 		bEndGameCamFocus = false;
-		if( LocalPlayer(Player)!=None && KFPawn(ViewTarget)!=None )
+		if(LocalPlayer(Player)!=None && KFPawn(ViewTarget)!=None)
 			KFPawn(ViewTarget).SetMeshVisibility(!Global.UsingFirstPersonCamera());
 		return false;
 	}
@@ -905,17 +905,17 @@ final function bool CalcEndGameCam()
 
 	CalcViewLocation.Z = 1.f;
 	RT = WorldInfo.RealTimeSeconds;
-	if( T<4.f )
+	if(T<4.f)
 		RT += (4.f-T);
 	CalcViewLocation.X = Sin(RT*0.08f);
 	CalcViewLocation.Y = Cos(RT*0.08f);
 	CalcViewLocation = EndGameCamFocusPos[0] + Normal(CalcViewLocation)*350.f;
-	if( Trace(HL,HN,CalcViewLocation,EndGameCamFocusPos[0],false,vect(16,16,16))!=None )
+	if(Trace(HL,HN,CalcViewLocation,EndGameCamFocusPos[0],false,vect(16,16,16))!=None)
 		CalcViewLocation = HL;
 
 	CalcViewRotation = rotator(EndGameCamFocusPos[0]-CalcViewLocation);
 
-	if( T<4.f && LocalPlayer(Player)!=None ) // Zoom in to epic death.
+	if(T<4.f && LocalPlayer(Player)!=None) // Zoom in to epic death.
 	{
 		T*=0.25;
 		CalcViewLocation = CalcViewLocation*T + EndGameCamFocusPos[1]*(1.f-T);
@@ -923,9 +923,9 @@ final function bool CalcEndGameCam()
 	}
 	return true;
 }
-simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
+simulated event GetPlayerViewPoint(out vector out_Location, out Rotator out_Rotation)
 {
-	if( bEndGameCamFocus && CalcEndGameCam() )
+	if(bEndGameCamFocus && CalcEndGameCam())
 	{
 		out_Location = CalcViewLocation;
 		out_Rotation = CalcViewRotation;
@@ -935,7 +935,7 @@ simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rot
 }
 exec function DebugRenderMode()
 {
-	if( WorldInfo.NetMode!=NM_Client )
+	if(WorldInfo.NetMode!=NM_Client)
 	{
 		bRenderModes = !bRenderModes;
 		SaveConfig();
@@ -944,9 +944,9 @@ exec function DebugRenderMode()
 }
 
 // Stats traffic.
-reliable server function ServerRequestStats( byte ListNum )
+reliable server function ServerRequestStats(byte ListNum)
 {
-	if( ListNum<3 )
+	if(ListNum<3)
 	{
 		TransitListNum = ListNum;
 		TransitIndex = 0;
@@ -955,29 +955,29 @@ reliable server function ServerRequestStats( byte ListNum )
 }
 function SendNextList()
 {
-	if( !OnClientGetStat(Self,TransitListNum,TransitIndex++) )
+	if(!OnClientGetStat(Self,TransitListNum,TransitIndex++))
 	{
 		ClientGetStat(TransitListNum,true);
 		ClearTimer('SendNextList');
 	}
 }
-simulated reliable client function ClientGetStat( byte ListNum, bool bFinal, optional string N, optional UniqueNetId ID, optional int V )
+simulated reliable client function ClientGetStat(byte ListNum, bool bFinal, optional string N, optional UniqueNetId ID, optional int V)
 {
 	OnClientReceiveStat(ListNum,bFinal,N,ID,V);
 }
 
-Delegate OnClientReceiveStat( byte ListNum, bool bFinal, string N, UniqueNetId ID, int V );
-Delegate bool OnClientGetStat( ExtPlayerController PC, byte ListNum, int StatIndex );
+Delegate OnClientReceiveStat(byte ListNum, bool bFinal, string N, UniqueNetId ID, int V);
+Delegate bool OnClientGetStat(ExtPlayerController PC, byte ListNum, int StatIndex);
 
-reliable server function ChangeSpectateMode( bool bSpectator )
+reliable server function ChangeSpectateMode(bool bSpectator)
 {
 	OnSpectateChange(Self,bSpectator);
 }
-simulated reliable client function ClientSpectateMode( bool bSpectator )
+simulated reliable client function ClientSpectateMode(bool bSpectator)
 {
 	UpdateURL("SpectatorOnly",(bSpectator ? "1" : "0"),false);
 }
-Delegate OnSpectateChange( ExtPlayerController PC, bool bSpectator );
+Delegate OnSpectateChange(ExtPlayerController PC, bool bSpectator);
 
 state RagdollMove extends PlayerWalking
 {
@@ -987,58 +987,58 @@ Ignores NotifyPhysicsVolumeChange,ServerCamera,ResetCameraMode;
 	{
 		FOVAngle = DesiredFOV;
 
-		if( WorldInfo.NetMode!=NM_Client )
+		if(WorldInfo.NetMode!=NM_Client)
 			SetCameraMode('ThirdPerson');
 	}
 	event EndState(Name NewState)
 	{
 		FOVAngle = DesiredFOV;
 
-		if( Pawn!=none && NewState!='Dead' )
+		if(Pawn!=none && NewState!='Dead')
 			Global.SetCameraMode('FirstPerson');
 	}
-	function PlayerMove( float DeltaTime )
+	function PlayerMove(float DeltaTime)
 	{
 		local rotator			OldRotation;
 
-		if( Pawn == None )
+		if(Pawn == None)
 			GotoState('Dead');
 		else
 		{
 			// Update rotation.
 			OldRotation = Rotation;
-			UpdateRotation( DeltaTime );
+			UpdateRotation(DeltaTime);
 			bDoubleJump = false;
 			bPressedJump = false;
 
-			if( Role < ROLE_Authority ) // then save this move and replicate it
+			if(Role < ROLE_Authority) // then save this move and replicate it
 				ReplicateMove(DeltaTime, vect(0,0,0), DCLICK_None, OldRotation - Rotation);
 			else ProcessMove(DeltaTime, vect(0,0,0), DCLICK_None, OldRotation - Rotation);
 		}
 	}
-	simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
+	simulated event GetPlayerViewPoint(out vector out_Location, out Rotator out_Rotation)
 	{
 		local Actor TheViewTarget;
 		local vector HL,HN,EndOffset;
 
-		if( bEndGameCamFocus && CalcEndGameCam() )
+		if(bEndGameCamFocus && CalcEndGameCam())
 		{
 			out_Location = CalcViewLocation;
 			out_Rotation = CalcViewRotation;
 			return;
 		}
-		if( Global.UsingFirstPersonCamera() )
+		if(Global.UsingFirstPersonCamera())
 			Global.GetPlayerViewPoint(out_Location,out_Rotation);
 		else
 		{
 			out_Rotation = Rotation;
 			TheViewTarget = GetViewTarget();
-			if( TheViewTarget==None )
+			if(TheViewTarget==None)
 				TheViewTarget = Self;
 			out_Location = TheViewTarget.Location;
 			EndOffset = out_Location-vector(Rotation)*250.f;
 			
-			if( TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None )
+			if(TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None)
 				out_Location = HL;
 			else out_Location = EndOffset;
 		}
@@ -1049,21 +1049,21 @@ state PlayerWalking
 {
 ignores SeePlayer, HearNoise, Bump;
 
-	function PlayerMove( float DeltaTime )
+	function PlayerMove(float DeltaTime)
 	{
 		local vector			X,Y,Z, NewAccel;
 		local eDoubleClickDir	DoubleClickMove;
 		local rotator			OldRotation;
 		local bool				bSaveJump;
 
-		if( Pawn == None )
+		if(Pawn == None)
 		{
 			GotoState('Dead');
 		}
 		else
 		{
 			GetAxes(Pawn.Rotation,X,Y,Z);
-			if( VSZombie(Pawn)!=None )
+			if(VSZombie(Pawn)!=None)
 				VSZombie(Pawn).ModifyPlayerInput(Self,DeltaTime);
 
 			// Update acceleration.
@@ -1076,14 +1076,14 @@ ignores SeePlayer, HearNoise, Bump;
 				AdjustPlayerWalkingMoveAccel(NewAccel);
 			}
 
-			DoubleClickMove = PlayerInput.CheckForDoubleClickMove( DeltaTime/WorldInfo.TimeDilation );
+			DoubleClickMove = PlayerInput.CheckForDoubleClickMove(DeltaTime/WorldInfo.TimeDilation);
 
 			// Update rotation.
 			OldRotation = Rotation;
-			UpdateRotation( DeltaTime );
+			UpdateRotation(DeltaTime);
 			bDoubleJump = false;
 
-			if( bPressedJump && Pawn.CannotJumpNow() )
+			if(bPressedJump && Pawn.CannotJumpNow())
 			{
 				bSaveJump = true;
 				bPressedJump = false;
@@ -1093,7 +1093,7 @@ ignores SeePlayer, HearNoise, Bump;
 				bSaveJump = false;
 			}
 
-			if( Role < ROLE_Authority ) // then save this move and replicate it
+			if(Role < ROLE_Authority) // then save this move and replicate it
 			{
 				ReplicateMove(DeltaTime, NewAccel, DoubleClickMove, OldRotation - Rotation);
 			}
@@ -1112,8 +1112,8 @@ state Dead
 	{
 		local KFPlayerInput KFPI;
 
-		SetTimer( 5.f, false, nameof(StartSpectate) );
-		if ( (Pawn != None) && (Pawn.Controller == self) )
+		SetTimer(5.f, false, nameof(StartSpectate));
+		if ((Pawn != None) && (Pawn.Controller == self))
 			Pawn.Controller = None;
 		Pawn = None;
 		FOVAngle = DesiredFOV;
@@ -1122,7 +1122,7 @@ state Dead
 		FindGoodView();
 		CleanOutSavedMoves();
 		
-		if( KFPawn(ViewTarget)!=none )
+		if(KFPawn(ViewTarget)!=none)
 		{
 			KFPawn(ViewTarget).SetMeshVisibility(true);
 		}
@@ -1137,18 +1137,18 @@ state Dead
 		if(KFPI != none)
 			KFPI.HideVoiceComms();
 
-		if( MyGFxManager != none )
+		if(MyGFxManager != none)
 			MyGFxManager.CloseMenus();
 
-		if(MyGFxHUD != none )
+		if(MyGFxHUD != none)
 			MyGFxHUD.ClearBuffIcons();
 	}
-	simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
+	simulated event GetPlayerViewPoint(out vector out_Location, out Rotator out_Rotation)
 	{
 		local Actor TheViewTarget;
 		local vector HL,HN,EndOffset;
 
-		if( bEndGameCamFocus && CalcEndGameCam() )
+		if(bEndGameCamFocus && CalcEndGameCam())
 		{
 			out_Location = CalcViewLocation;
 			out_Rotation = CalcViewRotation;
@@ -1156,12 +1156,12 @@ state Dead
 		}
 		out_Rotation = Rotation;
 		TheViewTarget = GetViewTarget();
-		if( TheViewTarget==None )
+		if(TheViewTarget==None)
 			TheViewTarget = Self;
 		out_Location = TheViewTarget.Location;
 		EndOffset = out_Location-vector(Rotation)*400.f;
 		
-		if( TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None )
+		if(TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None)
 			out_Location = HL;
 		else out_Location = EndOffset;
 	}

@@ -5,14 +5,14 @@ var SkeletalMeshComponent Mesh;
 var AnimNodeSlot HandsAnimNode,BodyNode;
 var name IdleAnimName;
 
-simulated function InitHands( SkeletalMeshComponent C )
+simulated function InitHands(SkeletalMeshComponent C)
 {
 	Mesh.SetSkeletalMesh(C.SkeletalMesh);
 	Mesh.AnimSets = C.AnimSets;
 	HandsAnimNode = AnimNodeSlot(Mesh.FindAnimNode('ArmsSlot'));
 	BodyNode = AnimNodeSlot(Mesh.FindAnimNode('BodySlot'));
 }
-simulated final function SetIdleAnim( name N )
+simulated final function SetIdleAnim(name N)
 {
 	IdleAnimName = N;
 	Timer();
@@ -21,7 +21,7 @@ simulated function Timer()
 {
 	HandsAnimNode.PlayCustomAnim(IdleAnimName,1.f,0.15,,true);
 }
-simulated final function PlayHandsAnim( name N, optional float Rate=1.f )
+simulated final function PlayHandsAnim(name N, optional float Rate=1.f)
 {
 	SetTimer(HandsAnimNode.PlayCustomAnim(N,Rate,0.05,,,true),false);
 }

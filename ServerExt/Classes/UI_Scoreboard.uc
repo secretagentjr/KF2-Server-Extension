@@ -79,11 +79,11 @@ function ShowMenu()
 	Owner.bAbsorbInput = false;
 	PC = ExtPlayerController(GetPlayer());
 	bAdmin = PC!=None && (PC.WorldInfo.NetMode!=NM_Client || (PC.PlayerReplicationInfo!=None && PC.PlayerReplicationInfo.bAdmin));
-	if( PC!=None && (InitAdminSize!=PC.AdminCommands.Length || !bAdmin) )
+	if(PC!=None && (InitAdminSize!=PC.AdminCommands.Length || !bAdmin))
 	{
 		InitAdminSize = (bAdmin ? PC.AdminCommands.Length : 0);
 		PlayerContext.ItemRows.Length = 4+InitAdminSize;
-		for( i=0; i<InitAdminSize; ++i )
+		for(i=0; i<InitAdminSize; ++i)
 			PlayerContext.ItemRows[4+i].Text = PC.AdminCommands[i].Info;
 	}
 }
@@ -97,13 +97,13 @@ function CloseMenu()
 	bShowSpectatorsOnly = false;
 }
 
-function bool InOrder( PlayerReplicationInfo A, PlayerReplicationInfo B )
+function bool InOrder(PlayerReplicationInfo A, PlayerReplicationInfo B)
 {
-	if( A.bOnlySpectator!=B.bOnlySpectator )
+	if(A.bOnlySpectator!=B.bOnlySpectator)
 		return B.bOnlySpectator;
-	if( A.Kills!=B.Kills )
+	if(A.Kills!=B.Kills)
 		return (A.Kills<B.Kills);
-	if( A.Score!=B.Score )
+	if(A.Score!=B.Score)
 		return (A.Score<B.Score);
 	return (A.PlayerName<B.PlayerName);
 }
@@ -117,19 +117,19 @@ function DrawMenu()
 	local byte DefFont;
 	
 	PC = GetPlayer();
-	if( KFGRI==None )
+	if(KFGRI==None)
 	{
 		KFGRI = KFGameReplicationInfo(PC.WorldInfo.GRI);
-		if( KFGRI==None )
+		if(KFGRI==None)
 			return;
 	}
 	bMeAdmin = (PC.WorldInfo.NetMode!=NM_Client || (ExtPlayerReplicationInfo(PC.PlayerReplicationInfo)!=None && ExtPlayerReplicationInfo(PC.PlayerReplicationInfo).AdminType<=1));
 
 	// Sort player list.
-	for( i=(KFGRI.PRIArray.Length-1); i>0; --i )
+	for(i=(KFGRI.PRIArray.Length-1); i>0; --i)
 	{
-		for( j=i-1; j>=0; --j )
-			if( !InOrder(KFGRI.PRIArray[i],KFGRI.PRIArray[j]) )
+		for(j=i-1; j>=0; --j)
+			if(!InOrder(KFGRI.PRIArray[i],KFGRI.PRIArray[j]))
 			{
 				PRI = KFGRI.PRIArray[i];
 				KFGRI.PRIArray[i] = KFGRI.PRIArray[j];
@@ -140,30 +140,30 @@ function DrawMenu()
 	// Check players.
 	PlayerIndex = -1;
 	NumPlayer = 0;
-	for( i=(KFGRI.PRIArray.Length-1); i>=0; --i )
+	for(i=(KFGRI.PRIArray.Length-1); i>=0; --i)
 	{
 		KPRI = ExtPlayerReplicationInfo(KFGRI.PRIArray[i]);
-		if( KPRI==None || KPRI.bHiddenUser )
+		if(KPRI==None || KPRI.bHiddenUser)
 			continue;
-		if( KPRI.bOnlySpectator )
+		if(KPRI.bOnlySpectator)
 		{
 			++NumSpec;
 			continue;
 		}
-		if( KPRI.PlayerHealth>0 && KPRI.PlayerHealthPercent>0 && KPRI.GetTeamNum()==0 )
+		if(KPRI.PlayerHealth>0 && KPRI.PlayerHealthPercent>0 && KPRI.GetTeamNum()==0)
 			++NumAlivePlayer;
 		++NumPlayer;
 	}
 	
 	PRIList.Length = (bShowSpectatorsOnly ? NumSpec : NumPlayer);
 	j = PRIList.Length;
-	for( i=(KFGRI.PRIArray.Length-1); i>=0; --i )
+	for(i=(KFGRI.PRIArray.Length-1); i>=0; --i)
 	{
 		KPRI = ExtPlayerReplicationInfo(KFGRI.PRIArray[i]);
-		if( KPRI!=None && bShowSpectatorsOnly==KPRI.bOnlySpectator )
+		if(KPRI!=None && bShowSpectatorsOnly==KPRI.bOnlySpectator)
 		{
 			PRIList[--j] = KPRI;
-			if( KPRI==PC.PlayerReplicationInfo )
+			if(KPRI==PC.PlayerReplicationInfo)
 				PlayerIndex = j;
 		}
 	}
@@ -175,7 +175,7 @@ function DrawMenu()
 	YHeight = YL*5.f;
 	
 	// Draw header.
-	if( Canvas.ClipX<1000 )
+	if(Canvas.ClipX<1000)
 	{
 		XPos = Canvas.ClipX*0.2;
 		XScale = Canvas.ClipX*0.6;
@@ -199,7 +199,7 @@ function DrawMenu()
 	Canvas.SetPos(XPos+26,Y);
 	Canvas.DrawText(KFGRI.ServerName,,FontScalar,FontScalar);
 
-	if( KFGRI.GameClass!=None )
+	if(KFGRI.GameClass!=None)
 	{
 		Y+=YL;
 		Canvas.SetPos(XPos+26,Y);
@@ -225,7 +225,7 @@ function DrawMenu()
 	// Scoreboard title line.
 	Canvas.Font = Owner.CurrentStyle.PickFont(DefFont,FontScalar);
 	YL = Owner.CurrentStyle.DefaultHeight;
-	if( Canvas.ClipX<1000 )
+	if(Canvas.ClipX<1000)
 	{
 		XPos = Canvas.ClipX*0.175;
 		XScale = Canvas.ClipX*0.65;
@@ -237,7 +237,7 @@ function DrawMenu()
 	}
 	YPos += YHeight*1.05;
 	YHeight = YL;
-	if( bShowSpectatorsOnly )
+	if(bShowSpectatorsOnly)
 		Canvas.SetDrawColor(32,32,128,FrameOpacity);
 	else Canvas.SetDrawColor(128,32,32,FrameOpacity);
 	Owner.CurrentStyle.DrawRectBox(XPos,YPos,XScale,YHeight,16,2);
@@ -253,7 +253,7 @@ function DrawMenu()
 	Y = YPos+4;
 	Canvas.SetPos(XPos+18,Y);
 	Canvas.DrawText(HeaderPlayerText,,FontScalar,FontScalar);
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
 		Canvas.SetPos(XPos+CashXPos,Y);
 		Canvas.DrawText(HeaderDoshText,,FontScalar,FontScalar);
@@ -266,12 +266,12 @@ function DrawMenu()
 	YPos+=(YHeight-1);
 	YHeight = (Canvas.ClipY*0.95) - YPos;
 	i = DefFont+2;
-	while( i>0 )
+	while(i>0)
 	{
 		Canvas.Font = Owner.CurrentStyle.PickFont(i,SBFontSize);
 		Canvas.TextSize("A",XL,SBFontHeight,SBFontSize,SBFontSize);
 		BoxHeight = SBFontHeight*2.f+ScoreboardSpacing;
-		if( (BoxHeight*PRIList.Length)<=YHeight )
+		if((BoxHeight*PRIList.Length)<=YHeight)
 			break;
 		--i;
 	}
@@ -290,17 +290,17 @@ function DrawMenu()
 	SBFont = Canvas.Font;
 }
 
-final function Texture2D FindAvatar( UniqueNetId ClientID )
+final function Texture2D FindAvatar(UniqueNetId ClientID)
 {
 	local string S;
 	
 	S = KFPlayerController(GetPlayer()).GetSteamAvatar(ClientID);
-	if( S=="" )
+	if(S=="")
 		return None;
 	return Texture2D(FindObject(S,class'Texture2D'));
 }
 
-final function DrawCenteredText( string S, float X, float Y, optional float Scale=1.f )
+final function DrawCenteredText(string S, float X, float Y, optional float Scale=1.f)
 {
 	local float XL,YL;
 
@@ -308,7 +308,7 @@ final function DrawCenteredText( string S, float X, float Y, optional float Scal
 	Canvas.SetPos(X-(XL*Scale*0.5),Y);
 	Canvas.DrawText(S,,Scale,Scale);
 }
-static final function string FormatTimeSM( float Sec )
+static final function string FormatTimeSM(float Sec)
 {
 	local int Seconds,Minutes;
 
@@ -320,13 +320,13 @@ static final function string FormatTimeSM( float Sec )
 	return Minutes$":"$(Seconds<10 ? "0"$Seconds : string(Seconds));
 }
 
-function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )
+function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local ExtPlayerReplicationInfo PRI;
 	local float XPos,YPos,XL,YL;
 	local string S;
 	
-	if( Index==0 )
+	if(Index==0)
 	{
 		// Setup font info.
 		C.Font = SBFont;
@@ -336,51 +336,51 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	bFocus = bFocus || (bHasSelectedPlayer && RightClickPlayer==PRI);
 	
 	// Draw name entry background.
-	if( PRI.bOnlySpectator ) // Spectator - blue.
+	if(PRI.bOnlySpectator) // Spectator - blue.
 	{
-		if( bFocus )
+		if(bFocus)
 			C.SetDrawColor(86,86,212,FrameOpacity);
 		else C.SetDrawColor(48,48,164,FrameOpacity);
 	}
-	else if( PRI.Team==None ) // Unteamed - Grey.
+	else if(PRI.Team==None) // Unteamed - Grey.
 	{
-		if( bFocus )
+		if(bFocus)
 			C.SetDrawColor(86,86,86,FrameOpacity);
 		else C.SetDrawColor(48,48,48,FrameOpacity);
 	}
 	else
 	{
-		switch( PRI.Team.TeamIndex )
+		switch(PRI.Team.TeamIndex)
 		{
 		case 0: // Humans - Red.
-			if( bFocus )
+			if(bFocus)
 				C.SetDrawColor(160,48,48,FrameOpacity);
 			else C.SetDrawColor(128,32,32,FrameOpacity);
 			break;
 		default: // Rest - Green.
-			if( bFocus )
+			if(bFocus)
 				C.SetDrawColor(48,160,48,FrameOpacity);
 			else C.SetDrawColor(32,128,32,FrameOpacity);
 		}
 	}
-	if( PRI.PlayerHealth<=0 || PRI.PlayerHealthPercent<=0 )
+	if(PRI.PlayerHealth<=0 || PRI.PlayerHealthPercent<=0)
 		C.DrawColor = C.DrawColor*0.6;
 	Owner.CurrentStyle.DrawRectBox(0.f,YOffset,Width,Height-ScoreboardSpacing,10);
 	Height-=ScoreboardSpacing;
 	
 	// Draw health bg.
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
-		if( PRI.PlayerHealth<30 || PRI.PlayerHealthPercent<=0 ) // Chose color based on health.
+		if(PRI.PlayerHealth<30 || PRI.PlayerHealthPercent<=0) // Chose color based on health.
 			C.SetDrawColor(220,32,32,255);
-		else if( PRI.PlayerHealth<70 )
+		else if(PRI.PlayerHealth<70)
 			C.SetDrawColor(220,220,32,255);
 		else C.SetDrawColor(32,225,32,255);
 		Owner.CurrentStyle.DrawRectBox(6.f,YOffset+6,Height-12,Height-12,5);
 	}
 
 	// Avatar
-	if( PRI.Avatar!=None )
+	if(PRI.Avatar!=None)
 	{
 		C.SetDrawColor(255,255,255,255);
 		C.SetPos(Height+4,YOffset+4);
@@ -392,36 +392,36 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		XPos = Height+4;
 
 		// Try to obtain avatar.
-		if( !PRI.bBot )
+		if(!PRI.bBot)
 			PRI.Avatar = FindAvatar(PRI.UniqueId);
 	}
 	
 	// Name
 	C.SetPos(XPos,YOffset+2);
-	if( PlayerIndex==Index )
+	if(PlayerIndex==Index)
 		C.SetDrawColor(128,255,128,255);
 	else C.DrawColor = SBTextColor;
 	YPos = SBFontSize;
 	S = PRI.TaggedPlayerName;
-	if( PRI.ShowAdminName() )
+	if(PRI.ShowAdminName())
 	{
 		S = S$" ("$PRI.GetAdminNameAbr()$")";
 		C.DrawColor = PRI.GetAdminColorC();
 	}
-	else if( PRI.bIsDev )
+	else if(PRI.bIsDev)
 	{
 		S = S$" (D)";
 		C.DrawColor = MakeColor(130,255,235,255);
 	}
-	if( bMeAdmin && PRI.FixedData>0 )
+	if(bMeAdmin && PRI.FixedData>0)
 	{
 		C.DrawColor = MakeColor(255,0,0,255);
 		S = S$" -"$PRI.GetDesc();
 	}
-	while( true ) // Make sure too long name doesn't overleap.
+	while(true) // Make sure too long name doesn't overleap.
 	{
 		C.TextSize(S,XL,YL,YPos,YPos);
-		if( (C.CurX+XL)<CashXPos )
+		if((C.CurX+XL)<CashXPos)
 			break;
 		YPos*=0.9;
 	}
@@ -432,9 +432,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	Owner.CurrentStyle.DrawRectBox(CashXPos-4,YOffset+4,Width-CashXPos-8,Height-8,6);
 	
 	// Perk
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
-		if( PRI.ECurrentPerk!=None )
+		if(PRI.ECurrentPerk!=None)
 		{
 			// Icon.
 			C.DrawColor = PRI.HUDPerkColor;
@@ -444,7 +444,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			// Name.
 			S = PRI.GetPerkLevelStr()@PRI.ECurrentPerk.Default.PerkName;
 		}
-		else if( PRI.bBot && PRI.CurrentPerkClass!=None )
+		else if(PRI.bBot && PRI.CurrentPerkClass!=None)
 		{
 			// Icon.
 			C.DrawColor = SBTextColor;
@@ -461,15 +461,15 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		}
 		YPos = SBFontSize*0.9;
 		C.SetPos(XPos+Height*0.5,YOffset+Height*0.495);
-		if( PRI.RespawnCounter>=0 )
+		if(PRI.RespawnCounter>=0)
 		{
 			C.DrawColor = SBTextColor;
 			S = RespawnText$": "$FormatTimeSM(PRI.RespawnCounter);
 		}
-		while( true ) // Make sure too long name doesn't overleap.
+		while(true) // Make sure too long name doesn't overleap.
 		{
 			C.TextSize(S,XL,YL,YPos,YPos);
-			if( (C.CurX+XL)<CashXPos )
+			if((C.CurX+XL)<CashXPos)
 				break;
 			YPos*=0.8;
 		}
@@ -479,7 +479,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	// Cash
 	C.DrawColor = SBTextColor;
 	YPos = YOffset+(Height-SBFontHeight)*0.5;
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
 		C.SetPos(CashXPos,YPos);
 		C.DrawText(string(int(PRI.Score)),,SBFontSize,SBFontSize);
@@ -495,24 +495,24 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	DrawCenteredText(PRI.bBot ? BotText : string(PRI.Ping*4),PingXPos,YPos,SBFontSize);
 	
 	// Draw health.
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
-		if( HealthIcon!=None )
+		if(HealthIcon!=None)
 		{
 			C.SetPos(6+(Height-12)*0.25,YOffset+8);
 			C.DrawTile(HealthIcon,(Height-12)*0.5,(Height-12)*0.5,0,0,256,256);
 		}
-		if( PRI.PlayerHealth<=0 || PRI.PlayerHealthPercent<=0 )
+		if(PRI.PlayerHealth<=0 || PRI.PlayerHealthPercent<=0)
 			DrawCenteredText(DeadText,6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
 		else DrawCenteredText(string(PRI.PlayerHealth),6+(Height-12)*0.5,YOffset+Height*0.45,SBFontSize*0.95);
 	}
 }
-function ClickedPlayer( int Index, bool bRight, int MouseX, int MouseY )
+function ClickedPlayer(int Index, bool bRight, int MouseX, int MouseY)
 {
 	local PlayerController PC;
 	local int i;
 
-	if( !bRight || Index<0 )
+	if(!bRight || Index<0)
 		return;
 	bHasSelectedPlayer = true;
 	RightClickPlayer = PRIList[Index];
@@ -524,29 +524,29 @@ function ClickedPlayer( int Index, bool bRight, int MouseX, int MouseY )
 	PlayerContext.ItemRows[2].bDisabled = (PlayerIndex==Index || RightClickPlayer.bBot);
 	PlayerContext.ItemRows[2].Text = (PlayerContext.ItemRows[2].bDisabled || PC.IsPlayerMuted(RightClickPlayer.UniqueId)) ? UnmutePlayerText : MutePlayerText;
 
-	if( PlayerIndex==Index ) // Selected self.
+	if(PlayerIndex==Index) // Selected self.
 	{
-		for( i=4; i<PlayerContext.ItemRows.Length; ++i )
+		for(i=4; i<PlayerContext.ItemRows.Length; ++i)
 			PlayerContext.ItemRows[i].bDisabled = true;
 	}
 	else
 	{
-		for( i=4; i<PlayerContext.ItemRows.Length; ++i )
+		for(i=4; i<PlayerContext.ItemRows.Length; ++i)
 			PlayerContext.ItemRows[i].bDisabled = false;
 	}
 
 	PlayerContext.OpenMenu(Self);
 }
-function HidRightClickMenu( KFGUI_RightClickMenu M )
+function HidRightClickMenu(KFGUI_RightClickMenu M)
 {
 	bHasSelectedPlayer = false;
 }
-function SelectedRCItem( int Index )
+function SelectedRCItem(int Index)
 {
 	local PlayerController PC;
 
 	PC = GetPlayer();
-	switch( Index )
+	switch(Index)
 	{
 	case 0: // Spectate this player.
 		PC.ConsoleCommand("ViewPlayerID "$RightClickPlayer.PlayerID);
@@ -555,7 +555,7 @@ function SelectedRCItem( int Index )
 		OnlineSubsystemSteamworks(class'GameEngine'.static.GetOnlineSubsystem()).ShowProfileUI(0,,RightClickPlayer.UniqueId);
 		break;
 	case 2: // Mute voice.
-		if( !PC.IsPlayerMuted(RightClickPlayer.UniqueId) )
+		if(!PC.IsPlayerMuted(RightClickPlayer.UniqueId))
 		{
 			PC.ClientMessage(YouveMutedText$" "$RightClickPlayer.TaggedPlayerName);
 			PC.ClientMutePlayer(RightClickPlayer.UniqueId);
@@ -569,20 +569,20 @@ function SelectedRCItem( int Index )
 		}
 		break;
 	default:
-		if( Index>=4 )
+		if(Index>=4)
 			PC.ConsoleCommand("Admin "$ExtPlayerController(PC).AdminCommands[Index-4].Cmd@RightClickPlayer.PlayerID);
 	}
 }
 
-function ShowPlayerTooltip( int Index )
+function ShowPlayerTooltip(int Index)
 {
 	local ExtPlayerReplicationInfo PRI;
 	local string S;
 	
 	PRI = PRIList[Index];
-	if( PRI!=None )
+	if(PRI!=None)
 	{
-		if( ToolTipItem==None )
+		if(ToolTipItem==None)
 		{
 			ToolTipItem = New(None)Class'KFGUI_Tooltip';
 			ToolTipItem.Owner = Owner;
@@ -590,7 +590,7 @@ function ShowPlayerTooltip( int Index )
 			ToolTipItem.InitMenu();
 		}
 		S = PlayerText$": "$PRI.TaggedPlayerName$"|"$HealthText$": "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
-		if( PRI.ShowAdminName() )
+		if(PRI.ShowAdminName())
 			S = S$"|"$PRI.GetAdminName();
 		S = S$"|"$RClickForOptsText;
 		ToolTipItem.SetText(S);
@@ -601,9 +601,9 @@ function ShowPlayerTooltip( int Index )
 	}
 }
 
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Spec':
 		bShowSpectatorsOnly = !bShowSpectatorsOnly;

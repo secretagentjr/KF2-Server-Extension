@@ -11,7 +11,7 @@ function InitMenu()
 	YesButton.ToolTip=PrestigeButtonToolTip;
 }
 
-function SetupTo( Ext_PerkBase P )
+function SetupTo(Ext_PerkBase P)
 {
 	PerkToReset = P.Class;
 	WindowTitle = WindowTitleText$" "$P.PerkName;

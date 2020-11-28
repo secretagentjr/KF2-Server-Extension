@@ -11,18 +11,18 @@ function SetPerkFilterData(byte FilterIndex)
 
 	SetBool("filterVisibliity", true);
 
-	KFPC = ExtPlayerController( GetPC() );
-	if ( KFPC != none )
+	KFPC = ExtPlayerController(GetPC());
+	if (KFPC != none)
 	{
 		PrM = KFPC.ActivePerkManager;
 		KFPRI = KFPlayerReplicationInfo(KFPC.PlayerReplicationInfo);
-		if ( KFPRI != none && PrM!=None )
+		if (KFPRI != none && PrM!=None)
 		{
 			i = Max(PrM.UserPerks.Find(PrM.CurrentPerk),0);
 			SetInt("selectedIndex", i);
 
 			// Set the title of this filter based on either the perk or the off perk string
-			if( FilterIndex < PrM.UserPerks.Length )
+			if(FilterIndex < PrM.UserPerks.Length)
 			{
 				SetString("filterText", PrM.UserPerks[FilterIndex].PerkName);
 			}
@@ -34,16 +34,16 @@ function SetPerkFilterData(byte FilterIndex)
 		   	DataProvider = CreateArray();
 			for (i = 0; i < PrM.UserPerks.Length; i++)
 			{
-				FilterObject = CreateObject( "Object" );
+				FilterObject = CreateObject("Object");
 				FilterObject.SetString("source",  PrM.UserPerks[i].GetPerkIconPath(PrM.UserPerks[i].CurrentLevel));
-				DataProvider.SetElementObject( i, FilterObject );
+				DataProvider.SetElementObject(i, FilterObject);
 			}
 
-			FilterObject = CreateObject( "Object" );
+			FilterObject = CreateObject("Object");
 			FilterObject.SetString("source",  "img://"$class'KFGFxObject_TraderItems'.default.OffPerkIconPath);
-			DataProvider.SetElementObject( i, FilterObject );
+			DataProvider.SetElementObject(i, FilterObject);
 
-			SetObject( "filterSource", DataProvider );
+			SetObject("filterSource", DataProvider);
 		}
 	}
 }

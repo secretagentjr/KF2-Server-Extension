@@ -14,7 +14,7 @@ struct ExtMemberSlotStruct
 };
 var ExtMemberSlotStruct ExtMemberSlots[13];
 
-function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
+function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 {
 	local string PlayerName;	
 	local UniqueNetId AdminId;
@@ -27,20 +27,20 @@ function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
 	PlayerInfoObject = CreateObject("Object");
 	EPC = ExtPlayerController(GetPC());
 	
-	if( KFPRI != none )
+	if(KFPRI != none)
 	{
 		EPRI = ExtPlayerReplicationInfo(KFPRI);
 	}
-	if( OnlineLobby != none )
+	if(OnlineLobby != none)
 	{
-		OnlineLobby.GetLobbyAdmin( OnlineLobby.GetCurrentLobbyId(), AdminId);
+		OnlineLobby.GetLobbyAdmin(OnlineLobby.GetCurrentLobbyId(), AdminId);
 	}
 	bIsLeader = EPRI.UniqueId == AdminId;
 	PlayerInfoObject.SetBool("bLeader", bIsLeader);
 	bIsMyPlayer = EPC.PlayerReplicationInfo.UniqueId == KFPRI.UniqueId;
 	ExtMemberSlots[SlotIndex].PerkClass = EPRI.ECurrentPerk;
 	PlayerInfoObject.SetBool("myPlayer", bIsMyPlayer);
-	if( ExtMemberSlots[SlotIndex].PerkClass != none )
+	if(ExtMemberSlots[SlotIndex].PerkClass != none)
 	{
 		PerkIconObject = CreateObject("Object");
 		PerkIconObject.SetString("perkIcon", ExtMemberSlots[SlotIndex].PerkClass.static.GetPerkIconPath(EPRI.ECurrentPerkLevel));
@@ -48,11 +48,11 @@ function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
 		
 		PlayerInfoObject.SetString("perkLevel", string(EPRI.ECurrentPerkLevel));
 	}
-	if( !bIsMyPlayer )
+	if(!bIsMyPlayer)
 	{
 		PlayerInfoObject.SetBool("muted", EPC.IsPlayerMuted(EPRI.UniqueId));	
 	}
-	if( class'WorldInfo'.static.IsE3Build() )
+	if(class'WorldInfo'.static.IsE3Build())
 	{
 		PlayerName = EPRI.PlayerName;
 	}
@@ -61,7 +61,7 @@ function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
 		PlayerName = EPRI.PlayerName;
 	}
 	PlayerInfoObject.SetString("playerName", PlayerName);
-	if( class'WorldInfo'.static.IsConsoleBuild(CONSOLE_Orbis) )
+	if(class'WorldInfo'.static.IsConsoleBuild(CONSOLE_Orbis))
 	{
 		PlayerInfoObject.SetString("profileImageSource", "img://"$KFPC.GetPS4Avatar(PlayerName));
 	}
@@ -69,7 +69,7 @@ function GFxObject RefreshSlot( int SlotIndex, KFPlayerReplicationInfo KFPRI )
 	{
 		PlayerInfoObject.SetString("profileImageSource", "img://"$KFPC.GetSteamAvatar(EPRI.UniqueId));
 	}	
-	if( KFGRI != none )
+	if(KFGRI != none)
 	{
 		PlayerInfoObject.SetBool("ready", EPRI.bReadyToPlay && !KFGRI.bMatchHasBegun);
 	}

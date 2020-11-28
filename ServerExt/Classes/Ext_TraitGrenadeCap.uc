@@ -1,13 +1,13 @@
 Class Ext_TraitGrenadeCap extends Ext_TraitCarryCap;
 
-static function ApplyEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data );
-static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data );
+static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
+static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.PerkManager.SetGrenadeCap(Default.CarryAdds[Level-1]);
 }
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Perk.PerkManager.SetGrenadeCap(0);
 }

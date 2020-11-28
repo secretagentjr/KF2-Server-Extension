@@ -36,9 +36,9 @@ function InitMenu()
 	// Client settings
 	SettingsBox = KFGUI_ComponentList(FindComponentID('SettingsBox'));
 	
-	//AddCheckBox("Text-To-Speech:","Enable Text-to-Speech talk for player chat messages",'TTS', bool bDefault );
+	//AddCheckBox("Text-To-Speech:","Enable Text-to-Speech talk for player chat messages",'TTS', bool bDefault);
 	AddCheckBox(FirstPersonLegsText,FirstPersonLegsToolTip,'FP',class'ExtPlayerController'.Default.bShowFPLegs);
-	if( class'ExtPlayerController'.Default.bShowFPLegs )
+	if(class'ExtPlayerController'.Default.bShowFPLegs)
 		ExtPlayerController(GetPlayer()).ToggleFPBody(false);
 	AddCheckBox(HideNameBeaconsText,HideNameBeaconsToolTip,'NB',class'ExtPlayerController'.Default.bHideNameBeacons);
 	AddCheckBox(HideKillMessagesText,HideKillMessagesToolTip,'KM',class'ExtPlayerController'.Default.bHideKillMsg);
@@ -61,9 +61,9 @@ final function InitBehindviewKey()
 
 	// Check what keys now using!
 	IN = Owner.BackupInput;
-	for( i=0; i<IN.Bindings.Length; ++i )
+	for(i=0; i<IN.Bindings.Length; ++i)
 	{
-		if( IN.Bindings[i].Command~="Camera FirstPerson" )
+		if(IN.Bindings[i].Command~="Camera FirstPerson")
 		{
 			CurKeybind = IN.Bindings[i].Name;
 			break;
@@ -71,7 +71,7 @@ final function InitBehindviewKey()
 	}
 	KeyBindButton.ButtonText = (CurKeybind!='' ? string(CurKeybind) : NotSetText);
 }
-final function KFGUI_CheckBox AddCheckBox( string Cap, string TT, name IDN, bool bDefault )
+final function KFGUI_CheckBox AddCheckBox(string Cap, string TT, name IDN, bool bDefault)
 {
 	local KFGUI_CheckBox CB;
 	
@@ -84,7 +84,7 @@ final function KFGUI_CheckBox AddCheckBox( string Cap, string TT, name IDN, bool
 	CB.OnCheckChange = CheckChange;
 	return CB;
 }
-final function KFGUI_Button AddButton( string ButtonText, string Cap, string TT, name IDN, out KFGUI_TextLable Label )
+final function KFGUI_Button AddButton(string ButtonText, string Cap, string TT, name IDN, out KFGUI_TextLable Label)
 {
 	local KFGUI_Button CB;
 	local KFGUI_MultiComponent MC;
@@ -109,12 +109,12 @@ final function KFGUI_Button AddButton( string ButtonText, string Cap, string TT,
 	return CB;
 }
 
-function CheckChange( KFGUI_CheckBox Sender )
+function CheckChange(KFGUI_CheckBox Sender)
 {
 	local ExtPlayerController PC;
 	
 	PC = ExtPlayerController(GetPlayer());
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'FP':
 		PC.ToggleFPBody(Sender.bChecked);
@@ -150,9 +150,9 @@ function CheckChange( KFGUI_CheckBox Sender )
 	}
 	PC.SaveConfig();
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'KB':
 		KeyBindButton.ButtonText = ButtonPressButtonText;
@@ -168,11 +168,11 @@ function Timer()
 {
 	bDelayedSet = false;
 }
-function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad )
+function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
-	if( Event==IE_Pressed && !bDelayedSet && InStr(Caps(string(Key)),"MOUSE")==-1 )
+	if(Event==IE_Pressed && !bDelayedSet && InStr(Caps(string(Key)),"MOUSE")==-1)
 	{
-		if( Key!='Escape' )
+		if(Key!='Escape')
 			BindNewKey(Key,"Camera FirstPerson");
 		ReleaseKeyFocus();
 	}
@@ -184,32 +184,32 @@ function LostKeyFocus()
 	bSetKeybind = false;
 	InitBehindviewKey();
 }
-final function BindNewKey( name Key, string Cmd )
+final function BindNewKey(name Key, string Cmd)
 {
 	local int i;
 	local PlayerInput IN;
 
 	// First unbind old key.
 	IN = Owner.BackupInput;
-	if( CurKeybind!='' )
+	if(CurKeybind!='')
 	{
-		for( i=0; i<IN.Bindings.Length; ++i )
+		for(i=0; i<IN.Bindings.Length; ++i)
 		{
-			if( IN.Bindings[i].Name==CurKeybind )
+			if(IN.Bindings[i].Name==CurKeybind)
 				IN.Bindings.Remove(i,1);
 		}
 	}
 	
 	// Then bind a new key.
-	for( i=0; i<IN.Bindings.Length; ++i )
+	for(i=0; i<IN.Bindings.Length; ++i)
 	{
-		if( IN.Bindings[i].Name==Key )
+		if(IN.Bindings[i].Name==Key)
 		{
 			IN.Bindings[i].Command = Cmd;
 			break;
 		}
 	}
-	if( i==IN.Bindings.Length )
+	if(i==IN.Bindings.Length)
 		IN.Bindings.Length = i+1;
 	IN.Bindings[i].Name = Key;
 	IN.Bindings[i].Command = Cmd;
@@ -221,13 +221,13 @@ final function BindNewKey( name Key, string Cmd )
 	IN.Bindings[i].bIgnoreAlt = (Key=='F7');
 
 	// Check for any other duplicates of same key.
-	for( i=(i+1); i<IN.Bindings.Length; ++i )
+	for(i=(i+1); i<IN.Bindings.Length; ++i)
 	{
-		if( IN.Bindings[i].Name==Key )
+		if(IN.Bindings[i].Name==Key)
 			IN.Bindings.Remove(i,1);
 	}
 	
-	if( IN.Class!=Class'KFPlayerInput' )
+	if(IN.Class!=Class'KFPlayerInput')
 	{
 		Class'KFPlayerInput'.Default.Bindings = IN.Bindings; // Hack!
 		Class'KFPlayerInput'.Static.StaticSaveConfig();

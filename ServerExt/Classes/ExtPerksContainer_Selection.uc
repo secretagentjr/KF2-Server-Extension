@@ -8,24 +8,24 @@ function UpdatePerkSelection(byte SelectedPerkIndex)
 	local ExtPlayerController KFPC;
 	local Ext_PerkBase PerkClass;	
 
-	KFPC = ExtPlayerController( GetPC() );
+	KFPC = ExtPlayerController(GetPC());
 
-	if ( KFPC!=none && KFPC.ActivePerkManager!=None )
+	if (KFPC!=none && KFPC.ActivePerkManager!=None)
 	{
 	   	DataProvider = CreateArray();
 
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{
 			PerkClass = KFPC.ActivePerkManager.UserPerks[i];
-			TempObj = CreateObject( "Object" );
-			TempObj.SetInt( "PerkLevel", PerkClass.CurrentLevel );
-			TempObj.SetString( "Title",  PerkClass.PerkName );	
-			TempObj.SetString( "iconSource",  PerkClass.GetPerkIconPath(PerkClass.CurrentLevel) );
+			TempObj = CreateObject("Object");
+			TempObj.SetInt("PerkLevel", PerkClass.CurrentLevel);
+			TempObj.SetString("Title",  PerkClass.PerkName);	
+			TempObj.SetString("iconSource",  PerkClass.GetPerkIconPath(PerkClass.CurrentLevel));
 			TempObj.SetBool("bTierUnlocked", true);
 			
-			DataProvider.SetElementObject( i, TempObj );
+			DataProvider.SetElementObject(i, TempObj);
 		}	
-		SetObject( "perkData", DataProvider );
+		SetObject("perkData", DataProvider);
 		SetInt("SelectedIndex", SelectedPerkIndex);
 
 		UpdatePendingPerkInfo(SelectedPerkIndex);
@@ -37,8 +37,8 @@ function UpdatePendingPerkInfo(byte SelectedPerkIndex)
 	local ExtPlayerController KFPC;
 	local Ext_PerkBase PerkClass;
 
-	KFPC = ExtPlayerController( GetPC() );
-	if( KFPC != none )
+	KFPC = ExtPlayerController(GetPC());
+	if(KFPC != none)
 	{
 		PerkClass = KFPC.ActivePerkManager.UserPerks[SelectedPerkIndex];
 		SetPendingPerkChanges(PerkClass.PerkName, PerkClass.GetPerkIconPath(PerkClass.CurrentLevel), "Perk changes will be applied when you die.");

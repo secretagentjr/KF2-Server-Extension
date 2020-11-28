@@ -5,7 +5,7 @@ var transient array<string> StackedSect;
 
 event PreBeginPlay();
 
-final function DumpXML( ExtPerkManager M )
+final function DumpXML(ExtPerkManager M)
 {
 	OpenFile(class'OnlineSubsystem'.Static.UniqueNetIdToString(M.PRIOwner.UniqueId),FWFT_Stats,".xml",false);
 	M.OutputXML(Self);
@@ -13,13 +13,13 @@ final function DumpXML( ExtPerkManager M )
 	ResetFile();
 }
 
-function WriteValue( string Key, string Value )
+function WriteValue(string Key, string Value)
 {
 	Logf(Intendent$"<"$Key$">"$Value$"</"$Key$">");
 }
-function StartIntendent( string Section, optional string Key, optional string Value )
+function StartIntendent(string Section, optional string Key, optional string Value)
 {
-	if( Key!="" )
+	if(Key!="")
 		Logf(Intendent$"-<"$Section$" "$Key$"=\""$Value$"\">");
 	else Logf(Intendent$"-<"$Section$">");
 	Intendent $= Chr(9);

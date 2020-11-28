@@ -18,31 +18,31 @@ replication
 // Make no efforts with this one.
 simulated event PostBeginPlay()
 {
-	if( WorldInfo.NetMode!=NM_Client )
+	if(WorldInfo.NetMode!=NM_Client)
 		SetTimer(1,true);
 }
 simulated event Destroyed()
 {
-	if( OwnerHUD!=None )
+	if(OwnerHUD!=None)
 	{
 		OwnerHUD.MyCurrentPet.RemoveItem(Self);
 		OwnerHUD = None;
 	}
-	if ( WorldInfo.GRI != None )
+	if (WorldInfo.GRI != None)
 		WorldInfo.GRI.RemovePRI(self);
 }
 simulated event ReplicatedEvent(name VarName)
 {
-	if( VarName=='OwnerPRI' && OwnerPRI!=None )
+	if(VarName=='OwnerPRI' && OwnerPRI!=None)
 		NotifyOwner();
-	else if( VarName=='MonsterType' && MonsterType!=None )
+	else if(VarName=='MonsterType' && MonsterType!=None)
 		MonsterName = Class'KFExtendedHUD'.Static.GetNameOf(MonsterType);
 }
 simulated function Timer()
 {
-	if( PawnOwner==None || PawnOwner.Health<=0 )
+	if(PawnOwner==None || PawnOwner.Health<=0)
 		Destroy();
-	else if( HealthStatus!=PawnOwner.Health )
+	else if(HealthStatus!=PawnOwner.Health)
 		HealthStatus = PawnOwner.Health;
 }
 simulated final function NotifyOwner()
@@ -50,7 +50,7 @@ simulated final function NotifyOwner()
 	local PlayerController PC;
 	
 	PC = GetALocalPlayerController();
-	if( PC==None || PC.PlayerReplicationInfo!=OwnerPRI || KFExtendedHUD(PC.MyHUD)==None )
+	if(PC==None || PC.PlayerReplicationInfo!=OwnerPRI || KFExtendedHUD(PC.MyHUD)==None)
 		return;
 	OwnerHUD = KFExtendedHUD(PC.MyHUD);
 	OwnerHUD.MyCurrentPet.AddItem(Self);

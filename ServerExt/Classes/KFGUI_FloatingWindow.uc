@@ -16,16 +16,16 @@ function DrawMenu()
 {
 	Owner.CurrentStyle.RenderFramedWindow(Self);
 	
-	if( HeaderComp!=None )
+	if(HeaderComp!=None)
 	{
 		HeaderComp.CompPos[3] = Owner.CurrentStyle.DefaultHeight;
 		HeaderComp.YSize = HeaderComp.CompPos[3] / CompPos[3]; // Keep header height fit the window height.
 	}
 }
-function SetWindowDrag( bool bDrag )
+function SetWindowDrag(bool bDrag)
 {
 	bDragWindow = bDrag;
-	if( bDrag )
+	if(bDrag)
 	{
 		DragOffset[0] = Owner.MousePosition.X-CompPos[0];
 		DragOffset[1] = Owner.MousePosition.Y-CompPos[1];
@@ -33,7 +33,7 @@ function SetWindowDrag( bool bDrag )
 }
 function bool CaptureMouse()
 {
-	if( bDragWindow && HeaderComp!=None ) // Always keep focus on window frame now!
+	if(bDragWindow && HeaderComp!=None) // Always keep focus on window frame now!
 	{
 		MouseArea = HeaderComp;
 		return true;
@@ -42,7 +42,7 @@ function bool CaptureMouse()
 }
 function PreDraw()
 {
-	if( bDragWindow )
+	if(bDragWindow)
 	{
 		XPosition = FClamp(Owner.MousePosition.X-DragOffset[0],0,InputPos[2]-CompPos[2]) / InputPos[2];
 		YPosition = FClamp(Owner.MousePosition.Y-DragOffset[1],0,InputPos[3]-CompPos[3]) / InputPos[3];

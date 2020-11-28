@@ -8,13 +8,13 @@ var array<byte> Buffer;
 var array<string> StrMap;
 const CurrentSaveVer=1;
 
-final function bool LoadStatFile( PlayerController Other )
+final function bool LoadStatFile(PlayerController Other)
 {
 	local string S;
 
 	FlushData();
 	S = class'ServerExtMut'.Static.GetStatFile(Other.PlayerReplicationInfo.UniqueId);
-	if( Class'Engine'.Static.BasicLoadObject(Self,S,false,CurrentSaveVer) )
+	if(Class'Engine'.Static.BasicLoadObject(Self,S,false,CurrentSaveVer))
 	{
 		BufferSize = Buffer.Length;
 		return true;
@@ -23,7 +23,7 @@ final function bool LoadStatFile( PlayerController Other )
 	Buffer.Length = 0;
 	return false;
 }
-final function SaveStatFile( PlayerController Other )
+final function SaveStatFile(PlayerController Other)
 {
 	local string S;
 
@@ -31,59 +31,59 @@ final function SaveStatFile( PlayerController Other )
 	Class'Engine'.Static.BasicSaveObject(Self,S,false,CurrentSaveVer);
 }
 
-function SaveInt( int Value, optional byte MaxVal )
+function SaveInt(int Value, optional byte MaxVal)
 {
 	++MaxVal;
-	if( (BufferOffset+MaxVal)>Buffer.Length )
+	if((BufferOffset+MaxVal)>Buffer.Length)
 	{
 		Buffer.Length = (BufferOffset+MaxVal);
 		BufferSize = Buffer.Length;
 	}
 	Buffer[BufferOffset++] = Value & 255;
-	if( MaxVal>1 )
+	if(MaxVal>1)
 	{
 		Buffer[BufferOffset++] = (Value >> 8) & 255;
-		if( MaxVal>2 )
+		if(MaxVal>2)
 		{
 			Buffer[BufferOffset++] = (Value >> 16) & 255;
-			if( MaxVal>3 )
+			if(MaxVal>3)
 				Buffer[BufferOffset++] = (Value >> 24) & 255;
 		}
 	}
 }
-function int ReadInt( optional byte MaxVal )
+function int ReadInt(optional byte MaxVal)
 {
 	local int Res;
 
 	++MaxVal;
-	if( (BufferOffset+MaxVal)>BufferSize )
+	if((BufferOffset+MaxVal)>BufferSize)
 		return 0;
 
 	Res = Buffer[BufferOffset++];
-	if( MaxVal>1 )
+	if(MaxVal>1)
 	{
 		Res = Res | (Buffer[BufferOffset++] << 8);
-		if( MaxVal>2 )
+		if(MaxVal>2)
 		{
 			Res = Res | (Buffer[BufferOffset++] << 16);
-			if( MaxVal>3 )
+			if(MaxVal>3)
 				Res = Res | (Buffer[BufferOffset++] << 24);
 		}
 	}
 	return Res;
 }
-function SaveStr( string S )
+function SaveStr(string S)
 {
 	local int i;
 	
-	if( S=="" )
+	if(S=="")
 	{
 		SaveInt(0,1);
 		return;
 	}
 	S = Left(S,255);
 	i = StrMap.Find(S);
-	if( i==-1 )
+	if(i==-1)
 	{
 		i = StrMap.Length;
 		StrMap[StrMap.Length] = S;
@@ -95,7 +95,7 @@ function string ReadStr()
 	local int i;
 	
 	i = ReadInt(1);
-	if( i==0 || i>StrMap.Length )
+	if(i==0 || i>StrMap.Length)
 		return "";
 	return StrMap[i-1];
 }
@@ -104,7 +104,7 @@ function int TellOffset()
 {
 	return BufferOffset;
 }
-function SeekOffset( int Offset )
+function SeekOffset(int Offset)
 {
 	BufferOffset = Clamp(Offset,0,BufferSize);
 }
@@ -124,7 +124,7 @@ function bool AtEnd()
 {
 	return (BufferOffset>=BufferSize);
 }
-function SkipBytes( int Count )
+function SkipBytes(int Count)
 {
 	BufferOffset = Clamp(BufferOffset+Count,0,BufferSize);
 }
@@ -148,7 +148,7 @@ final function DebugData()
 	
 	GetData(B);
 	`Log("DEBUG DATA: Data size: "$B.Length);
-	for( i=0; i<B.Length; ++i )
+	for(i=0; i<B.Length; ++i)
 	{
 		S $= Chr(Max(B[i],1));
 		SS $= "."$B[i];
@@ -157,7 +157,7 @@ final function DebugData()
 	`Log("DEBUG DATA: "$SS);
 }
 
-function GetData( out array<byte> Res )
+function GetData(out array<byte> Res)
 {
 	local int i,l,o,j;
 
@@ -174,16 +174,16 @@ function GetData( out array<byte> Res )
 	o = 3;
 	
 	// write each entry.
-	for( i=0; i<StrMap.Length; ++i )
+	for(i=0; i<StrMap.Length; ++i)
 	{
 		l = Len(StrMap[i]);
 		Res.Insert(o,l+1);
 		Res[o++] = l;
-		for( j=0; j<l; ++j )
+		for(j=0; j<l; ++j)
 			Res[o++] = Asc(Mid(StrMap[i],j,1));
 	}
 }
-function SetData( out array<byte> S )
+function SetData(out array<byte> S)
 {
 	local int i,o,l,j;
 
@@ -195,11 +195,11 @@ function SetData( out array<byte> S )
 	o = 3;
 	
 	// read each string map entry.
-	for( i=0; i<StrMap.Length; ++i )
+	for(i=0; i<StrMap.Length; ++i)
 	{
 		l = Buffer[o++];
 		StrMap[i] = "";
-		for( j=0; j<l; ++j )
+		for(j=0; j<l; ++j)
 			StrMap[i] $= Chr(Buffer[o++]);
 	}
 	Buffer.Remove(0,o);
@@ -211,19 +211,19 @@ function int GetArVer()
 {
 	return ArVersion;
 }
-function SetArVer( int Ver )
+function SetArVer(int Ver)
 {
 	ArVersion = Ver;
 }
 
-function PushEOFLimit( int EndOffset )
+function PushEOFLimit(int EndOffset)
 {
 	EOFStack.AddItem(BufferSize);
 	BufferSize = EndOffset;
 }
 function PopEOFLimit()
 {
-	if( EOFStack.Length==0 )
+	if(EOFStack.Length==0)
 	{
 		`Log(Self@"WARNING: Tried to pop one EoF stack down too far!!!");
 		return; // Whoops, error.
@@ -236,7 +236,7 @@ function int GetSaveVersion()
 {
 	return SaveNum;
 }
-function SetSaveVersion( int Num )
+function SetSaveVersion(int Num)
 {
 	SaveNum = Num;
 }

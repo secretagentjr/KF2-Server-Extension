@@ -9,20 +9,20 @@ static function string GetPerkDescription()
 	return S;
 }
 
-static function bool MeetsRequirements( byte Lvl, Ext_PerkBase Perk )
+static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
-	if( Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2 )
+	if(Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
 		return false;
 	
 	return true;
 }
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkCommando(Perk).bUseMachineGunner = true;
 }
 
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkCommando(Perk).bUseMachineGunner = false;
 }

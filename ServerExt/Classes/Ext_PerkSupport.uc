@@ -6,11 +6,11 @@ var float APShotMul;
 replication
 {
 	// Things the server should send to the client.
-	if ( true )
+	if (true)
 		bCanRepairDoors, bUseAPShot, bUsePerforate, APShotMul;
 }
 
-simulated function bool GetUsingTactialReload( KFWeapon KFW )
+simulated function bool GetUsingTactialReload(KFWeapon KFW)
 {
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5]<0.75 : false);
 }
@@ -20,10 +20,10 @@ simulated function bool CanRepairDoors()
 	return bCanRepairDoors;
 }
 
-simulated function float GetPenetrationModifier( byte Level, class<KFDamageType> DamageType, optional bool bForce  )
+simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
 {
 	local float PenetrationPower;
-	if( !bForce && (DamageType == none || ( DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE )))
+	if(!bForce && (DamageType == none || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE)))
 		return 0;
 
 	PenetrationPower = bUseAPShot ? APShotMul : 0.f;

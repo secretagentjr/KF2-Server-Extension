@@ -10,42 +10,42 @@ var transient Canvas Canvas;
 function InitStyle()
 {
 	ItemTex = Texture2D(DynamicLoadObject("UI_LevelChevrons_TEX.UI_LevelChevron_Icon_02",class'Texture2D'));
-	if( ItemTex==None )
+	if(ItemTex==None)
 		ItemTex = Texture2D'EngineMaterials.DefaultWhiteGrid';
 }
-function RenderFramedWindow( KFGUI_FloatingWindow P );
-function RenderWindow( KFGUI_Page P );
-function RenderToolTip( KFGUI_Tooltip TT );
-function RenderButton( KFGUI_Button B );
-function RenderEditBox( KFGUI_EditBox E );
-function RenderScrollBar( KFGUI_ScrollBarBase S );
-function RenderColumnHeader( KFGUI_ColumnTop C, float XPos, float Width, int Index, bool bFocus, bool bSort );
-function RenderCheckbox( KFGUI_CheckBox C );
-function RenderComboBox( KFGUI_ComboBox C );
-function RenderComboList( KFGUI_ComboSelector C );
-function RenderRightClickMenu( KFGUI_RightClickMenu C );
+function RenderFramedWindow(KFGUI_FloatingWindow P);
+function RenderWindow(KFGUI_Page P);
+function RenderToolTip(KFGUI_Tooltip TT);
+function RenderButton(KFGUI_Button B);
+function RenderEditBox(KFGUI_EditBox E);
+function RenderScrollBar(KFGUI_ScrollBarBase S);
+function RenderColumnHeader(KFGUI_ColumnTop C, float XPos, float Width, int Index, bool bFocus, bool bSort);
+function RenderCheckbox(KFGUI_CheckBox C);
+function RenderComboBox(KFGUI_ComboBox C);
+function RenderComboList(KFGUI_ComboSelector C);
+function RenderRightClickMenu(KFGUI_RightClickMenu C);
 
-function Font PickFont( byte i, out float Scaler );
-function PickDefaultFontSize( float YRes )
+function Font PickFont(byte i, out float Scaler);
+function PickDefaultFontSize(float YRes)
 {
 	local int XL,YL;
 	local string S;
 
 	DefaultFontSize = 0;
-	if( YRes>800 )
+	if(YRes>800)
 		++DefaultFontSize;
-	if( YRes>1000 )
+	if(YRes>1000)
 		++DefaultFontSize;
-	//if( YRes>1200 )
+	//if(YRes>1200)
 		//++DefaultFontSize;
-	//if( YRes>1300 )
+	//if(YRes>1300)
 		//++DefaultFontSize;
 
 	S = "ABC";
 	PickFont(DefaultFontSize,YRes).GetStringHeightAndWidth(S,YL,XL);
 	DefaultHeight = float(YL)*YRes;
 }
-final function DrawText( byte Res, string S )
+final function DrawText(byte Res, string S)
 {
 	local float Scale;
 	
@@ -53,9 +53,9 @@ final function DrawText( byte Res, string S )
 	Canvas.DrawText(S,,Scale,Scale);
 }
 
-final function DrawCornerTexNU( int SizeX, int SizeY, byte Dir ) // Draw non-uniform corner.
+final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir) // Draw non-uniform corner.
 {
-	switch( Dir )
+	switch(Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,77,15,-66,58);
@@ -70,9 +70,9 @@ final function DrawCornerTexNU( int SizeX, int SizeY, byte Dir ) // Draw non-uni
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,11,73,66,-58);
 	}
 }
-final function DrawCornerTex( int Size, byte Dir )
+final function DrawCornerTex(int Size, byte Dir)
 {
-	switch( Dir )
+	switch(Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,Size,Size,77,15,-66,58);
@@ -87,14 +87,14 @@ final function DrawCornerTex( int Size, byte Dir )
 		Canvas.DrawTile(ItemTex,Size,Size,11,73,66,-58);
 	}
 }
-final function DrawWhiteBox( int XS, int YS )
+final function DrawWhiteBox(int XS, int YS)
 {
 	Canvas.DrawTile(ItemTex,XS,YS,19,45,1,1);
 }
 
-final function DrawRectBox( int X, int Y, int XS, int YS, int Edge, optional byte Extrav )
+final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte Extrav)
 {
-	if( Extrav==2 )
+	if(Extrav==2)
 		Edge = Min(FMin(Edge,(XS)*0.5),YS);// Verify size.
 	else Edge = Min(FMin(Edge,(XS)*0.5),(YS)*0.5);// Verify size.
 
@@ -102,9 +102,9 @@ final function DrawRectBox( int X, int Y, int XS, int YS, int Edge, optional byt
 	Canvas.SetPos(X,Y);
 	DrawCornerTex(Edge,0);
 	
-	if( Extrav<=1 )
+	if(Extrav<=1)
 	{
-		if( Extrav==0 )
+		if(Extrav==0)
 		{
 			// Top right
 			Canvas.SetPos(X+XS-Edge,Y);
@@ -122,7 +122,7 @@ final function DrawRectBox( int X, int Y, int XS, int YS, int Edge, optional byt
 			Canvas.SetPos(X+XS-Edge,Y+Edge);
 			DrawWhiteBox(Edge,YS-Edge*2);
 		}
-		else if( Extrav==1 )
+		else if(Extrav==1)
 		{
 			// Top right
 			Canvas.SetPos(X+XS,Y);

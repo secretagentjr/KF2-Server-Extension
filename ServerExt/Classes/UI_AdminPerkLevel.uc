@@ -30,7 +30,7 @@ function InitMenu()
 	LevelBox.Tooltip=LevelBoxToolTip;
 }
 
-final function InitPage( int UserID, byte Mode )
+final function InitPage(int UserID, byte Mode)
 {
 	local PlayerReplicationInfo PRI;
 
@@ -39,10 +39,10 @@ final function InitPage( int UserID, byte Mode )
 	// Find matching player by ID
 	foreach GetPlayer().WorldInfo.GRI.PRIArray(PRI)
 	{
-		if ( PRI.PlayerID==UserID )
+		if (PRI.PlayerID==UserID)
 			break;
 	}
-	if( ExtPlayerReplicationInfo(PRI)==None )
+	if(ExtPlayerReplicationInfo(PRI)==None)
 	{
 		WindowTitle = Mode==1 ? WindowTitleSetLevel : WindowTitleSetPrestigeLevel;
 		return;
@@ -51,9 +51,9 @@ final function InitPage( int UserID, byte Mode )
 	LevelBox.ChangeValue(string(Mode==1 ? ExtPlayerReplicationInfo(PRI).ECurrentPerkLevel : ExtPlayerReplicationInfo(PRI).ECurrentPerkPrestige));
 	BaseValue = (Mode==1 ? 100 : 100000);
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Yes':
 		ExtPlayerController(GetPlayer()).AdminRPGHandle(PlayerID,BaseValue+LevelBox.GetValueInt());

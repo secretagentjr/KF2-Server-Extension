@@ -2,11 +2,11 @@ Class Ext_TraitRackEmUp extends Ext_TraitBase;
 
 var array<byte> ComboSize;
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkRhythmPerkBase(Perk).SetMaxRhythm(Default.ComboSize[Level-1]);
 }
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkRhythmPerkBase(Perk).ResetRhythm();
 }

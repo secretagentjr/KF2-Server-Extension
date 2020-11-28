@@ -46,20 +46,20 @@ function PreDraw()
 function DrawMenu(); // Draw menu now.
 function CloseMenu(); // Menu was closed.
 
-function MenuTick( float DeltaTime )
+function MenuTick(float DeltaTime)
 {
-	if( bTimerActive && (TimerCounter-=DeltaTime)<=0.f )
+	if(bTimerActive && (TimerCounter-=DeltaTime)<=0.f)
 	{
-		if( bLoopTimer )
+		if(bLoopTimer)
 			TimerCounter = TimerRate;
 		else bTimerActive = false;
 		Timer();
 	}
 }
-final function SetTimer( float Rate, optional bool bLoop )
+final function SetTimer(float Rate, optional bool bLoop)
 {
 	bTimerActive = (Rate>0.f);
-	if( bTimerActive )
+	if(bTimerActive)
 	{
 		bLoopTimer = bLoop;
 		TimerRate = Rate;
@@ -78,26 +78,26 @@ function MouseLeave()
 	bFocused = false;
 	OnFocus(Self,False);
 }
-function MouseClick( bool bRight );
-function MouseRelease( bool bRight );
-function DoubleMouseClick( bool bRight ) // User rapidly double clicked this component.
+function MouseClick(bool bRight);
+function MouseRelease(bool bRight);
+function DoubleMouseClick(bool bRight) // User rapidly double clicked this component.
 {
 	MouseClick(bRight);
 }
 
-function ScrollMouseWheel( bool bUp );
+function ScrollMouseWheel(bool bUp);
 
 final function PlayerController GetPlayer()
 {
 	return Owner.PlayerOwner;
 }
 
-function SetDisabled( bool bDisable )
+function SetDisabled(bool bDisable)
 {
 	bDisabled = bDisable;
 }
 
-Delegate OnFocus( KFGUI_Base Sender, bool bBecame );
+Delegate OnFocus(KFGUI_Base Sender, bool bBecame);
 
 final function ComputeCoords()
 {
@@ -109,21 +109,21 @@ final function ComputeCoords()
 
 function bool CaptureMouse()
 {
-	return ( Owner.MousePosition.X>=CompPos[0] && Owner.MousePosition.Y>=CompPos[1] && Owner.MousePosition.X<=(CompPos[0]+CompPos[2]) && Owner.MousePosition.Y<=(CompPos[1]+CompPos[3]) );
+	return (Owner.MousePosition.X>=CompPos[0] && Owner.MousePosition.Y>=CompPos[1] && Owner.MousePosition.X<=(CompPos[0]+CompPos[2]) && Owner.MousePosition.Y<=(CompPos[1]+CompPos[3]));
 }
 
 final function KFGUI_Base GetMouseFocus()
 {
 	local KFGUI_Base M;
 	
-	for( M=Self; M.MouseArea!=None; M=M.MouseArea )
+	for(M=Self; M.MouseArea!=None; M=M.MouseArea)
 	{}
 	return M;
 }
 
 function DoClose()
 {
-	if( ParentComponent!=None )
+	if(ParentComponent!=None)
 		ParentComponent.DoClose();
 	else Owner.PopCloseMenu(Self);
 }
@@ -135,13 +135,13 @@ function byte GetCursorStyle()
 
 function UserPressedEsc() // user pressed escape while this menu was active.
 {
-	if( ParentComponent!=None )
+	if(ParentComponent!=None)
 		ParentComponent.UserPressedEsc();
 	else DoClose();
 }
 function bool BringPageToFront()
 {
-	if( ParentComponent!=None )
+	if(ParentComponent!=None)
 		return ParentComponent.BringPageToFront();
 	return true; // Allow user to bring this page to front.
 }
@@ -153,32 +153,32 @@ final function KFGUI_Page GetPageTop()
 {
 	local KFGUI_Base M;
 	
-	for( M=Self; M.ParentComponent!=None; M=M.ParentComponent )
+	for(M=Self; M.ParentComponent!=None; M=M.ParentComponent)
 	{}
 	return KFGUI_Page(M);
 }
-function KFGUI_Base FindComponentID( name InID )
+function KFGUI_Base FindComponentID(name InID)
 {
-	if( ID==InID )
+	if(ID==InID)
 		return Self;
 	return None;
 }
-function FindAllComponentID( name InID, out array<KFGUI_Base> Res )
+function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 {
-	if( ID==InID )
+	if(ID==InID)
 		Res[Res.Length] = Self;
 }
-function RemoveComponent( KFGUI_Base B );
+function RemoveComponent(KFGUI_Base B);
 
 function GetInputFocus()
 {
-	if( Owner.InputFocus!=None )
+	if(Owner.InputFocus!=None)
 		Owner.InputFocus.LostInputFocus();
 	Owner.InputFocus = Self;
 }
 function DropInputFocus()
 {
-	if( Owner.InputFocus==Self )
+	if(Owner.InputFocus==Self)
 	{
 		Owner.InputFocus.LostInputFocus();
 		Owner.InputFocus = None;
@@ -193,16 +193,16 @@ final function GrabKeyFocus()
 }
 final function ReleaseKeyFocus()
 {
-	if( Owner.KeyboardFocus==Self )
+	if(Owner.KeyboardFocus==Self)
 		Owner.GrabInputFocus(None);
 }
 function LostKeyFocus();
 
-function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad )
+function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
 	return false;
 }
-function bool NotifyInputChar( int ControllerId, string Unicode )
+function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	return false;
 }
@@ -213,22 +213,22 @@ function InputMouseMoved();
 // Notify any focused menu element that mouse has been idle over it.
 function NotifyMousePaused();
 
-final function GetActualPos( out float X, out float Y )
+final function GetActualPos(out float X, out float Y)
 {
 	X = ((XPosition+X)*InputPos[2]) + InputPos[0];
 	Y = ((YPosition+Y)*InputPos[3]) + InputPos[1];
 }
-final function GetRealtivePos( out float X, out float Y )
+final function GetRealtivePos(out float X, out float Y)
 {
 	X = X / CompPos[2];
 	Y = Y / CompPos[2];
 }
 
-simulated final function PlayMenuSound( EMenuSound Slot )
+simulated final function PlayMenuSound(EMenuSound Slot)
 {
 	/*local SoundCue S;
 	
-	switch( Slot )
+	switch(Slot)
 	{
 	case MN_Focus:
 		S = SoundCue'a_interface.menu.UT3MenuMouseOverCue';
@@ -252,14 +252,14 @@ simulated final function PlayMenuSound( EMenuSound Slot )
 		S = SoundCue'a_interface.menu.UT3MenuNavigateUpCue';
 		break;
 	}
-	if( S!=None )
+	if(S!=None)
 		GetPlayer().PlaySound(S,true,,false);*/
 }
 
 // Pre level change notification.
 function NotifyLevelChange();
 
-final function SetPosition( float X, float Y, float XS, float YS )
+final function SetPosition(float X, float Y, float XS, float YS)
 {
 	XPosition = X;
 	YPosition = Y;
@@ -267,7 +267,7 @@ final function SetPosition( float X, float Y, float XS, float YS )
 	YSize = YS;
 }
 
-static final function string MakeSortStr( int Value )
+static final function string MakeSortStr(int Value)
 {
 	local string S;
 	local int i;
@@ -275,7 +275,7 @@ static final function string MakeSortStr( int Value )
 	// Prefix with zeroes to properly sort this string.
 	S = string(Value);
 	i = Len(S);
-	if( i<10 )
+	if(i<10)
 		return Mid("0000000000",i)$S;
 	return S;
 }

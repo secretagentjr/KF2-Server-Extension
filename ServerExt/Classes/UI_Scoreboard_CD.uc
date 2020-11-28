@@ -210,7 +210,7 @@ function DrawMenu()
 	PingXPos = Width * 0.95;
 
 	// Header texts
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
 		Canvas.SetPos (XPos + PerkXPos, YPos);
 		Canvas.DrawText (HeaderPerkText, , FontScalar, FontScalar);
@@ -239,21 +239,21 @@ function DrawMenu()
 	
 	PRIList.Length = (bShowSpectatorsOnly ? NumSpec : NumPlayer);
 	j = PRIList.Length;
-	for( i=(KFGRI.PRIArray.Length-1); i>=0; --i )
+	for(i=(KFGRI.PRIArray.Length-1); i>=0; --i)
 	{
 		KFPRI = ExtPlayerReplicationInfo(KFGRI.PRIArray[i]);
-		if( KFPRI!=None && bShowSpectatorsOnly==KFPRI.bOnlySpectator )
+		if(KFPRI!=None && bShowSpectatorsOnly==KFPRI.bOnlySpectator)
 		{
 			PRIList[--j] = KFPRI;
-			if( KFPRI==PC.PlayerReplicationInfo )
+			if(KFPRI==PC.PlayerReplicationInfo)
 				PlayerIndex = j;
 		}
 	}
 	
 	CurrentBoxY = (YL + 4) * MaxPlayerCount;
-	while( CurrentBoxY > (Canvas.ClipY-YPos) )
+	while(CurrentBoxY > (Canvas.ClipY-YPos))
 	{
-		if( ++i>=5 )
+		if(++i>=5)
 		{
 			NotShownCount = MaxPlayerCount-int((Canvas.ClipY-YPos)/CurrentBoxY)+1;
 			MaxPlayerCount-=NotShownCount;
@@ -269,7 +269,7 @@ function DrawMenu()
 	PlayersList.ChangeListSize(PRIList.Length);
 }
 
-function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )
+function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local float FontScalar;
 	local ExtPlayerReplicationInfo KFPRI;
@@ -286,13 +286,13 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	
 	if (KFPRI == GetPlayer().PlayerReplicationInfo)
 	{
-		if( bFocus )
+		if(bFocus)
 			C.SetDrawColor(0, 83, 255, 150);
 		else C.SetDrawColor (51, 30, 101, 150);
 	}
 	else 
 	{
-		if( bFocus )
+		if(bFocus)
 			C.SetDrawColor(0, 83, 255, 150);
 		else C.SetDrawColor (30, 30, 30, 150);
 	}
@@ -302,10 +302,10 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	C.DrawColor = MakeColor (250, 250, 250, 255);
 
 	// Perk
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
 		C.DrawColor = KFPRI.HUDPerkColor;
-		if( KFPRI.ECurrentPerk!=None )
+		if(KFPRI.ECurrentPerk!=None)
 		{
 			C.SetPos (0.f + PerkXPos, YOffset + 2.5);
 			C.DrawRect (Height-5, Height-5, KFPRI.ECurrentPerk.Default.PerkIcon);
@@ -314,7 +314,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			C.SetPos (0.f + PerkXPos + Height, YOffset);
 			C.DrawText (S, , FontScalar, FontScalar);
 		}
-		else if( KFPRI.bBot && KFPRI.CurrentPerkClass!=None )
+		else if(KFPRI.bBot && KFPRI.CurrentPerkClass!=None)
 		{
 			C.SetPos (0.f + PerkXPos, YOffset + 2.5);
 			C.DrawRect (Height-5, Height-5, KFPRI.CurrentPerkClass.Default.PerkIcon);
@@ -333,7 +333,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	
 	// Avatar
-	if( KFPRI.Avatar!=None )
+	if(KFPRI.Avatar!=None)
 	{
 		C.SetDrawColor(255,255,255,255);
 		C.SetPos(0.f + PlayerXPos - (Height * 1.2), YOffset);
@@ -342,17 +342,17 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	else
 	{
 		// Try to obtain avatar.
-		if( !KFPRI.bBot )
+		if(!KFPRI.bBot)
 			KFPRI.Avatar = FindAvatar(KFPRI.UniqueId);
 	}
 	
 	// Rank
-	if( KFPRI.ShowAdminName() )
+	if(KFPRI.ShowAdminName())
 	{
 		S = KFPRI.GetAdminName();
 		C.DrawColor = KFPRI.GetAdminColorC();
 	}
-	else if( KFPRI.bIsDev )
+	else if(KFPRI.bIsDev)
 	{
 		S = DeveloperText;
 		C.DrawColor = MakeColor(130,255,235,255);
@@ -373,7 +373,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	
 	C.DrawColor = MakeColor(255,255,255,255);
 
-	if( !bShowSpectatorsOnly )
+	if(!bShowSpectatorsOnly)
 	{
 		// Kill
 		C.SetDrawColor(255,51,51,255);
@@ -434,15 +434,15 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	C.DrawText (S, , FontScalar, FontScalar);
 }
 
-function ShowPlayerTooltip( int Index )
+function ShowPlayerTooltip(int Index)
 {
 	local ExtPlayerReplicationInfo PRI;
 	local string S;
 	
 	PRI = PRIList[Index];
-	if( PRI!=None )
+	if(PRI!=None)
 	{
-		if( ToolTipItem==None )
+		if(ToolTipItem==None)
 		{
 			ToolTipItem = New(None)Class'KFGUI_Tooltip_CD';
 			ToolTipItem.Owner = Owner;
@@ -450,7 +450,7 @@ function ShowPlayerTooltip( int Index )
 			ToolTipItem.InitMenu();
 		}
 		S = PlayerText$": "$PRI.TaggedPlayerName$"|"$HealthText$": "$(PRI.PlayerHealthPercent<=0 ? "0" : string(PRI.PlayerHealth));
-		if( PRI.ShowAdminName() )
+		if(PRI.ShowAdminName())
 			S = S$"|"$PRI.GetAdminName();
 		S = S$"|"$RClickForOptsText;
 		ToolTipItem.SetText(S);
@@ -490,7 +490,7 @@ function string ConvertValueLarge(int FValue)
 	return StrValue;
 }
 
-function SelectedRCItem( int Index )
+function SelectedRCItem(int Index)
 {
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
@@ -498,7 +498,7 @@ function SelectedRCItem( int Index )
 	PC = GetPlayer();
 	KFPRI = KFPlayerReplicationInfo(PC.PlayerReplicationInfo);
 	
-	switch( Index )
+	switch(Index)
 	{
 	case 3: // Vote kick.
 		KFPRI.ServerStartKickVote(RightClickPlayer, KFPRI);

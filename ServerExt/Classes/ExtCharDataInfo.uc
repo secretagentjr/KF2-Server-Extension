@@ -9,7 +9,7 @@ final function FMyCustomChar LoadData()
 {
 	local FMyCustomChar R;
 	
-	if( HasInit==0 )
+	if(HasInit==0)
 	{
 		AttachmentMesh0 = 255;
 		AttachmentMesh1 = 255;
@@ -27,7 +27,7 @@ final function FMyCustomChar LoadData()
 	R.AttachmentSkinIndices[2] = AttachmentSkin2;
 	return R;
 }
-final function SaveData( FMyCustomChar R )
+final function SaveData(FMyCustomChar R)
 {
 	HeadMeshIndex = R.HeadMeshIndex;
 	HeadSkinIndex = R.HeadSkinIndex;

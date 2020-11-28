@@ -27,9 +27,9 @@ function DrawMenu()
 	CurrentRow = -1;
 
 	Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX,Canvas.ClipY);
-	for( i=0; i<ItemRows.Length; ++i )
+	for(i=0; i<ItemRows.Length; ++i)
 	{
-		if( bCheckMouse && Y>=YP && Y<=(YP+Owner.CurrentStyle.DefaultHeight) )
+		if(bCheckMouse && Y>=YP && Y<=(YP+Owner.CurrentStyle.DefaultHeight))
 		{
 			bCheckMouse = false;
 			CurrentRow = i;
@@ -39,14 +39,14 @@ function DrawMenu()
 		}
 
 		Canvas.SetPos(Edge,YP);
-		if( ItemRows[i].bSplitter )
+		if(ItemRows[i].bSplitter)
 		{
 			Canvas.SetDrawColor(255,255,255,255);
 			Canvas.DrawText("-------",,TextScale,TextScale);
 		}
 		else
 		{
-			if( ItemRows[i].bDisabled )
+			if(ItemRows[i].bDisabled)
 				Canvas.SetDrawColor(148,148,148,255);
 			else Canvas.SetDrawColor(248,248,248,255);
 			Canvas.DrawText(ItemRows[i].Text,,TextScale,TextScale);
@@ -55,7 +55,7 @@ function DrawMenu()
 		YP+=Owner.CurrentStyle.DefaultHeight;
 	}
 	Canvas.PopMaskRegion();
-	if( OldRow!=CurrentRow )
+	if(OldRow!=CurrentRow)
 	{
 		OldRow = CurrentRow;
 		PlayMenuSound(MN_DropdownChange);

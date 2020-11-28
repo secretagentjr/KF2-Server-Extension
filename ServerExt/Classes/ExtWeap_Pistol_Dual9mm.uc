@@ -17,12 +17,12 @@ simulated static function bool AllowedForAllPerks()
 	return true;
 }
 
-simulated function ConsumeAmmo( byte FireModeNum )
+simulated function ConsumeAmmo(byte FireModeNum)
 {
 	
 }
 
-simulated static event class<KFPerk> GetWeaponPerkClass( class<KFPerk> InstigatorPerkClass )
+simulated static event class<KFPerk> GetWeaponPerkClass(class<KFPerk> InstigatorPerkClass)
 {
 	if(InstigatorPerkClass != None)
 		return InstigatorPerkClass;

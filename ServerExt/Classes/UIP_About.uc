@@ -43,9 +43,9 @@ private final function UniqueNetId GetAuthID()
 	return Res;
 }
 
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Forum':
 		class'GameEngine'.static.GetOnlineSubsystem().OpenURL(ForumURL);

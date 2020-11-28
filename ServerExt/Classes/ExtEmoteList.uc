@@ -3,23 +3,23 @@ class ExtEmoteList extends Object
 
 var const array<Emote> Emotes;
 
-static final function name GetUnlockedEmote( int ItemId, ExtPlayerController PC )
+static final function name GetUnlockedEmote(int ItemId, ExtPlayerController PC)
 {
 	local int i;
 	local name Anim;
 	local ExtPlayerReplicationInfo PRI;
 	
 	i = default.Emotes.Find('Id', ItemId);
-	if( i > -1 )
+	if(i > -1)
 	{
 		Anim = default.Emotes[i].AnimName;
 		PRI = ExtPlayerReplicationInfo(PC.PlayerReplicationInfo);
 		
-		if( PRI == None )
+		if(PRI == None)
 			return Anim;
 			
 		/*
-		if( InStr(string(Anim), "Deluxe") != INDEX_NONE && PRI.AdminType == 255 )
+		if(InStr(string(Anim), "Deluxe") != INDEX_NONE && PRI.AdminType == 255)
 			return 'NONE';
 		*/
 		else return Anim;
@@ -28,9 +28,9 @@ static final function name GetUnlockedEmote( int ItemId, ExtPlayerController PC 
 	return 'NONE';
 }
 
-static final function SaveEquippedEmote( int ItemId, ExtPlayerController PC )
+static final function SaveEquippedEmote(int ItemId, ExtPlayerController PC)
 {
-	if( PC == None )
+	if(PC == None)
 		return;
 		
 	PC.SelectedEmoteIndex = ItemId;
@@ -42,11 +42,11 @@ static final function array<Emote> GetEmoteArray()
 	return default.Emotes;
 }
 
-static final function byte GetEmoteIndex( int ItemId )
+static final function byte GetEmoteIndex(int ItemId)
 {
 	local int i;
 	i = default.Emotes.Find('Id', ItemId);
-	if( i > -1 )
+	if(i > -1)
 		return i;
 
 	return -1;
@@ -54,7 +54,7 @@ static final function byte GetEmoteIndex( int ItemId )
 
 static final function int GetEquippedEmoteId(ExtPlayerController PC)
 {
-	if( PC == None )
+	if(PC == None)
 		return -1;
 		
 	return PC.SelectedEmoteIndex;

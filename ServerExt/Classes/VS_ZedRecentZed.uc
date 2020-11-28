@@ -5,23 +5,23 @@ var transient float WakeUpAnimTime;
 
 replication
 {
-	if( true )
+	if(true)
 		bWasWoken;
 }
 
-simulated function float StartAttackAnim( byte Num ) // Return animation duration.
+simulated function float StartAttackAnim(byte Num) // Return animation duration.
 {
-	if( FPHandModel!=None )
+	if(FPHandModel!=None)
 		FPHandModel.PlayHandsAnim('Atk_Combo1_V3',1.5f);
 	return PlayBodyAnim('Atk_Combo1_V3',EAS_UpperBody,1.5f);
 }
 
 simulated event ReplicatedEvent(name VarName)
 {
-	switch( VarName )
+	switch(VarName)
 	{
 	case 'bWasWoken':
-		if( bWasWoken )
+		if(bWasWoken)
 			WakeUp();
 		break;
 	default:
@@ -38,16 +38,16 @@ simulated function WakeUp() // Just spawned from transformed into a zombie.
 }
 simulated function GotUp()
 {
-	if( Health<=0 )
+	if(Health<=0)
 		return;
 	ClearTimer('GotUp');
 	bWasWoken = false;
 	bNoWeaponFiring = false;
-	if( WorldInfo.NetMode!=NM_Client )
+	if(WorldInfo.NetMode!=NM_Client)
 	{
-		if( ExtPlayerController(Controller)!=None )
+		if(ExtPlayerController(Controller)!=None)
 			ExtPlayerController(Controller).EnterRagdollMode(false);
-		else if( Controller!=None )
+		else if(Controller!=None)
 			Controller.ReplicatedEvent('EndRagdollMove');
 	}
 	GoToState('Auto');
@@ -70,7 +70,7 @@ Ignores TakeDamage, FaceRotation;
 simulated function NotifyTeamChanged()
 {
 	// Applies Character Info for < ROLE_Authority
-	if( PlayerReplicationInfo != None )
+	if(PlayerReplicationInfo != None)
 		SetCharacterArch(GetCharacterInfo());
 }
 
@@ -83,31 +83,31 @@ simulated function SetCharacterAnimationInfo()
 	// Keep monster animations.
 	M = KFCharacterInfo_Monster'ZED_ARCH.ZED_Clot_UnDev_Archetype';
 	Mesh.AnimSets = M.AnimSets;
-	if ( Mesh.AnimTreeTemplate != M.AnimTreeTemplate )
+	if (Mesh.AnimTreeTemplate != M.AnimTreeTemplate)
 		Mesh.SetAnimTreeTemplate(M.AnimTreeTemplate);
-	if ( M.AnimArchetype != None )
+	if (M.AnimArchetype != None)
 		PawnAnimInfo = M.AnimArchetype;
 }
 
 simulated function KFCharacterInfoBase GetCharacterInfo()
 {
-	if( ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None )
+	if(ExtPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		return ExtPlayerReplicationInfo(PlayerReplicationInfo).GetSelectedArch();
 	return Super.GetCharacterInfo();
 }
 
-simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bForce )
+simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bForce)
 {
 	local KFPlayerReplicationInfo KFPRI;
 
-	KFPRI = KFPlayerReplicationInfo( PlayerReplicationInfo );
+	KFPRI = KFPlayerReplicationInfo(PlayerReplicationInfo);
 	if (Info != CharacterArch)
 	{
 		// Set Family Info
 		CharacterArch = Info;
-		CharacterArch.SetCharacterFromArch( self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
-		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch( KFCharacterInfo_Human(CharacterArch), self, KFPRI );
+		CharacterArch.SetCharacterFromArch(self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetCharacterMeshFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
+		class'ExtCharacterInfo'.Static.SetFirstPersonArmsFromArch(KFCharacterInfo_Human(CharacterArch), self, KFPRI);
 
 		SetCharacterAnimationInfo();
 
@@ -122,9 +122,9 @@ simulated function SetCharacterArch(KFCharacterInfoBase Info, optional bool bFor
 				WeaponAttachmentChanged(true);
 			}
 		}
-		if( CharacterArch != none )
+		if(CharacterArch != none)
 		{
-			if( CharacterArch.VoiceGroupArchName != "" )
+			if(CharacterArch.VoiceGroupArchName != "")
 				VoiceGroupArch = class<KFPawnVoiceGroup>(class'ExtCharacterInfo'.Static.SafeLoadObject(CharacterArch.VoiceGroupArchName, class'Class'));
 		}
 	}

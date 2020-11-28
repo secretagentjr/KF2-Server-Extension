@@ -1,16 +1,16 @@
 Class Ext_TraitGhost extends Ext_TraitBase;
 
-static function bool PreventDeath( KFPawn_Human Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function bool PreventDeath(KFPawn_Human Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Controller C;
 
-	if( (Instigator==None || Instigator==Player.Controller) && DamType==Class'DmgType_Suicided' )
+	if((Instigator==None || Instigator==Player.Controller) && DamType==Class'DmgType_Suicided')
 		return false; // Allow normal suicide to go ahead.
 
-	if( Ext_T_GhostHelper(Data).CanResPlayer(Player,Level) )
+	if(Ext_T_GhostHelper(Data).CanResPlayer(Player,Level))
 	{
 		// Abort current special move
-		if( Player.IsDoingSpecialMove() )
+		if(Player.IsDoingSpecialMove())
 			Player.SpecialMoveHandler.EndSpecialMove();
 
 		// Notify AI to stop hunting me.

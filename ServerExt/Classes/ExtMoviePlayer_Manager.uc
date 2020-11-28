@@ -7,24 +7,24 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 {
 	local PlayerController PC;
 
-	switch ( WidgetName )
+	switch (WidgetName)
 	{
 	case 'gearMenu':
 		PC = GetPC();
-		if( PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun )
+		if(PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun)
 			return true;
 		if (EGearMenu == none)
 		{
 			EGearMenu = ExtMenu_Gear(Widget);
 			EGearMenu.InitializeMenu(self);
 		}
-		OnMenuOpen( WidgetPath, EGearMenu );
+		OnMenuOpen(WidgetPath, EGearMenu);
 		return true;
 	default:
 		return Super.WidgetInitialized(WidgetName,WidgetPath,Widget);
 	}
 }
-function LaunchMenus( optional bool bForceSkipLobby )
+function LaunchMenus(optional bool bForceSkipLobby)
 {
 	local GFxWidgetBinding WidgetBinding;
 	local bool bSkippedLobby;
@@ -41,7 +41,7 @@ function LaunchMenus( optional bool bForceSkipLobby )
 	WidgetBindings.AddItem(WidgetBinding);
 
 	// Load the platform-specific graphics options menu
-	switch( class'KFGameEngine'.static.GetPlatform() )
+	switch(class'KFGameEngine'.static.GetPlatform())
 	{
 		case PLATFORM_PC_DX10:
 			WidgetBinding.WidgetName = 'optionsGraphicsMenu';
@@ -62,14 +62,14 @@ function LaunchMenus( optional bool bForceSkipLobby )
 	}
 
 	// do this stuff in case CheckSkipLobby failed
-	if( bForceSkipLobby )
+	if(bForceSkipLobby)
 	{
 		bAfterLobby = true;
 		CloseMenus(true);
 	}
 }
 
-function OpenMenu( byte NewMenuIndex, optional bool bShowWidgets = true )
+function OpenMenu(byte NewMenuIndex, optional bool bShowWidgets = true)
 {
 	local KF2GUIController GUIController;
 	
@@ -77,10 +77,10 @@ function OpenMenu( byte NewMenuIndex, optional bool bShowWidgets = true )
 	
 	Super.OpenMenu(NewMenuIndex, bShowWidgets);
 	
-	if( bAfterLobby )
+	if(bAfterLobby)
 		return;
 	
-	if( NewMenuIndex == UI_Perks )
+	if(NewMenuIndex == UI_Perks)
 	{
 		PerksPage = GUIController.OpenMenu(class'ExtGUI_PerkSelectionPage');
 		SetMovieCanReceiveInput(false);
@@ -93,7 +93,7 @@ function CloseMenus(optional bool bForceClose=false)
 {
 	local KF2GUIController GUIController;
 	
-	if( PerksPage != None )
+	if(PerksPage != None)
 	{
 		GUIController = class'KF2GUIController'.Static.GetGUIController(GetPC());
 		GUIController.CloseMenu(class'ExtGUI_PerkSelectionPage');
@@ -102,11 +102,11 @@ function CloseMenus(optional bool bForceClose=false)
 	Super.CloseMenus(bForceClose);
 }
 
-function OnMenuOpen( name WidgetPath, KFGFxObject_Menu Widget )
+function OnMenuOpen(name WidgetPath, KFGFxObject_Menu Widget)
 {
 	Super.OnMenuOpen(WidgetPath, Widget);
 	
-	if( !bAfterLobby && Widget == PerksMenu )
+	if(!bAfterLobby && Widget == PerksMenu)
 		PerksMenu.ActionScriptVoid("closeContainer");
 }
 

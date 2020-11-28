@@ -26,7 +26,7 @@ function ShowMenu()
 	Super.ShowMenu();
 	GRI = KFGameReplicationInfo(GetPlayer().WorldInfo.GRI);
 	WebsiteButton.SetDisabled(GRI==None || GRI.ServerAdInfo.WebsiteLink=="");
-	if( !WebsiteButton.bDisabled )
+	if(!WebsiteButton.bDisabled)
 	{
 		WebsiteURL = GRI.ServerAdInfo.WebsiteLink;
 		WebsiteButton.ChangeToolTip(WebsiteButtonToolTip$" "$WebsiteURL);
@@ -34,13 +34,13 @@ function ShowMenu()
 }
 function Timer()
 {
-	if( !ExtPlayerController(GetPlayer()).bMOTDReceived )
+	if(!ExtPlayerController(GetPlayer()).bMOTDReceived)
 		SetTimer(0.2,false);
 	else NewsField.SetText(ExtPlayerController(GetPlayer()).ServerMOTD);
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Website':
 		class'GameEngine'.static.GetOnlineSubsystem().OpenURL(WebsiteURL);

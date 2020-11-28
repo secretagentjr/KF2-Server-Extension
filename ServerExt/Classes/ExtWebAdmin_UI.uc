@@ -33,19 +33,19 @@ struct FPropGroup
 var array<FPropGroup> ConfigList;
 
 // Value accessors.
-Delegate string OnGetValue( name PropName, int ElementIndex );
-Delegate OnSetValue( name PropName, int ElementIndex, string Value );
+Delegate string OnGetValue(name PropName, int ElementIndex);
+Delegate OnSetValue(name PropName, int ElementIndex, string Value);
 
 final function Cleanup()
 {
 	ConfigList.Length = 0;
 }
-final function AddSettingsPage( string PageName, class<Object> Obj, const out array<FWebAdminConfigInfo> Configs, delegate<OnGetValue> GetFunc, delegate<OnSetValue> SetFunc )
+final function AddSettingsPage(string PageName, class<Object> Obj, const out array<FWebAdminConfigInfo> Configs, delegate<OnGetValue> GetFunc, delegate<OnSetValue> SetFunc)
 {
 	local int i;
 	
 	i = ConfigList.Find('PageName',PageName);
-	if( i>=0 ) // Make sure no dupe pages.
+	if(i>=0) // Make sure no dupe pages.
 		PageName $= "_"$(ConfigList[i].Dupes++);
 
 	i = ConfigList.Length;
@@ -56,7 +56,7 @@ final function AddSettingsPage( string PageName, class<Object> Obj, const out ar
 	ConfigList[i].GetValue = GetFunc;
 	ConfigList[i].SetValue = SetFunc;
 }
-final function bool HasConfigFor( class<Object> Obj )
+final function bool HasConfigFor(class<Object> Obj)
 {
 	return (ConfigList.Find('ObjClass',Obj)>=0);
 }

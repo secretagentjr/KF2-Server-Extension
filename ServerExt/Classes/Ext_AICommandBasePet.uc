@@ -9,22 +9,22 @@ final function vector PickPointNearOwner()
 	local vector V,HL,HN,Start;
 	
 	Start = OwnerPawn.Location;
-	if( OwnerPawn.Physics==PHYS_Falling )
+	if(OwnerPawn.Physics==PHYS_Falling)
 	{
-		if( Pawn.Trace(HL,HN,OwnerPawn.Location-vect(0,0,5000),OwnerPawn.Location,false,vect(20,20,60))!=None )
+		if(Pawn.Trace(HL,HN,OwnerPawn.Location-vect(0,0,5000),OwnerPawn.Location,false,vect(20,20,60))!=None)
 			Start = HL;
 	}
-	while( true )
+	while(true)
 	{
 		++i;
 		V.X = FRand()-0.5;
 		V.Y = FRand()-0.5;
 		V = Start + Normal2D(V) * (100.f+FRand()*500.f);
 		
-		if( i<20 && !FastTrace(V,Start) ) // Destination is inside a wall.
+		if(i<20 && !FastTrace(V,Start)) // Destination is inside a wall.
 			continue;
 		
-		if( i<20 && FastTrace(V-vect(0,0,100),V) ) // Destination is above a pit.
+		if(i<20 && FastTrace(V-vect(0,0,100),V)) // Destination is above a pit.
 			continue;
 		break;
 	}
@@ -37,7 +37,7 @@ final function bool CanSeeOwner()
 	
 	NextSightCheckTime = WorldInfo.TimeSeconds+1.f + FRand();
 	P = Ext_T_MonsterPRI(PlayerReplicationInfo)!=None ? Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController.Pawn : None;
-	if( P!=None && !LineOfSightTo(P) )
+	if(P!=None && !LineOfSightTo(P))
 		return false;
 	return true;
 }
@@ -45,7 +45,7 @@ final function bool CanSeeOwner()
 state ZedBaseCommand
 {
 Begin:
-	if( Pawn.Physics == PHYS_Falling )
+	if(Pawn.Physics == PHYS_Falling)
 	{
 		DisableMeleeRangeEventProbing();
 		WaitForLanding();
@@ -55,32 +55,32 @@ Begin:
 	CheckInterruptCombatTransitions();
 
 	// Select nearest enemy if current enemy is invalid
-	if( Enemy == none || Enemy.Health <= 0 || !IsValidAttackTarget(KFPawn(Enemy)) )
+	if(Enemy == none || Enemy.Health <= 0 || !IsValidAttackTarget(KFPawn(Enemy)))
 		SelectEnemy();
 
 	// Handle special case if I'm supposed to be attacking a door
-	if( DoorEnemy != none && DoorEnemy.Health > 0 && VSizeSq( DoorEnemy.Location - Pawn.Location ) < (DoorMeleeDistance * DoorMeleeDistance) ) //200UU
+	if(DoorEnemy != none && DoorEnemy.Health > 0 && VSizeSq(DoorEnemy.Location - Pawn.Location) < (DoorMeleeDistance * DoorMeleeDistance)) //200UU
 	{
-		`AILog( self$" DoorEnemy: "$DoorEnemy$" starting melee attack", 'Command_Base' );
-		UpdateHistoryString( "[Attacking : "$DoorEnemy$" at "$WorldInfo.TimeSeconds$"]" );
-		class'AICommand_Attack_Melee'.static.Melee( Outer, DoorEnemy );
+		`AILog(self$" DoorEnemy: "$DoorEnemy$" starting melee attack", 'Command_Base');
+		UpdateHistoryString("[Attacking : "$DoorEnemy$" at "$WorldInfo.TimeSeconds$"]");
+		class'AICommand_Attack_Melee'.static.Melee(Outer, DoorEnemy);
 	}
 	
 	// See if we are close to our owner
 RecheckOwner:
 	OwnerPawn = Ext_T_MonsterPRI(PlayerReplicationInfo)!=None ? Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController.Pawn : None;
-	if( OwnerPawn!=None )
+	if(OwnerPawn!=None)
 	{
-		if( Enemy!=None && LineOfSightTo(OwnerPawn) && LineOfSightTo(Enemy) ) // We have sight to our owner and can see enemy, go for it!
+		if(Enemy!=None && LineOfSightTo(OwnerPawn) && LineOfSightTo(Enemy)) // We have sight to our owner and can see enemy, go for it!
 		{
 			OwnerPawn = None;
 			
 			bWaitingOnMovementPlugIn = true;
-			SetEnemyMoveGoal(self, true,,, ShouldAttackWhileMoving() );
+			SetEnemyMoveGoal(self, true,,, ShouldAttackWhileMoving());
 			NextSightCheckTime = WorldInfo.TimeSeconds+2.f;
-			while( bWaitingOnMovementPlugIn && bUsePluginsForMovement )
+			while(bWaitingOnMovementPlugIn && bUsePluginsForMovement)
 			{
-				if( NextSightCheckTime<WorldInfo.TimeSeconds && !CanSeeOwner() )
+				if(NextSightCheckTime<WorldInfo.TimeSeconds && !CanSeeOwner())
 				{
 					ClearMovementInfo();
 					GoTo'RecheckOwner';
@@ -88,12 +88,12 @@ RecheckOwner:
 				Sleep(0.03);
 			}
 		}
-		else if( VSizeSq(OwnerPawn.Location-Pawn.Location)>640000.f || !LineOfSightTo(OwnerPawn) ) // 800.f - Need to move closer to our owner.
+		else if(VSizeSq(OwnerPawn.Location-Pawn.Location)>640000.f || !LineOfSightTo(OwnerPawn)) // 800.f - Need to move closer to our owner.
 		{
 			bWaitingOnMovementPlugIn = true;
 			SetMovePoint(PickPointNearOwner(),OwnerPawn,,300.f);
 
-			while( bWaitingOnMovementPlugIn && bUsePluginsForMovement )
+			while(bWaitingOnMovementPlugIn && bUsePluginsForMovement)
 			{
 				Sleep(0.03);
 			}
@@ -104,22 +104,22 @@ RecheckOwner:
 			Sleep(0.2+FRand()*0.5);
 		}
 	}
-	else if( IsValidAttackTarget(KFPawn(Enemy)) )
+	else if(IsValidAttackTarget(KFPawn(Enemy)))
 	{
-		`AILog( "Calling SetEnemyMoveGoal [Dist:"$VSize(Enemy.Location - Pawn.Location)$"] using offset of "$AttackRange$", because IsWithinBasicMeleeRange() returned false ", 'Command_Base' );
+		`AILog("Calling SetEnemyMoveGoal [Dist:"$VSize(Enemy.Location - Pawn.Location)$"] using offset of "$AttackRange$", because IsWithinBasicMeleeRange() returned false ", 'Command_Base');
 		bWaitingOnMovementPlugIn = true;
-		SetEnemyMoveGoal(self, true,,, ShouldAttackWhileMoving() );
+		SetEnemyMoveGoal(self, true,,, ShouldAttackWhileMoving());
 
-		while( bWaitingOnMovementPlugIn && bUsePluginsForMovement )
+		while(bWaitingOnMovementPlugIn && bUsePluginsForMovement)
 		{
 			Sleep(0.03);
 		}
 		`AiLog("Back from waiting for the movement plug in!!!");
 
-		if( Enemy == none )
+		if(Enemy == none)
 		{
-			Sleep( FRand() + 0.1f );
-			Goto( 'Begin' );
+			Sleep(FRand() + 0.1f);
+			Goto('Begin');
 		}
 	}
 	else
@@ -130,18 +130,18 @@ RecheckOwner:
 
 	// Check combat transitions
 	CheckCombatTransition();
-	if( bFailedToMoveToEnemy )
+	if(bFailedToMoveToEnemy)
 	{
-		if( bFailedPathfind )
+		if(bFailedPathfind)
 		{
 			bFailedPathfind = false;
-			Sleep( 0.f );
+			Sleep(0.f);
 		}
 		else
 		{
-			Sleep( 0.f );
+			Sleep(0.f);
 		}
-		SetEnemy( GetClosestEnemy( Enemy ) );
+		SetEnemy(GetClosestEnemy(Enemy));
 	}
 	else
 	{

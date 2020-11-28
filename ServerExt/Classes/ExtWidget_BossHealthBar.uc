@@ -7,12 +7,12 @@ var transient bool bVisib,bHasInit;
 
 function TickHud(float DeltaTime)
 {
-	if( !KFPC.bHideBossHealthBar && BossList.Length>0 )
+	if(!KFPC.bHideBossHealthBar && BossList.Length>0)
 	{
-		if( KFPC.WorldInfo.RealTimeSeconds>LastUpdateTime && HasBossesAlive() )
+		if(KFPC.WorldInfo.RealTimeSeconds>LastUpdateTime && HasBossesAlive())
 		{
 			LastUpdateTime = KFPC.WorldInfo.RealTimeSeconds + UpdateTickTime;
-			if( !bVisib )
+			if(!bVisib)
 			{
 				LastHP = -1;
 				LastShield = -1;
@@ -22,12 +22,12 @@ function TickHud(float DeltaTime)
 			UpdateBossInfo();
 		}
 	}
-	else if( bHasInit )
+	else if(bHasInit)
 	{
 		NumBosses = 0;
 		bHasInit = false;
 		BossList.Length = 0;
-		if( bVisib )
+		if(bVisib)
 		{
 			bVisib = false;
 			SetVisible(false);
@@ -39,14 +39,14 @@ final function bool HasBossesAlive()
 {
 	local int i;
 	
-	for( i=(BossList.Length-1); i>=0; --i )
+	for(i=(BossList.Length-1); i>=0; --i)
 	{
-		if( BossList[i]==None || BossList[i].bDeleteMe || BossList[i].GetTeamNum()==0 )
+		if(BossList[i]==None || BossList[i].bDeleteMe || BossList[i].GetTeamNum()==0)
 		{
 			BossList.Remove(i,1);
 			--NumBosses;
 		}
-		else if( !BossList[i].IsAliveAndWell() )
+		else if(!BossList[i].IsAliveAndWell())
 			BossList.Remove(i,1);
 	}
 	return (BossList.Length>0);
@@ -54,7 +54,7 @@ final function bool HasBossesAlive()
 
 function SetBossPawn(KFInterface_MonsterBoss NewBoss)
 {
-	if( !KFPC.bHideBossHealthBar && NewBoss!=None && NewBoss.GetMonsterPawn().IsAliveAndWell() )
+	if(!KFPC.bHideBossHealthBar && NewBoss!=None && NewBoss.GetMonsterPawn().IsAliveAndWell())
 	{
 		bHasInit = true;
 		++NumBosses;
@@ -67,27 +67,27 @@ final function UpdateBossInfo()
 	local float V;
 	local KFPawn_Monster B;
 
-	if( NextBossDistTime<KFPC.WorldInfo.RealTimeSeconds )
+	if(NextBossDistTime<KFPC.WorldInfo.RealTimeSeconds)
 	{
 		NextBossDistTime = KFPC.WorldInfo.RealTimeSeconds + 1.f;
 		CheckBestBoss();
 	}
 
 	V = (BossPawn!=None ? FClamp(float(BossPawn.GetMonsterPawn().Health) / float(BossPawn.GetMonsterPawn().HealthMax),0.f,1.f) : 0.f);
-	if( LastHP!=V )
+	if(LastHP!=V)
 	{
 		LastHP = V;
 		SetFloat("currentHealthPercentValue",V);
 	}
 	
 	V = 0.f;
-	if( NumBosses>1 )
+	if(NumBosses>1)
 	{
 		foreach BossList(B)
 			V += FClamp(float(B.Health) / float(B.HealthMax),0.f,1.f);
 		V /= NumBosses;
 	}
-	if( LastShield!=V )
+	if(LastShield!=V)
 	{
 		LastShield = V;
 		SetFloat("currentShieldPercecntValue",V);
@@ -104,14 +104,14 @@ final function CheckBestBoss()
 	foreach BossList(B)
 	{
 		Dist = VSizeSq(Pos-B.Location);
-		if( Best==None || Dist<BestDist )
+		if(Best==None || Dist<BestDist)
 		{
 			Best = B;
 			BestDist = Dist;
 		}
 	}
 	
-	if( Best!=BossPawn )
+	if(Best!=BossPawn)
 	{
 		BossPawn = Best;
 		SetBossName(Best.static.GetLocalizedName());

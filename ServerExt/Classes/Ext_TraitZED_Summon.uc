@@ -15,7 +15,7 @@ static function string GetPerkDescription()
 	local string S;
 
 	S = Super.GetPerkDescription();
-	if( Default.FinalLevelPrestige>0 )
+	if(Default.FinalLevelPrestige>0)
 		S $= "|Level 6 requires prestige level: #{FF4000}"$Default.FinalLevelPrestige;
 	return S;
 }
@@ -24,14 +24,14 @@ static function CheckConfig()
 {
 	local byte i,j;
 
-	if( Default.ZedTypes.Length==0 )
+	if(Default.ZedTypes.Length==0)
 	{
 		Default.ZedTypes.Length = Default.DefZedTypes.Length;
-		for( i=0; i<Default.ZedTypes.Length; ++i )
+		for(i=0; i<Default.ZedTypes.Length; ++i)
 		{
-			for( j=0; j<Default.DefZedTypes[i].Zeds.Length; ++j )
+			for(j=0; j<Default.DefZedTypes[i].Zeds.Length; ++j)
 			{
-				if( j==0 )
+				if(j==0)
 					Default.ZedTypes[i] = PathName(Default.DefZedTypes[i].Zeds[j]);
 				else Default.ZedTypes[i] $= ","$PathName(Default.DefZedTypes[i].Zeds[j]);
 			}
@@ -40,24 +40,24 @@ static function CheckConfig()
 		Default.FinalLevelPrestige = 3;
 		StaticSaveConfig();
 	}
-	else if( Default.ZedTypes.Length==5 ) // Upgrade config from old version.
+	else if(Default.ZedTypes.Length==5) // Upgrade config from old version.
 	{
 		Default.ZedTypes.Length = Default.DefZedTypes.Length;
-		for( i=5; i<Default.ZedTypes.Length; ++i )
+		for(i=5; i<Default.ZedTypes.Length; ++i)
 		{
-			for( j=0; j<Default.DefZedTypes[i].Zeds.Length; ++j )
+			for(j=0; j<Default.DefZedTypes[i].Zeds.Length; ++j)
 			{
-				if( j==0 )
+				if(j==0)
 					Default.ZedTypes[i] = PathName(Default.DefZedTypes[i].Zeds[j]);
 				else Default.ZedTypes[i] $= ","$PathName(Default.DefZedTypes[i].Zeds[j]);
 			}
 		}
-		if( Default.LevelCosts.Length==5 )
+		if(Default.LevelCosts.Length==5)
 			Default.LevelCosts.AddItem(Default.DefLevelCosts[5]);
 		Default.FinalLevelPrestige = 3;
 		StaticSaveConfig();
 	}
-	if( Default.ZedRespawnTime==0 )
+	if(Default.ZedRespawnTime==0)
 	{
 		Default.ZedRespawnTime = 60.f;
 		StaticSaveConfig();
@@ -66,43 +66,43 @@ static function CheckConfig()
 	class'Ext_T_ZEDHelper'.Static.LoadMonsterList();
 }
 
-static function bool MeetsRequirements( byte Lvl, Ext_PerkBase Perk )
+static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
 	local int i;
 
 	// First check level.
-	if( Perk.CurrentLevel<Default.MinLevel || (Lvl>=5 && Perk.CurrentPrestige<Default.FinalLevelPrestige) )
+	if(Perk.CurrentLevel<Default.MinLevel || (Lvl>=5 && Perk.CurrentPrestige<Default.FinalLevelPrestige))
 		return false;
 	
 	// Then check base trait.
-	if( Lvl==0 && Default.BaseTrait!=None )
+	if(Lvl==0 && Default.BaseTrait!=None)
 	{
 		i = Perk.PerkStats.Find('StatType','Damage');
-		if( i>=0 )
+		if(i>=0)
 			return (Perk.PerkStats[i].CurrentValue>=30);
 	}
 	return true;
 }
-static function ApplyEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
 	local int i;
 
 	H = Player.Spawn(class'Ext_T_ZEDHelper',Player);
-	if( H!=None )
+	if(H!=None)
 		H.CurLevel = Level-1;
 	
 	// Make other traits refresh (apply HP/damage scalers).
-	for( i=0; i<Perk.PerkTraits.Length; ++i )
-		if( Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner )
+	for(i=0; i<Perk.PerkTraits.Length; ++i)
+		if(Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
 			Perk.PerkTraits[i].TraitType.Static.ApplyEffectOn(Player,Perk,Level,Data);
 }
-static function CancelEffectOn( KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
 
 	foreach Player.ChildActors(class'Ext_T_ZEDHelper',H)
-		if( !H.bIsExtra )
+		if(!H.bIsExtra)
 			H.Destroy();
 }
 
@@ -115,16 +115,16 @@ static function string GetRepData()
 	S $= IntToStr(Default.FinalLevelPrestige);
 	return S;
 }
-static function string ClientSetRepData( string S )
+static function string ClientSetRepData(string S)
 {
 	S = Super.ClientSetRepData(S);
 	Default.FinalLevelPrestige = StrToInt(S);
 	return S;
 }
 
-static function string GetValue( name PropName, int ElementIndex )
+static function string GetValue(name PropName, int ElementIndex)
 {
-	switch( PropName )
+	switch(PropName)
 	{
 	case 'ZedTypes':
 		return (ElementIndex==-1 ? string(Default.ZedTypes.Length) : Default.ZedTypes[ElementIndex]);
@@ -136,12 +136,12 @@ static function string GetValue( name PropName, int ElementIndex )
 		return Super.GetValue(PropName,ElementIndex);
 	}
 }
-static function ApplyValue( name PropName, int ElementIndex, string Value )
+static function ApplyValue(name PropName, int ElementIndex, string Value)
 {
-	switch( PropName )
+	switch(PropName)
 	{
 	case 'ZedTypes':
-		if( Value!="#DELETE" && ElementIndex<Default.ZedTypes.Length )
+		if(Value!="#DELETE" && ElementIndex<Default.ZedTypes.Length)
 			Default.ZedTypes[ElementIndex] = Value;
 		break;
 	case 'ZedRespawnTime':

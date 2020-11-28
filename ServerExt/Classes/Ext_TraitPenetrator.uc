@@ -9,18 +9,18 @@ static function string GetPerkDescription()
 	return S;
 }
 
-static function bool MeetsRequirements( byte Lvl, Ext_PerkBase Perk )
+static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 {
 	local int i;
 
-	if( Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2 )
+	if(Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<2)
 		return false;
 	
-	for( i=0; i<Perk.PerkTraits.Length; ++i )
+	for(i=0; i<Perk.PerkTraits.Length; ++i)
 	{
-		if( Perk.PerkTraits[i].TraitType==Class'Ext_TraitAPShots' )
+		if(Perk.PerkTraits[i].TraitType==Class'Ext_TraitAPShots')
 		{
-			if( Perk.PerkTraits[i].CurrentLevel <= 0 )
+			if(Perk.PerkTraits[i].CurrentLevel <= 0)
 				return false;
 			else break;
 		}
@@ -29,12 +29,12 @@ static function bool MeetsRequirements( byte Lvl, Ext_PerkBase Perk )
 	return true;
 }
 
-static function TraitActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkSupport(Perk).bUsePerforate = true;
 }
 
-static function TraitDeActivate( Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data )
+static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkSupport(Perk).bUsePerforate = false;
 }

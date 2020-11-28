@@ -16,18 +16,18 @@ event PostRender()
 	ActiveGame.Canvas = Canvas;
 	ActiveGame.Render(Canvas.ClipX*0.1,Canvas.ClipY*0.2,Canvas.ClipX*0.8,Canvas.ClipY*0.7);
 	ActiveGame.Canvas = None;
-	if( bShowProgress )
+	if(bShowProgress)
 		RenderProgress();
 }
 
-function Tick( float Delta )
+function Tick(float Delta)
 {
 	ActiveGame.Tick(Delta);
 }
 
-final function ShowProgressMsg( string S, optional bool bDis )
+final function ShowProgressMsg(string S, optional bool bDis)
 {
-	if( S=="" )
+	if(S=="")
 	{
 		bShowProgress = false;
 		return;
@@ -35,7 +35,7 @@ final function ShowProgressMsg( string S, optional bool bDis )
 	bShowProgress = true;
 	ParseStringIntoArray(S,ProgressLines,"|",false);
 	bProgressDC = bDis;
-	if( !bDis )
+	if(!bDis)
 		ProgressLines.AddItem("Press [Esc] to cancel connection");
 }
 
@@ -46,12 +46,12 @@ final function RenderProgress()
 	
 	Canvas.Font = Canvas.GetDefaultCanvasFont();
 	Sc = FMin(Canvas.ClipY/1000.f,3.f);
-	if( bProgressDC )
+	if(bProgressDC)
 		Canvas.SetDrawColor(255,80,80,255);
 	else Canvas.SetDrawColor(255,255,255,255);
 	Y = Canvas.ClipY*0.05;
 
-	for( i=0; i<ProgressLines.Length; ++i )
+	for(i=0; i<ProgressLines.Length; ++i)
 	{
 		Canvas.TextSize(ProgressLines[i],XL,YL,Sc,Sc);
 		Canvas.SetPos((Canvas.ClipX-XL)*0.5,Y);

@@ -14,13 +14,13 @@ simulated function ExplodeTimer()
 	local Actor HitActor;
 	local vector HitLocation, HitNormal;
 
-	if( WorldInfo.NetMode!=NM_Client && InstigatorController==none )
+	if(WorldInfo.NetMode!=NM_Client && InstigatorController==none)
 	{
 		Destroy();
 		return;
 	}
 	GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
-	if( --NumCrackers==0 )
+	if(--NumCrackers==0)
 		TriggerExplosion(HitLocation, HitNormal, HitActor);
 	else SmallExplosion(HitLocation, HitNormal, HitActor);
 }
@@ -45,10 +45,10 @@ simulated function SmallExplosion(Vector HitLocation, Vector HitNormal, Actor Hi
 			PrepareExplosionTemplate();
 
 			// If the locations are zero (probably because this exploded in the air) set defaults
-			if( IsZero(HitLocation) )
+			if(IsZero(HitLocation))
 				HitLocation = Location;
 
-			if( IsZero(HitNormal) )
+			if(IsZero(HitNormal))
 			{
 				HitNormal = vect(0,0,1);
 			}

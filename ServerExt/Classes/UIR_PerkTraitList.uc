@@ -42,13 +42,13 @@ function DrawMenu()
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
 	FocusMouseItem = -1;
-	if( bCheckMouse )
+	if(bCheckMouse)
 		MouseYHit = Owner.MousePosition.Y - CompPos[1];
 
 	n = ScrollBar.CurrentScroll;
 	i = 0;
-	for( C=FirstItem; C!=None; C=C.Next )
-		if( (i++)==n )
+	for(C=FirstItem; C!=None; C=C.Next)
+		if((i++)==n)
 			break;
 	Y = 0.f;
 	TextY = (ItemHeight-TextHeight)*0.5f;
@@ -56,19 +56,19 @@ function DrawMenu()
 	YClip = CompPos[1]+CompPos[3];
 	Canvas.SetDrawColor(250,250,250,255);
 
-	for( i=0; (i<ListItemsPerPage && C!=None); ++i )
+	for(i=0; (i<ListItemsPerPage && C!=None); ++i)
 	{
 		// Check for mouse hit.
-		if( bCheckMouse && FocusMouseItem==-1 )
+		if(bCheckMouse && FocusMouseItem==-1)
 		{
-			if( MouseYHit<ItemHeight )
+			if(MouseYHit<ItemHeight)
 				FocusMouseItem = n;
 			else MouseYHit-=ItemHeight;
 		}
 		
 		// Draw selection background.
 		bHideRow = false;
-		if( Left(C.GetDisplayStr(0),2)=="--" ) // Group name.
+		if(Left(C.GetDisplayStr(0),2)=="--") // Group name.
 		{
 			Canvas.SetPos(0,Y);
 			Canvas.SetDrawColor(32,128,32);
@@ -81,14 +81,14 @@ function DrawMenu()
 			Canvas.SetPos(2,TextY);
 			DrawStrClipped(Mid(C.GetDisplayStr(0),2));
 		}
-		else if( SelectedRowIndex==n ) // Selected
+		else if(SelectedRowIndex==n) // Selected
 		{
 			Canvas.SetPos(0,Y);
 			Canvas.DrawColor = SelectedLineColor;
 			Owner.CurrentStyle.DrawWhiteBox(CompPos[2],ItemHeight);
 			Canvas.SetDrawColor(250,250,250,255);
 		}
-		else if( FocusMouseItem==n ) // Focused
+		else if(FocusMouseItem==n) // Focused
 		{
 			Canvas.SetPos(0,Y);
 			Canvas.DrawColor = FocusedLineColor;
@@ -96,11 +96,11 @@ function DrawMenu()
 			Canvas.SetDrawColor(250,250,250,255);
 		}
 		
-		if( !bHideRow )
+		if(!bHideRow)
 		{
 			// Draw columns of text
-			for( j=0; j<Columns.Length; ++j )
-				if( !Columns[j].bHidden )
+			for(j=0; j<Columns.Length; ++j)
+				if(!Columns[j].bHidden)
 				{
 					Canvas.SetClip(Columns[j].X+Columns[j].XSize,YClip);
 					Canvas.SetPos(Columns[j].X+XOffset,TextY);
@@ -115,9 +115,9 @@ function DrawMenu()
 }
 function NotifyMousePaused()
 {
-	if( Owner.InputFocus==None && FocusMouseItem!=-1 && ToolTip[FocusMouseItem]!="" )
+	if(Owner.InputFocus==None && FocusMouseItem!=-1 && ToolTip[FocusMouseItem]!="")
 	{
-		if( ToolTipItem==None )
+		if(ToolTipItem==None)
 		{
 			ToolTipItem = New(None)Class'KFGUI_Tooltip';
 			ToolTipItem.Owner = Owner;

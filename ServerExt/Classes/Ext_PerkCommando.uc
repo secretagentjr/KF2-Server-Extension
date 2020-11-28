@@ -6,46 +6,46 @@ var float ZTExtCount;
 replication
 {
 	// Things the server should send to the client.
-	if ( true )
+	if (true)
 		bUseProfessional,bUseMachineGunner;
 }
 
-simulated function bool GetUsingTactialReload( KFWeapon KFW )
+simulated function bool GetUsingTactialReload(KFWeapon KFW)
 {
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5]<0.65 : false);
 }
 
-simulated function ModifyDamageGiven( out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx )
+simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCauser, optional KFPawn_Monster MyKFPM, optional KFPlayerController DamageInstigator, optional class<KFDamageType> DamageType, optional int HitZoneIdx)
 {
-	if( (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))) )
+	if((DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk)>=0) || (KFWeapon(DamageCauser)!=None && IsWeaponOnPerk(KFWeapon(DamageCauser))))
 	{
-		if( bUseMachineGunner && WorldInfo.TimeDilation < 1.f )
+		if(bUseMachineGunner && WorldInfo.TimeDilation < 1.f)
 			InDamage += InDamage * 0.03;
 	}
 		
 	Super.ModifyDamageGiven(InDamage, DamageCauser, MyKFPM, DamageInstigator, DamageType, HitZoneIdx);
 }
 
-simulated function float GetZedTimeModifier( KFWeapon W )
+simulated function float GetZedTimeModifier(KFWeapon W)
 {
 	local name StateName;
 	StateName = W.GetStateName();
 
-	if( bUseProfessional && IsWeaponOnPerk( W ) )
+	if(bUseProfessional && IsWeaponOnPerk(W))
 	{
-		if( StateName == 'Reloading' || StateName == 'AltReloading' )
+		if(StateName == 'Reloading' || StateName == 'AltReloading')
 			return 1.f;
-		else if( StateName == 'WeaponPuttingDown' || StateName == 'WeaponEquipping' )
+		else if(StateName == 'WeaponPuttingDown' || StateName == 'WeaponEquipping')
 			return 0.3f;
 	}
 
-	if( bUseMachineGunner && IsWeaponOnPerk( W ) && BasePerk.Default.ZedTimeModifyingStates.Find( StateName ) != INDEX_NONE )
+	if(bUseMachineGunner && IsWeaponOnPerk(W) && BasePerk.Default.ZedTimeModifyingStates.Find(StateName) != INDEX_NONE)
 		return 0.5f;
 
 	return 0.f;
 }
 
-simulated function float GetZedTimeExtensions( byte Level )
+simulated function float GetZedTimeExtensions(byte Level)
 {
 	return ZTExtCount;
 }

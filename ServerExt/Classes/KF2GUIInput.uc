@@ -4,24 +4,24 @@ class KF2GUIInput extends KFPlayerInput;
 var KF2GUIController ControllerOwner;
 var PlayerInput BaseInput;
 
-function DrawHUD( HUD H )
+function DrawHUD(HUD H)
 {
 	//ControllerOwner.RenderMenu(H.Canvas);
 }
-function PostRender( Canvas Canvas )
+function PostRender(Canvas Canvas)
 {
-	if( ControllerOwner.bIsInMenuState )
+	if(ControllerOwner.bIsInMenuState)
 		ControllerOwner.HandleDrawMenu();
 		//ControllerOwner.RenderMenu(Canvas);
 }
 
 // Postprocess the player's input.
-function PlayerInput( float DeltaTime )
+function PlayerInput(float DeltaTime)
 {
 	// Do not move.
 	ControllerOwner.MenuInput(DeltaTime);
 	
-	if( !ControllerOwner.bAbsorbInput )
+	if(!ControllerOwner.bAbsorbInput)
 	{
 		aMouseX = 0;
 		aMouseY = 0;
@@ -50,7 +50,7 @@ function PlayerInput( float DeltaTime )
 	}
 }
 
-function PreClientTravel( string PendingURL, ETravelType TravelType, bool bIsSeamlessTravel)
+function PreClientTravel(string PendingURL, ETravelType TravelType, bool bIsSeamlessTravel)
 {
 	ControllerOwner.BackupInput.PreClientTravel(PendingURL,TravelType,bIsSeamlessTravel); // Let original mod do stuff too!
 	ControllerOwner.NotifyLevelChange(); // Close menu NOW!

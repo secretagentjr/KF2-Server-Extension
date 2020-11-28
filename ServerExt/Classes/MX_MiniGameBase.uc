@@ -10,16 +10,16 @@ var bool bGameStarted;
 
 function Init()
 {
-	if( Sensitivity==0 )
+	if(Sensitivity==0)
 	{
 		Sensitivity = 1;
 		SaveConfig();
 	}
 }
 
-function AdjustSensitivity( bool bUp )
+function AdjustSensitivity(bool bUp)
 {
-	if( bUp )
+	if(bUp)
 		Sensitivity = FMin(Sensitivity+0.05,3.f);
 	else Sensitivity = FMax(Sensitivity-0.05,0.05f);
 	SetTimer(2,false,'DelayedSaveConfig',Self);
@@ -30,21 +30,21 @@ final function DelayedSaveConfig()
 	SaveConfig();
 }
 
-function SetFXTrack( Object O );
+function SetFXTrack(Object O);
 
 function StartGame()
 {
 	bGameStarted = true;
 }
 
-function Render( float XPos, float YPos, float XSize, float YSize );
+function Render(float XPos, float YPos, float XSize, float YSize);
 
-function SetMouse( float X, float Y );
-function UpdateMouse( float X, float Y );
+function SetMouse(float X, float Y);
+function UpdateMouse(float X, float Y);
 
-function Tick( float Delta );
+function Tick(float Delta);
 
-final function bool Box8DirTrace( vector Start, vector Dir, vector HitTest, vector Ext, vector ExtB, out vector HitNorm, out float HitTime ) // free movement trace.
+final function bool Box8DirTrace(vector Start, vector Dir, vector HitTest, vector Ext, vector ExtB, out vector HitNorm, out float HitTime) // free movement trace.
 {
 	local vector V;
 	local float tmin,tmax,tymin,tymax,tmp;
@@ -54,20 +54,20 @@ final function bool Box8DirTrace( vector Start, vector Dir, vector HitTest, vect
 	Ext+=ExtB;
 
 	// AABB check if start inside box.
-	if( Abs(V.X)<Ext.X && Abs(V.Y)<Ext.Y )
+	if(Abs(V.X)<Ext.X && Abs(V.Y)<Ext.Y)
 	{
-		if( (V Dot Dir)<0.f ) // Moving out from origin.
+		if((V Dot Dir)<0.f) // Moving out from origin.
 			return false;
 		V = Normal2D(V);
 		
 		// Check which normal axis to use.
-		if( Abs(V.X)>Normal2D(ExtB).Y )
+		if(Abs(V.X)>Normal2D(ExtB).Y)
 		{
-			if( V.X<0 )
+			if(V.X<0)
 				HitNorm = vect(1,0,0);
 			else HitNorm = vect(-1,0,0);
 		}
-		else if( V.Y<0 )
+		else if(V.Y<0)
 			HitNorm = vect(0,1,0);
 		else HitNorm = vect(0,-1,0);
 		
@@ -80,7 +80,7 @@ final function bool Box8DirTrace( vector Start, vector Dir, vector HitTest, vect
 	tmin = (V.X - Ext.X) * tmp;
 	tmax = (V.X + Ext.X) * tmp;
 
-	if( tmin > tmax )
+	if(tmin > tmax)
 	{
 		tmp = tmax;
 		tmax = tmin;
@@ -99,7 +99,7 @@ final function bool Box8DirTrace( vector Start, vector Dir, vector HitTest, vect
 	}
 
 	// Fully missed.
-	if( (tmin > tymax) || (tymin > tmax) )
+	if((tmin > tymax) || (tymin > tmax))
 		return false;
 
 	if (tymin > tmin)
@@ -114,21 +114,21 @@ final function bool Box8DirTrace( vector Start, vector Dir, vector HitTest, vect
 		tmax = tymax;
 	}
 	
-	if( tmin<tmax )
+	if(tmin<tmax)
 	{
 		bMaxY = bMinY;
 		tmax = tmin;
 	}
-	if( tmax<0.f || tmax>1.f ) // Too far away
+	if(tmax<0.f || tmax>1.f) // Too far away
 		return false;
 
-	if( bMaxY )
+	if(bMaxY)
 	{
-		if( Dir.Y>0.f )
+		if(Dir.Y>0.f)
 			HitNorm = vect(0,-1,0);
 		else HitNorm = vect(0,1,0);
 	}
-	else if( Dir.X>0.f )
+	else if(Dir.X>0.f)
 		HitNorm = vect(-1,0,0);
 	else HitNorm = vect(1,0,0);
 	

@@ -36,7 +36,7 @@ function CloseMenu()
 	SetTimer(0,false);
 }
 
-function ShowTraitInfo( int Index, Ext_PerkBase Perk )
+function ShowTraitInfo(int Index, Ext_PerkBase Perk)
 {
 	MyTrait = Perk.PerkTraits[Index].TraitType;
 	WindowTitle = MyTrait.Default.TraitName;
@@ -53,11 +53,11 @@ function Timer()
 {
 	local int Cost;
 
-	if( OldPoints!=MyPerk.CurrentSP || OldLevel!=MyPerk.PerkTraits[TraitIndex].CurrentLevel )
+	if(OldPoints!=MyPerk.CurrentSP || OldLevel!=MyPerk.PerkTraits[TraitIndex].CurrentLevel)
 	{
 		OldPoints = MyPerk.CurrentSP;
 		OldLevel = MyPerk.PerkTraits[TraitIndex].CurrentLevel;
-		if( OldLevel>=MyTrait.Default.NumLevels )
+		if(OldLevel>=MyTrait.Default.NumLevels)
 		{
 			YesButton.ButtonText = ButtonBuyDisabledText;
 			YesButton.SetDisabled(true);
@@ -65,14 +65,14 @@ function Timer()
 		}
 		Cost = MyTrait.Static.GetTraitCost(OldLevel);
 		YesButton.ButtonText = ButtonBuyText$" ("$Cost$")";
-		if( Cost>OldPoints || !MyTrait.Static.MeetsRequirements(OldLevel,MyPerk) )
+		if(Cost>OldPoints || !MyTrait.Static.MeetsRequirements(OldLevel,MyPerk))
 			YesButton.SetDisabled(true);
 		else YesButton.SetDisabled(false);
 	}
 }
-function ButtonClicked( KFGUI_Button Sender )
+function ButtonClicked(KFGUI_Button Sender)
 {
-	switch( Sender.ID )
+	switch(Sender.ID)
 	{
 	case 'Yes':
 		ExtPlayerController(GetPlayer()).BoughtTrait(MyPerk.Class,MyTrait);

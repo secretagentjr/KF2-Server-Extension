@@ -16,14 +16,14 @@ simulated exec function IronSights(optional bool bHoldButtonMode)
 {
 	local KFWeapon KFW;
 
-	if( Pawn != none )
+	if(Pawn != none)
 	{
-		if( KFPawn_Monster(Pawn)!=None )
+		if(KFPawn_Monster(Pawn)!=None)
 			Pawn.StartFire(1);
 		else
 		{
 			KFW = KFWeapon(Pawn.Weapon);
-			if ( KFW != None )
+			if (KFW != None)
 				KFW.SetIronSights((bHoldButtonMode) ? true : !KFW.bUsingSights);
 		}
 	}
@@ -32,14 +32,14 @@ simulated exec function IronSightsRelease(optional bool bHoldButtonMode)
 {
 	local KFWeapon KFW;
 
-	if( Pawn != none )
+	if(Pawn != none)
 	{
-		if( KFPawn_Monster(Pawn)!=None )
+		if(KFPawn_Monster(Pawn)!=None)
 			Pawn.StopFire(1);
 		else
 		{
 			KFW = KFWeapon(Pawn.Weapon);
-			if ( !KFW.bHasIronSights || bHoldButtonMode )
+			if (!KFW.bHasIronSights || bHoldButtonMode)
 				KFW.SetIronSights(false);
 		}
 	}
@@ -47,40 +47,40 @@ simulated exec function IronSightsRelease(optional bool bHoldButtonMode)
 
 simulated exec function ToggleFlashlight()
 {
-	if( KFPawn_Monster(Pawn)!=None && Pawn.Health>0 )
+	if(KFPawn_Monster(Pawn)!=None && Pawn.Health>0)
 		SetNightVision(!bNightVisionActive);
 	else Super.ToggleFlashlight();
 }
 
-function PreClientTravel( string PendingURL, ETravelType TravelType, bool bIsSeamlessTravel)
+function PreClientTravel(string PendingURL, ETravelType TravelType, bool bIsSeamlessTravel)
 {
 	Super.PreClientTravel(PendingURL,TravelType,bIsSeamlessTravel);
-	if( !bHandledTravel )
+	if(!bHandledTravel)
 	{
 		bHandledTravel = true;
-		if( KFExtendedHUD(MyHUD)!=None )
+		if(KFExtendedHUD(MyHUD)!=None)
 			KFExtendedHUD(MyHUD).NotifyLevelChange(true);
 	}
 }
 
 event bool FilterButtonInput(int ControllerId, Name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
-	if ( MyGfxManager.bAfterLobby && Event==IE_Pressed && (Key == 'Escape' || Key == 'XboxTypeS_Start') )
+	if (MyGfxManager.bAfterLobby && Event==IE_Pressed && (Key == 'Escape' || Key == 'XboxTypeS_Start'))
 	{
-		if( MyGUIController==None || MyGUIController.bIsInvalid )
+		if(MyGUIController==None || MyGUIController.bIsInvalid)
 		{
 			MyGUIController = class'KF2GUIController'.Static.GetGUIController(Outer);
-			if( MyGUIController==None )
+			if(MyGUIController==None)
 			{
 				ExtPlayerController(Outer).CancelConnection();
 				return false;
 			}
 		}
-		if( MyGUIController.bIsInMenuState )
+		if(MyGUIController.bIsInMenuState)
 		{
 			return false;
 		}
-		else if( MyGFxManager.bMenusOpen )
+		else if(MyGFxManager.bMenusOpen)
 		{
 			return MyGFxManager.ToggleMenus();
 		}

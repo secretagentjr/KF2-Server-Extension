@@ -9,9 +9,9 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 	local ExtPlayerController EKFPC;
 
 	EKFPC = ExtPlayerController(KFPC);
-	if ( EKFPC!=none && EKFPC.ActivePerkManager!=None)
+	if (EKFPC!=none && EKFPC.ActivePerkManager!=None)
 	{
-		if( FilterIndex<EKFPC.ActivePerkManager.UserPerks.Length )
+		if(FilterIndex<EKFPC.ActivePerkManager.UserPerks.Length)
 			TargetPerkClass = EKFPC.ActivePerkManager.UserPerks[FilterIndex].BasePerk;
 
 		SlotIndex = 0;
@@ -19,12 +19,12 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 
 		for (i = 0; i < ItemList.Length; i++)
 		{
-			if ( IsItemFiltered(ItemList[i]) )
+			if (IsItemFiltered(ItemList[i]))
 			{
 				continue; // Skip this item if it's in our inventory
 			}
-			else if ( ItemList[i].AssociatedPerkClasses.length > 0 && ItemList[i].AssociatedPerkClasses[0] != none && TargetPerkClass != class'KFPerk_Survivalist'
-				&& (TargetPerkClass==None || ItemList[i].AssociatedPerkClasses.Find(TargetPerkClass) == INDEX_NONE ) )
+			else if (ItemList[i].AssociatedPerkClasses.length > 0 && ItemList[i].AssociatedPerkClasses[0] != none && TargetPerkClass != class'KFPerk_Survivalist'
+				&& (TargetPerkClass==None || ItemList[i].AssociatedPerkClasses.Find(TargetPerkClass) == INDEX_NONE))
 			{
 				continue; // filtered by perk
 			}

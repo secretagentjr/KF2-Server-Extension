@@ -14,50 +14,50 @@ simulated function PostBeginPlay()
 	local KFPawn InstigatorPawn;
 
 	InstigatorPawn = KFPawn(Instigator);
-	if( InstigatorPawn != none )
+	if(InstigatorPawn != none)
 	{
 		InstigatorPerk = InstigatorPawn.GetPerk();
-		if( InstigatorPerk != none )
+		if(InstigatorPerk != none)
 			bExplodeOnContact = InstigatorPerk.IsOnContactActive();	
 	}
 
 	Super.PostBeginPlay();
-	if( Instigator!=None && ExtPlayerReplicationInfo(Instigator.PlayerReplicationInfo)!=None && ExtPlayerReplicationInfo(Instigator.PlayerReplicationInfo).ECurrentPerk!=None )
+	if(Instigator!=None && ExtPlayerReplicationInfo(Instigator.PlayerReplicationInfo)!=None && ExtPlayerReplicationInfo(Instigator.PlayerReplicationInfo).ECurrentPerk!=None)
 		ClusterNades = ExtPlayerReplicationInfo(Instigator.PlayerReplicationInfo).ECurrentPerk.Default.PerkGrenade;
 }
 
 simulated function ProcessTouch(Actor Other, Vector HitLocation, Vector HitNormal)
 {
-	if( bExplodeOnContact && Other != Instigator && !Other.bWorldGeometry && Pawn(Other)!=None && Pawn(Other).GetTeamNum() != GetTeamNum() )
+	if(bExplodeOnContact && Other != Instigator && !Other.bWorldGeometry && Pawn(Other)!=None && Pawn(Other).GetTeamNum() != GetTeamNum())
 	{
 		// For opposing team, make the grenade explode instantly
-		GetExplodeEffectLocation( HitLocation, HitNormal, Other );
-		TriggerExplosion( HitLocation, HitNormal, Other );
+		GetExplodeEffectLocation(HitLocation, HitNormal, Other);
+		TriggerExplosion(HitLocation, HitNormal, Other);
 	}
-	else super.ProcessTouch( Other, HitLocation, HitNormal );
+	else super.ProcessTouch(Other, HitLocation, HitNormal);
 }
 
-simulated function Disintegrate( rotator inDisintegrateEffectRotation ); // Nope!
+simulated function Disintegrate(rotator inDisintegrateEffectRotation); // Nope!
 
 simulated function TriggerExplosion(Vector HitLocation, Vector HitNormal, Actor HitActor)
 {
 	local byte i;
 	local KFProj_Grenade P;
 
-	if( bHasExploded )
+	if(bHasExploded)
 		return;
-	if( InstigatorController==None && WorldInfo.NetMode!=NM_Client ) // Prevent Team-Kill.
+	if(InstigatorController==None && WorldInfo.NetMode!=NM_Client) // Prevent Team-Kill.
 	{
 		Destroy();
 		return;
 	}
 	Super.TriggerExplosion(HitLocation,HitNormal,HitActor);
-	if( WorldInfo.NetMode!=NM_Client )
+	if(WorldInfo.NetMode!=NM_Client)
 	{
-		for( i=0; i<NumClusters; ++i )
+		for(i=0; i<NumClusters; ++i)
 		{
 			P = Spawn(ClusterNades,,,Location);
-			if( P!=None )
+			if(P!=None)
 			{
 				P.InstigatorController = InstigatorController;
 				P.Init(VRand());
@@ -73,7 +73,7 @@ simulated function Destroyed()
 	local vector HitLocation, HitNormal;
 
 	// Final Failsafe check for explosion effect
-	if( !bHasExploded && WorldInfo.NetMode==NM_Client )
+	if(!bHasExploded && WorldInfo.NetMode==NM_Client)
 	{
 		GetExplodeEffectLocation(HitLocation, HitNormal, HitActor);
 		TriggerExplosion(HitLocation, HitNormal, HitActor);

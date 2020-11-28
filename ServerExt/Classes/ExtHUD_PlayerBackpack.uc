@@ -11,11 +11,11 @@ function UpdateGrenades()
 		CurrentGrenades = MyKFInvManager.GrenadeCount;
 
 	//Update the icon the for grenade type.
-	if( ExtPlayerController(MyKFPC)!=None )
+	if(ExtPlayerController(MyKFPC)!=None)
 	{
 		PM = ExtPlayerController(MyKFPC).ActivePerkManager;
 		
-		if( PM!=None && PM.CurrentPerk!=None && EPerkClass!=PM.CurrentPerk.Class )
+		if(PM!=None && PM.CurrentPerk!=None && EPerkClass!=PM.CurrentPerk.Class)
 		{
 			SetString("backpackGrenadeType", "img://"$PM.CurrentPerk.GrenadeWeaponDef.Static.GetImagePath());
 			EPerkClass = PM.CurrentPerk.Class;
