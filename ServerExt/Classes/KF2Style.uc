@@ -520,7 +520,7 @@ function Font PickFont(byte i, out float Scaler)
 		Scaler = 0.75;
 		return DrawFonts[0];
 	case 4:
-		Scaler = 0.80;
+		Scaler = 0.85;
 		return DrawFonts[0];
 	case 5:
 		Scaler = 0.90;
