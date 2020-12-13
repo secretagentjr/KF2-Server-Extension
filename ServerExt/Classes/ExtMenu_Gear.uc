@@ -108,6 +108,9 @@ function LocalizeText()
 	LocalizedObject.SetString("bodiesString", class'KFGFxMenu_Gear'.Default.BodyString);
 	LocalizedObject.SetString("skinsString", class'KFGFxMenu_Gear'.Default.SkinsString);
 	LocalizedObject.SetString("attachmentsString", class'KFGFxMenu_Gear'.Default.AttachmentsString);
+	LocalizedObject.SetString("attachment0String", class'KFGFxMenu_Gear'.Default.Attachment0String);
+	LocalizedObject.SetString("attachment1String", class'KFGFxMenu_Gear'.Default.Attachment1String);
+	LocalizedObject.SetString("attachment2String", class'KFGFxMenu_Gear'.Default.Attachment2String);
 
 	SetObject("localizeText", LocalizedObject);
 }
@@ -643,6 +646,40 @@ function Callback_Body(int MeshIndex, int SkinIndex)
 	SetGearButtons(MeshIndex, SkinIndex, class'KFGFxMenu_Gear'.Default.BodyMeshKey, class'KFGFxMenu_Gear'.Default.BodySkinKey, class'KFGFxMenu_Gear'.Default.BodyFunctionKey);
 }
 
+function Callback_Attachment1(int MeshIndex, int SkinIndex)
+{
+	Callback_AttachmentNumbered(MeshIndex, SkinIndex, 0);
+}
+
+function Callback_Attachment2(int MeshIndex, int SkinIndex)
+{
+	Callback_AttachmentNumbered(MeshIndex, SkinIndex, 1);
+}
+
+function Callback_Attachment3(int MeshIndex, int SkinIndex)
+{
+	Callback_AttachmentNumbered(MeshIndex, SkinIndex, 2);
+}
+
+function Callback_AttachmentNumbered(int MeshIndex, int SkinIndex, int SlotIndex)
+{
+	local Pawn P;
+	local KFPawn KFP;
+	P = GetPC().Pawn;
+	if(P != none)
+	{
+		KFP = KFPawn(P);
+
+		if (KFP != none && ExtPRI != None)
+		{
+			if (MeshIndex >= 0)
+				class'ExtCharacterInfo'.Static.DetachConflictingAttachments(CurrentCharInfo, MeshIndex, KFP, ExtPRI);
+			ExtPRI.UpdateCustomization(CO_Attachment, MeshIndex, SkinIndex, SlotIndex);
+		}
+	}
+	SetAttachmentButtons(class'KFGFxMenu_Gear'.Default.AttachmentKey, class'KFGFxMenu_Gear'.Default.AttachmentFunctionKey);
+}
+
 function Callback_Attachment(int MeshIndex, int SkinIndex)
 {
 	local int SlotIndex;
@@ -667,7 +704,6 @@ function Callback_Attachment(int MeshIndex, int SkinIndex)
 	
 			ExtPRI.UpdateCustomization(CO_Attachment, MeshIndex, SkinIndex, SlotIndex);
 		}
-
 		SetAttachmentButtons(class'KFGFxMenu_Gear'.Default.AttachmentKey, class'KFGFxMenu_Gear'.Default.AttachmentFunctionKey);
 	}
 }

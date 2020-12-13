@@ -547,7 +547,7 @@ static final function SetAttachmentMesh(KFCharacterInfo_Human C, int CurrentAtta
  * Removes any attachments that exist in the same socket or have overriding cases 
  * Network: Local Player 
  */
-static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int NewAttachmentMeshIndex, KFPawn KFP, optional KFPlayerReplicationInfo KFPRI)
+static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int NewAttachmentMeshIndex, KFPawn KFP, optional KFPlayerReplicationInfo KFPRI, optional out array<int> out_RemovedAttachments)
 {
 	local name NewAttachmentSocketName;
 	local int i, CurrentAttachmentIdx;
@@ -574,6 +574,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 				KFP.ThirdPersonAttachmentSocketNames[i] == NewAttachmentSocketName)
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);	
+				out_RemovedAttachments.AddItem(i);
 				continue;
 			}
 
@@ -581,6 +582,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 			if (C.GetOverrideCase(CurrentAttachmentIdx, NewAttachmentMeshIndex))
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);
+				out_RemovedAttachments.AddItem(i);
 				continue;
 			}
 
@@ -588,6 +590,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 			if (C.GetOverrideCase(NewAttachmentMeshIndex, CurrentAttachmentIdx))
 			{
 				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);
+				out_RemovedAttachments.AddItem(i);
 				continue;
 			}
 		}
@@ -663,7 +666,7 @@ static function int GetAttachmentSlotIndex(
 	for (AttachmentIdx = 0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 	{
 		CosmeticMeshIdx = bCustom ? EPRI.CustomCharacter.AttachmentMeshIndices[AttachmentIdx] : KFPRI.RepCustomizationInfo.AttachmentMeshIndices[AttachmentIdx];
-		if (CosmeticMeshIdx == INDEX_NONE || CosmeticMeshIdx == CurrentAttachmentMeshIndex)
+		if (CosmeticMeshIdx == CurrentAttachmentMeshIndex)
 		{
 			return AttachmentIdx;
 		}

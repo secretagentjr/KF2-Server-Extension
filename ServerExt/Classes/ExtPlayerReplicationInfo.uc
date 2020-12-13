@@ -505,7 +505,7 @@ simulated function ChangeCharacter(byte CharIndex, optional bool bFirstSet)
 	}
 }
 
-simulated function UpdateCustomization(byte Type, byte MeshIndex, byte SkinIndex, optional byte SlotIndex)
+simulated function UpdateCustomization(int Type, int MeshIndex, int SkinIndex, optional int SlotIndex)
 {
 	switch (Type)
 	{
