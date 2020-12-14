@@ -3,7 +3,7 @@ Class ExtCharDataInfo extends Object
 	perobjectconfig
 	DependsOn(ExtPlayerReplicationInfo);
 
-var config byte HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,AttachmentMesh0,AttachmentSkin0,AttachmentMesh1,AttachmentSkin1,AttachmentMesh2,AttachmentSkin2,HasInit;
+var config int HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,AttachmentMesh0,AttachmentSkin0,AttachmentMesh1,AttachmentSkin1,AttachmentMesh2,AttachmentSkin2,HasInit;
 
 final function FMyCustomChar LoadData()
 {
@@ -11,9 +11,9 @@ final function FMyCustomChar LoadData()
 	
 	if (HasInit==0)
 	{
-		AttachmentMesh0 = 255;
-		AttachmentMesh1 = 255;
-		AttachmentMesh2 = 255;
+		AttachmentMesh0 = `CLEARED_ATTACHMENT_INDEX;
+		AttachmentMesh1 = `CLEARED_ATTACHMENT_INDEX;
+		AttachmentMesh2 = `CLEARED_ATTACHMENT_INDEX;
 	}
 	R.HeadMeshIndex = HeadMeshIndex;
 	R.HeadSkinIndex = HeadSkinIndex;
