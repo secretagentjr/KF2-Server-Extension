@@ -33,6 +33,14 @@ var int TotalEXP,TotalKills,TotalPlayTime;
 
 var bool bStatsDirty,bServerReady,bUserStatsBroken,bCurrentlyHealing;
 
+// SWAT Enforcer
+var array<Actor> CurrentBumpedActors; // The unique list of actors that have been bumped before the last cooldown reset
+var float LastBumpTime;               // The last time a zed was bumped using battering ram
+var float BumpCooldown;               // The amount of time between when the last actor was bumped and another actor can be bumped again
+var float BumpMomentum;               // Amount of momentum when bumping zeds
+var int BumpDamageAmount;             // Amount of damage Battering Ram bumps deal
+var class<DamageType> BumpDamageType; // Damage type used for Battering Ram bump damage
+
 replication
 {
 	// Things the server should send to the client.
@@ -755,6 +763,51 @@ simulated function bool ShouldKnockDownOnBump()
 	return (CurrentPerk!=None && CurrentPerk.bHasSWATEnforcer);
 }
 
+simulated function OnBump(Actor BumpedActor, KFPawn_Human BumpInstigator, vector BumpedVelocity, rotator BumpedRotation)
+{
+	local KFPawn_Monster KFPM;
+	local bool CanBump;
+
+	if (ShouldKnockDownOnBump() && Normal(BumpedVelocity) dot Vector(BumpedRotation) > 0.7f)
+	{
+		KFPM = KFPawn_Monster(BumpedActor);
+		if (KFPM != none)
+		{
+			// cooldown so that the same zed can't be bumped multiple frames back to back
+			//	especially relevant if they can't be knocked down or stumbled so the player is always bumping them
+			if (WorldInfo.TimeSeconds - LastBumpTime > BumpCooldown)
+			{
+				CurrentBumpedActors.length = 0;
+				CurrentBumpedActors.AddItem(BumpedActor);
+				CanBump = true;
+			}
+			// if still within the cooldown time, can still bump the actor as long as it hasn't been bumped yet
+			else if (CurrentBumpedActors.Find(BumpedActor) == INDEX_NONE)
+			{
+				CurrentBumpedActors.AddItem(BumpedActor);
+				CanBump = true;
+			}
+
+			LastBumpTime = WorldInfo.TimeSeconds;
+
+			if (CanBump)
+			{
+				if (KFPM.IsHeadless())
+				{
+					KFPM.TakeDamage(KFPM.HealthMax, BumpInstigator.Controller, BumpInstigator.Location,
+						Normal(vector(BumpedRotation)) * BumpMomentum, BumpDamageType);
+				}
+				else
+				{
+					KFPM.TakeDamage(BumpDamageAmount, BumpInstigator.Controller, BumpInstigator.Location,
+						Normal(vector(BumpedRotation)) * BumpMomentum, BumpDamageType);
+					KFPM.Knockdown(BumpedVelocity * 3, vect(1, 1, 1), KFPM.Location, 1000, 100);
+				}
+			}
+		}
+	}
+}
+
 // DEMO:
 simulated function bool ShouldRandSirenResist()
 {
@@ -857,4 +910,10 @@ defaultproperties
 {
 	bTickIsDisabled=false
 	NetPriority=3.5
+	
+	// SWAT bumping
+	BumpCooldown = 0.1f
+	BumpMomentum=1.f
+	BumpDamageAmount=450
+	BumpDamageType=class'KFDT_SWATBatteringRam'
 }
