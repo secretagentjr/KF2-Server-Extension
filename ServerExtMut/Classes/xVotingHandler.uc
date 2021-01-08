@@ -6,9 +6,10 @@ struct FGameModeOption
 	var config string GameName,GameShortName,GameClass,Mutators,Options,Prefix;
 };
 var config array<FGameModeOption> GameModes;
-var config int LastVotedGameInfo,VoteTime,MaxMapsOnList;
+var config int LastVotedGameInfo,VoteTime,MaxMapsOnList,VoteNumForOrgy;
 var config float MidGameVotePct,MapWinPct,MapChangeDelay;
 var config bool bNoWebAdmin;
+var config bool bNoMapVoteOrgy;
 
 var class<Mutator> BaseMutator;
 
@@ -25,6 +26,7 @@ function PostBeginPlay()
 {
 	local int i,j,z,n,UpV,DownV,Seq,NumPl;
 	local string S,MapFile;
+	local bool ConfigChanged;
 
 	if (WorldInfo.Game.BaseMutator==None)
 		WorldInfo.Game.BaseMutator = Self;
@@ -32,6 +34,8 @@ function PostBeginPlay()
 	
 	if (bDeleteMe) // This was a duplicate instance of the mutator.
 		return;
+
+	ConfigChanged = False;
 
 	MapFile = string(WorldInfo.GetPackageName());
 	iCurrentHistory = class'xMapVoteHistory'.Static.GetMapHistory(MapFile,WorldInfo.Title);
@@ -51,8 +55,18 @@ function PostBeginPlay()
 		MidGameVotePct = 0.51;
 		MapWinPct = 0.75;
 		VoteTime = 35;
-		SaveConfig();
+		ConfigChanged = True;
 	}
+	
+	if (VoteNumForOrgy <= 0)
+	{
+		VoteNumForOrgy = 4;
+		bNoMapVoteOrgy = False;
+		ConfigChanged = True;
+	}
+	
+	if (ConfigChanged)
+		SaveConfig();
 
 	// Build maplist.
 	z = 0;
@@ -314,9 +328,10 @@ final function TallyVotes(optional bool bForce)
 			// Finally pick a random winner from the best.
 			c = Candidates[Rand(Candidates.Length)];
 			
-			if (NumVotees>=4 && ActiveVotes.Length==1) // If more then 4 voters and everyone voted same map?!!! Give the mapvote some orgy.
+			// If more then "VoteNumForOrgy" voters and everyone voted same map?!!! Give the mapvote some orgy.
+			if (!bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
 			{
-				for (j=(ActiveVoters.Length-1); j>=0; --j)
+				for (j=(ActiveVoters.Length-1); j >= 0; --j)
 					ActiveVoters[j].PlayerOwner.ClientPlaySound(AnnouncerCues[13]);
 			}
 			SwitchToLevel(ActiveVotes[c].GameIndex,ActiveVotes[c].MapIndex,false);
@@ -409,7 +424,11 @@ function Timer()
 
 	if (bMapvoteHasEnded)
 	{
-		if (WorldInfo.NextSwitchCountdown<=0.f) // Mapswitch failed, force to random other map.
+		// NOTE:
+		// "WorldInfo.NetMode != NM_Standalone" prevents cyclic unsuccessful map change in single player mode.
+		// I have not tested how this code will behave if it really fails to change the map.
+		// Most likely there should be another solution here, but for now it will do.
+		if (WorldInfo.NetMode != NM_Standalone && WorldInfo.NextSwitchCountdown<=0.f) // Mapswitch failed, force to random other map.
 		{
 			ActiveVotes.Length = 0;
 			bMapvoteHasEnded = false;
