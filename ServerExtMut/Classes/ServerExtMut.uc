@@ -606,17 +606,12 @@ function CustomXP(Controller Killer, Controller Killed)
 			KFPC = KFPlayerController(DamagerKFPRI.Owner);
 			if (KFPC != none)
 			{
-				XP = 0;
-				for (j = 0; j < CustomZedXPArray.Length; j++)
+				j = CustomZedXPArray.Find('zedclass', KFM.Class);
+				if(j != -1)
 				{
-					if (KFM.Class == CustomZedXPArray[j].zedclass)
-					{
-						XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
-						break;
-					}
+					XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
 				}
-				
-				if (XP == 0)
+				else
 				{
 					XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
 				}

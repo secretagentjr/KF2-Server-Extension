@@ -146,6 +146,7 @@ function ApplyPerk(Ext_PerkBase P)
 			
 				ModifyHealth(HP.HealthMax);
 				ModifyArmor(HP.MaxArmor);
+				CurrentPerk.UpdateAmmoStatus(HP.InvManager);
 				
 				if (HP.Health > HP.HealthMax) HP.Health = HP.HealthMax;
 				if (HP.Armor > HP.MaxArmor) HP.Armor = HP.MaxArmor;

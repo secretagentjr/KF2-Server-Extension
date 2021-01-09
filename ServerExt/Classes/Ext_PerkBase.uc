@@ -1372,8 +1372,8 @@ final function UpdateAmmoStatus(InventoryManager Inv)
 
 	foreach Inv.InventoryActors(class'KFWeapon',W)
 	{
-		if (IsWeaponOnPerk(W))
-			W.ReInitializeAmmoCounts(PerkManager);
+		// if (IsWeaponOnPerk(W))
+		W.ReInitializeAmmoCounts(PerkManager);
 	}
 }
 
