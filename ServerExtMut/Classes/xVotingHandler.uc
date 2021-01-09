@@ -361,7 +361,8 @@ final function TallyVotes(optional bool bForce)
 		c+=ActiveVotes[i].NumVotes;
 		if (GetPctOf(ActiveVotes[i].NumVotes,NumVotees)>=MapWinPct)
 		{
-			if (NumVotees>=4 && ActiveVotes.Length==1) // If more then 4 voters and everyone voted same map?!!! Give the mapvote some orgy.
+			// If more then 4 voters and everyone voted same map?!!! Give the mapvote some orgy.
+			if (!bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
 			{
 				for (j=(ActiveVoters.Length-1); j>=0; --j)
 					ActiveVoters[j].PlayerOwner.ClientPlaySound(AnnouncerCues[13]);
