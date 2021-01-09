@@ -33,16 +33,12 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 
 # Build
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
-2. Open the file `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Config\KFEditor.ini`  
-and add the following lines to the `[ModPackages]` section:  
-> ModPackages=ServerExt  
-> ModPackages=ServerExtMut
-3. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
-4. Clone this repository and go to the source folder:  
+2. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
+3. Clone this repository and go to the source folder:  
 `git clone https://github.com/inklesspen1scripter/KF2-Server-Extension ./Src && cd ./Src`
-5. Run make.sh script:
+4. Run make.sh script:
 `./make.sh --compile`
-6. The compiled files will be here:  
+5. The compiled files will be here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Unpublished\BrewedPC\Script\`
 
 # Testing
