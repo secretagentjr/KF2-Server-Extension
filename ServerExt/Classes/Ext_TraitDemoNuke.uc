@@ -5,7 +5,7 @@ static function string GetPerkDescription()
 	local string S;
 
 	S = Super.GetPerkDescription();
-	S $= "|Trait requires prestige level: #{FF4000}3";
+	S $= "|Trait requires prestige level: #{FF4000}3"; // TODO: Localization
 	return S;
 }
 

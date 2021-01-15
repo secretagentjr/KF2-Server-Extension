@@ -12,7 +12,7 @@ static function string GetUIInfo(Ext_PerkBase Perk)
 
 static function string GetUIDesc()
 {
-	return Default.GroupInfo$" trait group";
+	return Default.GroupInfo$" trait group"; // TODO: Localization
 }
 
 // See if group is already using up limitation.

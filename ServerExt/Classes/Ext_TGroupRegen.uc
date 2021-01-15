@@ -7,7 +7,7 @@ static function string GetUIInfo(Ext_PerkBase Perk)
 
 static function string GetUIDesc()
 {
-	return Super.GetUIDesc()$"|To buy additional regen abilities:|-Prestige level 1 + Perk level 100 = MAX 2 traits|-Prestige level 5 + Perk level 150 = MAX 3 traits";
+	return Super.GetUIDesc()$"|To buy additional regen abilities:|-Prestige level 1 + Perk level 100 = MAX 2 traits|-Prestige level 5 + Perk level 150 = MAX 3 traits"; // TODO: Localization
 }
 
 static function bool GroupLimited(Ext_PerkBase Perk, class<Ext_TraitBase> Trait)

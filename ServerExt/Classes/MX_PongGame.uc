@@ -90,15 +90,15 @@ function Render(float XPos, float YPos, float XSize, float YSize)
 	{
 		Canvas.SetDrawColor(128,64,64,Abs(Sin(H))*96.f+128);
 		Canvas.SetPos(XPos+XSize*0.4,YPos+YSize*0.2);
-		Canvas.DrawText("Press Fire to start pong",,W,W);
+		Canvas.DrawText("Press Fire to start pong",,W,W); // TODO: Localization
 	}
 	else
 	{
 		Canvas.SetDrawColor(255,255,128,Abs(Sin(H))*96.f);
 		Canvas.SetPos(XPos+XSize*0.2,YPos+YSize*0.22);
-		Canvas.DrawText("Score: "$string(Score),,W,W);
+		Canvas.DrawText("Score: "$string(Score),,W,W); // TODO: Localization
 		Canvas.SetPos(XPos+XSize*0.2,YPos+YSize*0.68);
-		Canvas.DrawText("Plays: "$string(NumPlays),,W,W);
+		Canvas.DrawText("Plays: "$string(NumPlays),,W,W); // TODO: Localization
 	}
 	
 	// Borders

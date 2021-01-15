@@ -37,7 +37,7 @@ final function ShowProgressMsg(string S, optional bool bDis)
 	ParseStringIntoArray(S,ProgressLines,"|",false);
 	bProgressDC = bDis;
 	if (!bDis)
-		ProgressLines.AddItem("Press [Esc] to cancel connection");
+		ProgressLines.AddItem("Press [Esc] to cancel connection"); // TODO: Localization
 }
 
 final function RenderProgress()
@@ -60,7 +60,7 @@ final function RenderProgress()
 		Y+=YL;
 	}
 	Canvas.SetPos(Canvas.ClipX*0.2,Canvas.ClipY*0.91);
-	Canvas.DrawText("Use Mouse scroll to adjust sensitivity: "$(ActiveGame.Sensitivity*100.f)$"%",,Sc,Sc);
+	Canvas.DrawText("Use Mouse scroll to adjust sensitivity: "$(ActiveGame.Sensitivity*100.f)$"%",,Sc,Sc); // TODO: Localization
 }
 
 defaultproperties

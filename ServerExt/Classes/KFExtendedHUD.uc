@@ -296,7 +296,7 @@ event PostRender()
 			bShowProgress = false;
 			if (PlayerOwner.Player==None)
 			{
-				ShowProgressMsg("Downloading contents for next map, please wait...|Press [Escape] key to cancel connection!");
+				ShowProgressMsg("Downloading contents for next map, please wait...|Press [Escape] key to cancel connection!"); // TODO: Localization
 				RenderProgress();
 			}
 			else if (bProgressDC)
@@ -312,7 +312,7 @@ simulated function CancelConnection()
 {
 	if (!bConfirmDisconnect)
 	{
-		ShowProgressMsg("Are you sure you want to cancel connection?|Press [Escape] again to confirm...");
+		ShowProgressMsg("Are you sure you want to cancel connection?|Press [Escape] again to confirm..."); // TODO: Localization
 		bConfirmDisconnect = true;
 	}
 	else class'Engine'.Static.GetEngine().GameViewport.ConsoleCommand("Disconnect");

@@ -57,9 +57,9 @@ static function string GetPerkDescription()
 			S = string(GetTraitCost(i));
 		else S $= ", "$GetTraitCost(i);
 	}
-	S = "Max level: #{9FF781}"$Default.NumLevels$"#{DEF}|Level costs: #{F3F781}"$S$"#{DEF}";
+	S = "Max level: #{9FF781}"$Default.NumLevels$"#{DEF}|Level costs: #{F3F781}"$S$"#{DEF}"; // TODO: Localization
 	if (Default.MinLevel>0)
-		S = "Min perk level: #{FF4000}"$Default.MinLevel$"#{DEF}|"$S;
+		S = "Min perk level: #{FF4000}"$Default.MinLevel$"#{DEF}|"$S; // TODO: Localization
 	return Default.Description$"||"$S;
 }
 

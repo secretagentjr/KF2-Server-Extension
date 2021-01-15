@@ -63,7 +63,7 @@ function Timer()
 				for (i=0; i<StatsList.ItemComponents.Length; ++i)
 					StatBuyers[i].CloseMenu();
 				StatsList.ItemComponents.Length = 0;
-				PerkLabel.SetText("<No perk selected>");
+				PerkLabel.SetText("<No perk selected>"); // TODO: Localization
 			}
 		}
 		else if (PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)

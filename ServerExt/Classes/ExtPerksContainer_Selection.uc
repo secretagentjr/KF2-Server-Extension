@@ -41,7 +41,7 @@ function UpdatePendingPerkInfo(byte SelectedPerkIndex)
 	if (KFPC != none)
 	{
 		PerkClass = KFPC.ActivePerkManager.UserPerks[SelectedPerkIndex];
-		SetPendingPerkChanges(PerkClass.PerkName, PerkClass.GetPerkIconPath(PerkClass.CurrentLevel), "Perk changes will be applied when you die.");
+		SetPendingPerkChanges(PerkClass.PerkName, PerkClass.GetPerkIconPath(PerkClass.CurrentLevel), "Perk changes will be applied when you die."); // TODO: Localization
 	}
 }
 

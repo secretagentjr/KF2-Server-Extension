@@ -16,7 +16,7 @@ static function string GetPerkDescription()
 
 	S = Super.GetPerkDescription();
 	if (Default.FinalLevelPrestige>0)
-		S $= "|Level 6 requires prestige level: #{FF4000}"$Default.FinalLevelPrestige;
+		S $= "|Level 6 requires prestige level: #{FF4000}"$Default.FinalLevelPrestige; // TODO: Localization
 	return S;
 }
 

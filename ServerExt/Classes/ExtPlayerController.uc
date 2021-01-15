@@ -280,7 +280,7 @@ reliable server function ServerItemDropGet(string Item)
 	if (DropCount>5 || Len(Item)>100)
 		return;
 	++DropCount;
-	WorldInfo.Game.Broadcast(Self,PlayerReplicationInfo.GetHumanReadableName()$" got item: "$Item);
+	WorldInfo.Game.Broadcast(Self,PlayerReplicationInfo.GetHumanReadableName()$" got item: "$Item); // TODO: Localization
 }
 
 reliable client function ReceiveLevelUp(Ext_PerkBase Perk, int NewLevel)
@@ -497,7 +497,7 @@ simulated final function string ParseSuicideMsg(string Victim, class<DamageType>
 	if (Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
-		return Victim$Chr(6)$"M killed himself with "$S;
+		return Victim$Chr(6)$"M killed himself with "$S; // TODO: Localization
 	}
 	else if (class<KFDT_Fire>(DamType)!=None)
 		return Victim$Chr(6)$"M was burned to death";
@@ -515,7 +515,7 @@ simulated final function string ParseKillMsg(string Victim, string Killer, bool 
 	if (Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
-		return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer$Chr(6)$"M's "$S;
+		return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer$Chr(6)$"M's "$S; // TODO: Localization
 	}
 	else if (class<KFDT_Fire>(DamType)!=None)
 		return Chr(6)$"O"$Victim$Chr(6)$"M was incinerated by "$Chr(6)$T$Killer;
@@ -607,7 +607,7 @@ simulated reliable client event bool ShowConnectionProgressPopup(EProgressMessag
 	case	PMT_ConnectionFailure :
 	case	PMT_PeerConnectionFailure :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
-		KFExtendedHUD(myHUD).ShowProgressMsg("Connection Error: "$ProgressTitle$"|"$ProgressDescription$"|Disconnecting...",true);
+		KFExtendedHUD(myHUD).ShowProgressMsg("Connection Error: "$ProgressTitle$"|"$ProgressDescription$"|Disconnecting...",true); // TODO: Localization
 		return true;
 	case	PMT_DownloadProgress :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
@@ -719,7 +719,7 @@ function ViewAPlayer(int dir)
 	if (PRI!=None)
 	{
 		SetViewTarget(PRI);
-		ClientMessage("Now viewing from "$PRI.GetHumanReadableName());
+		ClientMessage("Now viewing from "$PRI.GetHumanReadableName()); // TODO: Localization
 	}
 }
 
@@ -745,7 +745,7 @@ reliable server function ServerViewPlayerID(int ID)
 		return;
 	
 	SetViewTarget(PRI);
-	ClientMessage("Now viewing from "$PRI.GetHumanReadableName());
+	ClientMessage("Now viewing from "$PRI.GetHumanReadableName()); // TODO: Localization
 	if (CurrentSpectateMode==SMODE_Roaming)
 		SpectatePlayer(SMODE_PawnFreeCam);
 }
@@ -755,7 +755,7 @@ reliable server function SpectateRoaming()
 	local Pawn P;
 	
 	P = Pawn(ViewTarget);
-	ClientMessage("Viewing from own camera.");
+	ClientMessage("Viewing from own camera."); // TODO: Localization
 	Super.SpectateRoaming();
 	if (P!=None)
 	{
