@@ -35,7 +35,7 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
 2. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
 3. Clone this repository and go to the source folder:  
-`git clone https://github.com/inklesspen1scripter/KF2-Server-Extension ./Src && cd ./Src`
+`git clone https://github.com/inklesspen1scripter/KF2-Server-Extension && cd KF2-Server-Extension`
 4. Run make.sh script:
 `./make.sh --compile`
 5. The compiled files will be here:  
