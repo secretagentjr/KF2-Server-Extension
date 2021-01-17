@@ -3,6 +3,10 @@ Class Ext_TraitBase extends Object
 	config(ServerExt)
 	DependsOn(ExtWebAdmin_UI);
 
+var localized string MaxLevelText;
+var localized string LevelCostText;
+var localized string MinPerkLevelText;
+
 var array<FWebAdminConfigInfo> WebConfigs;
 
 var() class<Ext_TGroupBase> TraitGroup; // With groups you can prevent player from buying multiple traits of same group.
@@ -46,7 +50,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 }
 
 // Return UI description player will see before bying this trait.
-static function string GetPerkDescription()
+function string GetPerkDescription()
 {
 	local string S;
 	local byte i;
@@ -57,9 +61,9 @@ static function string GetPerkDescription()
 			S = string(GetTraitCost(i));
 		else S $= ", "$GetTraitCost(i);
 	}
-	S = "Max level: #{9FF781}"$Default.NumLevels$"#{DEF}|Level costs: #{F3F781}"$S$"#{DEF}"; // TODO: Localization
+	S = MaxLevelText@"#{9FF781}"$Default.NumLevels$"#{DEF}|"$LevelCostText@"#{F3F781}"$S$"#{DEF}";
 	if (Default.MinLevel>0)
-		S = "Min perk level: #{FF4000}"$Default.MinLevel$"#{DEF}|"$S; // TODO: Localization
+		S = MinPerkLevelText@"#{FF4000}"$Default.MinLevel$"#{DEF}|"$S;
 	return Default.Description$"||"$S;
 }
 

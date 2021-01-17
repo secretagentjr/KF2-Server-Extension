@@ -1,5 +1,7 @@
 class ExtPerksContainer_Selection extends KFGFxPerksContainer_Selection;
 
+var localized string PerkChangeWarning;
+
 function UpdatePerkSelection(byte SelectedPerkIndex)
 {
  	local int i;
@@ -41,7 +43,7 @@ function UpdatePendingPerkInfo(byte SelectedPerkIndex)
 	if (KFPC != none)
 	{
 		PerkClass = KFPC.ActivePerkManager.UserPerks[SelectedPerkIndex];
-		SetPendingPerkChanges(PerkClass.PerkName, PerkClass.GetPerkIconPath(PerkClass.CurrentLevel), "Perk changes will be applied when you die."); // TODO: Localization
+		SetPendingPerkChanges(PerkClass.PerkName, PerkClass.GetPerkIconPath(PerkClass.CurrentLevel), PerkChangeWarning);
 	}
 }
 

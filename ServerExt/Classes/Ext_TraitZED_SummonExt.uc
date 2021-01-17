@@ -1,5 +1,4 @@
-Class Ext_TraitZED_SummonExt extends Ext_TraitZEDBase
-	abstract;
+Class Ext_TraitZED_SummonExt extends Ext_TraitZEDBase;
 
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {

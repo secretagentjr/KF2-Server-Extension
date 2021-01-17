@@ -1,11 +1,13 @@
 Class Ext_TraitDemoNuke extends Ext_TraitBase;
 
-static function string GetPerkDescription()
+var localized string GroupDescription;
+
+function string GetPerkDescription()
 {
 	local string S;
 
 	S = Super.GetPerkDescription();
-	S $= "|Trait requires prestige level: #{FF4000}3"; // TODO: Localization
+	S $= "|"$GroupDescription;
 	return S;
 }
 

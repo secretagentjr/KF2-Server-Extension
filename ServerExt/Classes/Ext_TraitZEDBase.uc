@@ -1,5 +1,4 @@
-Class Ext_TraitZEDBase extends Ext_TraitBase
-	abstract;
+Class Ext_TraitZEDBase extends Ext_TraitBase;
 
 var class<Ext_TraitZEDBase> BaseTrait;
 var bool bIsSummoner;

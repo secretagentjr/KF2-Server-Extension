@@ -114,7 +114,7 @@ function Timer()
 					}
 				}
 				OldPerkPoints = PendingPerk.CurrentSP;
-				PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
+				PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$Points@PendingPerk.CurrentSP$")");
 				for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				{
 					StatBuyers[i].SetActivePerk(PendingPerk);
@@ -139,7 +139,7 @@ function Timer()
 			B_Prestige.SetDisabled(!PendingPerk.CanPrestige());
 
 			OldPerkPoints = PendingPerk.CurrentSP;
-			PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName$" ("$Points$" "$PendingPerk.CurrentSP$")");
+			PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$Points@PendingPerk.CurrentSP$")");
 			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
 			
@@ -153,6 +153,7 @@ final function UpdateTraits()
 {
 	local array< class<Ext_TGroupBase> > CatList;
 	local class<Ext_TGroupBase> N;
+	local Ext_TGroupBase N_obj;
 	local int i,j;
 	local class<Ext_TraitBase> TC;
 	local string S;
@@ -176,8 +177,9 @@ final function UpdateTraits()
 		N = CatList[j];
 		if (j>0)
 		{
-			TraitsList.AddLine("--"$N.Static.GetUIInfo(PendingPerk),-1);
-			TraitsList.ToolTip.AddItem(N.Static.GetUIDesc());
+			N_obj = new N;
+			TraitsList.AddLine("--"$N_obj.GetUIInfo(PendingPerk),-1);
+			TraitsList.ToolTip.AddItem(N_obj.GetUIDesc());
 		}
 		for (i=0; i<PendingPerk.PerkTraits.Length; ++i)
 		{
@@ -236,7 +238,7 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 	C.DrawText(P.PerkName,,Sc,Sc);
 	
 	C.SetPos(6+Height,YOffset+Height*0.5);
-	C.DrawText("Lv "$P.GetLevelString()$" ("$P.CurrentEXP$"/"$P.NextLevelEXP$" XP)",,Sc,Sc);
+	C.DrawText("Lv "$P.GetLevelString()$" ("$P.CurrentEXP$"/"$P.NextLevelEXP$" XP)",,Sc,Sc); // TODO: Localization
 }
 
 function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)

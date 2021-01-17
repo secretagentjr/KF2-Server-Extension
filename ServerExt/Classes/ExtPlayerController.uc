@@ -1,5 +1,18 @@
 Class ExtPlayerController extends KFPlayerController;
 
+var localized string GotItemText;
+var localized string KilledHimselfWith;
+var localized string WasBurnedToDeath;
+var localized string WasBlownIntoPeaces;
+var localized string HadSuddenHeartAttack;
+var localized string WasKilledBy;
+var localized string WasIncineratedBy;
+var localized string WasBlownUpBy;
+var localized string ConnectionError;
+var localized string Disconnecting;
+var localized string NowViewingFrom;
+var localized string ViewingFromOwnCamera;
+
 struct FAdminCmdType
 {
 	var string Cmd,Info;
@@ -280,7 +293,7 @@ reliable server function ServerItemDropGet(string Item)
 	if (DropCount>5 || Len(Item)>100)
 		return;
 	++DropCount;
-	WorldInfo.Game.Broadcast(Self,PlayerReplicationInfo.GetHumanReadableName()$" got item: "$Item); // TODO: Localization
+	WorldInfo.Game.Broadcast(Self,PlayerReplicationInfo.GetHumanReadableName()@GotItemText@Item);
 }
 
 reliable client function ReceiveLevelUp(Ext_PerkBase Perk, int NewLevel)
@@ -497,13 +510,13 @@ simulated final function string ParseSuicideMsg(string Victim, class<DamageType>
 	if (Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
-		return Victim$Chr(6)$"M killed himself with "$S; // TODO: Localization
+		return Victim$Chr(6)$"M"@KilledHimselfWith@S;
 	}
 	else if (class<KFDT_Fire>(DamType)!=None)
-		return Victim$Chr(6)$"M was burned to death";
+		return Victim$Chr(6)$"M"@WasBurnedToDeath;
 	else if (class<KFDT_Explosive>(DamType)!=None)
-		return Victim$Chr(6)$"M was blown into pieces";
-	return Victim$Chr(6)$"M had a sudden heart attack";
+		return Victim$Chr(6)$"M"@WasBlownIntoPeaces;
+	return Victim$Chr(6)$"M"@HadSuddenHeartAttack;
 }
 
 simulated final function string ParseKillMsg(string Victim, string Killer, bool bFF, class<DamageType> DamType)
@@ -515,13 +528,13 @@ simulated final function string ParseKillMsg(string Victim, string Killer, bool 
 	if (Left(S,15)~="KFDT_Ballistic_")
 	{
 		S = Mid(S,15); // Weapon name.
-		return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer$Chr(6)$"M's "$S; // TODO: Localization
+		return Chr(6)$"O"$Victim$Chr(6)$"M"@WasKilledBy@Chr(6)$T$Killer$Chr(6)$"M's "$S;
 	}
 	else if (class<KFDT_Fire>(DamType)!=None)
-		return Chr(6)$"O"$Victim$Chr(6)$"M was incinerated by "$Chr(6)$T$Killer;
+		return Chr(6)$"O"$Victim$Chr(6)$"M"@WasIncineratedBy@Chr(6)$T$Killer;
 	else if (class<KFDT_Explosive>(DamType)!=None)
-		return Chr(6)$"O"$Victim$Chr(6)$"M was blown up by "$Chr(6)$T$Killer;
-	return Chr(6)$"O"$Victim$Chr(6)$"M was killed by "$Chr(6)$T$Killer;
+		return Chr(6)$"O"$Victim$Chr(6)$"M"@WasBlownUpBy@Chr(6)$T$Killer;
+	return Chr(6)$"O"$Victim$Chr(6)$"M"@WasKilledBy@Chr(6)$T$Killer;
 }
 
 reliable server function ServerCamera(name NewMode)
@@ -607,7 +620,7 @@ simulated reliable client event bool ShowConnectionProgressPopup(EProgressMessag
 	case	PMT_ConnectionFailure :
 	case	PMT_PeerConnectionFailure :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
-		KFExtendedHUD(myHUD).ShowProgressMsg("Connection Error: "$ProgressTitle$"|"$ProgressDescription$"|Disconnecting...",true); // TODO: Localization
+		KFExtendedHUD(myHUD).ShowProgressMsg(ConnectionError@ProgressTitle$"|"$ProgressDescription$"|"$Disconnecting,true);
 		return true;
 	case	PMT_DownloadProgress :
 		KFExtendedHUD(myHUD).NotifyLevelChange();
@@ -719,7 +732,7 @@ function ViewAPlayer(int dir)
 	if (PRI!=None)
 	{
 		SetViewTarget(PRI);
-		ClientMessage("Now viewing from "$PRI.GetHumanReadableName()); // TODO: Localization
+		ClientMessage(NowViewingFrom@PRI.GetHumanReadableName());
 	}
 }
 
@@ -745,7 +758,7 @@ reliable server function ServerViewPlayerID(int ID)
 		return;
 	
 	SetViewTarget(PRI);
-	ClientMessage("Now viewing from "$PRI.GetHumanReadableName()); // TODO: Localization
+	ClientMessage(NowViewingFrom@PRI.GetHumanReadableName());
 	if (CurrentSpectateMode==SMODE_Roaming)
 		SpectatePlayer(SMODE_PawnFreeCam);
 }
@@ -755,7 +768,7 @@ reliable server function SpectateRoaming()
 	local Pawn P;
 	
 	P = Pawn(ViewTarget);
-	ClientMessage("Viewing from own camera."); // TODO: Localization
+	ClientMessage(ViewingFromOwnCamera);
 	Super.SpectateRoaming();
 	if (P!=None)
 	{

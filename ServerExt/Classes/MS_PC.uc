@@ -1,5 +1,11 @@
 Class MS_PC extends KFPlayerController;
 
+var localized string ConnectingTo;
+var localized string ConnectionAborted;
+var localized string UserAbortedConnection;
+var localized string ConnectionError;
+var localized string Disconnecting;
+
 var MS_PendingData TravelData;
 var byte ConnectionCounter;
 var bool bConnectionFailed;
@@ -18,7 +24,7 @@ event PlayerTick(float DeltaTime)
 	{
 		if (TravelData.PendingURL!="")
 		{
-			MS_HUD(myHUD).ShowProgressMsg("Connecting to "$TravelData.PendingURL); // TODO: Localization
+			MS_HUD(myHUD).ShowProgressMsg(ConnectingTo@TravelData.PendingURL);
 			ConsoleCommand("Open "$TravelData.PendingURL);
 		}
 		if (TravelData.PendingSong!=None)
@@ -64,7 +70,7 @@ final function AbortConnection()
 		HandleNetworkError(false);
 	else
 	{
-		ShowConnectionProgressPopup(PMT_ConnectionFailure,"Connection aborted","User aborted connection...",true); // TODO: Localization
+		ShowConnectionProgressPopup(PMT_ConnectionFailure,ConnectionAborted,UserAbortedConnection,true);
 		ConsoleCommand("Cancel");
 	}
 }
@@ -80,7 +86,7 @@ reliable client event bool ShowConnectionProgressPopup(EProgressMessageType Prog
 	case PMT_ConnectionFailure:
 	case PMT_PeerConnectionFailure:
 		bConnectionFailed = true;
-		MS_HUD(myHUD).ShowProgressMsg("Connection Error: "$ProgressTitle$"|"$ProgressDescription$"|Disconnecting...",true); // TODO: Localization
+		MS_HUD(myHUD).ShowProgressMsg(ConnectionError@ProgressTitle$"|"$ProgressDescription$"|"$Disconnecting,true);
 		SetTimer(4,false,'HandleNetworkError');
 		return true;
 	case PMT_DownloadProgress:

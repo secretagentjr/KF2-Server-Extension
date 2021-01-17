@@ -1527,7 +1527,6 @@ defaultproperties
 	WebConfigs.Add((PropType=0,PropName="PrestigeXPReduce",UIName="Prestige XP Reduce",UIDesc="Percent amount of XP cost is reduced for each prestige (1.0 = 1/2, or 50 % of XP)"))
 	// WebConfigs.Add((PropType=0,PropName="MinimalDataLevel",UIName="Minimal Real Level",UIDesc="Minimal level for new players or who loads from saves"))
 	
-	// TODO: localize
 	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",Progress=0.4)
 	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",Progress=0.5)
 	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",Progress=1)

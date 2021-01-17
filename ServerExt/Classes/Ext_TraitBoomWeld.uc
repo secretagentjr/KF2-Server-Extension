@@ -1,5 +1,4 @@
-Class Ext_TraitBoomWeld extends Ext_TraitBase
-	abstract;
+Class Ext_TraitBoomWeld extends Ext_TraitBase;
 
 static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {

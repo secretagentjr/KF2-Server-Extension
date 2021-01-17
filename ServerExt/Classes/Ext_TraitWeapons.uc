@@ -1,5 +1,6 @@
-Class Ext_TraitWeapons extends Ext_TraitBase
-	abstract;
+Class Ext_TraitWeapons extends Ext_TraitBase;
+
+var localized string GroupDescription;
 
 struct FLevelFX
 {
@@ -22,9 +23,9 @@ static final function bool HasMaxCarry(Ext_PerkBase Perk)
 	return (i==-1 || Perk.PerkTraits[i].CurrentLevel>=3);
 }
 
-static function string GetPerkDescription()
+function string GetPerkDescription()
 {
-	return Super.GetPerkDescription()$"|- Level 4 requires perk level 50 and level 3 carry capacity trait!"; // TODO: Localization
+	return Super.GetPerkDescription()$"|"$GroupDescription;
 }
 
 static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)

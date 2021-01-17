@@ -1,5 +1,9 @@
 Class UIP_PerkSelectionLobby extends UIP_PerkSelection;
 
+var localized string LevelText;
+var localized string PointsText;
+var localized string NoPerkSelectedText;
+
 function Timer()
 {
 	local int i;
@@ -50,7 +54,7 @@ function Timer()
 					}
 				}
 				OldPerkPoints = PendingPerk.CurrentSP;
-				PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
+				PerkLabel.SetText(LevelText$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$PointsText@PendingPerk.CurrentSP$")");
 				for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				{
 					StatBuyers[i].SetActivePerk(PendingPerk);
@@ -63,13 +67,13 @@ function Timer()
 				for (i=0; i<StatsList.ItemComponents.Length; ++i)
 					StatBuyers[i].CloseMenu();
 				StatsList.ItemComponents.Length = 0;
-				PerkLabel.SetText("<No perk selected>"); // TODO: Localization
+				PerkLabel.SetText(NoPerkSelectedText);
 			}
 		}
 		else if (PendingPerk!=None && OldPerkPoints!=PendingPerk.CurrentSP)
 		{
 			OldPerkPoints = PendingPerk.CurrentSP;
-			PerkLabel.SetText("Lv"$PendingPerk.GetLevelString()@PendingPerk.PerkName$" (Points: "$PendingPerk.CurrentSP$")");
+			PerkLabel.SetText(LevelText$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$PointsText@PendingPerk.CurrentSP$")");
 			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
 			

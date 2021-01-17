@@ -1,5 +1,8 @@
 Class MS_HUD extends HUD;
 
+var localized string PressEscToCancel;
+var localized string AdjustSensetive;
+
 var bool bShowProgress,bProgressDC;
 var array<string> ProgressLines;
 var MX_MiniGameBase ActiveGame;
@@ -37,7 +40,7 @@ final function ShowProgressMsg(string S, optional bool bDis)
 	ParseStringIntoArray(S,ProgressLines,"|",false);
 	bProgressDC = bDis;
 	if (!bDis)
-		ProgressLines.AddItem("Press [Esc] to cancel connection"); // TODO: Localization
+		ProgressLines.AddItem(PressEscToCancel);
 }
 
 final function RenderProgress()
@@ -60,7 +63,7 @@ final function RenderProgress()
 		Y+=YL;
 	}
 	Canvas.SetPos(Canvas.ClipX*0.2,Canvas.ClipY*0.91);
-	Canvas.DrawText("Use Mouse scroll to adjust sensitivity: "$(ActiveGame.Sensitivity*100.f)$"%",,Sc,Sc); // TODO: Localization
+	Canvas.DrawText(AdjustSensetive@(ActiveGame.Sensitivity*100.f)$"%",,Sc,Sc);
 }
 
 defaultproperties

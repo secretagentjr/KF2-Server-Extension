@@ -1,18 +1,19 @@
 // Trait group info.
-Class Ext_TGroupBase extends Object
-	abstract;
+Class Ext_TGroupBase extends Object;
 
 var() localized string GroupInfo;
 var() bool bLimitToOne; // Limit to only one trait for this group.
+var localized string TraitGroupText;
+var localized string MaxText;
 
-static function string GetUIInfo(Ext_PerkBase Perk)
+function string GetUIInfo(Ext_PerkBase Perk)
 {
-	return (Default.bLimitToOne ? Default.GroupInfo$" (MAX 1)" : Default.GroupInfo);
+	return (Default.bLimitToOne ? Default.GroupInfo$" ("$MaxText$" 1)" : Default.GroupInfo);
 }
 
-static function string GetUIDesc()
+function string GetUIDesc()
 {
-	return Default.GroupInfo$" trait group"; // TODO: Localization
+	return Default.GroupInfo@TraitGroupText;
 }
 
 // See if group is already using up limitation.

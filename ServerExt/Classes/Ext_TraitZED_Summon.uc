@@ -1,5 +1,6 @@
-Class Ext_TraitZED_Summon extends Ext_TraitZEDBase
-	abstract;
+Class Ext_TraitZED_Summon extends Ext_TraitZEDBase;
+
+var localized string GroupDescription;
 
 struct FZEDTypes
 {
@@ -10,13 +11,13 @@ var config array<string> ZedTypes;
 var config float ZedRespawnTime;
 var config int FinalLevelPrestige;
 
-static function string GetPerkDescription()
+function string GetPerkDescription()
 {
 	local string S;
 
 	S = Super.GetPerkDescription();
 	if (Default.FinalLevelPrestige>0)
-		S $= "|Level 6 requires prestige level: #{FF4000}"$Default.FinalLevelPrestige; // TODO: Localization
+		S $= "|"$GroupDescription@"#{FF4000}"$Default.FinalLevelPrestige;
 	return S;
 }
 

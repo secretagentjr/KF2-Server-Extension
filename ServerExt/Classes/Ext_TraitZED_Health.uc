@@ -1,5 +1,4 @@
-Class Ext_TraitZED_Health extends Ext_TraitZEDBase
-	abstract;
+Class Ext_TraitZED_Health extends Ext_TraitZEDBase;
 
 var array<float> HPList;
 

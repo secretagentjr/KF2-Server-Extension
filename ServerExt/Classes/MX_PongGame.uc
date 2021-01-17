@@ -1,5 +1,9 @@
 Class MX_PongGame extends MX_MiniGameBase;
 
+var localized string PressToStartText;
+var localized string ScoreText;
+var localized string PlaysText;
+
 var int Score,NumPlays;
 
 var vector PlayerPad,EnemyPad,BallPos,BallVel,BallTrajectory;
@@ -84,21 +88,21 @@ function Render(float XPos, float YPos, float XSize, float YSize)
 
 	// Score
 	H = WorldInfo.RealTimeSeconds * 0.6;
-	Canvas.Font = Canvas.GetDefaultCanvasFont();
+	Canvas.Font = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_Main",class'Font'));
 	W = FMin(YSize/200.f,3.f);
 	if (!bGameStarted)
 	{
 		Canvas.SetDrawColor(128,64,64,Abs(Sin(H))*96.f+128);
 		Canvas.SetPos(XPos+XSize*0.4,YPos+YSize*0.2);
-		Canvas.DrawText("Press Fire to start pong",,W,W); // TODO: Localization
+		Canvas.DrawText(PressToStartText,,W,W);
 	}
 	else
 	{
 		Canvas.SetDrawColor(255,255,128,Abs(Sin(H))*96.f);
 		Canvas.SetPos(XPos+XSize*0.2,YPos+YSize*0.22);
-		Canvas.DrawText("Score: "$string(Score),,W,W); // TODO: Localization
+		Canvas.DrawText(ScoreText@string(Score),,W,W);
 		Canvas.SetPos(XPos+XSize*0.2,YPos+YSize*0.68);
-		Canvas.DrawText("Plays: "$string(NumPlays),,W,W); // TODO: Localization
+		Canvas.DrawText(PlaysText@string(NumPlays),,W,W);
 	}
 	
 	// Borders

@@ -1,13 +1,15 @@
 class Ext_TGroupRegen extends Ext_TGroupBase;
 
-static function string GetUIInfo(Ext_PerkBase Perk)
+var localized string GroupDescription;
+
+function string GetUIInfo(Ext_PerkBase Perk)
 {
-	return Default.GroupInfo$" (MAX "$GetMaxLimit(Perk)$")";
+	return Default.GroupInfo@"("$MaxText@GetMaxLimit(Perk)$")";
 }
 
-static function string GetUIDesc()
+function string GetUIDesc()
 {
-	return Super.GetUIDesc()$"|To buy additional regen abilities:|-Prestige level 1 + Perk level 100 = MAX 2 traits|-Prestige level 5 + Perk level 150 = MAX 3 traits"; // TODO: Localization
+	return Super.GetUIDesc()$"|"$GroupDescription;
 }
 
 static function bool GroupLimited(Ext_PerkBase Perk, class<Ext_TraitBase> Trait)

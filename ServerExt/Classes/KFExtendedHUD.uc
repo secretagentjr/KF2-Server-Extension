@@ -2,6 +2,23 @@
 //class KFExtendedHUD extends KFHUDBase;
 class KFExtendedHUD extends KFGFxHudWrapper;
 
+var localized string PleaseWaitForDownload;
+var localized string PressEscToCancel;
+var localized string AreYouSureToCancel;
+var localized string PressEscToConfirm;
+var localized string YouRespawnIn;
+var localized string ITR_CommonText;
+var localized string ITR_UncommonText;
+var localized string ITR_RareText;
+var localized string ITR_LegendaryText;
+var localized string ITR_ExceedinglyRareText;
+var localized string ITR_MythicalText;
+var localized string ITR_DefaultText;
+var localized string NewItemText;
+var localized string SomeoneText;
+var localized string KillText;
+var localized string KillsText;
+
 var array<Ext_T_MonsterPRI> MyCurrentPet;
 
 struct FDeathMessageType
@@ -296,7 +313,7 @@ event PostRender()
 			bShowProgress = false;
 			if (PlayerOwner.Player==None)
 			{
-				ShowProgressMsg("Downloading contents for next map, please wait...|Press [Escape] key to cancel connection!"); // TODO: Localization
+				ShowProgressMsg(PleaseWaitForDownload$"|"$PressEscToCancel);
 				RenderProgress();
 			}
 			else if (bProgressDC)
@@ -312,7 +329,7 @@ simulated function CancelConnection()
 {
 	if (!bConfirmDisconnect)
 	{
-		ShowProgressMsg("Are you sure you want to cancel connection?|Press [Escape] again to confirm..."); // TODO: Localization
+		ShowProgressMsg(AreYouSureToCancel$"|"$PressEscToConfirm);
 		bConfirmDisconnect = true;
 	}
 	else class'Engine'.Static.GetEngine().GameViewport.ConsoleCommand("Disconnect");
@@ -324,7 +341,7 @@ final function DrawRespawnCounter()
 	local string S;
 
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize+1,Sc);
-	S = "You are about to respawn in "$class'UI_Scoreboard'.Static.FormatTimeSM(EPRI.RespawnCounter);
+	S = YouRespawnIn@class'UI_Scoreboard'.Static.FormatTimeSM(EPRI.RespawnCounter);
 	Canvas.SetDrawColor(250,150,150,255);
 	Canvas.TextSize(S,XL,YL,Sc,Sc);
 	Canvas.SetPos((Canvas.ClipX-XL)*0.5,Canvas.ClipY*0.075);
@@ -366,8 +383,8 @@ final function RenderKillMsg()
 		if (KillMessages[i].bDamage)
 			S = "-"$KillMessages[i].Counter$" HP "$KillMessages[i].Name;
 		else if (KillMessages[i].bLocal)
-			S = "+"$KillMessages[i].Counter@KillMessages[i].Name$(KillMessages[i].Counter>1 ? " kills" : " kill");
-		else S = (KillMessages[i].OwnerPRI!=None ? KillMessages[i].OwnerPRI.GetHumanReadableName() : "Someone")$" +"$KillMessages[i].Counter@KillMessages[i].Name$(KillMessages[i].Counter>1 ? " kills" : " kill");
+			S = "+"$KillMessages[i].Counter@KillMessages[i].Name@(KillMessages[i].Counter>1 ? KillsText : KillText);
+		else S = (KillMessages[i].OwnerPRI!=None ? KillMessages[i].OwnerPRI.GetHumanReadableName() : SomeoneText)@"+"$KillMessages[i].Counter@KillMessages[i].Name@(KillMessages[i].Counter>1 ? KillsText : KillText);
 		Canvas.SetPos(X,Y);
 		Canvas.DrawColor = KillMessages[i].MsgColor;
 		T = (1.f - (T/6.f)) * 255.f;
@@ -1123,7 +1140,7 @@ simulated function SearchInventoryForNewItem()
 			{
 				NewItems.Insert(0,1);
 				NewItems[0].Icon = Texture2D(DynamicLoadObject(OnlineSub.ItemPropertiesList[j].IconURL,Class'Texture2D'));
-				NewItems[0].Item = OnlineSub.ItemPropertiesList[j].Name$" ["$RarityStr(OnlineSub.ItemPropertiesList[j].Rarity)$"]";
+				NewItems[0].Item = OnlineSub.ItemPropertiesList[j].Name@"["$RarityStr(OnlineSub.ItemPropertiesList[j].Rarity)$"]";
 				NewItems[0].MsgTime = WorldInfo.TimeSeconds;
 				ExtPlayerController(Owner).ServerItemDropGet(NewItems[0].Item);
 			}
@@ -1136,13 +1153,13 @@ simulated final function string RarityStr(byte R)
 {
 	switch (R)
 	{
-	case ITR_Common:			return "Common";
-	case ITR_Uncommon:			return "Uncommon +";
-	case ITR_Rare:				return "Rare ++";
-	case ITR_Legendary:			return "Legendary +++";
-	case ITR_ExceedinglyRare:	return "Exceedingly Rare ++++";
-	case ITR_Mythical:			return "Mythical !!!!";
-	default:					return "Unknown -";
+	case ITR_Common:			return ITR_CommonText;
+	case ITR_Uncommon:			return ITR_UncommonText;
+	case ITR_Rare:				return ITR_RareText;
+	case ITR_Legendary:			return ITR_LegendaryText;
+	case ITR_ExceedinglyRare:	return ITR_ExceedinglyRareText;
+	case ITR_Mythical:			return ITR_MythicalText;
+	default:					return ITR_DefaultText;
 	}
 }
 
@@ -1184,7 +1201,7 @@ simulated final function DrawItemsList()
 		else */XS = XPos-XS;
 		
 		Canvas.SetPos(XS,YPos);
-		Canvas.DrawText("New Item:",,FontScale,FontScale);
+		Canvas.DrawText(NewItemText,,FontScale,FontScale);
 		Canvas.SetPos(XS,YPos+(YSize*0.5));
 		Canvas.DrawText(NewItems[i].Item,,FontScale,FontScale);
 
