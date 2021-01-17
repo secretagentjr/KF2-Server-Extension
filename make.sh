@@ -59,10 +59,11 @@ function restore_kfeditorconf ()
 	mv -f "$KFEditorConfBackup" "$KFEditorConf"
 }
 
-function set_serverext_modpackages ()
+function setup_modpackages ()
 {
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExt'
 	multini --add "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExtMut'
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
 }
 
 function compile ()
@@ -71,7 +72,7 @@ function compile ()
 		get_latest_multini
 	fi
 	
-	backup_kfeditorconf && set_serverext_modpackages
+	backup_kfeditorconf && setup_modpackages
 
 	rm -rf "$MutUnpublish"
 	mkdir -p \
@@ -160,6 +161,7 @@ function game_test ()
 
 ScriptFullname=$(readlink -e "$0")
 ScriptName=$(basename "$0")
+ScriptDir=$(dirname "$ScriptFullname")
 
 SteamPath=$(reg_readkey "HKCU\Software\Valve\Steam" "SteamPath")
 DocumentsPath=$(reg_readkey "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "Personal")
@@ -176,7 +178,7 @@ KFConfig="$KFDoc/KFGame/Config"
 KFEditorConf="$KFConfig/KFEditor.ini"
 KFEditorConfBackup="${KFEditorConf}.backup"
 
-MutSource="$KFDoc/KFGame/Src"
+MutSource="$ScriptDir"
 MutPubContent="$MutSource/PublicationContent"
 MutUnpublish="$KFDoc/KFGame/Unpublished"
 MutPublish="$KFDoc/KFGame/Published"
