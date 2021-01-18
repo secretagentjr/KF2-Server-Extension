@@ -965,7 +965,7 @@ simulated function DrawPetInfo()
 	Y = Canvas.ClipY*0.925;
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize,Sc);
 	Canvas.TextSize("ABC",XL,YS,Sc,Sc);
-	S = "Current Pet(s)";
+	S = "Current Pet(s)"; // TODO: Localization. (for some reason, if i try to replace this var with localized version - the border around the text disappears)
 	Canvas.TextSize(S,XL,YL,Sc,Sc);
 	Y-=(YS*MyCurrentPet.Length);
 	
