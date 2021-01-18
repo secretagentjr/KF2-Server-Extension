@@ -48,7 +48,7 @@ final function RenderProgress()
 	local float Y,XL,YL,Sc;
 	local int i;
 	
-	Canvas.Font = Canvas.GetDefaultCanvasFont();
+	Canvas.Font = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_Main",class'Font'));
 	Sc = FMin(Canvas.ClipY/1000.f,3.f);
 	if (bProgressDC)
 		Canvas.SetDrawColor(255,80,80,255);
