@@ -39,8 +39,41 @@ function show_help ()
 	echo "  -h, --help"
 }
 
+function get_latest_multini ()
+{
+	local ApiUrl="https://api.github.com/repos/GenZmeY/multini/releases/latest"
+	local LatestTag=$(curl --silent "$ApiUrl" | grep -Po '"tag_name": "\K.*?(?=")')
+	local DownloadUrl="https://github.com/GenZmeY/multini/releases/download/$LatestTag/multini-windows-amd64.exe"
+	
+	mkdir -p "$ThirdPartyBin"
+	curl -LJs "$DownloadUrl" -o "$ThirdPartyBin/multini.exe"
+}
+
+function backup_kfeditorconf ()
+{
+	cp "$KFEditorConf" "$KFEditorConfBackup"
+}
+
+function restore_kfeditorconf ()
+{
+	mv -f "$KFEditorConfBackup" "$KFEditorConf"
+}
+
+function setup_modpackages ()
+{
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExt'
+	multini --add "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExtMut'
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
+}
+
 function compile ()
 {
+	if ! command -v multini &> /dev/null; then
+		get_latest_multini
+	fi
+	
+	backup_kfeditorconf && setup_modpackages
+
 	rm -rf "$MutUnpublish"
 	mkdir -p \
 		"$MutUnpublish" \
@@ -61,6 +94,8 @@ function compile ()
 		fi
 		sleep 2
 	done
+	
+	restore_kfeditorconf
 }
 
 function brew ()
@@ -126,6 +161,7 @@ function game_test ()
 
 ScriptFullname=$(readlink -e "$0")
 ScriptName=$(basename "$0")
+ScriptDir=$(dirname "$ScriptFullname")
 
 SteamPath=$(reg_readkey "HKCU\Software\Valve\Steam" "SteamPath")
 DocumentsPath=$(reg_readkey "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "Personal")
@@ -137,8 +173,12 @@ KFGame="$KFBin/Win64/KFGame.exe"
 KFWorkshop="$KFBin/WorkshopUserTool.exe"
 
 KFDoc="$DocumentsPath/My Games/KillingFloor2"
+KFConfig="$KFDoc/KFGame/Config"
 
-MutSource="$KFDoc/KFGame/src"
+KFEditorConf="$KFConfig/KFEditor.ini"
+KFEditorConfBackup="${KFEditorConf}.backup"
+
+MutSource="$ScriptDir"
 MutPubContent="$MutSource/PublicationContent"
 MutUnpublish="$KFDoc/KFGame/Unpublished"
 MutPublish="$KFDoc/KFGame/Published"
@@ -150,6 +190,10 @@ MutStructLocalization="$MutUnpublish/BrewedPC/Localization"
 MutTestingIni="$MutSource/testing.ini"
 MutWsInfoName="wsinfo_serverext.txt"
 MutWsInfo="$KFDoc/$MutWsInfoName"
+
+ThirdPartyBin="$MutSource/3rd-party-bin"
+
+export PATH="$PATH:$ThirdPartyBin"
 
 if [[ $# -eq 0 ]]; then show_help; exit 0; fi
 case $1 in
