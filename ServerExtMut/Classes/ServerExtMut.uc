@@ -59,7 +59,6 @@ var ExtSpawnPointHelper SpawnPointer;
 var bool bRespawnCheck,bSpecialSpawn,bGameHasEnded,bIsPostGame;
 var config bool bKillMessages,bDamageMessages,bEnableMapVote,bNoAdminCommands,bNoWebAdmin,bNoBoomstickJumping,bDumpXMLStats,bRagdollFromFall,bRagdollFromMomentum,bRagdollFromBackhit,bAddCountryTags;
 var config bool bServerPerksMode;
-var config bool bDLCWeaponsForFree;
 var config bool bDontUseOriginalWeaponry;
 var config bool bAllowStandartPistolUpgrade;
 var config bool bDisableCustomTrader;
@@ -176,7 +175,6 @@ function PostBeginPlay()
 
 		if (SettingsInit < 13)
 		{
-			bDLCWeaponsForFree = True;
 			bAllowStandartPistolUpgrade = True;
 			bDisableCustomTrader = False;
 		}
@@ -310,14 +308,11 @@ function EditTraiderItems()
 {
 	local int i;
 	local KFGFxObject_TraderItems Trad;
-	// local FCustomTraderItem CI;
-	// local STraderItem SI;
-	// var config bool bDLCWeaponsForFree;
-	// var config bool bDontUseOriginalWeaponry;
+
 	if (!bDontUseOriginalWeaponry)
 	{
 		Trad = KFGameReplicationInfo(WorldInfo.GRI).TraderItems;
-		// Remove dual 9mm, 9mm, medpistol and DLC weapons
+		// Remove dual 9mm, 9mm, medpistol
 		for (i=0;i<Trad.SaleItems.Length;i++)
 		{
 			if (string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Dual9mm"
@@ -326,28 +321,6 @@ function EditTraiderItems()
 			{
 				// Remove pistols
 				continue;
-			}
-
-			if (bDLCWeaponsForFree)
-			{
-				// DLC Weapons
-				if (string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_Blunderbuss"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Blunt_ChainBat"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_ChiappaRhino"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_ChiappaRhinoDual"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Bow_CompoundBow"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Ice_FreezeThrower"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Edged_IonThruster"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Rifle_MosinNagant"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_AssaultRifle_LazerCutter"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_SMG_G18"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Pistol_DualG18"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Mine_Reconstructor"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Minigun"
-				|| string(Trad.SaleItems[i].ClassName) ~= "KFWeap_Rifle_FrostShotgunAxe")
-				{
-					continue;
-				}
 			}
 
 			// Adding original weapon
@@ -366,26 +339,6 @@ function EditTraiderItems()
 		
 		// Add custom medpistol for upgrades
 		AddCIToTrader("ServerExt.ExtWeapDef_MedicPistol");
-	}
-
-	//Add DLCs weapons for free
-	if (bDLCWeaponsForFree)
-	{
-		AddCIToTrader("ServerExt.DLCWeapDef_Blunderbuss");
-		AddCIToTrader("ServerExt.DLCWeapDef_ChainBat");
-		AddCIToTrader("ServerExt.DLCWeapDef_ChiappaRhino");
-		AddCIToTrader("ServerExt.DLCWeapDef_ChiappaRhinoDual");
-		AddCIToTrader("ServerExt.DLCWeapDef_CompoundBow");
-		AddCIToTrader("ServerExt.DLCWeapDef_FreezeThrower");
-		AddCIToTrader("ServerExt.DLCWeapDef_IonThruster");
-		AddCIToTrader("ServerExt.DLCWeapDef_G18");
-		AddCIToTrader("ServerExt.DLCWeapDef_MosinNagant");
-		AddCIToTrader("ServerExt.DLCWeapDef_LazerCutter");
-		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_DualG18");
-		AddCIToTrader("ServerExt.DLCWeapDef_Pistol_G18C");
-		AddCIToTrader("ServerExt.DLCWeapDef_Mine_Reconstructor");
-		AddCIToTrader("ServerExt.DLCWeapDef_Minigun");
-		AddCIToTrader("ServerExt.DLCWeapDef_Rifle_FrostShotgunAxe");
 	}
 
 	// Add custom items from WebAdmin
@@ -1795,8 +1748,6 @@ function string WebAdminGetValue(name PropName, int ElementIndex)
 		return string(bDisableCustomTrader);
 	case 'bAllowStandartPistolUpgrade':
 		return string(bAllowStandartPistolUpgrade);
-	case 'bDLCWeaponsForFree':
-		return string(bDLCWeaponsForFree);
 	case 'UnloadPerkExpCost':
 		return string(UnloadPerkExpCost);
 	case 'PerkClasses':
@@ -1872,8 +1823,6 @@ function WebAdminSetValue(name PropName, int ElementIndex, string Value)
 		bDisableCustomTrader = bool(Value);	break;
 	case 'bAllowStandartPistolUpgrade':
 		bAllowStandartPistolUpgrade = bool(Value);	break;
-	case 'bDLCWeaponsForFree':
-		bDLCWeaponsForFree = bool(Value);	break;
 	case 'bAddCountryTags':
 		bAddCountryTags = bool(Value);		break;
 	case 'MaxTopPlayers':
@@ -1937,6 +1886,5 @@ defaultproperties
 	WebConfigs.Add((PropType=1,PropName="bDisableCustomTrader",UIName="Disable custom trader",UIDesc="Warning! That option will disable all settings below"))
 	WebConfigs.Add((PropType=2,PropName="CustomItems",UIName="Custom Inventory",UIDesc="List of custom inventory to add to trader (must be KFWeaponDefinition class).",NumElements=-1))
 	WebConfigs.Add((PropType=1,PropName="bDontUseOriginalWeaponry",UIName="Disable original weapons",UIDesc="Allows to buy default weapons"))
-	WebConfigs.Add((PropType=1,PropName="bDLCWeaponsForFree",UIName="Free DLC weapons",UIDesc="Allows to buy DLC weapons"))
 	WebConfigs.Add((PropType=1,PropName="bAllowStandartPistolUpgrade",UIName="Standard pistol upgrades",UIDesc="Allows to upgrade standard pistol"))
 }

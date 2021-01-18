@@ -1,5 +1,20 @@
 class ExtTraderContainer_Store extends KFGFxTraderContainer_Store;
 
+/** returns true if this item should not be displayed */
+function bool IsItemFiltered(STraderItem Item, optional bool bDebug)
+{
+	if (KFPC.GetPurchaseHelper().IsInOwnedItemList(Item.ClassName))
+		return true;
+	if ( KFPC.GetPurchaseHelper().IsInOwnedItemList(Item.DualClassName) )
+		return true;
+	if (!KFPC.GetPurchaseHelper().IsSellable(Item))
+		return true;
+	if ( Item.WeaponDef.default.PlatformRestriction != PR_All && class'KFUnlockManager'.static.IsPlatformRestricted( Item.WeaponDef.default.PlatformRestriction ) )
+		return true;
+
+   	return false;
+}
+
 function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> ItemList)
 {
 	local int i, SlotIndex;
