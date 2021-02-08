@@ -12,7 +12,7 @@ var AnimSet WakeUpAnimSet;
 var name FeignRecoverAnim;
 var byte UnfeignFailedCount,RepRegenHP,BHopAccelSpeed;
 var repnotify bool bFeigningDeath;
-var bool bPlayingFeignDeathRecovery,bRagdollFromFalling,bRagdollFromBackhit,bRagdollFromMomentum,bCanBecomeRagdoll,bRedeadMode,bPendingRedead,bHasBunnyHop,bOnFirstPerson,bFPLegsAttached,bFPLegsInit;
+var bool bPlayingFeignDeathRecovery,bRagdollFromFalling,bRagdollFromBackhit,bRagdollFromMomentum,bCanBecomeRagdoll,bRedeadMode,bPendingRedead,bHasBunnyHop,bOnFirstPerson,bFPLegsAttached,bFPLegsInit,bThrowAllWeaponsOnDeath;
 
 var byte HealingShieldMod,HealingSpeedBoostMod,HealingDamageBoostMod;
 
@@ -1306,6 +1306,28 @@ simulated function Ext_PerkFieldMedic GetMedicPerk(ExtPlayerController Healer)
 	return None;
 }
 
+function ThrowActiveWeapon(optional bool bDestroyWeap)
+{
+	local KFWeapon TempWeapon;
+	
+	if( Role < ROLE_Authority )
+	{
+		return;
+	}
+	
+	if (Health <= 0 && bThrowAllWeaponsOnDeath)
+	{
+		if (InvManager != none)
+			foreach InvManager.InventoryActors(class'KFWeapon', TempWeapon)
+				if (TempWeapon.bDropOnDeath && TempWeapon.CanThrow())
+					if (TempWeapon != none)
+						TossInventory(TempWeapon);
+	}
+	else
+	{
+		super.ThrowActiveWeapon(bDestroyWeap);
+	}
+}
 defaultproperties
 {
 	KnockbackResist=1

@@ -47,7 +47,7 @@ var Object BonusGameFXObj;
 var array<FCustomTraderItem> CustomItemList;
 var KFGFxObject_TraderItems CustomTrader;
 
-const SettingsTagVer=13;
+const SettingsTagVer=14;
 var KFGameReplicationInfo KF;
 var config int SettingsInit;
 var config int ForcedMaxPlayers,PlayerRespawnTime,LargeMonsterHP,StatAutoSaveWaves,MinUnloadPerkLevel,PostGameRespawnCost,MaxTopPlayers;
@@ -57,7 +57,7 @@ var array<Controller> PendingSpawners;
 var int LastWaveNum,NumWaveSwitches;
 var ExtSpawnPointHelper SpawnPointer;
 var bool bRespawnCheck,bSpecialSpawn,bGameHasEnded,bIsPostGame;
-var config bool bKillMessages,bDamageMessages,bEnableMapVote,bNoAdminCommands,bNoWebAdmin,bNoBoomstickJumping,bDumpXMLStats,bRagdollFromFall,bRagdollFromMomentum,bRagdollFromBackhit,bAddCountryTags;
+var config bool bKillMessages,bDamageMessages,bEnableMapVote,bNoAdminCommands,bNoWebAdmin,bNoBoomstickJumping,bDumpXMLStats,bRagdollFromFall,bRagdollFromMomentum,bRagdollFromBackhit,bAddCountryTags,bThrowAllWeaponsOnDeath;
 var config bool bServerPerksMode;
 var config bool bDontUseOriginalWeaponry;
 var config bool bAllowStandartPistolUpgrade;
@@ -177,6 +177,10 @@ function PostBeginPlay()
 		{
 			bAllowStandartPistolUpgrade = True;
 			bDisableCustomTrader = False;
+		}
+		if (SettingsInit < 14)
+		{
+			bThrowAllWeaponsOnDeath = False;
 		}
 		SettingsInit = SettingsTagVer;
 		SaveConfig();
@@ -1011,6 +1015,7 @@ final function InitPlayer(ExtHumanPawn Other)
 	Other.bRagdollFromFalling = bRagdollFromFall;
 	Other.bRagdollFromMomentum = bRagdollFromMomentum;
 	Other.bRagdollFromBackhit = bRagdollFromBackhit;
+	Other.bThrowAllWeaponsOnDeath = bThrowAllWeaponsOnDeath;
 }
 
 function ModifyPlayer(Pawn Other)
@@ -1764,6 +1769,8 @@ function string WebAdminGetValue(name PropName, int ElementIndex)
 		return (ElementIndex==-1 ? string(BonusGameSongs.Length) : BonusGameSongs[ElementIndex]);
 	case 'BonusGameFX':
 		return (ElementIndex==-1 ? string(BonusGameFX.Length) : BonusGameFX[ElementIndex]);
+	case 'bThrowAllWeaponsOnDeath':
+		return string(bThrowAllWeaponsOnDeath);
 	}
 }
 
@@ -1841,6 +1848,8 @@ function WebAdminSetValue(name PropName, int ElementIndex, string Value)
 		UpdateArray(BonusGameSongs,ElementIndex,Value);	break;
 	case 'BonusGameFX':
 		UpdateArray(BonusGameFX,ElementIndex,Value);	break;
+	case 'bThrowAllWeaponsOnDeath':
+		bThrowAllWeaponsOnDeath = bool(Value);	break;
 	default:
 		return;
 	}
@@ -1875,6 +1884,7 @@ defaultproperties
 	WebConfigs.Add((PropType=1,PropName="bRagdollFromMomentum",UIName="Ragdoll From Momentum",UIDesc="Make players ragdoll if they take a damage with high momentum transfer"))
 	WebConfigs.Add((PropType=1,PropName="bRagdollFromBackhit",UIName="Ragdoll From Backhit",UIDesc="Make players ragdoll if they take a big hit to their back"))
 	WebConfigs.Add((PropType=1,PropName="bAddCountryTags",UIName="Add Country Tags",UIDesc="Add player country tags to their names"))
+	WebConfigs.Add((PropType=1,PropName="bThrowAllWeaponsOnDeath",UIName="Throw all weapons on death",UIDesc="Forces players to throw all their weapons on death"))
 	WebConfigs.Add((PropType=0,PropName="MaxTopPlayers",UIName="Max top players",UIDesc="Maximum top players to broadcast of and to keep track of."))
 	WebConfigs.Add((PropType=2,PropName="PerkClasses",UIName="Perk Classes",UIDesc="List of RPG perks players can play as (careful with removing them, because any perks removed will permanently delete the gained XP for every player for that perk)!",NumElements=-1))
 	WebConfigs.Add((PropType=2,PropName="CustomChars",UIName="Custom Chars",UIDesc="List of custom characters for this server (prefix with * to mark as admin character).",NumElements=-1))
