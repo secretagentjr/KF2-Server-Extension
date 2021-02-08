@@ -3,6 +3,9 @@
 # Requirements: git-bash
 # https://git-scm.com/download/win
 
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR EXIT
+
 function winpath2unix () # $1: win path
 {
 	echo "$*" | \
@@ -39,6 +42,12 @@ function show_help ()
 	echo "  -h, --help"
 }
 
+function cleanup()
+{
+	trap - SIGINT SIGTERM ERR EXIT
+	restore_kfeditorconf
+}
+
 function get_latest_multini ()
 {
 	local ApiUrl="https://api.github.com/repos/GenZmeY/multini/releases/latest"
@@ -56,7 +65,9 @@ function backup_kfeditorconf ()
 
 function restore_kfeditorconf ()
 {
-	mv -f "$KFEditorConfBackup" "$KFEditorConf"
+	if [[ -f "$KFEditorConfBackup" ]]; then
+		mv -f "$KFEditorConfBackup" "$KFEditorConf"
+	fi
 }
 
 function setup_modpackages ()
@@ -64,6 +75,11 @@ function setup_modpackages ()
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExt'
 	multini --add "$KFEditorConf" 'ModPackages' 'ModPackages' 'ServerExtMut'
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
+}
+
+function compiled ()
+{
+	test -f "$MutStructScript/ServerExt.u" && test -f "$MutStructScript/ServerExtMut.u"
 }
 
 function compile ()
@@ -88,8 +104,7 @@ function compile ()
 	local PID="$!"
 	while ps -p "$PID" &> /dev/null
 	do
-		if [[ -e "$MutStructScript/ServerExt.u"    ]] &&
-		   [[ -e "$MutStructScript/ServerExtMut.u" ]]; then
+		if compiled ; then
 			kill "$PID"; break
 		fi
 		sleep 2
@@ -107,8 +122,7 @@ function brew ()
 function brew_unpublished ()
 {
 	rm -rf "$MutPublish"
-	if  ! [[ -e "$MutStructScript/ServerExt.u"    ]] ||
-		! [[ -e "$MutStructScript/ServerExtMut.u" ]]; then
+	if ! compiled ; then
 		compile
 	fi
 	cp -rf "$MutUnpublish" "$MutPublish"
