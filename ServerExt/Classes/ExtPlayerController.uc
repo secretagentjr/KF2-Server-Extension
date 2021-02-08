@@ -97,7 +97,7 @@ function CheckPerk()
 		if (KFPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		{
 			KFPlayerReplicationInfo(PlayerReplicationInfo).NetPerkIndex = 0;
-			KFPlayerReplicationInfo(PlayerReplicationInfo).CurrentPerkClass = ActivePerkManager.Class;
+			KFPlayerReplicationInfo(PlayerReplicationInfo).CurrentPerkClass = ActivePerkManager.CurrentPerk.BasePerk;
 		}
 	}
 }
