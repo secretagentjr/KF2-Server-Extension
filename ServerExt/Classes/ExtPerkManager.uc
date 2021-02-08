@@ -129,6 +129,7 @@ function ApplyPerk(Ext_PerkBase P)
 	{
 		PRIOwner.ECurrentPerk = P.Class;
 		PRIOwner.FCurrentPerk = P;
+		PRIOwner.CurrentPerkClass = P.BasePerk;
 		P.UpdatePRILevel();
 	}
 	
@@ -190,6 +191,7 @@ simulated function InitPerks()
 			if (CurrentPerk!=None)
 			{
 				PRIOwner.ECurrentPerk = CurrentPerk.Class;
+				PRIOwner.CurrentPerkClass = CurrentPerk.BasePerk;
 				CurrentPerk.UpdatePRILevel();
 			}
 			PRIOwner.RepKills = TotalKills;
