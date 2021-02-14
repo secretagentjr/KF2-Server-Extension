@@ -1319,15 +1319,15 @@ function ThrowActiveWeapon(optional bool bDestroyWeap)
 	{
 		if (InvManager != none)
 			foreach InvManager.InventoryActors(class'KFWeapon', TempWeapon)
-				if (TempWeapon.bDropOnDeath && TempWeapon.CanThrow())
-					if (TempWeapon != none)
-						TossInventory(TempWeapon);
+				if (TempWeapon != none && TempWeapon.bDropOnDeath && TempWeapon.CanThrow())
+					TossInventory(TempWeapon);
 	}
 	else
 	{
 		super.ThrowActiveWeapon(bDestroyWeap);
 	}
 }
+
 defaultproperties
 {
 	KnockbackResist=1
