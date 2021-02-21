@@ -83,6 +83,7 @@ If you have a desire to help translate ServerExt into other languages, you can r
 [b]Translators:[/b]
 [url=https://steamcommunity.com/profiles/76561198001617867]GenZmeY[/url] - Russian [RUS];
 [url=https://steamcommunity.com/profiles/76561197967822972]MilkTeaFox[/url] - Traditional Chinese [CHT];
+[url=https://steamcommunity.com/profiles/76561198930643117]あさぴっぴ1020[/url] - Japanese [JPN];
 
 [h1]Links:[/h1]
 [url=https://github.com/inklesspen1scripter/KF2-Server-Extension][u]Sources[/u][/url]
