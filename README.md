@@ -1,12 +1,12 @@
 [![](PublicationContent/mutbanner.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 
-[![GitHub top language](https://img.shields.io/github/languages/top/inklesspen1scripter/KF2-Server-Extension)](https://docs.unrealengine.com/udk/Three/WebHome.html)
-[![GitHub](https://img.shields.io/github/license/inklesspen1scripter/KF2-Server-Extension)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Steam Workshop](https://img.shields.io/static/v1?message=workshop&logo=steam&labelColor=gray&color=blue&logoColor=white&label=steam%20)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Subscriptions](https://img.shields.io/steam/subscriptions/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Favorites](https://img.shields.io/steam/favorites/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Update Date](https://img.shields.io/steam/update-date/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/inklesspen1scripter/KF2-Server-Extension)](https://github.com/inklesspen1scripter/KF2-Server-Extension/tags)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension)](https://github.com/GenZmeY/KF2-Server-Extension/tags)
+[![GitHub top language](https://img.shields.io/github/languages/top/GenZmeY/KF2-Server-Extension)](https://docs.unrealengine.com/udk/Three/WebHome.html)
+[![GitHub](https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension)](LICENSE)
 
 ***
 
@@ -35,7 +35,7 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
 2. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
 3. Clone this repository and go to the source folder:  
-`git clone https://github.com/inklesspen1scripter/KF2-Server-Extension && cd KF2-Server-Extension`
+`git clone https://github.com/GenZmeY/KF2-Server-Extension && cd KF2-Server-Extension`
 4. Run make.sh script:
 `./make.sh --compile`
 5. The compiled files will be here:  
@@ -64,7 +64,7 @@ A detailed manual is available on the [mod page](https://steamcommunity.com/shar
 **Participation is welcome!**
 
 ## Bug reports
-If you find a bug, go to the [issue page](https://github.com/inklesspen1scripter/KF2-Server-Extension/issues) and check if there is a description of your bug. If not, create a new issue.  
+If you find a bug, go to the [issue page](https://github.com/GenZmeY/KF2-Server-Extension/issues) and check if there is a description of your bug. If not, create a new issue.  
 Describe what the bug looks like and how we can reproduce it.  
 Attach screenshots if you think it might help.
 
@@ -87,7 +87,7 @@ In the description of the pull request, describe the changes you made.
 
 
 # License
-The mutator is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) so you are free to use, modify, and redistribute this code, but you must keep the authors credits in the derivative work.
+[GNU GPLv3](LICENSE)
 
 ***
 

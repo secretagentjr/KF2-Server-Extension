@@ -1,4 +1,4 @@
-[img]https://raw.githubusercontent.com/inklesspen1scripter/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
+[img]https://raw.githubusercontent.com/GenZmeY/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
 
 [h1]Description:[/h1]
 [i]This mod replaces current perk system in Killing Floor 2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
@@ -64,7 +64,7 @@ ServerExtMut.u
 
 [h1]Bug reports[/h1]
 If you find a bug, please create a new issue here:
-[u]https://github.com/inklesspen1scripter/KF2-Server-Extension/issues[/u]
+[u]https://github.com/GenZmeY/KF2-Server-Extension/issues[/u]
 
 Describe what the bug looks like and how we can reproduce it.
 
@@ -85,5 +85,5 @@ If you have a desire to help translate ServerExt into other languages, you can r
 [url=https://steamcommunity.com/profiles/76561197967822972]MilkTeaFox[/url] - Traditional Chinese [CHT];
 [url=https://steamcommunity.com/profiles/76561198930643117]あさぴっぴ1020[/url] - Japanese [JPN];
 
-[h1]Links:[/h1]
-[url=https://github.com/inklesspen1scripter/KF2-Server-Extension][u]Sources[/u][/url]
+[h1]Sources:[/h1]
+[u]https://github.com/GenZmeY/KF2-Server-Extension[/u] [b](GNU GPLv3)[/b]
