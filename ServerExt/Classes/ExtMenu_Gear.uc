@@ -388,7 +388,7 @@ function SetCurrentCharacterButtons()
 {
 	local bool bCustom;
 	local GFxObject DataObject;
-	local byte CharacterIndex, HeadMeshIndex, HeadSkinIndex, BodyMeshIndex, BodySkinIndex;
+	local int CharacterIndex, HeadMeshIndex, HeadSkinIndex, BodyMeshIndex, BodySkinIndex;
 
 	bCustom = ExtPRI.UsesCustomChar();
 	DataObject = CreateObject("Object");

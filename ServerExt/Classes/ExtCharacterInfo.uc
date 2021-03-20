@@ -2,32 +2,6 @@
 class ExtCharacterInfo extends Object
 	abstract;
 
-// Hack fix for not being able to compile materials in run-time.
-static final function CloneMIC(MaterialInstanceConstant B)
-{
-	local int i;
-	local MaterialInstanceConstant M;
-	local LinearColor C;
-	
-	M = MaterialInstanceConstant(B.Parent);
-	if (M==None)
-		return;
-	B.SetParent(M.Parent);
-	
-	for (i=0; i<M.TextureParameterValues.Length; ++i)
-		if (M.TextureParameterValues[i].ParameterValue!=None)
-			B.SetTextureParameterValue(M.TextureParameterValues[i].ParameterName,M.TextureParameterValues[i].ParameterValue);
-
-	for (i=0; i<M.ScalarParameterValues.Length; ++i)
-		B.SetScalarParameterValue(M.ScalarParameterValues[i].ParameterName,M.ScalarParameterValues[i].ParameterValue);
-	
-	for (i=0; i<M.VectorParameterValues.Length; ++i)
-	{
-		C = M.VectorParameterValues[i].ParameterValue;
-		B.SetVectorParameterValue(M.VectorParameterValues[i].ParameterName,C);
-	}
-}
-
 static final function Object SafeLoadObject(string S, Class ObjClass)
 {
 	local Object O;
@@ -51,7 +25,6 @@ static function InitCharacterMICs(KFCharacterInfo_Human C, KFPawn P, optional bo
 	if (P.Mesh != None)
 	{
 		P.CharacterMICs[0] = P.Mesh.CreateAndSetMaterialInstanceConstant(C.BodyMaterialID);
-		CloneMIC(P.CharacterMICs[0]);
 	}
 
 	// head MIC
@@ -143,8 +116,8 @@ static final function SetCharacterMeshFromArch(KFCharacterInfo_Human C, KFPawn K
 }
 
 static final function SetBodyMeshAndSkin(KFCharacterInfo_Human C,
-	byte CurrentBodyMeshIndex,
-	byte CurrentBodySkinIndex,
+	int CurrentBodyMeshIndex,
+	int CurrentBodySkinIndex,
 	KFPawn KFP,
 	KFPlayerReplicationInfo KFPRI)
 {
@@ -193,7 +166,7 @@ static final function SetBodyMeshAndSkin(KFCharacterInfo_Human C,
 	}
 }
 
-static final function SetBodySkinMaterial(KFCharacterInfo_Human C, OutfitVariants CurrentVariant, byte NewSkinIndex, KFPawn KFP)
+static final function SetBodySkinMaterial(KFCharacterInfo_Human C, OutfitVariants CurrentVariant, int NewSkinIndex, KFPawn KFP)
 {
 	local int i;
 
@@ -639,7 +612,6 @@ static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn
 	if (bCustom && KFP.ArmsMesh.SkeletalMesh!=None && KFP.ArmsMesh.GetMaterial(0)!=None)
 	{
 		M = KFP.ArmsMesh.CreateAndSetMaterialInstanceConstant(0);
-		CloneMIC(M);
 	}
 }
 
