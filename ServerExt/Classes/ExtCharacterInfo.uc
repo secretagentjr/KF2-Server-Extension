@@ -573,7 +573,6 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 /** Assign an arm mesh and material to this pawn */
 static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn KFP, optional KFPlayerReplicationInfo KFPRI)
 {
-	local MaterialInstanceConstant M;
 	local ExtPlayerReplicationInfo EPRI;
 	local bool bCustom;
 	local int AttachmentIdx, CosmeticMeshIdx;
@@ -606,12 +605,6 @@ static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn
 				bCustom ? EPRI.CustomCharacter.AttachmentSkinIndices[AttachmentIdx] : KFPRI.RepCustomizationInfo.AttachmentSkinIndices[AttachmentIdx],
 				KFP, KFPRI, true);
 		}
-	}
-	
-	// Hack fix for a material bug on KF2
-	if (bCustom && KFP.ArmsMesh.SkeletalMesh!=None && KFP.ArmsMesh.GetMaterial(0)!=None)
-	{
-		M = KFP.ArmsMesh.CreateAndSetMaterialInstanceConstant(0);
 	}
 }
 
