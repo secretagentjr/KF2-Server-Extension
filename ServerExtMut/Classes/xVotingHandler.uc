@@ -3,7 +3,7 @@ Class xVotingHandler extends xVotingHandlerBase
 
 struct FGameModeOption
 {
-	var config string GameName,GameShortName,GameClass,Mutators,Options,Prefix;
+	var config string GameName,GameShortName,GameClass,Mutators,Options,Prefix,ServerName;
 };
 var config array<FGameModeOption> GameModes;
 var config int LastVotedGameInfo,VoteTime,MaxMapsOnList,VoteNumForOrgy;
@@ -52,6 +52,7 @@ function PostBeginPlay()
 		GameModes[0].GameClass = PathName(WorldInfo.Game.Class);
 		GameModes[0].Mutators = "";
 		GameModes[0].Prefix = "";
+		GameModes[0].ServerName = "";
 		MidGameVotePct = 0.51;
 		MapWinPct = 0.75;
 		VoteTime = 35;
@@ -498,6 +499,12 @@ final function SwitchToLevel(int GameIndex, int MapIndex, bool bAdminForce)
 	if (GameModes[GameIndex].Options!="")
 		PendingMapURL $= "?"$GameModes[GameIndex].Options;
 	`Log("MapVote: Switch map to "$PendingMapURL);
+	if (GameModes[GameIndex].ServerName != "")
+	{
+		WorldInfo.GRI.ServerName = GameModes[GameIndex].ServerName;
+		WorldInfo.GRI.SaveConfig();
+		`Log("MapVote: Next ServerName: "$WorldInfo.GRI.ServerName);
+	}
 	SetTimer(FMax(MapChangeDelay,0.1),false,'PendingSwitch');
 }
 

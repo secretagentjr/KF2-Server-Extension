@@ -124,6 +124,7 @@ function handleMapVotes(WebAdminQuery q)
 			class'xVotingHandler'.Default.GameModes[i].Mutators = q.request.getVariable("MM",class'xVotingHandler'.Default.GameModes[i].GameName);
 			class'xVotingHandler'.Default.GameModes[i].Options = q.request.getVariable("OP",class'xVotingHandler'.Default.GameModes[i].GameName);
 			class'xVotingHandler'.Default.GameModes[i].Prefix = q.request.getVariable("PF",class'xVotingHandler'.Default.GameModes[i].GameName);
+			class'xVotingHandler'.Default.GameModes[i].ServerName = q.request.getVariable("SN",class'xVotingHandler'.Default.GameModes[i].GameName);
 			class'xVotingHandler'.Static.StaticSaveConfig();
 		}
 		EditSettingLine = -1;
@@ -160,7 +161,7 @@ function handleMapVotes(WebAdminQuery q)
 	q.response.SendText("</tbody></table></form>");
 	q.response.SendText("<form method=\"post\" action=\""$webadmin.Path$MapVoterURL$"\"><table id=\"settings\" class=\"grid\">");
 	q.response.SendText("<thead><tr><th colspan=7>Mapvote game modes</th></tr></thead><tbody>");
-	q.response.SendText("<tr><th>Game Name</th><th>Game Short Name</th><th>Game Class</th><th>Mutators</th><th>Options</th><th>Map Prefix</th><th></th></tr>");
+	q.response.SendText("<tr><th>Game Name</th><th>Game Short Name</th><th>Game Class</th><th>Mutators</th><th>Options</th><th>Map Prefix</th><th>Server Name</th><th></th></tr>");
 	for (i=0; i<class'xVotingHandler'.Default.GameModes.Length; ++i)
 	{
 		if (EditSettingLine==i)
@@ -172,6 +173,7 @@ function handleMapVotes(WebAdminQuery q)
 			AddInLineEditbox(q,class'xVotingHandler'.Default.GameModes[i].Mutators,120,"MM","List of mutators to run along with this game option (separated with commas)");
 			AddInLineEditbox(q,class'xVotingHandler'.Default.GameModes[i].Options,100,"OP","List of options to run along with this game option (separated with question mark)");
 			AddInLineEditbox(q,class'xVotingHandler'.Default.GameModes[i].Prefix,16,"PF","Maps prefix to filter out maps not wanted for this game mode");
+			AddInLineEditbox(q,class'xVotingHandler'.Default.GameModes[i].ServerName,16,"SN","Server name that will be set when this mode is selected ");
 			q.response.SendText("</td><td><input class=\"button\" type=\"submit\" name=\"edit\" value=\"Save\"><input class=\"button\" type=\"submit\" name=\"edit"$i$"\" value=\"Delete\"></td></tr>");
 		}
 		else
@@ -182,6 +184,7 @@ function handleMapVotes(WebAdminQuery q)
 								"</td><td>"$class'xVotingHandler'.Default.GameModes[i].Mutators$
 								"</td><td>"$class'xVotingHandler'.Default.GameModes[i].Options$
 								"</td><td>"$class'xVotingHandler'.Default.GameModes[i].Prefix$
+								"</td><td>"$class'xVotingHandler'.Default.GameModes[i].ServerName$
 								"</td><td><input class=\"button\" type=\"submit\" name=\"edit"$i$"\" value=\"Edit\"><input class=\"button\" type=\"submit\" name=\"edit"$i$"\" value=\"Delete\"></td></tr>");
 		}
 	}
