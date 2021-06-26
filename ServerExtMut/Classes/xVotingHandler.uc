@@ -5,11 +5,17 @@ struct FGameModeOption
 {
 	var config string GameName,GameShortName,GameClass,Mutators,Options,Prefix,ServerName;
 };
+
+const CurrentVersion = 1;
+
+var config int ConfigVersion;
+
 var config array<FGameModeOption> GameModes;
 var config int LastVotedGameInfo,VoteTime,MaxMapsOnList,VoteNumForOrgy;
 var config float MidGameVotePct,MapWinPct,MapChangeDelay;
 var config bool bNoWebAdmin;
 var config bool bNoMapVoteOrgy;
+var config bool bEnableAnnouncer;
 
 var class<Mutator> BaseMutator;
 
@@ -26,7 +32,6 @@ function PostBeginPlay()
 {
 	local int i,j,z,n,UpV,DownV,Seq,NumPl;
 	local string S,MapFile;
-	local bool ConfigChanged;
 
 	if (WorldInfo.Game.BaseMutator==None)
 		WorldInfo.Game.BaseMutator = Self;
@@ -35,39 +40,10 @@ function PostBeginPlay()
 	if (bDeleteMe) // This was a duplicate instance of the mutator.
 		return;
 
-	ConfigChanged = False;
-
+	InitConfig();
+	
 	MapFile = string(WorldInfo.GetPackageName());
 	iCurrentHistory = class'xMapVoteHistory'.Static.GetMapHistory(MapFile,WorldInfo.Title);
-	if (LastVotedGameInfo<0 || LastVotedGameInfo>=GameModes.Length)
-		LastVotedGameInfo = 0;
-	
-	if (MapChangeDelay==0)
-		MapChangeDelay = 3;
-	if (GameModes.Length==0) // None specified, so use current settings.
-	{
-		GameModes.Length = 1;
-		GameModes[0].GameName = "Killing Floor";
-		GameModes[0].GameShortName = "KF";
-		GameModes[0].GameClass = PathName(WorldInfo.Game.Class);
-		GameModes[0].Mutators = "";
-		GameModes[0].Prefix = "";
-		GameModes[0].ServerName = "";
-		MidGameVotePct = 0.51;
-		MapWinPct = 0.75;
-		VoteTime = 35;
-		ConfigChanged = True;
-	}
-	
-	if (VoteNumForOrgy <= 0)
-	{
-		VoteNumForOrgy = 4;
-		bNoMapVoteOrgy = False;
-		ConfigChanged = True;
-	}
-	
-	if (ConfigChanged)
-		SaveConfig();
 
 	// Build maplist.
 	z = 0;
@@ -100,6 +76,69 @@ function PostBeginPlay()
 
 	SetTimer(0.15,false,'SetupBroadcast');
 	SetTimer(1,true,'CheckEndGameEnded');
+}
+
+function InitConfig()
+{
+	local bool ConfigChanged;
+	
+	ConfigChanged = False;
+	
+	// Parameters to check each initialization 
+	if (LastVotedGameInfo < 0 || LastVotedGameInfo >= GameModes.Length)
+		LastVotedGameInfo = 0;
+	
+	if (MapChangeDelay == 0)
+		MapChangeDelay = 3;
+	
+	if (GameModes.Length == 0) // None specified, so use current settings.
+	{
+		GameModes.Length = 1;
+		GameModes[0].GameName = "Killing Floor";
+		GameModes[0].GameShortName = "KF";
+		GameModes[0].GameClass = PathName(WorldInfo.Game.Class);
+		GameModes[0].Mutators = "";
+		GameModes[0].Prefix = "";
+		GameModes[0].ServerName = "";
+		MidGameVotePct = 0.51;
+		MapWinPct = 0.75;
+		VoteTime = 35;
+		ConfigChanged = True;
+	}
+	
+	if (VoteNumForOrgy <= 0)
+	{
+		VoteNumForOrgy = 4;
+		bNoMapVoteOrgy = False;
+		ConfigChanged = True;
+	}
+	
+	// Parameters that need to be added once when updating the config 
+	switch (ConfigVersion)
+	{
+		case 0:
+			bEnableAnnouncer = True;
+			
+		case 2147483647:
+			`log("[xVotingHandler] Config updated to version"@CurrentVersion);
+			break;
+			
+		case CurrentVersion:
+			`log("[xVotingHandler] Config is up-to-date");
+			break;
+			
+		default:
+			`log("[xVotingHandler] The config version is higher than the current version (are you using an old mutator?)");
+			`log("[xVotingHandler] Config version is"@ConfigVersion@"but current version is"@CurrentVersion);
+			`log("[xVotingHandler] The config version will be changed to "@CurrentVersion);
+			break;
+	}
+
+	if (ConfigChanged || (ConfigVersion != CurrentVersion))
+	{
+		ConfigVersion = CurrentVersion;
+		SaveConfig();
+	}
 }
 
 function AddMutator(Mutator M)
@@ -330,7 +369,7 @@ final function TallyVotes(optional bool bForce)
 			c = Candidates[Rand(Candidates.Length)];
 			
 			// If more then "VoteNumForOrgy" voters and everyone voted same map?!!! Give the mapvote some orgy.
-			if (!bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
+			if (bEnableAnnouncer && !bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
 			{
 				for (j=(ActiveVoters.Length-1); j >= 0; --j)
 					ActiveVoters[j].PlayerOwner.ClientPlaySound(AnnouncerCues[13]);
@@ -363,7 +402,7 @@ final function TallyVotes(optional bool bForce)
 		if (GetPctOf(ActiveVotes[i].NumVotes,NumVotees)>=MapWinPct)
 		{
 			// If more then 4 voters and everyone voted same map?!!! Give the mapvote some orgy.
-			if (!bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
+			if (bEnableAnnouncer && !bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
 			{
 				for (j=(ActiveVoters.Length-1); j>=0; --j)
 					ActiveVoters[j].PlayerOwner.ClientPlaySound(AnnouncerCues[13]);
@@ -462,7 +501,7 @@ function Timer()
 		for (i=(ActiveVoters.Length-1); i>=0; --i)
 		{
 			ActiveVoters[i].ClientNotifyVoteTime(VoteTimeLeft);
-			if (FX!=None)
+			if (bEnableAnnouncer && FX != None)
 				ActiveVoters[i].PlayerOwner.ClientPlaySound(FX);
 		}
 	}
