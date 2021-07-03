@@ -42,7 +42,7 @@ The full changelog is available [url=https://steamcommunity.com/sharedfiles/file
 It will be more efficient to use ServerExt together with other mutators (which add new zeds or game modes).
 You can use [u][url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359647296750/]my experience[/url][/u] or come up with something of your own.
 
-[h1]If not working[/h1]
+[h1]If not working or you have no text[/h1]
 Older versions of Server-Ext have the same file names - this can cause conflicts if you subscribe to them. Therefore:
 1. Check your subscriptions. If you are subscribed to old versions of the mutator, cancel them.
 2. Clear the cache (the game doesn't clear it). It's here:
@@ -60,7 +60,13 @@ If you do not want to download the subscriptions again, delete only those folder
 ServerExt.u
 ServerExtMut.u
 [/code]
-3. Reinstall ServerExt and try again.
+3. Delete all ServerExt localization files. It's here:
+[code]
+Client:
+C:\Users\<YOUR_USERNAME>\Documents\My Games\KillingFloor2\KFGame\Localization\
+[/code]
+Check all folders and delete all ServerExt.* files you find.
+4. Re-subscribe to this mod and try again.
 
 [h1]Bug reports[/h1]
 If you find a bug, please create a new issue here:
