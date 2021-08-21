@@ -894,6 +894,14 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
 
+// SwitchSpeed
+simulated function ModifyWeaponSwitchTime( out float ModifiedSwitchTime )
+{
+    if( CurrentPerk!=None )
+        CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);
+}
+
+
 // Other
 function ApplySkillsToPawn()
 {

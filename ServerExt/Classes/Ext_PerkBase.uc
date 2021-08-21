@@ -109,6 +109,7 @@ var localized string StatFireDmg;
 var localized string StatAllDmg;
 var localized string StatHeadDamage;
 var localized string StatHealRecharge;
+var localized string StatSwitch;
 
 reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 {
@@ -135,6 +136,7 @@ reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 		case name("AllDmg"):	   return StatAllDmg;
 		case name("HeadDamage"):   return StatHeadDamage;
 		case name("HealRecharge"): return StatHealRecharge;
+		case name("Switch"): return StatSwitch;
 	}
 	return "";
 }
@@ -1237,6 +1239,9 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 	case 'HealRecharge':
 		Modifiers[20] = 1.f / (1.f+Value*Progress);
 		break;
+	case 'Switch':
+		Modifiers[21] = 1.f / (1.f+Value*Progress);
+		break;		
 	}
 	return (Value*Progress);
 }
@@ -1467,6 +1472,11 @@ simulated function float GetIronSightSpeedModifier(KFWeapon KFW)
 	return 1.f;
 }
 
+simulated function ModifyWeaponSwitchTime( out float ModifiedSwitchTime )
+{
+    ModifiedSwitchTime *= Modifiers[21];
+}
+
 function OnWaveEnded();
 function NotifyZedTimeStarted();
 
@@ -1548,6 +1558,7 @@ defaultproperties
 	DefPerkStats(18)=(MaxValue=500,CostPerValue=1,StatType="AllDmg",Progress=0.25)
 	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",Progress=1,bHiddenConfig=true)
 	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",Progress=0.5,bHiddenConfig=true)
+	DefPerkStats(21)=(MaxValue=100,CostPerValue=1,StatType="Switch",Progress=1)
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
@@ -1569,6 +1580,7 @@ defaultproperties
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(0.f)
+	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
 	
 	EnemyDistDraw.Add(500)
