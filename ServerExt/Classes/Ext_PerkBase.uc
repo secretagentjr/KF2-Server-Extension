@@ -1293,6 +1293,11 @@ simulated function float GetReloadRateScale(KFWeapon KFW)
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5] : 1.f);
 }
 
+simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
+{ 
+return Modifiers[2];
+}
+
 function ModifyHealth(out int InHealth)
 {
 	InHealth *= Modifiers[6];

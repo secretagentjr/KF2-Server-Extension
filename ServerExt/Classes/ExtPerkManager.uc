@@ -516,6 +516,11 @@ simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 		CurrentPerk.ModifyRecoil(CurrentRecoilModifier,KFW);
 }
 
+simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
+{ 
+    return (CurrentPerk!=None ? CurrentPerk.GetCameraViewShakeModifier( KFW) : 1.f);
+}
+
 simulated function ModifySpread(out float InSpread)
 {
 	if (CurrentPerk!=None)
