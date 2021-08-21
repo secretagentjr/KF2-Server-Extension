@@ -894,6 +894,11 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
 
+simulated function float GetTightChokeModifier()
+{
+    return (CurrentPerk!=None ? CurrentPerk.GetTightChokeModifier() : 1.f);
+}
+
 // Other
 function ApplySkillsToPawn()
 {
