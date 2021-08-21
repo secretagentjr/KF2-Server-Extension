@@ -1313,6 +1313,11 @@ function float GetStunPowerModifier(optional class<DamageType> DamageType, optio
 	return Modifiers[7];
 }
 
+function float GetStumblePowerModifier( optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart )
+{
+    return Modifiers[7];
+}
+
 simulated function ModifyMeleeAttackSpeed(out float InDuration);
 
 function AddDefaultInventory(KFPawn P)
