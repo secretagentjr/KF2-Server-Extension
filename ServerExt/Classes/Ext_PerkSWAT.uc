@@ -30,12 +30,12 @@ simulated function float GetZedTimeModifier(KFWeapon W)
 
 function float GetStumblePowerModifier( optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart )
 {
-    if( bRapidAssault)
-    {
-        return 2.f*Modifiers[7];
-    }
+	if (bRapidAssault)
+	{
+		return 2.f * Modifiers[7];
+	}
 
-    return Modifiers[7];
+	return Modifiers[7];
 }
 
 defaultproperties
