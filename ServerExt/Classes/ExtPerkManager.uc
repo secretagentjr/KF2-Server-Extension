@@ -562,7 +562,7 @@ function float GetKnockdownPowerModifier(optional class<DamageType> DamageType, 
 
 function float GetStumblePowerModifier(optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart)
 {
-	return (CurrentPerk!=None ? CurrentPerk.GetKnockdownPowerModifier() : 1.f);
+	return (CurrentPerk!=None ? CurrentPerk.GetStumblePowerModifier() : 1.f);
 }
 
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
