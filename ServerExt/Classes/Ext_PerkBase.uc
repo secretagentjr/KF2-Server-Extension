@@ -1475,6 +1475,11 @@ simulated function float GetZedTimeExtensions(byte Level)
 	return 1.f;
 }
 
+simulated function float GetTightChokeModifier()
+{
+    return Modifiers[3];
+}
+
 defaultproperties
 {
 	CurrentConfigVer=14
