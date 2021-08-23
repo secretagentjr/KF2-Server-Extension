@@ -1295,7 +1295,7 @@ simulated function float GetReloadRateScale(KFWeapon KFW)
 
 simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
 { 
-return Modifiers[2];
+	return Modifiers[2];
 }
 
 function ModifyHealth(out int InHealth)
