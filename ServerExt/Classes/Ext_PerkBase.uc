@@ -1315,7 +1315,7 @@ function float GetStunPowerModifier(optional class<DamageType> DamageType, optio
 
 function float GetStumblePowerModifier( optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart )
 {
-    return Modifiers[7];
+	return Modifiers[7];
 }
 
 simulated function ModifyMeleeAttackSpeed(out float InDuration);
