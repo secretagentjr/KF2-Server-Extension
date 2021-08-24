@@ -8,6 +8,8 @@
 [![GitHub top language](https://img.shields.io/github/languages/top/GenZmeY/KF2-Server-Extension)](https://docs.unrealengine.com/udk/Three/WebHome.html)
 [![GitHub](https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension)](LICENSE)
 
+[![ServerExt Contributors](https://contrib.rocks/image?repo=GenZmeY/KF2-Server-Extension)](https://github.com/GenZmeY/KF2-Server-Extension/graphs/contributors)
+
 ***
 
 *This mod replaces current perk system in [Killing Floor 2](https://en.wikipedia.org/wiki/Killing_Floor_2) with a serverside perk progression with RPG elements, which let you buy individual stats and traits.*
