@@ -1472,9 +1472,9 @@ simulated function float GetIronSightSpeedModifier(KFWeapon KFW)
 	return 1.f;
 }
 
-simulated function ModifyWeaponSwitchTime( out float ModifiedSwitchTime )
+simulated function ModifyWeaponSwitchTime(out float ModifiedSwitchTime)
 {
-    ModifiedSwitchTime *= Modifiers[21];
+	ModifiedSwitchTime *= Modifiers[21];
 }
 
 function OnWaveEnded();

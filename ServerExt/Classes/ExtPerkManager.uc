@@ -897,10 +897,9 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 // SwitchSpeed
 simulated function ModifyWeaponSwitchTime( out float ModifiedSwitchTime )
 {
-    if( CurrentPerk!=None )
-        CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);
+	if (CurrentPerk != None)
+		CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);
 }
-
 
 // Other
 function ApplySkillsToPawn()
