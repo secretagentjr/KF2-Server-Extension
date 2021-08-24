@@ -28,6 +28,16 @@ simulated function float GetZedTimeModifier(KFWeapon W)
 	return 0.f;
 }
 
+function float GetStumblePowerModifier( optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart )
+{
+	if (bRapidAssault)
+	{
+		return 2.f * Modifiers[7];
+	}
+
+	return Modifiers[7];
+}
+
 defaultproperties
 {
 	PerkIcon=Texture2D'UI_PerkIcons_TEX.UI_PerkIcon_SWAT'

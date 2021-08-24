@@ -516,6 +516,11 @@ simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 		CurrentPerk.ModifyRecoil(CurrentRecoilModifier,KFW);
 }
 
+simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
+{ 
+	return (CurrentPerk!=None ? CurrentPerk.GetCameraViewShakeModifier(KFW) : 1.f);
+}
+
 simulated function ModifySpread(out float InSpread)
 {
 	if (CurrentPerk!=None)
@@ -557,7 +562,7 @@ function float GetKnockdownPowerModifier(optional class<DamageType> DamageType, 
 
 function float GetStumblePowerModifier(optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart)
 {
-	return (CurrentPerk!=None ? CurrentPerk.GetKnockdownPowerModifier() : 1.f);
+	return (CurrentPerk!=None ? CurrentPerk.GetStumblePowerModifier() : 1.f);
 }
 
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
@@ -893,9 +898,14 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 {
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
+  
+simulated function float GetTightChokeModifier()
+{
+    return (CurrentPerk!=None ? CurrentPerk.GetTightChokeModifier() : 1.f);
+}
 
 // SwitchSpeed
-simulated function ModifyWeaponSwitchTime( out float ModifiedSwitchTime )
+simulated function ModifyWeaponSwitchTime(out float ModifiedSwitc)
 {
 	if (CurrentPerk != None)
 		CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);

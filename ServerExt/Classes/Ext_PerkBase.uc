@@ -1300,6 +1300,11 @@ simulated function float GetReloadRateScale(KFWeapon KFW)
 	return (IsWeaponOnPerk(KFW) ? Modifiers[5] : 1.f);
 }
 
+simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
+{ 
+	return Modifiers[2];
+}
+
 function ModifyHealth(out int InHealth)
 {
 	InHealth *= Modifiers[6];
@@ -1316,6 +1321,11 @@ function float GetKnockdownPowerModifier()
 }
 
 function float GetStunPowerModifier(optional class<DamageType> DamageType, optional byte HitZoneIdx)
+{
+	return Modifiers[7];
+}
+
+function float GetStumblePowerModifier( optional KFPawn KFP, optional class<KFDamageType> DamageType, optional out float CooldownModifier, optional byte BodyPart )
 {
 	return Modifiers[7];
 }
@@ -1485,6 +1495,11 @@ function NotifyZedTimeStarted();
 simulated function float GetZedTimeExtensions(byte Level)
 {
 	return 1.f;
+}
+
+simulated function float GetTightChokeModifier()
+{
+    return Modifiers[3];
 }
 
 defaultproperties
