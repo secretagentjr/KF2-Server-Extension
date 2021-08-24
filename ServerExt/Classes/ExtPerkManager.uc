@@ -905,7 +905,7 @@ simulated function float GetTightChokeModifier()
 }
 
 // SwitchSpeed
-simulated function ModifyWeaponSwitchTime(out float ModifiedSwitc)
+simulated function ModifyWeaponSwitchTime(out float ModifiedSwitchTime)
 {
 	if (CurrentPerk != None)
 		CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);
