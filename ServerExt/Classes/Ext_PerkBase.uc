@@ -712,6 +712,8 @@ static function UpdateConfigs(int OldVer)
 			AddStatsCfg(18); // Add all damage.
 		else if (OldVer<=13)
 			AddStatsCfg(19); // Add HeadDamage and HealRecharge
+		else if (OldVer<=14)
+			AddStatsCfg(21); // Add WeaponSwitch
 		if (OldVer<=5)
 		{
 			// Add prestige
@@ -1487,7 +1489,7 @@ simulated function float GetZedTimeExtensions(byte Level)
 
 defaultproperties
 {
-	CurrentConfigVer=14
+	CurrentConfigVer=15
 	bOnlyRelevantToOwner=true
 	bCanBeGrabbed=true
 	NetUpdateFrequency=1
