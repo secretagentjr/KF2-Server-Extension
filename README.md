@@ -35,32 +35,35 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 
 # Build
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
-2. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
+2. open git-bash and go to any folder where you want to store ServerExt sources:  
+`cd <ANY_FOLDER_YOU_WANT>`  
 3. Clone this repository and go to the source folder:  
 `git clone https://github.com/GenZmeY/KF2-Server-Extension && cd KF2-Server-Extension`
-4. Run make.sh script:
-`./make.sh --compile`
+4. Download ServerExt dependencies:  
+`git submodule init && git submodule update`  
+5. Compile ServerExt:  
+`./tools/builder -c`  
 5. The compiled files will be here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Unpublished\BrewedPC\Script\`
 
 # Testing
-You can check your build using the `make.sh` script.  
-Open git-bash in the source folder and run the script:  
-`./make.sh --test`  
-On first launch, the script will create `testing.ini` file and launch the game with the settings from it (KF-Nuked map + ServerExtMut). Edit this file if you need to test the mutator with different parameters.
+Open git-bash in the ServerExt source folder and run command:  
+`./tools/builder -t`  
+(or `./tools/builder -ct` if you haven't compiled the mutator yet)  
+
+A local single-user test will be launched with parameters from `test.cfg` (edit this file if you want to test mutator with different parameters).
 
 # Using and configuring ServerExt
 A detailed manual is available on the [mod page](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712) in the steam workshop.
 
 # Publication in steam workshop
-1. Modify the publish files if necessary, they are here:  
-`C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Src\PublicationContent\`
+1. Modify the publish files if necessary, they are in the `PublicationContent`:
 > description.txt  
 > preview.png  
 > tags.txt  
 > title.txt  
-2. Run this command in the source folder:  
-`./make.sh -c && ./make.sh -bu && ./make.sh -u`
+
+2. Run this command in the source folder: `./tools/builder -cbu`
 
 # Contributing
 **Participation is welcome!**
