@@ -51,7 +51,7 @@ Open git-bash in the ServerExt source folder and run command:
 `./tools/builder -t`  
 (or `./tools/builder -ct` if you haven't compiled the mutator yet)  
 
-A local single-user test will be launched with parameters from `test.cfg` (edit this file if you want to test mutator with different parameters).
+A local single-user test will be launched with parameters from `builder.cfg` (edit this file if you want to test mutator with different parameters).
 
 # Using and configuring ServerExt
 A detailed manual is available on the [mod page](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712) in the steam workshop.
