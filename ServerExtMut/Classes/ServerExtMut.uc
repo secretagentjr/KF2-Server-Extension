@@ -63,6 +63,8 @@ var config bool bDontUseOriginalWeaponry;
 var config bool bAllowStandartPistolUpgrade;
 var config bool bDisableCustomTrader;
 
+var KFGI_Access KFGIA;
+
 //Custom XP lightly array
 struct CustomZedXPStruct
 {
@@ -102,6 +104,7 @@ function PostBeginPlay()
 		class'OnlineSubsystem'.Static.StringToUniqueNetId(DevList[i],Id);
 		DevNetID[i] = Id;
 	}
+	
 	ServerStatLoader = new (None) class'ExtPlayerStat';
 	WorldInfo.Game.HUDType = class'KFExtendedHUD';
 	WorldInfo.Game.PlayerControllerClass = class'ExtPlayerController';
@@ -109,6 +112,8 @@ function PostBeginPlay()
 	WorldInfo.Game.DefaultPawnClass = class'ExtHumanPawn';
 	KFGameInfo(WorldInfo.Game).CustomizationPawnClass = class'ExtPawn_Customization';
 	KFGameInfo(WorldInfo.Game).KFGFxManagerClass = class'ExtMoviePlayer_Manager';
+	
+	KFGIA = new(KFGameInfo(WorldInfo.Game)) class'KFGI_Access';
 
 	// trader things
 	if (!bDisableCustomTrader && CustomTrader==None)
@@ -553,7 +558,7 @@ function CustomXP(Controller Killer, Controller Killed)
 					break;
 				}
 			}
-			if (cont && !IsFromMod(KFM))
+			if (cont && !KFGIA.IsCustomZed(KFM.class))
 			{
 				// No mods - exit the loop, the game will add experience by itself
 				continue;
