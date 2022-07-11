@@ -1,5 +1,7 @@
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
 
+[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension[/img] [img]https://img.shields.io/steam/subscriptions/2085786712[/img] [img]https://img.shields.io/steam/favorites/2085786712[/img] [img]https://img.shields.io/steam/update-date/2085786712[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension[/img][/url]
+
 [h1]Description:[/h1]
 [i]This mod replaces current perk system in Killing Floor 2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
 
@@ -19,21 +21,27 @@ This is a further development of the ServerExt mutator from [url=https://steamco
 [/list]
 The full changelog is available [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712]here[/url].
 
-[h1]Usage (single player):[/h1]
-1. Subscribe to this mutator;
-2. Start KF2; 
-3. Open console (`) and input:
+[h1]Usage (single player)[/h1]
+[olist]
+[*]Subscribe to this mutator;
+[*]Start KF2; 
+[*]Open console (`) and input:
 [code]open KF-BioticsLab?Mutator=ServerExtMut.ServerExtMut[/code]
 (You can add some options or replace KF-BioticsLab with the map you want)
+[/olist]
 
-[h1]Usage (server):[/h1]
-[b]Note:[/b] If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.
-
-1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
-2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
-[code]ServerSubscribedWorkshopItems=2085786712[/code]
-3. Start the server and wait while the mutator is downloading;
-4. Add [b]?Mutator=ServerExtMut.ServerExtMut[/b] above to launchup URL and restart server.
+[h1]Usage (server)[/h1]
+[b]Note:[/b] [i]If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.[/i]
+[olist]
+[*]Open your [b]PCServer-KFEngine.ini[/b] / [b]LinuxServer-KFEngine.ini[/b];
+[*]Find the [b][IpDrv.TcpNetDriver][/b] section and make sure that there is a line (add if not):
+[b]DownloadManagers=OnlineSubsystemSteamworks.SteamWorkshopDownload[/b]
+❗️ If there are several [b]DownloadManagers=[/b] then the line above should be the first ❗️
+[*]Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section (create one if it doesn't exist):
+[b]ServerSubscribedWorkshopItems=2085786712[/b]
+[*]Start the server and wait while the mutator is downloading;
+[*]Add mutator to server start parameters: [b]?Mutator=ServerExtMut.ServerExtMut[/b] and restart the server.
+[/olist]
 
 [h1]Mutator setup[/h1]
 [url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url] 
@@ -79,7 +87,7 @@ ServerExt supports localization now!
 
 If you have a desire to help translate ServerExt into other languages, you can read how to do it in this thread: [u][url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/2942494909176752884]Localization[/url][/u]
 
-[h1]Credits:[/h1]
+[h1]Credits[/h1]
 [url=https://steamcommunity.com/profiles/76561197975509070]Marco[/url]
 [url=https://steamcommunity.com/profiles/76561197997881512]ForrestMarkX[/url]
 [url=https://steamcommunity.com/profiles/76561198143883210]inklesspen[/url]
@@ -88,13 +96,13 @@ If you have a desire to help translate ServerExt into other languages, you can r
 [url=https://steamcommunity.com/profiles/76561198004271210]Scaredkid93[/url]
 [url=https://www.deviantart.com/cottonvalent]CottonValent[/url][b](*)[/b]
 
-[b]Translators:[/b]
+[b]Translators[/b]
 [url=https://steamcommunity.com/profiles/76561198001617867]GenZmeY[/url] - Russian [RUS];
 [url=https://steamcommunity.com/profiles/76561197967822972]MilkTeaFox[/url] - Traditional Chinese [CHT];
 [url=https://steamcommunity.com/profiles/76561198930643117]あさぴっぴ1020[/url] - Japanese [JPN];
 [url=https://steamcommunity.com/profiles/76561198080866131]Jason Voorehes [/url] - Spanish [ESN];
 
-[h1]Sources:[/h1]
-[u]https://github.com/GenZmeY/KF2-Server-Extension[/u] [b](GNU GPLv3)[/b]
+[h1]Sources[/h1]
+[url=https://github.com/GenZmeY/KF2-Server-Extension]https://github.com/GenZmeY/KF2-Server-Extension[/url] [b](GNU GPLv3)[/b]
 
 [b](*)[/b] CottonValent - is the artist who created gorgeous cat on the preview (I don’t know why he is here, it happened).
