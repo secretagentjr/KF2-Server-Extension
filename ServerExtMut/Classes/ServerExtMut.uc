@@ -58,7 +58,6 @@ var int LastWaveNum,NumWaveSwitches;
 var ExtSpawnPointHelper SpawnPointer;
 var bool bRespawnCheck,bSpecialSpawn,bGameHasEnded,bIsPostGame;
 var config bool bKillMessages,bDamageMessages,bEnableMapVote,bNoAdminCommands,bNoWebAdmin,bNoBoomstickJumping,bDumpXMLStats,bRagdollFromFall,bRagdollFromMomentum,bRagdollFromBackhit,bAddCountryTags,bThrowAllWeaponsOnDeath;
-var config bool bServerPerksMode;
 var config bool bDontUseOriginalWeaponry;
 var config bool bAllowStandartPistolUpgrade;
 var config bool bDisableCustomTrader;
