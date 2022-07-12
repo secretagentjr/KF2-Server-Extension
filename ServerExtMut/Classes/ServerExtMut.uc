@@ -778,7 +778,7 @@ function NetDamage(int OriginalDamage, out int Damage, Pawn Injured, Controller 
 						HackSetHistory(KFPawn(Injured),Injured,Ext_T_MonsterPRI(InstigatedBy.PlayerReplicationInfo).OwnerController,Damage,HitLocation);
 				}
 			}
-			else if (KFPawn(InstigatedBy.Pawn).GetTeamNum() != KFPawn(Injured).GetTeamNum())
+			else if (InstigatedBy.Pawn != None && KFPawn(InstigatedBy.Pawn).GetTeamNum() != KFPawn(Injured).GetTeamNum())
 			{
 				Momentum = vect(0,0,0);
 				Damage = 0;
