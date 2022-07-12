@@ -532,68 +532,69 @@ function bool IsFromMod(Object O)
 	return true;
 }
 
+function bool HasModsInDamageInfo(DamageInfo DI)
+{
+	local class<Actor>  DamageCauser;
+	local class<KFDamageType> DamageType;
+	
+	foreach DI.DamageCausers(DamageCauser)
+		if (IsFromMod(DamageCauser))
+			return true;
+	
+	foreach DI.DamageTypes(DamageType)
+		if (IsFromMod(DamageType))
+			return true;
+		
+	return false;
+}
+
 function CustomXP(Controller Killer, Controller Killed)
 {
 	local KFPlayerController KFPC;
 	local KFPawn_Monster KFM;
-	local int i, j;
+	local int i;
 	local KFPlayerReplicationInfo DamagerKFPRI;
 	local float XP;
 	local KFPerk InstigatorPerk;
-	local bool cont;
+	local DamageInfo DamageInfo;
+	local class<KFPerk> DamagePerk;
 	
 	KFM = KFPawn_Monster(Killed.Pawn);
-	for (i = 0; i < KFM.DamageHistory.Length; i++)
+	foreach KFM.DamageHistory(DamageInfo)
 	{
-		DamagerKFPRI = KFPlayerReplicationInfo(KFM.DamageHistory[i].DamagerPRI);
-		if (DamagerKFPRI != None)
+		DamagerKFPRI = KFPlayerReplicationInfo(DamageInfo.DamagerPRI);
+		if (DamagerKFPRI == None) continue;
+		
+		// if no mods - exit the loop, the game will add experience by itself
+		if (!HasModsInDamageInfo(DamageInfo) && !KFGIA.IsCustomZed(KFM.class)) continue; 
+		
+		KFPC = KFPlayerController(DamagerKFPRI.Owner);
+		if (KFPC == None) continue;
+		
+		i = CustomZedXPArray.Find('zedclass', KFM.Class);
+		if (i != INDEX_NONE)
 		{
-			// Check that no mods are used in this kill
-			cont = true;
-			for (j=0; j < KFM.DamageHistory[i].DamageCausers.Length; j++)
-			{
-				if (IsFromMod(KFM.DamageHistory[i].DamageCausers[j]) || IsFromMod(KFM.DamageHistory[i].DamageTypes[j]))
-				{
-					cont = false;
-					break;
-				}
-			}
-			if (cont && !KFGIA.IsCustomZed(KFM.class))
-			{
-				// No mods - exit the loop, the game will add experience by itself
-				continue;
-			}
-			
-			// Distribute experience points
-			KFPC = KFPlayerController(DamagerKFPRI.Owner);
-			if (KFPC != none)
-			{
-				j = CustomZedXPArray.Find('zedclass', KFM.Class);
-				if(j != -1)
-				{
-					XP = CustomZedXPArray[j].XPValues[MyKFGI.GameDifficulty];
-				}
-				else
-				{
-					XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
-				}
-				
-				InstigatorPerk = KFPC.GetPerk();
-				
-				// Special for survivalist - he gets experience for everything
-				// And for TF2Sentry - he has no perk in DamageHistory
-				if (InstigatorPerk.ShouldGetAllTheXP() || KFM.DamageHistory[i].DamagePerks.Length == 0)
-				{
-					KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
-					continue;
-				}
-				
-				XP /= KFM.DamageHistory[i].DamagePerks.Length;
-				for (j = 0; j < KFM.DamageHistory[i].DamagePerks.Length; j++)
-				{
-					KFPC.OnPlayerXPAdded(FCeil(XP), KFM.DamageHistory[i].DamagePerks[j]);
-				}
-			}
+			XP = CustomZedXPArray[i].XPValues[MyKFGI.GameDifficulty];
+		}
+		else
+		{
+			XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
+		}
+		
+		InstigatorPerk = KFPC.GetPerk();
+		
+		// Special for survivalist - he gets experience for everything
+		// and for TF2Sentry - it has no perk in DamageHistory
+		if (InstigatorPerk.ShouldGetAllTheXP() || DamageInfo.DamagePerks.Length == 0)
+		{
+			KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
+			continue;
+		}
+		
+		XP /= DamageInfo.DamagePerks.Length;
+		foreach DamageInfo.DamagePerks(DamagePerk)
+		{
+			KFPC.OnPlayerXPAdded(FCeil(XP), DamagePerk);
 		}
 	}
 }
