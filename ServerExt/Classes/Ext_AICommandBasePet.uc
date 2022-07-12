@@ -69,8 +69,13 @@ Begin:
 	
 	// See if we are close to our owner
 RecheckOwner:
-	OwnerPawn = Ext_T_MonsterPRI(PlayerReplicationInfo)!=None ? Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController.Pawn : None;
-	if (OwnerPawn!=None)
+	OwnerPawn = None;
+	if (Ext_T_MonsterPRI(PlayerReplicationInfo) != None
+	&& Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController != None)
+	{
+		OwnerPawn = Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController.Pawn;
+	}
+	if (OwnerPawn != None)
 	{
 		if (Enemy!=None && LineOfSightTo(OwnerPawn) && LineOfSightTo(Enemy)) // We have sight to our owner and can see enemy, go for it!
 		{
