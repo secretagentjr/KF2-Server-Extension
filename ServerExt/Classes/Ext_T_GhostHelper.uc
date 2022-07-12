@@ -8,6 +8,8 @@ var bool bTeleporting,bIsDelayed;
 
 function bool CanResPlayer(KFPawn_Human Other, byte Level)
 {
+	local Actor SpawnPoint;
+	
 	if (bTeleporting)
 	{
 		if (LastDied!=None)
@@ -23,11 +25,17 @@ function bool CanResPlayer(KFPawn_Human Other, byte Level)
 	else if (Level==1 && Rand(2)==0)
 		return false;
 
-	LastDied = Other;
-	bTeleporting = true;
 	if (SpawnPointer==None)
 		SpawnPointer = class'ExtSpawnPointHelper'.Static.FindHelper(WorldInfo);
-	ResPoint = SpawnPointer.PickBestSpawn().Location;
+	
+	SpawnPoint = SpawnPointer.PickBestSpawn();
+	if (SpawnPoint == None)
+		return false;
+	
+	LastDied = Other;
+	bTeleporting = true;
+	
+	ResPoint = SpawnPoint.Location;
 	LastDied.FindSpot(vect(36,36,86),ResPoint);
 	if (VSizeSq(LastDied.Location-ResPoint)<1.f) // Prevent division by zero errors in future.
 		ResPoint.Z+=5;
