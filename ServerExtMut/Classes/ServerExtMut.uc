@@ -601,29 +601,35 @@ function CustomXP(Controller Killer, Controller Killed)
 
 function ScoreKill(Controller Killer, Controller Killed)
 {
-	local KFPlayerController KFPC;
-	local ExtPerkManager KillersPerk;
+	local KFPlayerController  KFPC;
+	local ExtPlayerController ExtPC;
+	local ExtPerkManager      KillersPerk;
+	local KFPawn_Monster      KFPM;
 	
 	if (bRespawnCheck && Killed.bIsPlayer)
 		CheckRespawn(Killed);
 	
-	if (KFPawn_Monster(Killed.Pawn) != None && Killed.GetTeamNum() != 0 && Killer.bIsPlayer && Killer.GetTeamNum() == 0)
+	KFPM = KFPawn_Monster(Killed.Pawn);
+	if (KFPM != None && Killed.GetTeamNum() != 0
+	&& Killer != None && Killer.bIsPlayer && Killer.GetTeamNum() == 0)
 	{
-		if (ExtPlayerController(Killer)!=None && ExtPlayerController(Killer).ActivePerkManager!=None)
-			ExtPlayerController(Killer).ActivePerkManager.PlayerKilled(KFPawn_Monster(Killed.Pawn),LastKillDamageType);
-		if (bKillMessages && Killer.PlayerReplicationInfo!=None)
-			BroadcastKillMessage(Killed.Pawn,Killer);
+		ExtPC = ExtPlayerController(Killer);
+		if (ExtPC != None && ExtPC.ActivePerkManager != None)
+			ExtPC.ActivePerkManager.PlayerKilled(KFPM, LastKillDamageType);
+		
+		if (bKillMessages && Killer.PlayerReplicationInfo != None)
+			BroadcastKillMessage(Killed.Pawn, Killer);
 		
 		CustomXP(Killer, Killed);
 	}
 	
-	if (MyKFGI != None && MyKFGI.IsZedTimeActive() && KFPawn_Monster(Killed.Pawn) != None)
+	if (MyKFGI != None && MyKFGI.IsZedTimeActive() && KFPM != None)
 	{
 		KFPC = KFPlayerController(Killer);
-		if (KFPC != none)
+		if (KFPC != None)
 		{
 			KillersPerk = ExtPerkManager(KFPC.GetPerk());
-			if (MyKFGI.ZedTimeRemaining > 0.f && KillersPerk != none && KillersPerk.GetZedTimeExtensions( KFPC.GetLevel() ) > MyKFGI.ZedTimeExtensionsUsed)
+			if (MyKFGI.ZedTimeRemaining > 0.f && KillersPerk != None && KillersPerk.GetZedTimeExtensions(KFPC.GetLevel() ) > MyKFGI.ZedTimeExtensionsUsed)
 			{
 				MyKFGI.DramaticEvent(1.0);
 				MyKFGI.ZedTimeExtensionsUsed++;
@@ -631,8 +637,10 @@ function ScoreKill(Controller Killer, Controller Killed)
 		}
 	}
 	
-	if (ExtPlayerController(Killed) != None)
-		CheckPerkChange(ExtPlayerController(Killed));
+	ExtPC = ExtPlayerController(Killed);
+	if (ExtPC != None)
+		CheckPerkChange(ExtPC);
+	
 	if (NextMutator != None)
 		NextMutator.ScoreKill(Killer, Killed);
 }
