@@ -91,13 +91,16 @@ simulated function Destroyed()
 
 function CheckPerk()
 {
-	if (CurrentPerk!=ActivePerkManager)
+	if (CurrentPerk != ActivePerkManager)
 	{
 		CurrentPerk = ActivePerkManager;
 		if (KFPlayerReplicationInfo(PlayerReplicationInfo)!=None)
 		{
 			KFPlayerReplicationInfo(PlayerReplicationInfo).NetPerkIndex = 0;
-			KFPlayerReplicationInfo(PlayerReplicationInfo).CurrentPerkClass = ActivePerkManager.CurrentPerk.BasePerk;
+			if (ActivePerkManager.CurrentPerk != None)
+			{
+				KFPlayerReplicationInfo(PlayerReplicationInfo).CurrentPerkClass = ActivePerkManager.CurrentPerk.BasePerk;
+			}
 		}
 	}
 }
