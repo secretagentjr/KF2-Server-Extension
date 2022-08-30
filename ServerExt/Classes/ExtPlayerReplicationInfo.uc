@@ -27,20 +27,24 @@ struct FCustomTraderItem
 
 var bool bIsMuted,bInitialPT,bIsDev,bHiddenUser,bClientUseCustom,bClientFirstChar,bClientCharListDone,bClientInitChars;
 
+enum E_AdminType
+{
+	AT_Global,
+	AT_Admin,
+	AT_Mod,
+	AT_TMem,
+	AT_VIP,
+	AT_Booster,
+	AT_Player
+};
+
+var E_AdminType AdminType;
+
 var int RespawnCounter;
-var byte AdminType;
 var class<Ext_PerkBase> ECurrentPerk;
 var Ext_PerkBase FCurrentPerk;
 var int ECurrentPerkLevel,ECurrentPerkPrestige;
 var ExtPerkManager PerkManager;
-/* AdminTypes:
-	0 - Super Admin (server owner)
-	1 - Admin
-	2 - Moderator
-	3 - Trusted member
-	4 - VIP
-*/
-
 var string TaggedPlayerName;
 var repnotify string NameTag;
 var repnotify byte RepLevelProgress;
@@ -327,24 +331,26 @@ simulated function RecheckGRI()
 
 simulated final function bool ShowAdminName()
 {
-	return (bAdmin || AdminType<255);
+	return (bAdmin || AdminType < AT_Player);
 }
 
 simulated function string GetAdminName()
 {
 	switch (AdminType)
 	{
-	case 0:
+	case AT_Global:
 		return "Super Admin";
-	case 1:
-	case 255:
+	case AT_Admin:
+	case AT_Player: // TODO: Admin is the same as player? WTF? #1
 		return "Admin";
-	case 2:
+	case AT_Mod:
 		return "Mod";
-	case 3:
+	case AT_TMem:
 		return "Trusted Member";
-	case 4:
+	case AT_VIP:
 		return "VIP";
+	case AT_Booster:
+		return "Booster";
 	}
 }
 
@@ -352,17 +358,19 @@ simulated function string GetAdminNameAbr()
 {
 	switch (AdminType)
 	{
-	case 0:
+	case AT_Global:
 		return "S";
-	case 1:
-	case 255:
+	case AT_Admin:
+	case AT_Player: // TODO: Admin is the same as player? WTF? #2
 		return "A";
-	case 2:
+	case AT_Mod:
 		return "M";
-	case 3:
+	case AT_TMem:
 		return "T";
-	case 4:
+	case AT_VIP:
 		return "V";
+	case AT_Booster:
+		return "B";
 	}
 }
 
@@ -370,17 +378,19 @@ simulated function string GetAdminColor()
 {
 	switch (AdminType)
 	{
-	case 0:
+	case AT_Global:
 		return "FF6600";
-	case 1:
-	case 255:
+	case AT_Admin:
+	case AT_Player: // TODO: Admin is the same as player? WTF? #3
 		return "40FFFF";
-	case 2:
+	case AT_Mod:
 		return "FF33FF";
-	case 3:
+	case AT_TMem:
 		return "FF0000";
-	case 4:
+	case AT_VIP:
 		return "FFD700";
+	case AT_Booster:
+		return "32A852";
 	}
 }
 
@@ -388,17 +398,19 @@ simulated function color GetAdminColorC()
 {
 	switch (AdminType)
 	{
-	case 0:
+	case AT_Global:
 		return MakeColor(255,102,0,255);
-	case 1:
-	case 255:
+	case AT_Admin:
+	case AT_Player: // TODO: Admin is the same as player? WTF? #4
 		return MakeColor(64,255,255,255);
-	case 2:
+	case AT_Mod:
 		return MakeColor(255,51,255,255);
-	case 3:
+	case AT_TMem:
 		return MakeColor(255,0,0,255);
-	case 4:
+	case AT_VIP:
 		return MakeColor(255,215,0,255);
+	case AT_Booster:
+		return MakeColor(50,168,82,255);
 	}
 }
 
@@ -804,22 +816,25 @@ event BeginState(Name N)
 	switch (N)
 	{
 	case 'Global':
-		AdminType = 0;
+		AdminType = AT_Global;
 		break;
 	case 'Admin':
-		AdminType = 1;
+		AdminType = AT_Admin;
 		break;
 	case 'Mod':
-		AdminType = 2;
+		AdminType = AT_Mod;
 		break;
 	case 'TMem':
-		AdminType = 3;
+		AdminType = AT_TMem;
 		break;
 	case 'VIP':
-		AdminType = 4;
+		AdminType = AT_VIP;
+		break;
+	case 'Booster':
+		AdminType = AT_Booster;
 		break;
 	case 'User':
-		AdminType = 255;
+		AdminType = AT_Player;
 		break;
 	}
 }

@@ -18,10 +18,6 @@ static final function name GetUnlockedEmote(int ItemId, ExtPlayerController PC)
 		if (PRI == None)
 			return Anim;
 			
-		/*
-		if (InStr(string(Anim), "Deluxe") != INDEX_NONE && PRI.AdminType == 255)
-			return 'NONE';
-		*/
 		else return Anim;
 	}
 

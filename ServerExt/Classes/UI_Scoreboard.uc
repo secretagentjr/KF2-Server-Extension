@@ -125,7 +125,7 @@ function DrawMenu()
 		if (KFGRI==None)
 			return;
 	}
-	bMeAdmin = (PC.WorldInfo.NetMode!=NM_Client || (ExtPlayerReplicationInfo(PC.PlayerReplicationInfo)!=None && ExtPlayerReplicationInfo(PC.PlayerReplicationInfo).AdminType<=1));
+	bMeAdmin = (PC.WorldInfo.NetMode!=NM_Client || (ExtPlayerReplicationInfo(PC.PlayerReplicationInfo) != None && ExtPlayerReplicationInfo(PC.PlayerReplicationInfo).AdminType <= AT_Admin));
 
 	// Sort player list.
 	for (i=(KFGRI.PRIArray.Length-1); i>0; --i)

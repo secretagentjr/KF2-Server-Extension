@@ -298,7 +298,7 @@ event PostRender()
 		EPRI = ExtPlayerReplicationInfo(KFPlayerOwner.PlayerReplicationInfo);
 	else if (EPRI.RespawnCounter>0)
 		DrawRespawnCounter();
-	bMeAdmin = (EPRI!=None && EPRI.AdminType<=1);
+	bMeAdmin = (EPRI != None && EPRI.AdminType <= AT_Admin);
 	if (KillMessages.Length>0)
 		RenderKillMsg();
 	if (DeathMessages.Length>0)
