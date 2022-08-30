@@ -1,6 +1,6 @@
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
 
-[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension[/img] [img]https://img.shields.io/steam/downloads/2085786712[/img] [img]https://img.shields.io/steam/favorites/2085786712[/img] [img]https://img.shields.io/steam/update-date/2085786712[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension[/img][/url]
+[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension[/img] [img]https://img.shields.io/steam/downloads/2085786712[/img] [img]https://img.shields.io/steam/favorites/2085786712[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712] [img]https://img.shields.io/steam/update-date/2085786712[/img] [img]https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension[/img][/url]
 
 [h1]Description:[/h1]
 [i]This mod replaces current perk system in Killing Floor 2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
