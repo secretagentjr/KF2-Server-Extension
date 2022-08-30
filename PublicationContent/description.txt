@@ -1,6 +1,6 @@
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-Server-Extension/master/PublicationContent/mutbanner.png[/img]
 
-[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension[/img] [img]https://img.shields.io/steam/subscriptions/2085786712[/img] [img]https://img.shields.io/steam/favorites/2085786712[/img] [img]https://img.shields.io/steam/update-date/2085786712[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension[/img][/url]
+[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension[/img] [img]https://img.shields.io/steam/downloads/2085786712[/img] [img]https://img.shields.io/steam/favorites/2085786712[/img] [img]https://img.shields.io/steam/update-date/2085786712[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2085786712][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension[/img][/url]
 
 [h1]Description:[/h1]
 [i]This mod replaces current perk system in Killing Floor 2 with a serverside perk progression with RPG elements, which let you buy individual stats and traits.
@@ -75,6 +75,25 @@ C:\Users\<YOUR_USERNAME>\Documents\My Games\KillingFloor2\KFGame\Localization\
 [/code]
 Check all folders and delete all ServerExt.* files you find.
 4. Re-subscribe to this mod and try again.
+
+[h1]If configs are not created[/h1]
+[olist]
+[*]Create the missing configs manually, then add the following content to them ([u]only for configs that you created manually[/u]):
+
+[*]Put in [b]KFServerExtMut.ini[/b] this:
+[b][ServerExtMut.ServerExtMut]
+SettingsInit=0[/b]
+
+[*]Put in [b]KFxMapVote.ini[/b] this:
+[b][ServerExtMut.xVotingHandler]
+ConfigVersion=0[/b]
+
+[*]Put in [b]KFServerExt.ini[/b] this: [url=https://pastebin.com/raw/Wx3HYjkj]<PasteBin>[/url] [b](*)[/b]
+
+[*]Start the game/server along with the ServerExt, then check the configs - content should be generated.
+[/olist]
+
+[b](*)[/b]Thanks to [url=https://steamcommunity.com/profiles/76561198105638699]Cloud[/url] for this file and instructions!
 
 [h1]Bug reports[/h1]
 If you find a bug, please create a new issue here:
