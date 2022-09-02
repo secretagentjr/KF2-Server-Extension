@@ -77,6 +77,6 @@ function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 	return PlayerInfoObject;	
 }
 
-DefaultProperties
+defaultproperties
 {
 }

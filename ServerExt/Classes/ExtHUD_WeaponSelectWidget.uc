@@ -86,6 +86,6 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
 	SetWeaponList(DataProvider, GroupIndex);
 }
 
-DefaultProperties
+defaultproperties
 {
 }

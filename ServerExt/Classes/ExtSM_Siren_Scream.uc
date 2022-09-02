@@ -5,7 +5,7 @@ function SpawnProjectileShield()
 	return;
 }
 
-DefaultProperties
+defaultproperties
 {
 	ExplosionActorClass=class'ExtExplosion_SirenScream'
 	

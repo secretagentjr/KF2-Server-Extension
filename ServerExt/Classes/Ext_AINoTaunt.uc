@@ -9,7 +9,7 @@ function SpecialMoveEnded(Name PrevMove, Name NextMove)
 {
 }
 
-DefaultProperties
+defaultproperties
 {
 	Handle=KFSM_Taunt
 	bDisableMovement=true

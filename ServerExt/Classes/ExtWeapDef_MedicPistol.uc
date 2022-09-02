@@ -1,7 +1,7 @@
 class ExtWeapDef_MedicPistol extends KFWeapDef_MedicPistol
 	abstract;
 
-DefaultProperties
+defaultproperties
 {
 	// Unsellable weapon
 	BuyPrice=0

@@ -156,6 +156,6 @@ RecheckOwner:
 	Goto('Begin');
 }
 
-DefaultProperties
+defaultproperties
 {
 }

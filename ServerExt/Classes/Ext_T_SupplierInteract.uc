@@ -194,7 +194,7 @@ simulated function Destroyed()
 	}
 }
 
-DefaultProperties
+defaultproperties
 {
 	InteractionIndex=IMT_ReceiveAmmo
 	RemoteRole=ROLE_SimulatedProxy

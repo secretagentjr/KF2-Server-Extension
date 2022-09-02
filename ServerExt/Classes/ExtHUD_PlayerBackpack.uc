@@ -29,6 +29,6 @@ function UpdateGrenades()
 	}
 }
 
-DefaultProperties
+defaultproperties
 {
 }

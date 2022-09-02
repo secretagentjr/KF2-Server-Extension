@@ -1,7 +1,7 @@
 class ExtWeapDef_9mm extends KFWeapDef_9mm
 	abstract;
 
-DefaultProperties
+defaultproperties
 {
 	// Set free ammo
 	AmmoPricePerMag=0

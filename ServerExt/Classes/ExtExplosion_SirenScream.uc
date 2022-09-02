@@ -5,6 +5,6 @@ protected function SpecialCringeEffectsfor (Actor Victim, float VictimDist)
 	return;
 }
 
-DefaultProperties
+defaultproperties
 {
 }
