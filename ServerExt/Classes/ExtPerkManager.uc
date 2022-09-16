@@ -7,7 +7,6 @@ Class ExtPerkManager extends KFPerk;
 enum EReplicateState
 {
 	REP_CustomCharacters,
-	REP_CustomInventory,
 	REP_PerkClasses,
 	REP_Done
 };
@@ -450,14 +449,6 @@ function ReplicateTimer()
 			PRIOwner.ReceivedCharacter(RepIndex,PRIOwner.CustomCharList[RepIndex]);
 			++RepIndex;
 		}
-		break;
-	case REP_CustomInventory: // Replicate custom trader inventory
-		if (!PRIOwner.OnRepNextItem(PRIOwner,RepIndex))
-		{
-			RepIndex = 0;
-			++RepState;
-		}
-		else ++RepIndex;
 		break;
 	case REP_PerkClasses: // Open up all actor channel connections.
 		if (RepIndex>=UserPerks.Length)

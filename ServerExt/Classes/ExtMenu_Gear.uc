@@ -2,7 +2,6 @@ class ExtMenu_Gear extends KFGFxObject_Menu;
 
 var ExtPlayerReplicationInfo ExtPRI;
 
-// var KFGFxObject_TraderItems TraderItems;
 var KFGFxGearContainer_PerksSelection PerkSelectionContainer;
 var KFCharacterInfo_Human CurrentCharInfo;
 var string CharInfoPath;
@@ -19,7 +18,6 @@ function InitializeMenu(KFGFxMoviePlayer_Manager InManager)
 	LocalizeText();
 	EmoteList = class'ExtEmoteList'.static.GetEmoteArray();
 	InitCharacterMenu();
-	// TraderItems = KFGameReplicationInfo(GetPC().WorldInfo.GRI).TraderItems;
 }
 
 function InitCharacterMenu()
@@ -69,8 +67,7 @@ function OnOpen()
 		return;
 		
 	CheckForCustomizationPawn(PC);
-	//GetGameViewportClient().HandleInputAxis = OnAxisModified;
-
+	
 	if (PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun)
 	{
 		// Players cannot change characters if they are in a game

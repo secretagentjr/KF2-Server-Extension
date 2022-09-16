@@ -18,13 +18,6 @@ struct FMyCustomChar // Now without constant.
 	}
 };
 
-// For custom trader inventory.
-struct FCustomTraderItem
-{
-	var class<KFWeaponDefinition> WeaponDef;
-	var class<KFWeapon> WeaponClass;
-};
-
 var bool bIsMuted,bInitialPT,bIsDev,bHiddenUser,bClientUseCustom,bClientFirstChar,bClientCharListDone,bClientInitChars;
 
 enum E_AdminType
@@ -57,10 +50,6 @@ var array<FCustomCharEntry> CustomCharList;
 var repnotify FMyCustomChar CustomCharacter;
 var transient array<ExtCharDataInfo> SaveDataObjects;
 var transient ExtPlayerReplicationInfo LocalOwnerPRI; // Local playercontroller owner PRI
-
-// Custom trader inventory
-var KFGFxObject_TraderItems CustomList;
-var array<FCustomTraderItem> CustomItems;
 
 // Supplier data:
 var transient struct FSupplierData
@@ -235,98 +224,6 @@ function SetInitPlayTime(int T)
 function UnsetPT()
 {
 	bInitialPT = false;
-}
-
-Delegate bool OnRepNextItem(ExtPlayerReplicationInfo PRI, int RepIndex)
-{
-	return false;
-}
-
-simulated reliable client function ClientAddTraderItem(int Index, FCustomTraderItem Item)
-{
-	// Make sure to not execute on server.
-	if (WorldInfo.NetMode!=NM_Client && (PlayerController(Owner)==None || LocalPlayer(PlayerController(Owner).Player)==None))
-		return;
-
-	if (CustomList==None)
-	{
-		CustomList = CreateNewList();
-		RecheckGRI();
-	}
-	CustomItems.AddItem(Item);
-	SetWeaponInfo(false,Index,Item,CustomList);
-}
-
-simulated static final function KFGFxObject_TraderItems CreateNewList()
-{
-	local KFGFxObject_TraderItems L;
-	
-	L = new class'KFGFxObject_TraderItems';
-	L.SaleItems = L.Default.SaleItems;
-	L.ArmorPrice = L.Default.ArmorPrice;
-	L.GrenadePrice = L.Default.GrenadePrice;
-
-	return L;
-}
-
-simulated static final function SetWeaponInfo(bool bDedicated, int Index, FCustomTraderItem Item, KFGFxObject_TraderItems List)
-{
-	local array<STraderItemWeaponStats> S;
-	local int i;
-
-	if (List.SaleItems.Length<=Index)
-		List.SaleItems.Length = Index+1;
-
-	List.SaleItems[Index].WeaponDef = Item.WeaponDef;
-	List.SaleItems[Index].ClassName = Item.WeaponClass.Name;
-	if (class<KFWeap_DualBase>(Item.WeaponClass)!=None && class<KFWeap_DualBase>(Item.WeaponClass).Default.SingleClass!=None)
-		List.SaleItems[Index].SingleClassName = class<KFWeap_DualBase>(Item.WeaponClass).Default.SingleClass.Name;
-	else List.SaleItems[Index].SingleClassName = '';
-	List.SaleItems[Index].DualClassName = Item.WeaponClass.Default.DualClass!=None ? Item.WeaponClass.Default.DualClass.Name : '';
-	List.SaleItems[Index].AssociatedPerkClasses = Item.WeaponClass.Static.GetAssociatedPerkClasses();
-	List.SaleItems[Index].MaxSpareAmmo = Item.WeaponClass.Default.SpareAmmoCapacity[0];
-	List.SaleItems[Index].MagazineCapacity = Item.WeaponClass.Default.MagazineCapacity[0];
-	List.SaleItems[Index].InitialSpareMags = Item.WeaponClass.Default.InitialSpareMags[0];
-	List.SaleItems[Index].MaxSecondaryAmmo = Item.WeaponClass.Default.MagazineCapacity[1] * Item.WeaponClass.Default.SpareAmmoCapacity[1];
-	List.SaleItems[Index].BlocksRequired = Item.WeaponClass.Default.InventorySize;
-	List.SaleItems[Index].ItemID = Index;
-
-	List.SaleItems[Index].InitialSecondaryAmmo = Item.WeaponClass.Default.InitialSpareMags[1];
-	List.SaleItems[Index].WeaponUpgradeDmgMultiplier[0] = 1.0;
-	for (i = 0;i<Min(Item.WeaponClass.Default.WeaponUpgrades.Length, 5);i++)
-	{
-		List.SaleItems[Index].WeaponUpgradeWeight[i+1] = Item.WeaponClass.Static.GetUpgradeStatAdd(EWUS_Weight, i+1);
-		List.SaleItems[Index].WeaponUpgradeDmgMultiplier[i+1] = Item.WeaponClass.Static.GetUpgradeStatScale(EWUS_Damage0, i+1);
-	}
-
-	if (!bDedicated)
-	{
-		List.SaleItems[Index].SecondaryAmmoImagePath = Item.WeaponClass.Default.SecondaryAmmoTexture!=None ? PathName(Item.WeaponClass.Default.SecondaryAmmoTexture) : "UI_SecondaryAmmo_TEX.GasTank";
-		List.SaleItems[Index].TraderFilter = Item.WeaponClass.Static.GetTraderFilter();
-		List.SaleItems[Index].InventoryGroup = Item.WeaponClass.Default.InventoryGroup;
-		List.SaleItems[Index].GroupPriority = Item.WeaponClass.Default.GroupPriority;
-		Item.WeaponClass.Static.SetTraderWeaponStats(S);
-		List.SaleItems[Index].WeaponStats = S;
-	}
-}
-
-simulated function RecheckGRI()
-{
-	local ExtPlayerController PC;
-
-	if (KFGameReplicationInfo(WorldInfo.GRI)==None)
-		SetTimer(0.1,false,'RecheckGRI');
-	else
-	{
-		KFGameReplicationInfo(WorldInfo.GRI).TraderItems = CustomList;
-		foreach LocalPlayerControllers(class'ExtPlayerController',PC)
-		{
-			if (PC.PurchaseHelper!=None)
-			{
-				PC.PurchaseHelper.TraderItems = CustomList;
-			}
-		}
-	}
 }
 
 simulated final function bool ShowAdminName()
