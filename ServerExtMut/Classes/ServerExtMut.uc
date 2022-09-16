@@ -1518,7 +1518,7 @@ final function InitCustomChars(ExtPlayerReplicationInfo PRI)
 
 final function bool HasPrivs(ExtPlayerReplicationInfo P)
 {
-	return WorldInfo.NetMode==NM_StandAlone || (P!=None && P.ShowAdminName() && (P.AdminType<=1 || P.AdminType==255));
+	return WorldInfo.NetMode==NM_StandAlone || (P != None && P.ShowAdminName() && (P.AdminType <= AT_Admin || P.AdminType == AT_Player));
 }
 
 function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
