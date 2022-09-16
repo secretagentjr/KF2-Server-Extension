@@ -739,6 +739,6 @@ event BeginState(Name N)
 defaultproperties
 {
 	RespawnCounter=-1
-	AdminType=255
+	AdminType=AT_Player
 	TaggedPlayerName="Player"
 }
