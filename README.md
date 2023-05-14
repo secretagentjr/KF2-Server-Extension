@@ -1,4 +1,6 @@
-[![](PublicationContent/mutbanner.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
+# Server Extension
+
+[![Banner](PublicationContent/mutbanner.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 
 [![Steam Workshop](https://img.shields.io/static/v1?message=workshop&logo=steam&labelColor=gray&color=blue&logoColor=white&label=steam%20)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Subscriptions](https://img.shields.io/steam/subscriptions/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
@@ -16,7 +18,7 @@
 
 *This is a further development of the ServerExt mutator from [Marco](https://forums.tripwireinteractive.com/index.php?threads/mutator-server-extension-mod.109463) and [Forrest Mark X](https://github.com/ForrestMarkX/KF2-Server-Extension).*
 
-# Features
+## Features
 - RPG elements (traits and stats);
 - New menu system;
 - Scoreboard that supports unlimited playercount on server;
@@ -33,7 +35,7 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 
 **Note:** If you want to build/test/brew/publish a mutator without git-bash and/or scripts, follow [these instructions](https://tripwireinteractive.atlassian.net/wiki/spaces/KF2SW/pages/26247172/KF2+Code+Modding+How-to) instead of what is described here.
 
-# Build
+## Build
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
 2. open git-bash and go to any folder where you want to store ServerExt sources:  
 `cd <ANY_FOLDER_YOU_WANT>`  
@@ -46,29 +48,13 @@ The full changelog is available on [steam workshop](https://steamcommunity.com/s
 5. The compiled files will be here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Unpublished\BrewedPC\Script\`
 
-# Testing
-Open git-bash in the ServerExt source folder and run command:  
-`./tools/builder -t`  
-(or `./tools/builder -ct` if you haven't compiled the mutator yet)  
-
-A local single-user test will be launched with parameters from `builder.cfg` (edit this file if you want to test mutator with different parameters).
-
-# Using and configuring ServerExt
+## Using and configuring ServerExt
 A detailed manual is available on the [mod page](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712) in the steam workshop.
 
-# Publication in steam workshop
-1. Modify the publish files if necessary, they are in the `PublicationContent`:
-> description.txt  
-> preview.png  
-> tags.txt  
-> title.txt  
-
-2. Run this command in the source folder: `./tools/builder -cbu`
-
-# Contributing
+## Contributing
 **Participation is welcome!**
 
-## Bug reports
+### Bug reports
 If you find a bug, go to the [issue page](https://github.com/GenZmeY/KF2-Server-Extension/issues) and check if there is a description of your bug. If not, create a new issue.  
 Describe what the bug looks like and how we can reproduce it.  
 Attach screenshots if you think it might help.
@@ -77,12 +63,12 @@ If it's a crash issue, be sure to include the `Launch.log` and `Launch_2.log` fi
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Logs\`  
 Please note that these files are overwritten every time you start the game/server. Therefore, you must take these files immediately after the game crashes in order not to lose information.
 
-## Localization
+### Localization
 The mutator supports localization and you can help translate it into other languages.  
 It does not require any special knowledge or programming skills, so you just need to know the language into which you will translate.  
 Here's a quick guide on how to do it: [localization guide](https://steamcommunity.com/workshop/filedetails/discussion/2085786712/2942494909176752884)
 
-## Contribute code
+### Contribute code
 You can help improve ServerExt by fixing bugs and adding new features.  
 Before making a pull request, make sure that:  
 1. Your code is working correctly.  
@@ -91,8 +77,8 @@ Before making a pull request, make sure that:
 In the description of the pull request, describe the changes you made.
 
 
-# License
-[GNU GPLv3](LICENSE)
+## License
+[![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)
 
 ***
 
