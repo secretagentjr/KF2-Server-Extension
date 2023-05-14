@@ -9,7 +9,7 @@ var bool bLocalClient;
 static function OpenMenuForClient(PlayerController PC, class<KFGUI_Page> Page)
 {
 	local KF2GUINetwork G;
-	
+
 	foreach PC.ChildActors(class'KF2GUINetwork',G)
 		break;
 	if (G==None)
@@ -20,7 +20,7 @@ static function OpenMenuForClient(PlayerController PC, class<KFGUI_Page> Page)
 static function CloseMenuForClient(PlayerController PC, class<KFGUI_Page> Page, optional bool bCloseAll)
 {
 	local KF2GUINetwork G;
-	
+
 	foreach PC.ChildActors(class'KF2GUINetwork',G)
 		break;
 	if (G==None)

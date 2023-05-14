@@ -108,7 +108,7 @@ function CheckPerk()
 reliable client function AddAdminCmd(string S)
 {
 	local int i,j;
-	
+
 	j = InStr(S,":");
 	i = AdminCommands.Length;
 	AdminCommands.Length = i+1;
@@ -344,7 +344,7 @@ reliable client event TeamMessage(PlayerReplicationInfo PRI, coerce string S, na
 			S = PRI.GetHumanReadableName()$": "$S;
 		LocalPlayer(Player).ViewportClient.ViewportConsole.OutputText("("$Type$") "$S);
 	}
-	
+
 	if (MyGFxManager != none && MyGFxManager.PartyWidget != none)
 	{
 		if (!MyGFxManager.PartyWidget.ReceiveMessage(S))  //Fails if message is for updating perks in a steam lobby
@@ -392,16 +392,16 @@ final function PopScreenMsg(string S)
 	local int i;
 	local string L;
 	local float T;
-	
+
 	T = 4.f;
-	
+
 	// Get lower part.
 	i = InStr(S,"|");
 	if (i!=-1)
 	{
 		L = Mid(S,i+1);
 		S = Left(S,i);
-		
+
 		// Get time.
 		i = InStr(L,"|");
 		if (i!=-1)
@@ -420,7 +420,7 @@ reliable client function ClientKillMessage(class<DamageType> DamType, PlayerRepl
 
 	if (Player==None || Victim==None)
 		return;
-	
+
 	if (bUseKF2DeathMessages && MyGFxHUD!=None)
 	{
 		if (Victim==KillerPRI || (KillerPRI==None && KillerPawn==None)) // Suicide
@@ -559,7 +559,7 @@ simulated final function ToggleFPBody(bool bEnable)
 {
 	bShowFPLegs = bEnable;
 	Class'ExtPlayerController'.Default.bShowFPLegs = bEnable;
-	
+
 	if (ExtHumanPawn(Pawn)!=None)
 		ExtHumanPawn(Pawn).UpdateFPLegs();
 }
@@ -654,7 +654,7 @@ function ShowBossNameplate(KFInterface_MonsterBoss KFBoss, optional string Playe
 }
 
 function HideBossNameplate()
-{	
+{
 	if (!bNamePlateHidden)
 	{
 		bNamePlateHidden = false;
@@ -759,7 +759,7 @@ reliable server function ServerViewPlayerID(int ID)
 	}
 	if (PRI==None || PRI.PlayerID!=ID || Controller(PRI.Owner)==None || Controller(PRI.Owner).Pawn==None || !WorldInfo.Game.CanSpectate(self, PRI))
 		return;
-	
+
 	SetViewTarget(PRI);
 	ClientMessage(NowViewingFrom@PRI.GetHumanReadableName());
 	if (CurrentSpectateMode==SMODE_Roaming)
@@ -769,7 +769,7 @@ reliable server function ServerViewPlayerID(int ID)
 reliable server function SpectateRoaming()
 {
 	local Pawn P;
-	
+
 	P = Pawn(ViewTarget);
 	ClientMessage(ViewingFromOwnCamera);
 	Super.SpectateRoaming();
@@ -851,7 +851,7 @@ state Spectating
 		if (Role < ROLE_Authority) // then save this move and replicate it
 		{
 			ReplicateMove(DeltaTime, Acceleration, DCLICK_None, rot(0,0,0));
-			
+
 			// only done for clients, as LastActiveTime only affects idle kicking
 			if ((!IsZero(Acceleration) || OldRotation != Rotation) && LastUpdateSpectatorActiveTime<WorldInfo.TimeSeconds)
 			{
@@ -917,7 +917,7 @@ simulated function EndGameCamFocus(vector Pos)
 	EndGameCamFocusPos[1] = CamPos;
 	EndGameCamRot = CamRot;
 	EndGameCamTimer = WorldInfo.RealTimeSeconds;
-	
+
 	if (LocalPlayer(Player)==None)
 		ClientFocusView(Pos);
 	else if (KFPawn(ViewTarget)!=None)
@@ -939,7 +939,7 @@ final function bool CalcEndGameCam()
 		return true;
 
 	T = WorldInfo.RealTimeSeconds-EndGameCamTimer;
-	
+
 	if (T>=20.f) // Finished view.
 	{
 		bEndGameCamFocus = false;
@@ -1090,7 +1090,7 @@ Ignores NotifyPhysicsVolumeChange,ServerCamera,ResetCameraMode;
 				TheViewTarget = Self;
 			out_Location = TheViewTarget.Location;
 			EndOffset = out_Location-vector(Rotation)*250.f;
-			
+
 			if (TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None)
 				out_Location = HL;
 			else out_Location = EndOffset;
@@ -1174,7 +1174,7 @@ state Dead
 		bPressedJump = false;
 		FindGoodView();
 		CleanOutSavedMoves();
-		
+
 		if (KFPawn(ViewTarget)!=none)
 		{
 			KFPawn(ViewTarget).SetMeshVisibility(true);
@@ -1213,7 +1213,7 @@ state Dead
 			TheViewTarget = Self;
 		out_Location = TheViewTarget.Location;
 		EndOffset = out_Location-vector(Rotation)*400.f;
-		
+
 		if (TheViewTarget.Trace(HL,HN,EndOffset,out_Location,false,vect(16,16,16))!=None)
 			out_Location = HL;
 		else out_Location = EndOffset;
@@ -1239,7 +1239,7 @@ defaultproperties
 	MidGameMenuClass=class'UI_MidGameMenu'
 	PerkList.Empty()
 	PerkList.Add((PerkClass=Class'ExtPerkManager'))
-	
+
 	NVG_DOF_FocalDistance=3800.0
 	NVG_DOF_SharpRadius=2500.0
 	NVG_DOF_FocalRadius=3500.0

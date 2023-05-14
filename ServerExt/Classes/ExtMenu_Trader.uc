@@ -34,7 +34,7 @@ function Callback_PerkChanged(int PerkIndex)
 {
 	ExtKFPC.PendingPerkClass = ExtKFPC.ActivePerkManager.UserPerks[PerkIndex].Class;
 	ExtKFPC.SwitchToPerk(ExtKFPC.PendingPerkClass);
-		
+
 	if (PlayerInventoryContainer != none)
 	{
 		PlayerInventoryContainer.UpdateLock();

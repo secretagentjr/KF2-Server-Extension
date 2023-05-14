@@ -73,14 +73,14 @@ function LaunchMenus(optional bool bForceSkipLobby)
 function OpenMenu(byte NewMenuIndex, optional bool bShowWidgets = true)
 {
 	local KF2GUIController GUIController;
-	
+
 	GUIController = class'KF2GUIController'.Static.GetGUIController(GetPC());
-	
+
 	Super.OpenMenu(NewMenuIndex, bShowWidgets);
-	
+
 	if (bAfterLobby)
 		return;
-	
+
 	if (NewMenuIndex == UI_Perks)
 	{
 		PerksPage = GUIController.OpenMenu(class'ExtGUI_PerkSelectionPage');
@@ -93,20 +93,20 @@ function OpenMenu(byte NewMenuIndex, optional bool bShowWidgets = true)
 function CloseMenus(optional bool bForceClose=false)
 {
 	local KF2GUIController GUIController;
-	
+
 	if (PerksPage != None)
 	{
 		GUIController = class'KF2GUIController'.Static.GetGUIController(GetPC());
 		GUIController.CloseMenu(class'ExtGUI_PerkSelectionPage');
 	}
-	
+
 	Super.CloseMenus(bForceClose);
 }
 
 function OnMenuOpen(name WidgetPath, KFGFxObject_Menu Widget)
 {
 	Super.OnMenuOpen(WidgetPath, Widget);
-	
+
 	if (!bAfterLobby && Widget == PerksMenu)
 		PerksMenu.ActionScriptVoid("closeContainer");
 }
@@ -114,10 +114,10 @@ function OnMenuOpen(name WidgetPath, KFGFxObject_Menu Widget)
 defaultproperties
 {
 	InGamePartyWidgetClass=class'ExtWidget_PartyInGame'
-	
+
 	WidgetPaths.Remove("../UI_Widgets/PartyWidget_SWF.swf")
 	WidgetPaths.Add("../UI_Widgets/VersusLobbyWidget_SWF.swf")
-	
+
 	WidgetBindings.Remove((WidgetName="PerksMenu",WidgetClass=class'KFGFxMenu_Perks'))
 	WidgetBindings.Add((WidgetName="PerksMenu",WidgetClass=class'ExtMenu_Perks'))
 	WidgetBindings.Remove((WidgetName="gearMenu",WidgetClass=class'KFGFxMenu_Gear'))

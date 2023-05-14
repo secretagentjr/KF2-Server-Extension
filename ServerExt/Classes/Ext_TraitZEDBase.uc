@@ -10,7 +10,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 	// First check level.
 	if (Perk.CurrentLevel<Default.MinLevel)
 		return false;
-	
+
 	// Then check stats.
 	if (Lvl==0 && Default.BaseTrait!=None)
 	{

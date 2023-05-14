@@ -8,7 +8,7 @@ function SpawnProjectileShield()
 defaultproperties
 {
 	ExplosionActorClass=class'ExtExplosion_SirenScream'
-	
+
 	// explosion
 	Begin Object Name=ExploTemplate0
 		ActorClassToIgnoreForDamage=class'KFPawn_ZedSirenX'

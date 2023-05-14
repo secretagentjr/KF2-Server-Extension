@@ -50,7 +50,7 @@ function PickDefaultFontSize(float YRes)
 final function DrawText(byte Res, string S)
 {
 	local float Scale;
-	
+
 	Canvas.Font = PickFont(Res,Scale);
 	Canvas.DrawText(S,,Scale,Scale);
 }
@@ -105,7 +105,7 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 	// Top left
 	Canvas.SetPos(X,Y);
 	DrawCornerTex(Edge,0);
-	
+
 	if (Extrav<=1)
 	{
 		if (Extrav==0)
@@ -113,11 +113,11 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 			// Top right
 			Canvas.SetPos(X+XS-Edge,Y);
 			DrawCornerTex(Edge,1);
-			
+
 			// Bottom right
 			Canvas.SetPos(X+XS-Edge,Y+YS-Edge);
 			DrawCornerTex(Edge,3);
-			
+
 			// Fill
 			Canvas.SetPos(X+Edge,Y);
 			DrawWhiteBox(XS-Edge*2,YS);
@@ -131,7 +131,7 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 			// Top right
 			Canvas.SetPos(X+XS,Y);
 			DrawCornerTex(Edge,3);
-			
+
 			// Bottom right
 			Canvas.SetPos(X+XS,Y+YS-Edge);
 			DrawCornerTex(Edge,1);
@@ -142,7 +142,7 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 			Canvas.SetPos(X,Y+Edge);
 			DrawWhiteBox(Edge,YS-Edge*2);
 		}
-		
+
 		// Bottom left
 		Canvas.SetPos(X,Y+YS-Edge);
 		DrawCornerTex(Edge,2);
@@ -152,15 +152,15 @@ final function DrawRectBox(int X, int Y, int XS, int YS, int Edge, optional byte
 		// Top right
 		Canvas.SetPos(X+XS-Edge,Y);
 		DrawCornerTex(Edge,1);
-		
+
 		// Bottom right
 		Canvas.SetPos(X+XS-Edge,Y+YS);
 		DrawCornerTex(Edge,2);
-		
+
 		// Bottom left
 		Canvas.SetPos(X,Y+YS);
 		DrawCornerTex(Edge,3);
-		
+
 		// Fill
 		Canvas.SetPos(X,Y+Edge);
 		DrawWhiteBox(XS,YS-Edge);

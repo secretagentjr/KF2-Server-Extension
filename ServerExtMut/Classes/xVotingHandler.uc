@@ -36,12 +36,12 @@ function PostBeginPlay()
 	if (WorldInfo.Game.BaseMutator==None)
 		WorldInfo.Game.BaseMutator = Self;
 	else WorldInfo.Game.BaseMutator.AddMutator(Self);
-	
+
 	if (bDeleteMe) // This was a duplicate instance of the mutator.
 		return;
 
 	InitConfig();
-	
+
 	MapFile = string(WorldInfo.GetPackageName());
 	iCurrentHistory = class'xMapVoteHistory'.Static.GetMapHistory(MapFile,WorldInfo.Title);
 
@@ -66,7 +66,7 @@ function PostBeginPlay()
 			++z;
 		}
 	}
-	
+
 	if (MaxMapsOnList>0)
 	{
 		// Remove random maps from list.
@@ -81,16 +81,16 @@ function PostBeginPlay()
 function InitConfig()
 {
 	local bool ConfigChanged;
-	
+
 	ConfigChanged = False;
-	
-	// Parameters to check each initialization 
+
+	// Parameters to check each initialization
 	if (LastVotedGameInfo < 0 || LastVotedGameInfo >= GameModes.Length)
 		LastVotedGameInfo = 0;
-	
+
 	if (MapChangeDelay == 0)
 		MapChangeDelay = 3;
-	
+
 	if (GameModes.Length == 0) // None specified, so use current settings.
 	{
 		GameModes.Length = 1;
@@ -105,28 +105,28 @@ function InitConfig()
 		VoteTime = 35;
 		ConfigChanged = True;
 	}
-	
+
 	if (VoteNumForOrgy <= 0)
 	{
 		VoteNumForOrgy = 4;
 		bNoMapVoteOrgy = False;
 		ConfigChanged = True;
 	}
-	
-	// Parameters that need to be added once when updating the config 
+
+	// Parameters that need to be added once when updating the config
 	switch (ConfigVersion)
 	{
 		case 0:
 			bEnableAnnouncer = True;
-			
+
 		case 2147483647:
 			`log("[xVotingHandler] Config updated to version"@CurrentVersion);
 			break;
-			
+
 		case CurrentVersion:
 			`log("[xVotingHandler] Config is up-to-date");
 			break;
-			
+
 		default:
 			`log("[xVotingHandler] The config version is higher than the current version (are you using an old mutator?)");
 			`log("[xVotingHandler] Config version is"@ConfigVersion@"but current version is"@CurrentVersion);
@@ -158,7 +158,7 @@ function SetupBroadcast()
 	local WebAdmin A;
 	local xVoteWebApp xW;
 	local byte i;
-	
+
 	B = Spawn(class'xVoteBroadcast');
 	B.Handler = Self;
 	B.NextBroadcaster = WorldInfo.Game.BroadcastHandler;
@@ -216,7 +216,7 @@ final function AddVote(int Count, int MapIndex, int GameIndex)
 final function LogoutPlayer(PlayerController PC)
 {
 	local int i;
-	
+
 	for (i=(ActiveVoters.Length-1); i>=0; --i)
 		if (ActiveVoters[i].PlayerOwner==PC)
 		{
@@ -229,7 +229,7 @@ final function LoginPlayer(PlayerController PC)
 {
 	local xVotingReplication R;
 	local int i;
-	
+
 	for (i=(ActiveVoters.Length-1); i>=0; --i)
 		if (ActiveVoters[i].PlayerOwner==PC)
 			return;
@@ -261,7 +261,7 @@ function ClientDownloadInfo(xVotingReplication V)
 		V.DownloadStage = 255;
 		return;
 	}
-	
+
 	switch (V.DownloadStage)
 	{
 	case 0: // Game modes.
@@ -336,7 +336,7 @@ function ClientDisconnect(xVotingReplication V)
 final function float GetPctOf(int Nom, int Denom)
 {
 	local float R;
-	
+
 	R = float(Nom) / float(Denom);
 	return R;
 }
@@ -357,17 +357,17 @@ final function TallyVotes(optional bool bForce)
 		// First check for highest result.
 		for (i=(ActiveVotes.Length-1); i>=0; --i)
 			c = Max(c,ActiveVotes[i].NumVotes);
-		
+
 		if (c>0)
 		{
 			// Then check how many votes for the best.
 			for (i=(ActiveVotes.Length-1); i>=0; --i)
 				if (ActiveVotes[i].NumVotes==c)
 					Candidates.AddItem(i);
-			
+
 			// Finally pick a random winner from the best.
 			c = Candidates[Rand(Candidates.Length)];
-			
+
 			// If more then "VoteNumForOrgy" voters and everyone voted same map?!!! Give the mapvote some orgy.
 			if (bEnableAnnouncer && !bNoMapVoteOrgy && NumVotees >= VoteNumForOrgy && ActiveVotes.Length==1)
 			{
@@ -380,16 +380,16 @@ final function TallyVotes(optional bool bForce)
 		{
 			// Pick a random map to win.
 			c = Rand(Maps.Length);
-			
+
 			// Pick a random gametype to win along with it.
 			for (i=(GameModes.Length-1); i>=0; --i)
 				if (Class'xUI_MapVote'.Static.BelongsToPrefix(Maps[c].MapName,GameModes[i].Prefix))
 					Candidates.AddItem(i);
-			
+
 			if (Candidates.Length==0) // Odd, a map without gametype...
 				i = Rand(GameModes.Length);
 			else i = Candidates[Rand(Candidates.Length)];
-			
+
 			SwitchToLevel(i,c,false);
 		}
 		return;
@@ -411,7 +411,7 @@ final function TallyVotes(optional bool bForce)
 			return;
 		}
 	}
-	
+
 	// Check for mid-game voting timer.
 	if (!bMapVoteTimer && NumVotees>0 && GetPctOf(c,NumVotees)>=MidGameVotePct)
 		StartMidGameVote(true);
@@ -514,7 +514,7 @@ final function SwitchToLevel(int GameIndex, int MapIndex, bool bAdminForce)
 
 	if (bMapvoteHasEnded)
 		return;
-	
+
 	Default.LastVotedGameInfo = GameIndex;
 	Class.Static.StaticSaveConfig();
 	bMapvoteHasEnded = true;
@@ -524,14 +524,14 @@ final function SwitchToLevel(int GameIndex, int MapIndex, bool bAdminForce)
 		class'xMapVoteHistory'.Static.StaticSaveConfig();
 		bHistorySaved = true;
 	}
-	
+
 	S = Maps[MapIndex].MapName$" ("$GameModes[GameIndex].GameName$")";
 	for (i=(ActiveVoters.Length-1); i>=0; --i)
 	{
 		KFPlayerController(ActiveVoters[i].PlayerOwner).ShowConnectionProgressPopup(PMT_AdminMessage,"Switching to level:",S);
 		ActiveVoters[i].ClientNotifyVoteWin(GameIndex,MapIndex,bAdminForce);
 	}
-	
+
 	PendingMapURL = Maps[MapIndex].MapName$"?Game="$GameModes[GameIndex].GameClass$"?Mutator="$PathName(BaseMutator);
 	if (GameModes[GameIndex].Mutators!="")
 		PendingMapURL $= ","$GameModes[GameIndex].Mutators;

@@ -55,7 +55,7 @@ final function ParseTextLines()
 		S = SA[i];
 		if (S=="")
 			continue;
-		
+
 		z = 0;
 		while (true)
 		{
@@ -95,7 +95,7 @@ final function ParseTextLines()
 final function byte GrabHexValue(string S)
 {
 	local byte n;
-	
+
 	n = (HexToInt(Asc(Left(S,1)))<<4) | HexToInt(Asc(Right(S,1)));
 	S = Mid(S,2);
 	return n;
@@ -127,7 +127,7 @@ function InitSize()
 	else Lines = OrgLines;
 
 	InitFont = Owner.CurrentStyle.PickFont(FontScale+Owner.CurrentStyle.DefaultFontSize,InitFontScale);
-	
+
 	// Compute Y-offsets of each line.
 	Canvas.Font = InitFont;
 	Canvas.TextSize("ABC",XS,TextHeight,InitFontScale,InitFontScale);
@@ -137,7 +137,7 @@ function InitSize()
 	bShowScrollbar = (MaxHeight>=CompPos[3]);
 	bClickable = bShowScrollbar;
 	bCanFocus = bShowScrollbar;
-	
+
 	if (bShowScrollbar)
 	{
 		if (ScrollBar==None)
@@ -148,7 +148,7 @@ function InitSize()
 			ScrollBar.ParentComponent = Self;
 			ScrollBar.InitMenu();
 		}
-		
+
 		// Compute scrollbar size and X-position.
 		for (i=0; i<4; ++i)
 			ScrollBar.InputPos[i] = CompPos[i];
@@ -192,21 +192,21 @@ final function ParseLines(float ClipX)
 
 				// Add new line.
 				Lines.Insert(i+1,1);
-				
+
 				// Append the remaining lines there.
 				for (n=j; n<Lines[i].Text.Length; ++n)
 					Lines[i+1].Text.AddItem(Lines[i].Text[n]);
-				
+
 				// Split the string at wrapping point.
 				Lines[i+1].Text[0].S = Mid(Lines[i].Text[j].S,z);
-				
+
 				// Remove whitespaces in front of the string.
 				Lines[i+1].Text[0].S = StripWhiteSpaces(Lines[i+1].Text[0].S);
-				
+
 				// If empty, clean it up.
 				if (Lines[i+1].Text[0].S=="")
 					Lines[i+1].Text.Remove(0,1);
-				
+
 				// End the current line at wrapping point.
 				Lines[i].Text[j].S = Left(Lines[i].Text[j].S,z);
 				Lines[i].Text.Length = j+1;
@@ -223,7 +223,7 @@ final function int FindSplitPoint(string S, float X, float ClipX)
 	local int i,l,PrevWord;
 	local float XL,YL;
 	local bool bWasWhite,bStartedZero;
-	
+
 	bStartedZero = (X==0.f);
 	Canvas.TextSize(Mid(S,0,1),XL,YL);
 	X += XL;
@@ -290,7 +290,7 @@ function DrawMenu()
 		i = ScrollBar.GetValue();
 	}
 	else i = 0;
-	
+
 	if (i<Lines.Length)
 	{
 		Y = Lines[i].Y;

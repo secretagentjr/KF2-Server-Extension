@@ -39,7 +39,7 @@ static final function GetHistory(int i, out int UpVotes, out int DownVotes, out 
 static final function UpdateMapHistory(int iWon)
 {
 	local int i;
-	
+
 	for (i=(Default.M.Length-1); i>=0; --i)
 	{
 		if (i==iWon)

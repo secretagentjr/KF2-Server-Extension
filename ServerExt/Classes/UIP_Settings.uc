@@ -35,7 +35,7 @@ function InitMenu()
 
 	// Client settings
 	SettingsBox = KFGUI_ComponentList(FindComponentID('SettingsBox'));
-	
+
 	//AddCheckBox("Text-To-Speech:","Enable Text-to-Speech talk for player chat messages",'TTS', bool bDefault);
 	AddCheckBox(FirstPersonLegsText,FirstPersonLegsToolTip,'FP',class'ExtPlayerController'.Default.bShowFPLegs);
 	if (class'ExtPlayerController'.Default.bShowFPLegs)
@@ -75,7 +75,7 @@ final function InitBehindviewKey()
 final function KFGUI_CheckBox AddCheckBox(string Cap, string TT, name IDN, bool bDefault)
 {
 	local KFGUI_CheckBox CB;
-	
+
 	CB = KFGUI_CheckBox(SettingsBox.AddListComponent(class'KFGUI_CheckBox'));
 	CB.LableString = Cap;
 	CB.ToolTip = TT;
@@ -90,7 +90,7 @@ final function KFGUI_Button AddButton(string ButtonText, string Cap, string TT, 
 {
 	local KFGUI_Button CB;
 	local KFGUI_MultiComponent MC;
-	
+
 	MC = KFGUI_MultiComponent(SettingsBox.AddListComponent(class'KFGUI_MultiComponent'));
 	MC.InitMenu();
 	Label = new(MC) class'KFGUI_TextLable';
@@ -114,7 +114,7 @@ final function KFGUI_Button AddButton(string ButtonText, string Cap, string TT, 
 function CheckChange(KFGUI_CheckBox Sender)
 {
 	local ExtPlayerController PC;
-	
+
 	PC = ExtPlayerController(GetPlayer());
 	switch (Sender.ID)
 	{
@@ -206,7 +206,7 @@ final function BindNewKey(name Key, string Cmd)
 				IN.Bindings.Remove(i,1);
 		}
 	}
-	
+
 	// Then bind a new key.
 	for (i=0; i<IN.Bindings.Length; ++i)
 	{
@@ -233,7 +233,7 @@ final function BindNewKey(name Key, string Cmd)
 		if (IN.Bindings[i].Name==Key)
 			IN.Bindings.Remove(i,1);
 	}
-	
+
 	if (IN.Class!=Class'KFPlayerInput')
 	{
 		Class'KFPlayerInput'.Default.Bindings = IN.Bindings; // Hack!
@@ -252,6 +252,6 @@ defaultproperties
 		ID="SettingsBox"
 		ListItemsPerPage=14
 	End Object
-	
+
 	Components.Add(ClientSettingsBox)
 }

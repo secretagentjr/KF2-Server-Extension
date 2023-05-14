@@ -62,4 +62,5 @@ function Callback_Equip(int ItemDefinition)
 
 defaultproperties
 {
+
 }

@@ -15,7 +15,7 @@ function OpenMenu(KFGUI_Base Menu)
 	Owner = Menu.Owner;
 	InitMenu();
 	PlayMenuSound(MN_Dropdown);
-	
+
 	// Calc needed size for this menu.
 	ComputeSize();
 	XPosition = float(Owner.MousePosition.X+4) / Owner.ScreenSize.X;
@@ -60,7 +60,7 @@ final function ComputeSize()
 final function AddRow(string Text, bool bDisable)
 {
 	local int i;
-	
+
 	i = ItemRows.Length;
 	ItemRows.Length = i+1;
 	if (Text=="-")

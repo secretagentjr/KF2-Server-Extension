@@ -54,7 +54,7 @@ simulated function PlayEmoteAnimation(optional bool bNewCharacter)
 	local name AnimName;
 	local float BlendInTime;
 
-	AnimName = class'ExtEmoteList'.static.GetUnlockedEmote(class'ExtEmoteList'.static.GetEquippedEmoteId(ExtPlayerController(Controller)), ExtPlayerController(Controller));	
+	AnimName = class'ExtEmoteList'.static.GetUnlockedEmote(class'ExtEmoteList'.static.GetEquippedEmoteId(ExtPlayerController(Controller)), ExtPlayerController(Controller));
 
 	BlendInTime = (bNewCharacter) ? 0.f : 0.4;
 
@@ -88,17 +88,16 @@ function AttachWeaponByItemDefinition(int ItemDefinition)
 		return;
 	}
 
-	//load in and add object .  
+	//load in and add object .
 	WeaponPreview = KFWeaponAttachment (DynamicLoadObject(WeaponDef.default.AttachmentArchtypePath, class'KFWeaponAttachment'));
 
 	//attatch it to player
 	WeaponAttachmentTemplate = WeaponPreview;
 
-	WeaponAttachmentChanged();		
+	WeaponAttachmentChanged();
 
 	//setweapon skin
 	WeaponAttachment.SetWeaponSkin(ItemDefinition);
-	
 }
 
 defaultproperties

@@ -19,7 +19,7 @@ function Timer()
 		PerkList.ChangeListSize(CurrentManager.UserPerks.Length);
 		if (PendingPerk!=None && !PendingPerk.bPerkNetReady)
 			return;
-		
+
 		// Huge code block to handle stat updating, but actually pretty well optimized.
 		if (PendingPerk!=OldUsedPerk)
 		{
@@ -76,7 +76,7 @@ function Timer()
 			PerkLabel.SetText(LevelText$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$PointsText@PendingPerk.CurrentSP$")");
 			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
-			
+
 			// Update traits list.
 			UpdateTraits();
 		}

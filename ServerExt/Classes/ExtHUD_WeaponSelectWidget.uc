@@ -57,7 +57,7 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
 			TempObj.SetString("weaponName", WeaponGroup[i].static.GetItemLocalization("ItemName"));
 			TempObj.SetString("texturePath", "img://"$WeaponGroup[i].static.GetImagePath());
 		}
-		else 
+		else
 		{
 			TempObj.SetString("weaponName", WeaponList[i].ItemName);
 			TempObj.SetString("texturePath",  "img://"$PathName(WeaponList[i].WeaponSelectTexture));
@@ -88,4 +88,5 @@ simulated function SetWeaponGroupList(out array<KFWeapon> WeaponList, byte Group
 
 defaultproperties
 {
+
 }

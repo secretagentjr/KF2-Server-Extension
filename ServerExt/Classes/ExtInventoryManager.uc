@@ -25,10 +25,10 @@ simulated function Inventory CreateInventory(class<Inventory> NewInventoryItemCl
 {
 	local KFWeapon Wep;
 	local Inventory SupClass;
-	
+
 	SupClass = Super.CreateInventory(NewInventoryItemClass, bDoNotActivate);
 	Wep = KFWeapon(SupClass);
-	
+
 	if (Wep != none)
 	{
 		if (KFWeap_Pistol_Dual9mm(Wep) != None && ExtWeap_Pistol_Dual9mm(Wep) == None)
@@ -36,17 +36,17 @@ simulated function Inventory CreateInventory(class<Inventory> NewInventoryItemCl
 			Wep.Destroy();
 			return Super.CreateInventory(class'ExtWeap_Pistol_Dual9mm', bDoNotActivate);
 		}
-		
+
 		return Wep;
 	}
-	
+
 	return SupClass;
 }
 
 simulated function CheckForExcessRemoval(KFWeapon NewWeap)
 {
 	local Inventory RemoveInv, Inv;
-	
+
 	if (KFWeap_Pistol_Dual9mm(NewWeap) != None)
 	{
 		for (Inv = InventoryChain; Inv != None; Inv = Inv.Inventory)
@@ -59,6 +59,6 @@ simulated function CheckForExcessRemoval(KFWeapon NewWeap)
 			}
 		}
 	}
-		
+
 	Super.CheckForExcessRemoval(NewWeap);
 }

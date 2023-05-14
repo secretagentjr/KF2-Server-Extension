@@ -22,7 +22,7 @@ simulated function bool GetIsUberAmmoActive(KFWeapon KFW)
 simulated function float GetZedTimeModifier(KFWeapon W)
 {
 	local name StateName;
-	
+
 	if (bHasFanfire && IsWeaponOnPerk(W))
 	{
 		StateName = W.GetStateName();
@@ -45,10 +45,10 @@ defaultproperties
 	PrimaryMelee=class'KFWeap_Knife_Gunslinger'
 	PrimaryWeapon=class'KFWeap_Revolver_DualRem1858'
 	PerkGrenade=class'KFProj_NailBombGrenade'
-	
+
 	PrimaryWeaponDef=class'KFWeapDef_Remington1858Dual'
 	KnifeWeaponDef=class'KFWeapDef_Knife_Gunslinger'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Gunslinger'
-	
+
 	AutoBuyLoadOutPath=(class'KFWeapDef_Remington1858', class'KFWeapDef_Remington1858Dual', class'KFWeapDef_Colt1911', class'KFWeapDef_Colt1911Dual',class'KFWeapDef_Deagle', class'KFWeapDef_DeagleDual', class'KFWeapDef_SW500', class'KFWeapDef_SW500Dual')
 }

@@ -62,7 +62,7 @@ Ignores TakeDamage, FaceRotation;
 	function UnPossessed()
 	{
 		Super.UnPossessed();
-		
+
 		ClearTimer('GotUp');
 		KilledBy(None);
 		LifeSpan = 2.f;
@@ -155,7 +155,7 @@ defaultproperties
 	CharacterMonsterArch=KFCharacterInfo_Monster'ZED_ARCH.ZED_Clot_UnDev_Archetype'
 	GroundSpeed=700
 	MeleeDamage=35
-	
+
 	// Stats
 	XPValues(0)=11
 	XPValues(1)=11

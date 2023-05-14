@@ -6,6 +6,6 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 }
 
 defaultproperties
-{	
+{
 	SupplyIcon=Texture2D'UI_World_TEX.Demolitionist_Supplier_HUD'
 }

@@ -21,6 +21,6 @@ defaultproperties
 {
 	DefLevelCosts(0)=50
 	TraitData=class'Ext_TraitSupplyData'
-	
+
 	SupplyIcon=Texture2D'UI_World_TEX.Support_Supplier_HUD'
 }

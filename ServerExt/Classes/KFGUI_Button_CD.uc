@@ -4,7 +4,7 @@ function DrawMenu()
 {
 	local float XL,YL,TS;
 	local byte i, FrameOpacity;
-	
+
 	FrameOpacity = 200;
 	if (bDisabled)
 		Canvas.SetDrawColor(10, 10, 10, FrameOpacity);
@@ -13,7 +13,7 @@ function DrawMenu()
 	else if (bFocused)
 		Canvas.SetDrawColor(75, 75, 75, FrameOpacity);
 	else Canvas.SetDrawColor(45, 45, 45, FrameOpacity);
-	
+
 	if (bIsHighlighted)
 	{
 		Canvas.DrawColor.R = Min(Canvas.DrawColor.R + 25, FrameOpacity);
@@ -53,4 +53,5 @@ function DrawMenu()
 
 defaultproperties
 {
+
 }

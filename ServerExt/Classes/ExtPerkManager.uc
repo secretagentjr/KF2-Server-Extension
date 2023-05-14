@@ -62,7 +62,7 @@ simulated reliable client function ClientSetGrenadeCap(byte NewCap)
 function bool ApplyPerkClass(class<Ext_PerkBase> P)
 {
 	local int i;
-	
+
 	for (i=0; i<UserPerks.Length; ++i)
 		if (UserPerks[i].Class==P)
 		{
@@ -75,7 +75,7 @@ function bool ApplyPerkClass(class<Ext_PerkBase> P)
 function bool ApplyPerkName(string S)
 {
 	local int i;
-	
+
 	for (i=0; i<UserPerks.Length; ++i)
 		if (string(UserPerks[i].Class.Name)~=S)
 		{
@@ -91,39 +91,39 @@ function ApplyPerk(Ext_PerkBase P)
 	local KFInventoryManager InvMan;
 	local Ext_T_ZEDHelper H;
 	local int i;
-	
+
 	if (P==None)
 		return;
-		
+
 	if (PlayerOwner.Pawn != None)
 	{
 		InvMan = KFInventoryManager(PlayerOwner.Pawn.InvManager);
 		if (InvMan != None)
 			InvMan.MaxCarryBlocks = InvMan.Default.MaxCarryBlocks;
-			
+
 		foreach PlayerOwner.Pawn.ChildActors(class'Ext_T_ZEDHelper',H)
 		{
 			H.Destroy();
 		}
-		
+
 		HP = KFPawn_Human(PlayerOwner.Pawn);
 		if (HP != None)
 			HP.DefaultInventory = HP.Default.DefaultInventory;
 	}
-	
+
 	if (CurrentPerk != None)
 	{
 		CurrentPerk.DeactivateTraits();
-		
+
 		for (i=0; i<CurrentPerk.PerkTraits.Length; ++i)
 		{
 			CurrentPerk.PerkTraits[i].TraitType.Static.CancelEffectOn(KFPawn_Human(PlayerOwner.Pawn),CurrentPerk,CurrentPerk.PerkTraits[i].CurrentLevel,CurrentPerk.PerkTraits[i].Data);
 		}
 	}
-		
+
 	bStatsDirty = true;
 	CurrentPerk = P;
-	
+
 	if (PRIOwner!=None)
 	{
 		PRIOwner.ECurrentPerk = P.Class;
@@ -131,11 +131,11 @@ function ApplyPerk(Ext_PerkBase P)
 		PRIOwner.CurrentPerkClass = P.BasePerk;
 		P.UpdatePRILevel();
 	}
-	
+
 	if (CurrentPerk!=None)
 	{
 		CurrentPerk.ActivateTraits();
-		
+
 		if (PlayerOwner.Pawn != None)
 		{
 			HP = KFPawn_Human(PlayerOwner.Pawn);
@@ -143,11 +143,11 @@ function ApplyPerk(Ext_PerkBase P)
 			{
 				HP.HealthMax = HP.default.Health;
 				HP.MaxArmor = HP.default.MaxArmor;
-			
+
 				ModifyHealth(HP.HealthMax);
 				ModifyArmor(HP.MaxArmor);
 				CurrentPerk.UpdateAmmoStatus(HP.InvManager);
-				
+
 				if (HP.Health > HP.HealthMax) HP.Health = HP.HealthMax;
 				if (HP.Armor > HP.MaxArmor) HP.Armor = HP.MaxArmor;
 			}
@@ -158,7 +158,7 @@ function ApplyPerk(Ext_PerkBase P)
 simulated final function Ext_PerkBase FindPerk(class<Ext_PerkBase> P)
 {
 	local int i;
-	
+
 	for (i=0; i<UserPerks.Length; ++i)
 		if (UserPerks[i].Class==P)
 			return UserPerks[i];
@@ -175,7 +175,7 @@ simulated function PostBeginPlay()
 simulated function InitPerks()
 {
 	local Ext_PerkBase P;
-	
+
 	if (WorldInfo.NetMode==NM_Client)
 	{
 		foreach DynamicActors(class'Ext_PerkBase',P)
@@ -209,7 +209,7 @@ function CheckPlayTime()
 function ServerInitPerks()
 {
 	local int i;
-	
+
 	for (i=0; i<UserPerks.Length; ++i)
 		UserPerks[i].SetInitialLevel();
 	bServerReady = true;
@@ -235,7 +235,7 @@ simulated function UnregisterPerk(Ext_PerkBase P)
 function Destroyed()
 {
 	local int i;
-	
+
 	for (i=(UserPerks.Length-1); i>=0; --i)
 	{
 		UserPerks[i].PerkManager = None;
@@ -310,7 +310,7 @@ function SaveData(ExtSaveDataBase Data)
 	Data.SaveInt(TotalEXP,3);
 	Data.SaveInt(TotalKills,3);
 	Data.SaveInt(TotalPlayTime,3);
-	
+
 	// Write character.
 	if (PRIOwner!=None)
 		PRIOwner.SaveCustomCharacter(Data);
@@ -326,10 +326,10 @@ function SaveData(ExtSaveDataBase Data)
 	for (i=0; i<UserPerks.Length; ++i)
 		if (UserPerks[i].HasAnyProgress())
 			++o;
-	
+
 	// Then write count we have.
 	Data.SaveInt(o);
-	
+
 	// Then perk stats.
 	for (i=0; i<UserPerks.Length; ++i)
 	{
@@ -508,7 +508,7 @@ simulated function ModifyRecoil(out float CurrentRecoilModifier, KFWeapon KFW)
 }
 
 simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
-{ 
+{
 	return (CurrentPerk!=None ? CurrentPerk.GetCameraViewShakeModifier(KFW) : 1.f);
 }
 
@@ -855,7 +855,7 @@ simulated function bool GetHealingShieldActive()
 }
 
 simulated function float GetSelfHealingSurgePct()
-{ 
+{
 	return (Ext_PerkFieldMedic(CurrentPerk)!=None ? Ext_PerkFieldMedic(CurrentPerk).GetSelfHealingSurgePct() : 0.f);
 }
 
@@ -889,7 +889,7 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 {
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
-  
+
 simulated function float GetTightChokeModifier()
 {
     return (CurrentPerk!=None ? CurrentPerk.GetTightChokeModifier() : 1.f);
@@ -921,7 +921,7 @@ defaultproperties
 {
 	bTickIsDisabled=false
 	NetPriority=3.5
-	
+
 	// SWAT bumping
 	BumpCooldown = 0.1f
 	BumpMomentum=1.f

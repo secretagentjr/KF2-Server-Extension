@@ -84,12 +84,12 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 		PRI = ExtPlayerReplicationInfo(PlayerOwner.PlayerReplicationInfo);
 		if (!User.IsLocallyControlled() || PRI==None || !PRI.CanUseSupply(User))
 			return false;
-		
+
 		if (bInteractIfTrue)
 		{
 			PRI.UsedSupply(User,ReuseTime);
 			SetTimer(ReuseTime+0.1,false,'RecheckUser');
-			
+
 			if (KFPlayerController(User.Controller)!=None)
 				KFPlayerController(User.Controller).SetPendingInteractionMessage();
 		}
@@ -99,7 +99,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 		i = ActiveUsers.Find('Player',User);
 		if (i>=0 && ActiveUsers[i].NextUseTime>WorldInfo.TimeSeconds)
 			return false;
-		
+
 		if (bInteractIfTrue)
 		{
 			if (i==-1)
@@ -112,7 +112,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 			ActiveUsers[i].NextUseTime = WorldInfo.TimeSeconds+ReuseTime;
 		}
 	}
-	
+
 	if (bInteractIfTrue && WorldInfo.NetMode!=NM_Client)
 	{
 		GiveAmmunition(KFPawn_Human(User));
@@ -123,7 +123,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 function CleanupUsers()
 {
 	local int i;
-	
+
 	for (i=(ActiveUsers.Length-1); i>=0; --i)
 		if (ActiveUsers[i].Player==None || ActiveUsers[i].Player.Health<=0 || ActiveUsers[i].NextUseTime<WorldInfo.TimeSeconds)
 			ActiveUsers.Remove(i,1);
@@ -178,7 +178,7 @@ simulated final function UsedOnClient(Pawn User)
 	if (PRI!=None)
 		PRI.UsedSupply(User,ReuseTime);
 	SetTimer(ReuseTime+0.1,false,'RecheckUser');
-	
+
 	if (WorldInfo.NetMode==NM_Client && KFPlayerController(User.Controller)!=None)
 		KFPlayerController(User.Controller).SetPendingInteractionMessage();
 }
@@ -202,7 +202,7 @@ defaultproperties
 	bHidden=false
 	ReuseTime=90
 	bProjTarget=false
-	
+
 	Components.Empty()
 	Components.Add(CollisionCylinder)
 }

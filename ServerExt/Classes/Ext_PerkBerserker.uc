@@ -45,12 +45,12 @@ defaultproperties
 	PrimaryMelee=class'KFWeap_Knife_Berserker'
 	PrimaryWeapon=class'KFWeap_Blunt_Crovel'
 	PerkGrenade=class'KFProj_EMPGrenade'
-	
+
 	PrimaryWeaponDef=class'KFWeapDef_Crovel'
 	KnifeWeaponDef=class'KFweapDef_Knife_Berserker'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Berserker'
-	
+
 	AutoBuyLoadOutPath=(class'KFWeapDef_Crovel', class'KFWeapDef_Nailgun', class'KFWeapDef_Pulverizer', class'KFWeapDef_Eviscerator')
-	
+
 	ZedTimeMeleeAtkRate=1.0
 }

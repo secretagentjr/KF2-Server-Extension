@@ -13,9 +13,9 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 {
 	local GFxObject DataObject;
 	local bool bHumanDeath;
-	local string KilledName, KillerName, KilledIconpath, KillerIconPath; 
+	local string KilledName, KillerName, KilledIconpath, KillerIconPath;
 	local string KillerTextColor, KilledTextColor;
-   
+
 	if (KFPC == none)
 		return;
 
@@ -47,14 +47,14 @@ final function ShowKillMessageX(PlayerReplicationInfo PRI1, PlayerReplicationInf
 				if (ExtPlayerReplicationInfo(PRI1)!=None && ExtPlayerReplicationInfo(PRI1).ECurrentPerk!=None)
 					KillerIconpath = ExtPlayerReplicationInfo(PRI1).ECurrentPerk.static.GetPerkIconPath(0);
 			}
-			KillerName = PRI1.PlayerName;			   
+			KillerName = PRI1.PlayerName;
 		}
 
 		if (PRI2 != none)
 		{
 			if (PRI2.GetTeamNum() == class'KFTeamInfo_Human'.default.TeamIndex)
 			{
-				bHumanDeath = true; 
+				bHumanDeath = true;
 				KilledTextColor = HumanTeamTextColor;
 			}
 			else

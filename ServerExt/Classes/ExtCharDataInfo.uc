@@ -8,7 +8,7 @@ var config int HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,Attachmen
 final function FMyCustomChar LoadData()
 {
 	local FMyCustomChar R;
-	
+
 	if (HasInit==0)
 	{
 		AttachmentMesh0 = `CLEARED_ATTACHMENT_INDEX;
@@ -46,4 +46,5 @@ final function SaveData(FMyCustomChar R)
 
 defaultproperties
 {
+
 }

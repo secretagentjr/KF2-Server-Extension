@@ -37,14 +37,14 @@ function DrawMenu()
 
 	X = TextHeight*0.025f + 5.f;
 	Y = (CompPos[3]-TextHeight)*0.5f;
-	
+
 	if (bIsTyping)
 	{
 		XS = Owner.MenuTime % 1.f;
 		if (XS>0.5f)
 			XS = (1.f-XS);
 		Canvas.DrawColor = C*(Sin(XS*2.f*Pi)*0.45f);
-		
+
 		if (bAllSelected)
 		{
 			Canvas.TextSize(Mid(Value,ScrollOffset),XS,YS,TextScale,TextScale);
@@ -76,7 +76,7 @@ Retry:
 		if (ScrollOffset>5)
 			ScrollOffset = Min(ScrollOffset,Len(Value)-6);
 		DrawClippedText(Mid(Value,ScrollOffset),TextScale,CompPos[2]);
-		
+
 		// FIXME: PushMaskRegion is broken in KF2?!
 		//Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX-4,Canvas.ClipY);
 		//Canvas.DrawText(Mid(Value,ScrollOffset),,TextScale,TextScale,TextFontInfo);
@@ -192,7 +192,7 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 final function PasteText()
 {
 	local string S;
-	
+
 	S = GetPlayer().PasteFromClipboard();
 	if ((bAllSelected ? (Len(Value)+Len(S)) : Len(S))>MaxTextLength)
 		return;

@@ -83,7 +83,7 @@ function StartGame()
 function Render(float XPos, float YPos, float XSize, float YSize)
 {
 	local float H,W;
-	
+
 	ScreenHeight = YSize;
 
 	// Score
@@ -104,26 +104,26 @@ function Render(float XPos, float YPos, float XSize, float YSize)
 		Canvas.SetPos(XPos+XSize*0.2,YPos+YSize*0.68);
 		Canvas.DrawText(PlaysText@string(NumPlays),,W,W);
 	}
-	
+
 	// Borders
 	Canvas.SetDrawColor(Abs(Sin(H))*255.f,Abs(Sin(H+1.25))*255.f,Abs(Sin(H+2.35))*255.f,255);
 	Canvas.SetPos(XPos,YPos);
 	Canvas.DrawTile(Canvas.DefaultTexture,XSize,YSize*LevelBoarderSize,0,0,1,1);
 	Canvas.SetPos(XPos,YPos+YSize*(1.f-LevelBoarderSize));
 	Canvas.DrawTile(Canvas.DefaultTexture,XSize,YSize*LevelBoarderSize,0,0,1,1);
-	
+
 	// Player
 	H = PadHeight*YSize;
 	W = PadWidth*XSize;
 	Canvas.SetDrawColor(128,255,128,255);
 	Canvas.SetPos(XPos+PlayerPad.X*XSize,YPos+PlayerPad.Y*YSize-H*0.5);
 	Canvas.DrawTile(Canvas.DefaultTexture,W,H,0,0,1,1);
-	
+
 	// Enemy
 	Canvas.SetDrawColor(255,68,68,255);
 	Canvas.SetPos(XPos+EnemyPad.X*XSize-W,YPos+EnemyPad.Y*YSize-H*0.5);
 	Canvas.DrawTile(Canvas.DefaultTexture,W,H,0,0,1,1);
-	
+
 	// Pong ball
 	Canvas.SetDrawColor(255,255,86,255);
 	BallWidth = BallHeight*(YSize/XSize);
@@ -131,7 +131,7 @@ function Render(float XPos, float YPos, float XSize, float YSize)
 	W = H*0.5;
 	Canvas.SetPos(XPos+BallPos.X*XSize-W,YPos+BallPos.Y*YSize-W);
 	Canvas.DrawTile(Canvas.DefaultTexture,H,H,0,0,1,1);
-	
+
 	// Trajectory preview ball
 	/*Canvas.SetDrawColor(255,255,86,64);
 	Canvas.SetPos(XPos+BallTrajectory.X*XSize-W,YPos+BallTrajectory.Y*YSize-W);
@@ -218,10 +218,10 @@ final function CalcEndPosition()
 {
 	local float T,DY;
 	local vector P,V;
-	
+
 	if (BallVel.X<=0.f) // Never.
 		return;
-	
+
 	V = BallVel;
 	P = BallPos;
 
@@ -401,7 +401,7 @@ function Tick(float Delta)
 				EnemyPadVel = FClamp(EnemyPadVel+(HN.Y*Delta*HN.X*6.f),-DY,DY);
 			}
 		}
-		
+
 		// Update AI
 		if (bRand) // Random motion.
 		{
@@ -415,7 +415,7 @@ function Tick(float Delta)
 				EnemyPadVel += DY;
 			else EnemyPadVel -= DY;
 		}
-		
+
 		// Apply by velocity and limit movement.
 		EnemyPad.Y = EnemyPad.Y+(EnemyPadVel*Delta);
 		if (EnemyPad.Y<PadMoveLimit)

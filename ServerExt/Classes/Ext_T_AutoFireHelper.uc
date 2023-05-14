@@ -34,7 +34,7 @@ simulated function Tick(float Delta)
 	|| KFWeapon(PawnOwner.Weapon)==None
 	|| (KFWeapon(PawnOwner.Weapon).GetWeaponPerkClass(AssociatedPerkClass) != AssociatedPerkClass && AssociatedPerkClass != class'KFPerk_Survivalist'))
 		return;
-	
+
 	// Find local playercontroller.
 	if (LocalPC==None)
 	{

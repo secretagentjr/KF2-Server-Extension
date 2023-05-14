@@ -52,4 +52,5 @@ function SetPerkList()
 
 defaultproperties
 {
+
 }

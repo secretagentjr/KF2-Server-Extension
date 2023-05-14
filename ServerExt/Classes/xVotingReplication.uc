@@ -112,7 +112,7 @@ reliable client simulated function ClientReceiveMap(int Index, string MapName, i
 reliable client simulated function ClientReceiveVote(int GameIndex, int MapIndex, int VoteCount)
 {
 	local int i;
-	
+
 	for (i=0; i<ActiveVotes.Length; ++i)
 		if (ActiveVotes[i].GameIndex==GameIndex && ActiveVotes[i].MapIndex==MapIndex)
 		{
@@ -189,10 +189,10 @@ reliable client simulated function ClientOpenMapvote(optional bool bShowRank)
 	{
 		R = xUI_MapRank(Class'KF2GUIController'.Static.GetGUIController(GetPlayer()).OpenMenu(class'xUI_MapRank'));
 		R.RepInfo = Self;
-		
+
 		if (KFGFxHudWrapper(GetPlayer().myHUD)!=None)
 			KFGFxHudWrapper(GetPlayer().myHUD).HudMovie.DisplayPriorityMessage("MAP VOTE TIME","Cast your votes!",2);
-		
+
 		if (KFGameReplicationInfo(WorldInfo.GRI)!=none)
 			KFGameReplicationInfo(WorldInfo.GRI).ProcessChanceDrop();
 	}

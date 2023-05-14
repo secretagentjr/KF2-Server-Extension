@@ -25,9 +25,9 @@ function InitMenu()
 	About = KFGUI_TextField(FindComponentID('About'));
 	AuthorButton = KFGUI_Button(FindComponentID('Author'));
 	Forumbutton = KFGUI_Button(FindComponentID('Forum'));
-	
+
 	Super.InitMenu();
-	
+
 	About.SetText("#{F3E2A9}Server Extension Mod#{DEF} - "$MarcoText$" Marco||"$CreditsText$":|#{01DF3A}Forrest Mark X#{DEF} - "$ForrestMarkXText$"|#{FF00FF}Sheep#{DEF} - "$SheepText$"|inklesspen - "$InklesspenText$"|GenZmeY - "$GenzmeyText$"|Mysterial - "$MysterialText$"|"$PostText);
 	AuthorButton.ButtonText=AuthorButtonText;
 	AuthorButton.Tooltip=AuthorButtonTooltip;
@@ -85,7 +85,7 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(AboutText)
 	Components.Add(AboutButton)
 	Components.Add(ForumButton)

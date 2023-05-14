@@ -3,7 +3,7 @@ Class Ext_TraitArmorReg extends Ext_TraitHealthReg;
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ArmorRegHelp H;
-	
+
 	H = Player.Spawn(class'Ext_T_ArmorRegHelp',Player);
 	if (H!=None)
 		H.RegCount = Default.RegenValues[Level-1];

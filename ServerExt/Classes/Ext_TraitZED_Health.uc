@@ -27,7 +27,7 @@ defaultproperties
 	DefLevelCosts(2)=25
 	DefLevelCosts(3)=40
 	DefLevelCosts(4)=60
-	
+
 	HPList.Add(1.25)
 	HPList.Add(1.5)
 	HPList.Add(1.75)

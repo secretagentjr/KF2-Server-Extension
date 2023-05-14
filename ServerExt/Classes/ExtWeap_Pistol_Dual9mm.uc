@@ -4,7 +4,7 @@ defaultproperties
 {
 	SpareAmmoCapacity[0]=-1
 	InitialSpareMags[0]=0
-	
+
 	bInfiniteSpareAmmo=True
 
 	SingleClass=class'ExtWeap_Pistol_9mm'
@@ -19,7 +19,7 @@ simulated static function bool AllowedForAllPerks()
 
 simulated function ConsumeAmmo(byte FireModeNum)
 {
-	
+
 }
 
 simulated static event class<KFPerk> GetWeaponPerkClass(class<KFPerk> InstigatorPerkClass)

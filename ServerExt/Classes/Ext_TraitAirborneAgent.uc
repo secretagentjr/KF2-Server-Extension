@@ -17,7 +17,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 
 	if (Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<1)
 		return false;
-		
+
 	for (i=0; i<Perk.PerkTraits.Length; ++i)
 	{
 		if (Perk.PerkTraits[i].TraitType==Class'Ext_TraitGrenadeUpg')
@@ -27,7 +27,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 			else break;
 		}
 	}
-	
+
 	return true;
 }
 

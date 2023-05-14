@@ -13,16 +13,16 @@ function InitMenu()
 	local FColumnItem NameItem;
 	local FColumnItem LevelItem;
 	local FColumnItem CostItem;
-	
-	Super.InitMenu();	
-	
+
+	Super.InitMenu();
+
 	NameItem.Text=TraitNameText;
 	NameItem.Width=0.6;
 	LevelItem.Text=TraitLevelText;
 	LevelItem.Width=0.2;
 	CostItem.Text=TraitCostText;
 	CostItem.Width=0.2;
-	
+
 	Columns.AddItem(NameItem);
 	Columns.AddItem(LevelItem);
 	Columns.AddItem(CostItem);
@@ -38,7 +38,7 @@ function DrawMenu()
 	Canvas.DrawColor = BackgroundColor;
 	Canvas.SetPos(0.f,0.f);
 	Owner.CurrentStyle.DrawWhiteBox(CompPos[2],CompPos[3]);
-	
+
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
 	FocusMouseItem = -1;
@@ -65,7 +65,7 @@ function DrawMenu()
 				FocusMouseItem = n;
 			else MouseYHit-=ItemHeight;
 		}
-		
+
 		// Draw selection background.
 		bHideRow = false;
 		if (Left(C.GetDisplayStr(0),2)=="--") // Group name.
@@ -73,10 +73,10 @@ function DrawMenu()
 			Canvas.SetPos(0,Y);
 			Canvas.SetDrawColor(32,128,32);
 			bHideRow = true;
-			
+
 			Owner.CurrentStyle.DrawWhiteBox(CompPos[2],ItemHeight);
 			Canvas.SetDrawColor(250,250,250,255);
-			
+
 			Canvas.SetClip(CompPos[0]+CompPos[2],YClip);
 			Canvas.SetPos(2,TextY);
 			DrawStrClipped(Mid(C.GetDisplayStr(0),2));
@@ -95,7 +95,7 @@ function DrawMenu()
 			Owner.CurrentStyle.DrawWhiteBox(CompPos[2],ItemHeight);
 			Canvas.SetDrawColor(250,250,250,255);
 		}
-		
+
 		if (!bHideRow)
 		{
 			// Draw columns of text

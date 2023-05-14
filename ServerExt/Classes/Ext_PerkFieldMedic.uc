@@ -22,7 +22,7 @@ simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCaus
 		TempDamage += InDamage * 100;
 
 	InDamage = Round(TempDamage);
-	
+
 	Super.ModifyDamageGiven(InDamage, DamageCauser, MyKFPM, DamageInstigator, DamageType, HitZoneIdx);
 }
 
@@ -57,7 +57,7 @@ function bool ModifyHealAmount(out float HealAmount)
 // Di
 // simulated function ModifyHealerRechargeTime(out float RechargeRate)
 // {
-//	super.ModifyHealerRechargeTime(RechargeRate)	
+//	super.ModifyHealerRechargeTime(RechargeRate)
 // 	RechargeRate /= Clamp(Modifiers[9] * 2, 1.f, 3.f);
 // }
 
@@ -79,7 +79,7 @@ function GiveMedicAirborneAgentHealth(KFPawn HealTarget, class<DamageType> DamTy
 		if (KFP.IsAliveAndWell() && WorldInfo.GRI.OnSameTeam(HealTarget, KFP))
 		{
 			if (HealTarget == KFP)
-				KFP.HealDamage(RoundedExtraHealAmount, PlayerOwner, DamType);	
+				KFP.HealDamage(RoundedExtraHealAmount, PlayerOwner, DamType);
 			else KFP.HealDamage(RoundedExtraHealAmount + HealAmount, PlayerOwner, DamType);
 		}
 	}
@@ -101,9 +101,9 @@ static function int ModifyToxicDmg(int ToxicDamage)
 function NotifyZedTimeStarted()
 {
 	local KFPawn_Human HPawn;
-	
+
 	HPawn = KFPawn_Human(PlayerOwner.Pawn);
-	
+
 	if (bUseAirborneAgent && HPawn != none && HPawn.IsAliveAndWell())
 		HPawn.StartAirBorneAgentEvent();
 }
@@ -186,8 +186,8 @@ simulated function float GetHealingShieldDuration()
 }
 
 simulated function float GetSelfHealingSurgePct()
-{ 
-	return SelfHealingSurgePct; 
+{
+	return SelfHealingSurgePct;
 }
 
 defaultproperties
@@ -205,13 +205,13 @@ defaultproperties
 	DefTraitList.Add(class'Ext_TraitArmorRep')
 	BasePerk=class'KFPerk_FieldMedic'
 	HealExpUpNum=3
-	
+
 	HealingSpeedBoostPct = 10.0f
 	HealingDamageBoostPct = 5.0f
 	HealingShieldPct = 10.0f
-	
+
 	ToxicDmgTypeClass=class'KFDT_Toxic_AcidicRounds'
-	
+
   	SelfHealingSurgePct=0.1f
 
 	MaxHealingSpeedBoost=30
@@ -219,26 +219,26 @@ defaultproperties
 
 	MaxHealingDamageBoost=20
 	HealingDamageBoostDuration=5.f
-	
+
 	MaxHealingShield=30
 	HealingShieldDuration=5.0f
-	
+
 	DefPerkStats(0)=(MaxValue=70)
 	DefPerkStats(9)=(bHiddenConfig=false) // Heal efficiency
 	DefPerkStats(15)=(bHiddenConfig=false) // Toxic resistance
 	DefPerkStats(16)=(bHiddenConfig=false) // Sonic resistance
 	DefPerkStats(17)=(bHiddenConfig=false) // Fire resistance
 	DefPerkStats(20)=(bHiddenConfig=false) // Heal recharge
-	
+
 	PrimaryMelee=class'KFWeap_Knife_FieldMedic'
 	PrimaryWeapon=None
 	PerkGrenade=class'KFProj_MedicGrenade'
 	SuperGrenade=class'ExtProj_SUPERMedGrenade'
 	SecondaryWeaponDef=class'ExtWeapDef_MedicPistol'
-	
+
 	PrimaryWeaponDef=None
 	KnifeWeaponDef=class'KFWeapDef_Knife_Medic'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Medic'
-	
+
 	AutoBuyLoadOutPath=(class'KFWeapDef_MedicSMG', class'KFWeapDef_MedicShotgun', class'KFWeapDef_MedicRifle')
 }

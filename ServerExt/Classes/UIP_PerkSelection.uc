@@ -34,16 +34,16 @@ function InitMenu()
 	B_Prestige = KFGUI_Button(FindComponentID('Prestige'));
 	B_Reset = KFGUI_Button(FindComponentID('Reset'));
 	B_Unload = KFGUI_Button(FindComponentID('Unload'));
-	
+
 	B_Prestige.ButtonText=PrestigeButtonText;
 	B_Prestige.ToolTip="-";
-	
+
 	B_Unload.ButtonText=UnloadButtonText;
 	B_Unload.ToolTip=UnloadButtonToolTip;
-	
+
 	B_Reset.ButtonText=ResetButtonText;
 	B_Reset.ToolTip=ResetButtonToolTip;
-		
+
 	Super.InitMenu();
 }
 
@@ -79,7 +79,7 @@ function Timer()
 		PerkList.ChangeListSize(CurrentManager.UserPerks.Length);
 		if (PendingPerk!=None && !PendingPerk.bPerkNetReady)
 			return;
-		
+
 		// Huge code block to handle stat updating, but actually pretty well optimized.
 		if (PendingPerk!=OldUsedPerk)
 		{
@@ -142,7 +142,7 @@ function Timer()
 			PerkLabel.SetText(Level$PendingPerk.GetLevelString()@PendingPerk.PerkName@"("$Points@PendingPerk.CurrentSP$")");
 			for (i=0; i<StatsList.ItemComponents.Length; ++i) // Just make sure perk stays the same.
 				StatBuyers[i].CheckBuyLimit();
-			
+
 			// Update traits list.
 			UpdateTraits();
 		}
@@ -161,7 +161,7 @@ final function UpdateTraits()
 	// A bit hacky to delete and refill list again, but at least it works...
 	TraitsList.EmptyList();
 	TraitsList.ToolTip.Length = 0;
-	
+
 	CatList.AddItem(None);
 
 	// First gather all the categories available.
@@ -171,7 +171,7 @@ final function UpdateTraits()
 		if (N!=None && CatList.Find(N)==-1)
 			CatList.AddItem(N);
 	}
-	
+
 	for (j=0; j<CatList.Length; ++j)
 	{
 		N = CatList[j];
@@ -219,7 +219,7 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 	else if (P==PendingPerk)
 		C.SetDrawColor(164,86,32);
 	else C.SetDrawColor(32,32,128);
-	
+
 	if (bFocus)
 	{
 		C.DrawColor.R+=15;
@@ -228,15 +228,15 @@ function DrawPerkInfo(Canvas C, int Index, float YOffset, float Height, float Wi
 	}
 	C.SetPos(0,YOffset);
 	Owner.CurrentStyle.DrawWhiteBox(Width,Height);
-	
+
 	C.SetDrawColor(240,240,240);
 	C.SetPos(2,YOffset);
 	C.DrawRect(Height,Height,P.PerkIcon);
-	
+
 	C.SetPos(6+Height,YOffset);
 	C.Font = Owner.CurrentStyle.PickFont(Max(Owner.CurrentStyle.DefaultFontSize-1,0),Sc);
 	C.DrawText(P.PerkName,,Sc,Sc);
-	
+
 	C.SetPos(6+Height,YOffset+Height*0.5);
 	C.DrawText("Lv "$P.GetLevelString()$" ("$P.CurrentEXP$"/"$P.NextLevelEXP$" XP)",,Sc,Sc); // TODO: Localization
 }
@@ -245,7 +245,7 @@ function SwitchedPerk(int Index, bool bRight, int MouseX, int MouseY)
 {
 	if (CurrentManager==None || Index>=CurrentManager.UserPerks.Length)
 		return;
-	
+
 	PendingPerk = CurrentManager.UserPerks[Index];
 	ExtPlayerController(GetPlayer()).SwitchToPerk(PendingPerk.Class);
 }
@@ -303,7 +303,7 @@ defaultproperties
 		OnDrawItem=DrawPerkInfo
 		OnClickedItem=SwitchedPerk
 	End Object
-	
+
 	Begin Object Class=KFGUI_ComponentList Name=PerkStats
 		ID="Stats"
 		XPosition=0.25
@@ -312,7 +312,7 @@ defaultproperties
 		YSize=0.88
 		ListItemsPerPage=16
 	End Object
-	
+
 	Begin Object Class=UIR_PerkTraitList Name=PerkTraits
 		ID="Traits"
 		XPosition=0.625
@@ -321,7 +321,7 @@ defaultproperties
 		YSize=0.88
 		OnSelectedRow=ShowTraitInfo
 	End Object
-	
+
 	Begin Object Class=KFGUI_TextLable Name=CurPerkLabel
 		ID="Info"
 		XPosition=0.4
@@ -332,7 +332,7 @@ defaultproperties
 		AlignY=1
 		TextFontInfo=(bClipText=true)
 	End Object
-	
+
 	Begin Object Class=KFGUI_Button Name=ResetPerkButton
 		ID="Reset"
 		XPosition=0.25
@@ -363,7 +363,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 		bDisabled=true
 	End Object
-	
+
 	Components.Add(PerksList)
 	Components.Add(PerkStats)
 	Components.Add(PerkTraits)

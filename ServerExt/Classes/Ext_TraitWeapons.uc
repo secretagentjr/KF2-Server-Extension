@@ -18,7 +18,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 static final function bool HasMaxCarry(Ext_PerkBase Perk)
 {
 	local int i;
-	
+
 	i = Perk.PerkTraits.Find('TraitType',Class'Ext_TraitCarryCap');
 	return (i==-1 || Perk.PerkTraits[i].CurrentLevel>=3);
 }

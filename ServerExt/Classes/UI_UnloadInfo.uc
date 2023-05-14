@@ -23,12 +23,12 @@ function InitMenu()
 {
 	UnloadPerkYesButton = KFGUI_Button(FindComponentID('Yes'));
 	UnloadPerkNoButton = KFGUI_Button(FindComponentID('No'));
-	
+
 	UnloadPerkYesButton.ButtonText=ButtonYesText;
 	UnloadPerkNoButton.ButtonText=ButtonNoText;
 	UnloadPerkYesButton.ToolTip=ButtonYesToolTip;
 	UnloadPerkNoButton.ToolTip=ButtonNoToolTip;
-	
+
 	InfoLabel = KFGUI_TextField(FindComponentID('Info'));
 	Super.InitMenu();
 }
@@ -69,7 +69,7 @@ function ReceivedInfo(byte CallID, byte Code, int DataA, int DataB)
 {
 	if (CurCallCode!=CallID)
 		return;
-	
+
 	switch (Code)
 	{
 	case 0:
@@ -93,7 +93,7 @@ defaultproperties
 	YSize=0.45
 	bAlwaysTop=true
 	bOnlyThisFocus=true
-	
+
 	Begin Object Class=KFGUI_TextField Name=WarningLabel
 		ID="Info"
 		XPosition=0.01
@@ -101,7 +101,7 @@ defaultproperties
 		XSize=0.98
 		YSize=0.775
 	End Object
-	
+
 	Begin Object Class=KFGUI_Button Name=UnloadPerkYesButton
 		ID="Yes"
 		XPosition=0.2
@@ -121,7 +121,7 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(WarningLabel)
 	Components.Add(UnloadPerkYesButton)
 	Components.Add(UnloadPerkNoButton)

@@ -14,9 +14,9 @@ final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, optional out KFGU
 	local KFGUI_Base P;
 	local KFGUI_Base C;
 	local KFGUI_Button B;
-	
+
 	C = new PageClass;
-	
+
 	// Add page.
 	P = new (Self) PageClass;
 	P.Owner = Owner;
@@ -30,7 +30,7 @@ final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, optional out KFGU
 	B.OnClickLeft = PageSwitched;
 	B.OnClickRight = PageSwitched;
 	B.IDValue = NumButtons;
-	
+
 	if (ButtonPosition<2)
 	{
 		B.XPosition = NumButtons*ButtonAxisSize;
@@ -40,7 +40,7 @@ final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, optional out KFGU
 			B.YPosition = 0.f;
 		else B.YPosition = YSize-BorderWidth*0.99;
 		B.YSize = BorderWidth*0.99;
-		
+
 		if (NumButtons>0)
 			PageButtons[PageButtons.Length-1].ExtravDir = 1;
 	}
@@ -50,7 +50,7 @@ final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, optional out KFGU
 			B.XPosition = 0.f;
 		else B.XPosition = XSize-BorderWidth*0.99;
 		B.XSize = BorderWidth*0.99;
-		
+
 		B.YPosition = NumButtons*ButtonAxisSize;
 		B.YSize = ButtonAxisSize*0.99;
 		if (NumButtons>0)

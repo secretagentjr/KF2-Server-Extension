@@ -10,7 +10,7 @@ function InitMenu()
 defaultproperties
 {
 	Components.Empty
-	
+
 	Begin Object Class=KFGUI_ScrollBarV_CD Name=ListScroller
 		XPosition=0.96
 		YPosition=0

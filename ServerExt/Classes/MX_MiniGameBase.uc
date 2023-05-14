@@ -59,7 +59,7 @@ final function bool Box8DirTrace(vector Start, vector Dir, vector HitTest, vecto
 		if ((V Dot Dir)<0.f) // Moving out from origin.
 			return false;
 		V = Normal2D(V);
-		
+
 		// Check which normal axis to use.
 		if (Abs(V.X)>Normal2D(ExtB).Y)
 		{
@@ -70,11 +70,11 @@ final function bool Box8DirTrace(vector Start, vector Dir, vector HitTest, vecto
 		else if (V.Y<0)
 			HitNorm = vect(0,1,0);
 		else HitNorm = vect(0,-1,0);
-		
+
 		HitTime = 0.f;
 		return true;
 	}
-	
+
 	// Actually perform the trace check.
 	tmp = Dir.X==0.f ? 0.00001 : (1.f / Dir.X);
 	tmin = (V.X - Ext.X) * tmp;
@@ -113,7 +113,7 @@ final function bool Box8DirTrace(vector Start, vector Dir, vector HitTest, vecto
 		bMaxY = true;
 		tmax = tymax;
 	}
-	
+
 	if (tmin<tmax)
 	{
 		bMaxY = bMinY;
@@ -131,7 +131,7 @@ final function bool Box8DirTrace(vector Start, vector Dir, vector HitTest, vecto
 	else if (Dir.X>0.f)
 		HitNorm = vect(-1,0,0);
 	else HitNorm = vect(1,0,0);
-	
+
 	HitTime = tmax;
 	return true;
 }

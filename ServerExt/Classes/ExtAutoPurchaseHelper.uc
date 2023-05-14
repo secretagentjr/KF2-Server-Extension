@@ -48,7 +48,7 @@ function DoAutoPurchase()
 		PotentialDosh = GetPotentialDosh();
 		bUpgradeSuccess = AttemptUpgrade(PotentialDosh+TotalDosh, OnPerkWeapons);
 	}
-	
+
 	bAutoFillPurchasedItem = StartAutoFill();
 	if (DoIOwnThisWeapon(TopTierWeapon))
 	{
@@ -56,7 +56,7 @@ function DoAutoPurchase()
 		{
 			bSecondaryWeaponPurchased = true;
 			AttemptToPurchaseNextLowerTier(TotalDosh, OnPerkWeapons);
-		}	
+		}
 	}
 
 	MyKFIM.ServerCloseTraderMenu();
@@ -73,11 +73,11 @@ function DoAutoPurchase()
 	{
 		AutoFillMessageString = class'KFCommon_LocalizedStrings'.default.AutoFillCompleteString;
 	}
-	else 
+	else
 	{
 		AutoFillMessageString = class'KFCommon_LocalizedStrings'.default.NoItemsPurchasedString;
 	}
-	
+
 
 	if (MyGFxHUD != none)
 	{
@@ -89,7 +89,7 @@ function SellOnPerkWeapons()
 {
 	local int i;
 	local class<KFPerk> Perk;
-	
+
 	Perk = GetBasePerk();
 	if (Perk!=None)
 	{
@@ -108,7 +108,7 @@ function SellOffPerkWeapons()
 {
 	local int i;
 	local Ext_PerkBase EP;
-	
+
 	EP = GetExtPerk();
 
 	for (i = 0; i < OwnedItemList.length; i++)
@@ -166,7 +166,7 @@ function InitializeOwnedItemList()
 
 		if (MyGfxManager != none && MyGfxManager.TraderMenu != none)
 		{
-			MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;	
+			MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;
 		}
 	}
 }
@@ -177,7 +177,7 @@ function int AddItemByPriority(out SItemInformation WeaponInfo)
 	local byte WeaponGroup, WeaponPriority;
 	local byte BestIndex;
 	local class<KFPerk> Perk;
-	
+
 	Perk = GetBasePerk();
 
 	BestIndex = 0;
@@ -225,7 +225,7 @@ function int AddItemByPriority(out SItemInformation WeaponInfo)
 
 	if (MyGfxManager != none && MyGfxManager.TraderMenu != none)
 	{
-		MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;	
+		MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;
 	}
 
    	return BestIndex;
@@ -234,7 +234,7 @@ function int AddItemByPriority(out SItemInformation WeaponInfo)
 function bool CanCarry(const out STraderItem Item, optional int OverrideLevelValue = INDEX_NONE)
 {
 	local int Result;
-	
+
 	Result = TotalBlocks + MyKFIM.GetDisplayedBlocksRequiredfor (Item);
 	if (Result > MaxBlocks)
 	{

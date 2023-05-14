@@ -7,29 +7,29 @@ var KFGUI_Button NoButton;
 
 var localized string WindowTitleText;
 var localized string YesButtonText;
-var localized string YesButtonToolTip; 
+var localized string YesButtonToolTip;
 var localized string NoButtonText;
-var localized string NoButtonToolTip; 
+var localized string NoButtonToolTip;
 var localized string EditBoxToolTip;
 var localized string MotdPreviewText;
 
 function InitMenu()
 {
 	Super.InitMenu();
-	
+
 	// Client settings
 	NewsField = KFGUI_TextField(FindComponentID('News'));
 	EditField = KFGUI_EditBox(FindComponentID('Edit'));
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
 	NoButton = KFGUI_Button(FindComponentID('No'));
-	
+
 	WindowTitle = WindowTitleText;
 	EditField.ToolTip=EditBoxToolTip;
 	YesButton.ButtonText=YesButtonText;
 	YesButton.Tooltip=YesButtonToolTip;
 	NoButton.ButtonText=NoButtonText;
 	NoButton.Tooltip=NoButtonToolTip;
-		
+
 	Timer();
 }
 
@@ -79,7 +79,7 @@ defaultproperties
 	YSize=0.6
 	bAlwaysTop=true
 	bOnlyThisFocus=true
-	
+
 	Begin Object Class=KFGUI_TextField Name=WarningLabel
 		ID="News"
 		XPosition=0.01
@@ -114,7 +114,7 @@ defaultproperties
 		YSize=0.08
 		OnTextChange=MOTDEdited
 	End Object
-	
+
 	Components.Add(WarningLabel)
 	Components.Add(YesButten)
 	Components.Add(NoButten)

@@ -13,5 +13,5 @@ function bool IsCustomZed(class<KFPawn_Monster> KFPM)
 
 defaultproperties
 {
-	
+
 }

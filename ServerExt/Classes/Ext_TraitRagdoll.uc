@@ -21,7 +21,7 @@ defaultproperties
 	DefLevelCosts(1)=30
 	DefLevelCosts(2)=40
 	DefMinLevel=100
-	
+
 	ChanceValues(0)=0.2
 	ChanceValues(1)=0.5
 	ChanceValues(2)=0.8

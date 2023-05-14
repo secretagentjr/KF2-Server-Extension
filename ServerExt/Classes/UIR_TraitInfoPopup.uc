@@ -21,11 +21,11 @@ function InitMenu()
 	TraitInfo = KFGUI_TextField(FindComponentID('Info'));
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
 	NoButton = KFGUI_Button(FindComponentID('No'));
-	
+
 	NoButton.ButtonText=ButtonCancelText;
 	NoButton.Tooltip=ButtonCancelTooltip;
 	YesButton.Tooltip=ButtonBuyTooltip;
-	
+
 	Super.InitMenu();
 }
 
@@ -44,7 +44,7 @@ function ShowTraitInfo(int Index, Ext_PerkBase Perk)
 	MyTrait = new MyTraitClass;
 	WindowTitle = MyTraitClass.Default.TraitName;
 	TraitInfo.SetText(MyTrait.GetPerkDescription());
-	
+
 	OldPoints = -1;
 	OldLevel = -1;
 	TraitIndex = Index;
@@ -123,7 +123,7 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(TraitInfoLbl)
 	Components.Add(BuyButten)
 	Components.Add(CancelButten)

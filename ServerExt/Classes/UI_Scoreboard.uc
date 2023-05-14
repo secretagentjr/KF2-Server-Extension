@@ -60,10 +60,10 @@ function InitMenu()
 	HealthIcon = Texture2D(DynamicLoadObject("UI_Objective_Tex.UI_Obj_Healing_Loc",class'Texture2D'));
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	SpecButton = KFGUI_Button(FindComponentID('Spec'));
-	
+
 	SpecButton.ButtonText=SpecButtonText;
 	SpecButton.Tooltip=SpecButtonTooltip;
-	
+
 	PlayerContext.ItemRows.AddItem(NewFRowItem(SpectateThisPlayerText, false));
 	PlayerContext.ItemRows.AddItem(NewFRowItem(ViewPlayerProfileText, false));
 	PlayerContext.ItemRows.AddItem(NewFRowItem(MuteText, false));
@@ -117,7 +117,7 @@ function DrawMenu()
 	local PlayerReplicationInfo PRI;
 	local ExtPlayerReplicationInfo KPRI;
 	local byte DefFont;
-	
+
 	PC = GetPlayer();
 	if (KFGRI==None)
 	{
@@ -138,7 +138,7 @@ function DrawMenu()
 				KFGRI.PRIArray[j] = PRI;
 			}
 	}
-	
+
 	// Check players.
 	PlayerIndex = -1;
 	NumPlayer = 0;
@@ -156,7 +156,7 @@ function DrawMenu()
 			++NumAlivePlayer;
 		++NumPlayer;
 	}
-	
+
 	PRIList.Length = (bShowSpectatorsOnly ? NumSpec : NumPlayer);
 	j = PRIList.Length;
 	for (i=(KFGRI.PRIArray.Length-1); i>=0; --i)
@@ -175,7 +175,7 @@ function DrawMenu()
 	Canvas.Font = Owner.CurrentStyle.PickFont(DefFont,FontScalar);
 	YL = Owner.CurrentStyle.DefaultHeight;
 	YHeight = YL*5.f;
-	
+
 	// Draw header.
 	if (Canvas.ClipX<1000)
 	{
@@ -211,7 +211,7 @@ function DrawMenu()
 	Y+=YL;
 	Canvas.SetPos(XPos+26,Y);
 	Canvas.DrawText(TimeText$": "$FormatTimeSM(KFGRI.ElapsedTime)$" | "$PlayersText$": "$NumPlayer$" | "$AliveText$": "$NumAlivePlayer$" | "$SpectatorsText$": "$NumSpec,,FontScalar,FontScalar);
-	
+
 	XPos += XScale*0.75-1;
 	XScale *= 0.25;
 	Canvas.SetDrawColor(18,8,8,FrameOpacity);
@@ -223,7 +223,7 @@ function DrawMenu()
 	DrawCenteredText(HeaderWaveText,XPos+XScale*0.5,Y,FontScalar);
 	Y += YL;
 	DrawCenteredText(KFGRI.WaveNum$"/"$(KFGRI.WaveMax-1),XPos+XScale*0.5,Y,FontScalar*1.1);
-	
+
 	// Scoreboard title line.
 	Canvas.Font = Owner.CurrentStyle.PickFont(DefFont,FontScalar);
 	YL = Owner.CurrentStyle.DefaultHeight;
@@ -243,13 +243,13 @@ function DrawMenu()
 		Canvas.SetDrawColor(32,32,128,FrameOpacity);
 	else Canvas.SetDrawColor(128,32,32,FrameOpacity);
 	Owner.CurrentStyle.DrawRectBox(XPos,YPos,XScale,YHeight,16,2);
-	
+
 	// Calc X offsets
 	CashXPos = XScale*0.5;
 	KillsXPos = XScale*0.7;
 	AssistXPos = XScale*0.8;
 	PingXPos = XScale*0.9;
-	
+
 	// Header texts
 	Canvas.DrawColor = SBTextColor;
 	Y = YPos+4;
@@ -277,11 +277,11 @@ function DrawMenu()
 			break;
 		--i;
 	}
-	
+
 	// Scoreboard background.
 	Canvas.SetDrawColor(18,8,8,FrameOpacity);
 	Owner.CurrentStyle.DrawRectBox(XPos,YPos,XScale,YHeight,16);
-	
+
 	// Setup listing.
 	PlayersList.XPosition = (XPos+8.f) / InputPos[2];
 	PlayersList.YPosition = (YPos+8.f) / InputPos[3];
@@ -295,7 +295,7 @@ function DrawMenu()
 final function Texture2D FindAvatar(UniqueNetId ClientID)
 {
 	local string S;
-	
+
 	S = KFPlayerController(GetPlayer()).GetSteamAvatar(ClientID);
 	if (S=="")
 		return None;
@@ -328,16 +328,16 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local ExtPlayerReplicationInfo PRI;
 	local float XPos,YPos,XL,YL;
 	local string S;
-	
+
 	if (Index==0)
 	{
 		// Setup font info.
 		C.Font = SBFont;
 	}
 	PRI = PRIList[Index];
-	
+
 	bFocus = bFocus || (bHasSelectedPlayer && RightClickPlayer==PRI);
-	
+
 	// Draw name entry background.
 	if (PRI.bOnlySpectator) // Spectator - blue.
 	{
@@ -370,7 +370,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		C.DrawColor = C.DrawColor*0.6;
 	Owner.CurrentStyle.DrawRectBox(0.f,YOffset,Width,Height-ScoreboardSpacing,10);
 	Height-=ScoreboardSpacing;
-	
+
 	// Draw health bg.
 	if (!bShowSpectatorsOnly)
 	{
@@ -398,7 +398,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		if (!PRI.bBot)
 			PRI.Avatar = FindAvatar(PRI.UniqueId);
 	}
-	
+
 	// Name
 	C.SetPos(XPos,YOffset+2);
 	if (PlayerIndex==Index)
@@ -429,11 +429,11 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		YPos*=0.9;
 	}
 	C.DrawText(S,,YPos,YPos);
-	
+
 	// Other info background.
 	C.SetDrawColor(4,4,4,255);
 	Owner.CurrentStyle.DrawRectBox(CashXPos-4,YOffset+4,Width-CashXPos-8,Height-8,6);
-	
+
 	// Perk
 	if (!bShowSpectatorsOnly)
 	{
@@ -478,7 +478,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		}
 		C.DrawText(S,,YPos,YPos);
 	}
-	
+
 	// Cash
 	C.DrawColor = SBTextColor;
 	YPos = YOffset+(Height-SBFontHeight)*0.5;
@@ -486,17 +486,17 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	{
 		C.SetPos(CashXPos,YPos);
 		C.DrawText(string(int(PRI.Score)),,SBFontSize,SBFontSize);
-		
+
 		// Kills
 		DrawCenteredText(string(PRI.Kills),KillsXPos,YPos,SBFontSize);
-		
+
 		// Assists
 		DrawCenteredText(string(PRI.Assists),AssistXPos,YPos,SBFontSize);
 	}
-		
+
 	// Ping
 	DrawCenteredText(PRI.bBot ? BotText : string(PRI.Ping*4),PingXPos,YPos,SBFontSize);
-	
+
 	// Draw health.
 	if (!bShowSpectatorsOnly)
 	{
@@ -520,7 +520,7 @@ function ClickedPlayer(int Index, bool bRight, int MouseX, int MouseY)
 		return;
 	bHasSelectedPlayer = true;
 	RightClickPlayer = PRIList[Index];
-	
+
 	// Check what items to disable.
 	PC = GetPlayer();
 	PlayerContext.ItemRows[0].bDisabled = (PlayerIndex==Index || !PC.IsSpectating());
@@ -584,7 +584,7 @@ function ShowPlayerTooltip(int Index)
 {
 	local ExtPlayerReplicationInfo PRI;
 	local string S;
-	
+
 	PRI = PRIList[Index];
 	if (PRI!=None)
 	{
@@ -622,7 +622,7 @@ defaultproperties
 	bAlwaysTop=true
 	SBTextColor=(R=250,G=250,B=250,A=255)
 	ScoreboardSpacing=4
-	
+
 	Begin Object Class=KFGUI_List Name=PlayerList
 		bDrawBackground=false
 		OnDrawItem=DrawPlayerEntry
@@ -640,10 +640,10 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(PlayerList)
 	Components.Add(B_ShowSpecs)
-	
+
 	Begin Object Class=KFGUI_RightClickMenu Name=PlayerContextMenu
 		OnSelectedItem=SelectedRCItem
 		OnBecameHidden=HidRightClickMenu

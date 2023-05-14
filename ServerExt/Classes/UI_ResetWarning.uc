@@ -17,13 +17,13 @@ function InitMenu()
 	InfoLabel = KFGUI_TextField(FindComponentID('Info'));
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
 	NoButton = KFGUI_Button(FindComponentID('No'));
-	
+
 	YesButton.ButtonText=YesButtonText;
 	YesButton.Tooltip=YesButtonToolTip;
 	NoButton.ButtonText=NoButtonText;
 	NoButton.Tooltip=NobuttonToolTip;
 	InfoLabel.SetText(InfoText);
-	
+
 	Super.InitMenu();
 }
 
@@ -56,7 +56,7 @@ defaultproperties
 	YSize=0.45
 	bAlwaysTop=true
 	bOnlyThisFocus=true
-	
+
 	Begin Object Class=KFGUI_TextField Name=WarningLabel
 		ID="Info"
 		XPosition=0.01
@@ -83,7 +83,7 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(WarningLabel)
 	Components.Add(YesButten)
 	Components.Add(NoButten)

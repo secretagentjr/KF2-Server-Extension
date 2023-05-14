@@ -6,7 +6,7 @@ var byte PPerkLevels[6];
 struct ExtMemberSlotStruct
 {
 	var class<Ext_PerkBase> PerkClass;
-	
+
 	structdefaultproperties
 	{
 		PerkClass=none
@@ -16,7 +16,7 @@ var ExtMemberSlotStruct ExtMemberSlots[13];
 
 function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 {
-	local string PlayerName;	
+	local string PlayerName;
 	local UniqueNetId AdminId;
 	local bool bIsLeader;
 	local bool bIsMyPlayer;
@@ -26,7 +26,7 @@ function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 
 	PlayerInfoObject = CreateObject("Object");
 	EPC = ExtPlayerController(GetPC());
-	
+
 	if (KFPRI != none)
 	{
 		EPRI = ExtPlayerReplicationInfo(KFPRI);
@@ -45,12 +45,12 @@ function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 		PerkIconObject = CreateObject("Object");
 		PerkIconObject.SetString("perkIcon", ExtMemberSlots[SlotIndex].PerkClass.static.GetPerkIconPath(EPRI.ECurrentPerkLevel));
 		PlayerInfoObject.SetObject("perkImageSource", PerkIconObject);
-		
+
 		PlayerInfoObject.SetString("perkLevel", string(EPRI.ECurrentPerkLevel));
 	}
 	if (!bIsMyPlayer)
 	{
-		PlayerInfoObject.SetBool("muted", EPC.IsPlayerMuted(EPRI.UniqueId));	
+		PlayerInfoObject.SetBool("muted", EPC.IsPlayerMuted(EPRI.UniqueId));
 	}
 	if (class'WorldInfo'.static.IsE3Build())
 	{
@@ -68,13 +68,13 @@ function GFxObject RefreshSlot(int SlotIndex, KFPlayerReplicationInfo KFPRI)
 	else
 	{
 		PlayerInfoObject.SetString("profileImageSource", "img://"$KFPC.GetSteamAvatar(EPRI.UniqueId));
-	}	
+	}
 	if (KFGRI != none)
 	{
 		PlayerInfoObject.SetBool("ready", EPRI.bReadyToPlay && !KFGRI.bMatchHasBegun);
 	}
 
-	return PlayerInfoObject;	
+	return PlayerInfoObject;
 }
 
 defaultproperties

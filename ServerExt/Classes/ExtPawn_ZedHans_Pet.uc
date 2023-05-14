@@ -7,4 +7,5 @@ static simulated event bool IsABoss()
 
 defaultproperties
 {
+
 }

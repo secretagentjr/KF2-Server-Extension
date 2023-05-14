@@ -22,7 +22,7 @@ function DrawMenu()
 
 	bClickable = ListOwner.bClickable;
 	MinSize = ColumnMinSize / CompPos[2];
-	
+
 	// Scale column
 	if (bScaleColumn)
 	{
@@ -31,7 +31,7 @@ function DrawMenu()
 			MouseX-=(ListOwner.Columns[i].Width * CompPos[2]);
 
 		ListOwner.Columns[ScalingColumn].Width = MouseX / CompPos[2];
-		
+
 		// Make sure no column is scrolled off screen.
 		X = 0;
 		for (i=0; i<(ListOwner.Columns.Length-1); ++i)
@@ -62,7 +62,7 @@ function DrawMenu()
 			}
 		}
 	}
-	
+
 	// Init mouse check.
 	MouseColumn = -1;
 	bCheckMouse = (bClickable && bFocused);
@@ -94,7 +94,7 @@ function DrawMenu()
 
 		ListOwner.Columns[i].X = X;
 		ListOwner.Columns[i].XSize = Wd;
-		
+
 		if (bCheckMouse && (MouseX-=Wd)<=0.f)
 		{
 			MouseColumn = i;
@@ -108,7 +108,7 @@ function DrawMenu()
 		{
 			ListOwner.Columns[i].bHidden = false;
 			Canvas.SetClip(X+Wd,CompPos[1]+CompPos[3]);
-			
+
 			// Draw column.
 			Owner.CurrentStyle.RenderColumnHeader(Self,X,Min(Wd,CompPos[2]-X),i,MouseColumn==i && !bMouseScaler,i==j);
 		}
@@ -122,7 +122,7 @@ function MouseClick(bool bRight)
 	{
 		PressedDown[byte(bRight)] = 1;
 		bPressedDown = true;
-		
+
 		if (!bRight && bMouseScaler)
 		{
 			PlayMenuSound(MN_ClickButton);
@@ -146,7 +146,7 @@ function MouseRelease(bool bRight)
 		PlayMenuSound(MN_ClickButton);
 		PressedDown[byte(bRight)] = 0;
 		bPressedDown = (PressedDown[0]!=0 || PressedDown[1]!=0);
-		
+
 		if (MouseColumn>=0)
 		{
 			ListOwner.SortColumn(MouseColumn,(PrevSortedColumn==MouseColumn));

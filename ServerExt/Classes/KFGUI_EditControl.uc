@@ -49,7 +49,7 @@ function PreDraw()
 	Canvas.Font = Owner.CurrentStyle.PickFont(Min(FontScale+Owner.CurrentStyle.DefaultFontSize,Owner.CurrentStyle.MaxFontScale),TextScale);
 	TextFont = Canvas.Font;
 	Canvas.TextSize("ABC",XS,TextHeight,TextScale,TextScale);
-	
+
 	UpdateSizes();
 
 	Super.PreDraw();
@@ -67,7 +67,7 @@ final function DrawClippedText(string S, float TScale, float MaxX)
 {
 	local int i,l;
 	local float X,XL,YL;
-	
+
 	l = Len(S);
 	for (i=0; i<l; ++i)
 	{

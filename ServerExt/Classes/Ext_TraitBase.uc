@@ -42,7 +42,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 	// First check level.
 	if (Perk.CurrentLevel<Default.MinLevel)
 		return false;
-	
+
 	// Then check grouping.
 	if (Lvl==0 && Default.TraitGroup!=None && Default.TraitGroup.Static.GroupLimited(Perk,Default.Class))
 		return false;
@@ -54,7 +54,7 @@ function string GetPerkDescription()
 {
 	local string S;
 	local byte i;
-	
+
 	for (i=0; i<Default.NumLevels; ++i)
 	{
 		if (i==0)
@@ -163,7 +163,7 @@ static final function string GetInlineStr(out string S) // Reverse.
 {
 	local int l;
 	local string Res;
-	
+
 	l = StrToInt(S);
 	Res = Left(S,l);
 	S = Mid(S,l);
@@ -174,7 +174,7 @@ static function string GetRepData()
 {
 	local string S;
 	local int i;
-	
+
 	S = IntToStr(Default.MinLevel)$IntToStr(Default.LevelCosts.Length);
 	for (i=0; i<Default.LevelCosts.Length; ++i)
 		S $= IntToStr(Default.LevelCosts[i]);

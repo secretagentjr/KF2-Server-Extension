@@ -2,7 +2,7 @@ class ExtTraderContainer_Filter extends KFGFxTraderContainer_Filter;
 
 function SetPerkFilterData(byte FilterIndex)
 {
- 	local int i;
+	local int i;
 	local GFxObject DataProvider;
 	local GFxObject FilterObject;
 	local ExtPlayerController KFPC;

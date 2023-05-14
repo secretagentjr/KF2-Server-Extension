@@ -7,7 +7,7 @@ final function vector PickPointNearOwner()
 {
 	local byte i;
 	local vector V,HL,HN,Start;
-	
+
 	Start = OwnerPawn.Location;
 	if (OwnerPawn.Physics==PHYS_Falling)
 	{
@@ -20,10 +20,10 @@ final function vector PickPointNearOwner()
 		V.X = FRand()-0.5;
 		V.Y = FRand()-0.5;
 		V = Start + Normal2D(V) * (100.f+FRand()*500.f);
-		
+
 		if (i<20 && !FastTrace(V,Start)) // Destination is inside a wall.
 			continue;
-		
+
 		if (i<20 && FastTrace(V-vect(0,0,100),V)) // Destination is above a pit.
 			continue;
 		break;
@@ -35,7 +35,7 @@ final function vector PickPointNearOwner()
 final function bool CanSeeOwner()
 {
 	local Pawn P;
-	
+
 	NextSightCheckTime = WorldInfo.TimeSeconds+1.f + FRand();
 	P = Ext_T_MonsterPRI(PlayerReplicationInfo)!=None ? Ext_T_MonsterPRI(PlayerReplicationInfo).OwnerController.Pawn : None;
 	if (P!=None && !LineOfSightTo(P))
@@ -66,7 +66,7 @@ Begin:
 		UpdateHistoryString("[Attacking : "$DoorEnemy$" at "$WorldInfo.TimeSeconds$"]");
 		class'AICommand_Attack_Melee'.static.Melee(Outer, DoorEnemy);
 	}
-	
+
 	// See if we are close to our owner
 RecheckOwner:
 	OwnerPawn = None;
@@ -80,7 +80,7 @@ RecheckOwner:
 		if (Enemy!=None && LineOfSightTo(OwnerPawn) && LineOfSightTo(Enemy)) // We have sight to our owner and can see enemy, go for it!
 		{
 			OwnerPawn = None;
-			
+
 			bWaitingOnMovementPlugIn = true;
 			SetEnemyMoveGoal(self, true,,, ShouldAttackWhileMoving());
 			NextSightCheckTime = WorldInfo.TimeSeconds+2.f;

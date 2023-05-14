@@ -8,7 +8,7 @@ function UpdatePerkSelection(byte SelectedPerkIndex)
 	local GFxObject DataProvider;
 	local GFxObject TempObj;
 	local ExtPlayerController KFPC;
-	local Ext_PerkBase PerkClass;	
+	local Ext_PerkBase PerkClass;
 
 	KFPC = ExtPlayerController(GetPC());
 
@@ -21,12 +21,12 @@ function UpdatePerkSelection(byte SelectedPerkIndex)
 			PerkClass = KFPC.ActivePerkManager.UserPerks[i];
 			TempObj = CreateObject("Object");
 			TempObj.SetInt("PerkLevel", PerkClass.CurrentLevel);
-			TempObj.SetString("Title",  PerkClass.PerkName);	
+			TempObj.SetString("Title",  PerkClass.PerkName);
 			TempObj.SetString("iconSource",  PerkClass.GetPerkIconPath(PerkClass.CurrentLevel));
 			TempObj.SetBool("bTierUnlocked", true);
-			
+
 			DataProvider.SetElementObject(i, TempObj);
-		}	
+		}
 		SetObject("perkData", DataProvider);
 		SetInt("SelectedIndex", SelectedPerkIndex);
 

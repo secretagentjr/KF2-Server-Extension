@@ -8,4 +8,5 @@ var class<Ext_TraitBase> TraitClass;
 
 defaultproperties
 {
+
 }

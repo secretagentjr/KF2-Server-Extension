@@ -22,7 +22,7 @@ simulated function ModifyDamageGiven(out int InDamage, optional Actor DamageCaus
 		if (bUseMachineGunner && WorldInfo.TimeDilation < 1.f)
 			InDamage += InDamage * 0.03;
 	}
-		
+
 	Super.ModifyDamageGiven(InDamage, DamageCauser, MyKFPM, DamageInstigator, DamageType, HitZoneIdx);
 }
 
@@ -61,7 +61,7 @@ defaultproperties
 	DefTraitList.Add(class'Ext_TraitTactician')
 	DefTraitList.Add(class'Ext_TraitMachineGunner')
 	BasePerk=class'KFPerk_Commando'
-	
+
 	ZTExtCount=1.f;
 
 	PrimaryMelee=class'KFWeap_Knife_Commando'
@@ -71,6 +71,6 @@ defaultproperties
 	PrimaryWeaponDef=class'KFWeapDef_AR15'
 	KnifeWeaponDef=class'KFweapDef_Knife_Commando'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Commando'
-	
+
 	AutoBuyLoadOutPath=(class'KFWeapDef_AR15', class'KFWeapDef_Bullpup', class'KFWeapDef_AK12', class'KFWeapDef_SCAR')
 }

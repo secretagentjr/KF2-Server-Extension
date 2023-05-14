@@ -25,7 +25,7 @@ static function array<MaterialInterface> GetWeaponSkin(int ItemId, EWeaponSkinTy
 	local array<MaterialInterface> Mats;
 	local MaterialInterface LoadedMat;
 	local string FirstPMat;
-	
+
 	i = default.Skins.Find('Id', ItemId);
 	if (i > -1)
 	{
@@ -38,38 +38,38 @@ static function array<MaterialInterface> GetWeaponSkin(int ItemId, EWeaponSkinTy
 				if (LoadedMat != None)
 					Mats.AddItem(LoadedMat);
 			}
-		
+
 			break;
 		case WST_ThirdPerson:
 			LoadedMat = MaterialInterface(DynamicLoadObject(default.Skins[i].MIC_3P, class'MaterialInterface'));
 			if (LoadedMat != None)
 				Mats.AddItem(LoadedMat);
-		
+
 			break;
 		case WST_Pickup:
 			LoadedMat = MaterialInterface(DynamicLoadObject(default.Skins[i].MIC_Pickup, class'MaterialInterface'));
 			if (LoadedMat != None)
 				Mats.AddItem(LoadedMat);
-		
+
 			break;
 		}
 	}
-	
+
 	return Mats;
 }
 
 static function SaveWeaponSkin(class<KFWeaponDefinition> WeaponDef, int ID, ExtPlayerController PC)
 {
 	local int ALen, i;
-	
+
 	i = PC.SavedWeaponSkins.Find('WepDef', WeaponDef);
 	if (i > -1)
 		PC.SavedWeaponSkins.Remove(i, 1);
-	
+
 	ALen = PC.SavedWeaponSkins.Length;
 	PC.SavedWeaponSkins[ALen].ID = ID;
 	PC.SavedWeaponSkins[ALen].WepDef = WeaponDef;
-	
+
 	PC.SaveConfig();
 }
 
@@ -1107,7 +1107,7 @@ defaultproperties
 	Skins.Add((Id=4815, Weapondef=class'KFWeapDef_FlareGun', MIC_1P=("WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_1P_Mint_MIC"), MIC_3P="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_Mint_MIC", MIC_Pickup="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_Pickup_MIC"))
 	Skins.Add((Id=4814, Weapondef=class'KFWeapDef_FlareGun', MIC_1P=("WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_1P_FieldTested_MIC"), MIC_3P="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_FieldTested_MIC", MIC_Pickup="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_Pickup_MIC"))
 	Skins.Add((Id=4813, Weapondef=class'KFWeapDef_FlareGun', MIC_1P=("WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_1P_BattleScarred_MIC"), MIC_3P="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_BattleScarred_MIC", MIC_Pickup="WEP_SkinSet11_MAT.flamered_flaregun.FlameRed_FlareGun_3P_Pickup_MIC"))
-		
+
 //Vietnam AK12
 	Skins.Add((Id=4970, Weapondef=class'KFWeapDef_Ak12', MIC_1P=("WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_1P_Mint_MIC", "WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_Scope_1P_Mint_MIC"), MIC_3P="WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_3P_Mint_MIC", MIC_Pickup="WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_3P_Pickup_MIC"))
 	Skins.Add((Id=4969, Weapondef=class'KFWeapDef_Ak12', MIC_1P=("WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_1P_FieldTested_MIC", "WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_Scope_1P_Mint_MIC"), MIC_3P="WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_3P_FieldTested_MIC", MIC_Pickup="WEP_SkinSet12_MAT.vietnam_ak12.Vietnam_AK12_3P_Pickup_MIC"))
@@ -1347,5 +1347,4 @@ defaultproperties
 	Skins.Add((Id=5303, Weapondef=class'KFWeapDef_AA12', MIC_1P=("WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_1P_Mint_MIC"), MIC_3P="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_Mint_MIC", MIC_Pickup="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_Pickup_MIC"))
 	Skins.Add((Id=5302, Weapondef=class'KFWeapDef_AA12', MIC_1P=("WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_1P_FieldTested_MIC"), MIC_3P="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_FieldTested_MIC", MIC_Pickup="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_Pickup_MIC"))
 	Skins.Add((Id=5301, Weapondef=class'KFWeapDef_AA12', MIC_1P=("WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_1P_BattleScarred_MIC"), MIC_3P="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_BattleScarred_MIC", MIC_Pickup="WEP_SkinSet17_MAT.sports_aa12.Vault_Sports_AA12_3P_Pickup_MIC"))
-
 }

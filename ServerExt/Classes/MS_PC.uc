@@ -129,7 +129,7 @@ ignores SeePlayer, HearNoise, NotifyBump, TakeDamage, PhysicsVolumeChange, NextW
 defaultproperties
 {
 	InputClass=class'MS_Input'
-	
+
 	Begin Object Class=MS_PendingData Name=UserPendingData
 	End Object
 	TravelData=UserPendingData

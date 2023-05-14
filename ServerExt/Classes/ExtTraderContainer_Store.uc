@@ -52,11 +52,11 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 						case 0: //primary perk
 							OnPerkWeapons.AddItem(ItemList[i]);
 							break;
-					
+
 						case 1: //secondary perk
 							SecondaryWeapons.AddItem(ItemList[i]);
 							break;
-					
+
 						default: //off perk
 							OffPerkWeapons.AddItem(ItemList[i]);
 							break;
@@ -68,7 +68,7 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 		for (i = 0; i < OnPerkWeapons.length; i++)
 		{
 			SetItemInfo(ItemDataArray, OnPerkWeapons[i], SlotIndex);
-			SlotIndex++;	
+			SlotIndex++;
 		}
 
 		for (i = 0; i < SecondaryWeapons.length; i++)
@@ -81,7 +81,7 @@ function RefreshWeaponListByPerk(byte FilterIndex, const out array<STraderItem> 
 		{
 			SetItemInfo(ItemDataArray, OffPerkWeapons[i], SlotIndex);
 			SlotIndex++;
-		}		
+		}
 
 		SetObject("shopData", ItemDataArray);
 	}

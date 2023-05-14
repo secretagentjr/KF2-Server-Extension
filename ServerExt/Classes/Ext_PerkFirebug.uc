@@ -17,9 +17,9 @@ defaultproperties
 	PrimaryWeaponDef=class'KFWeapDef_CaulkBurn'
 	KnifeWeaponDef=class'KFWeapDef_Knife_Firebug'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Firebug'
-	
+
 	AutoBuyLoadOutPath=(class'KFWeapDef_CaulkBurn', class'KFWeapDef_DragonsBreath', class'KFWeapDef_FlameThrower', class'KFWeapDef_MicrowaveGun')
-	
+
 	DefPerkStats(13)=(Progress=3,bHiddenConfig=false) // Self damage.
 	DefPerkStats(17)=(bHiddenConfig=false) // Fire resistance
 }

@@ -76,7 +76,7 @@ function PreDraw()
 	local byte j;
 
 	ComputeCoords();
-	
+
 	// First draw scrollbar to allow it to resize itself.
 	for (j=0; j<4; ++j)
 		ScrollBar.InputPos[j] = CompPos[j];
@@ -87,14 +87,14 @@ function PreDraw()
 	}
 	ScrollBar.Canvas = Canvas;
 	ScrollBar.PreDraw();
-	
+
 	// Then downscale our selves to give room for scrollbar.
 	CompPos[2] -= ScrollBar.CompPos[2];
 	Canvas.SetOrigin(CompPos[0],CompPos[1]);
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
 	CompPos[2] += ScrollBar.CompPos[2];
-	
+
 	// Then draw rest of components.
 	for (i=0; i<Components.Length; ++i)
 	{

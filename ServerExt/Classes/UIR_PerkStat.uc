@@ -18,10 +18,10 @@ function InitMenu()
 	InfoText = KFGUI_TextLable(FindComponentID('Info'));
 	StatCountBox = KFGUI_NumericBox(FindComponentID('CountBox'));
 	AddButton = KFGUI_Button(FindComponentID('AddBox'));
-	
+
 	AddButton.ToolTip=AddButtonToolTip;
 	StatCountBox.ToolTip=CountBoxToolTip;
-	
+
 	Super.InitMenu();
 }
 
@@ -96,7 +96,7 @@ final function CheckBuyLimit()
 		CurrentCost = 0;
 	ProgressStr = ChopExtraDigits(MyPerk.PerkStats[StatIndex].Progress * StatCountBox.GetValueInt());
 	MaxStatValue = MyPerk.PerkStats[StatIndex].MaxValue;
-	
+
 	// Disable button if can not buy anymore.
 	AddButton.SetDisabled(i==0);
 	bCostDirty = true;
