@@ -15,7 +15,7 @@ struct FWebAdminConfigInfo
 	var name PropName;
 	var string UIName,UIDesc;
 	var int NumElements;
-	
+
 	structdefaultproperties
 	{
 		NumElements=1
@@ -44,7 +44,7 @@ final function Cleanup()
 final function AddSettingsPage(string PageName, class<Object> Obj, const out array<FWebAdminConfigInfo> Configs, delegate<OnGetValue> GetFunc, delegate<OnSetValue> SetFunc)
 {
 	local int i;
-	
+
 	i = ConfigList.Find('PageName',PageName);
 	if (i>=0) // Make sure no dupe pages.
 		PageName $= "_"$(ConfigList[i].Dupes++);

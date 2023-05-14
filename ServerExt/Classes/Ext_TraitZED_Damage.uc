@@ -27,7 +27,7 @@ defaultproperties
 	DefLevelCosts(3)=40
 	DefLevelCosts(4)=60
 	bPostApplyEffect=true
-	
+
 	DamList.Add(1.1)
 	DamList.Add(1.25)
 	DamList.Add(1.5)

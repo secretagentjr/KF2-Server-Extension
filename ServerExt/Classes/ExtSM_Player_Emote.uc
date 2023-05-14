@@ -12,7 +12,7 @@ function PlayAnimation()
 	PlaySpecialMoveAnim(AnimName, AnimStance, BlendInTime, BlendOutTime, 1.f);
 
 	if (KFPOwner.Role == ROLE_Authority)
-	{	
+	{
 		KFGameInfo(KFPOwner.WorldInfo.Game).DialogManager.PlayDialogEvent(KFPOwner, 31);
 	}
 
@@ -47,4 +47,5 @@ function PlayAnimation()
 
 defaultproperties
 {
+
 }

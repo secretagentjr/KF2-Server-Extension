@@ -65,7 +65,7 @@ function MouseClick(bool bRight)
 		return;
 	bPressedDown = true;
 	PlayMenuSound(MN_ClickButton);
-	
+
 	if (bVertical)
 	{
 		if (Owner.MousePosition.Y>=(CompPos[1]+ButtonOffset) && Owner.MousePosition.Y<=(CompPos[1]+ButtonOffset+SliderScale)) // Grabbed scrollbar!

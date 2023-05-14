@@ -47,7 +47,7 @@ final function RenderProgress()
 {
 	local float Y,XL,YL,Sc;
 	local int i;
-	
+
 	Canvas.Font = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_Main",class'Font'));
 	Sc = FMin(Canvas.ClipY/1000.f,3.f);
 	if (bProgressDC)
@@ -68,4 +68,5 @@ final function RenderProgress()
 
 defaultproperties
 {
+
 }

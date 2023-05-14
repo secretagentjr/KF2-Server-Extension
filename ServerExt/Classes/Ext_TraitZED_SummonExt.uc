@@ -26,7 +26,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		AddHelperType(MaxLevel*0.8,Player);
 		break;
 	}
-	
+
 	// Make other traits refresh (apply HP/damage scalers).
 	for (i=0; i<Perk.PerkTraits.Length; ++i)
 		if (Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
@@ -45,7 +45,7 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 static final function AddHelperType(byte Lv, KFPawn_Human Player)
 {
 	local Ext_T_ZEDHelper H;
-	
+
 	H = Player.Spawn(class'Ext_T_ZEDHelper',Player);
 	if (H!=None)
 	{

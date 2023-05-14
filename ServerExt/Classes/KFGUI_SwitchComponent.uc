@@ -42,7 +42,7 @@ final function name GetSelectedPageID()
 final function bool SelectPageID(name PageID)
 {
 	local int i;
-	
+
 	if (Components[CurrentComponent].ID==PageID)
 		return false;
 

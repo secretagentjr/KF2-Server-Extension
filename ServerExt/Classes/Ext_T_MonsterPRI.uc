@@ -52,7 +52,7 @@ simulated function Timer()
 simulated final function NotifyOwner()
 {
 	local PlayerController PC;
-	
+
 	PC = GetALocalPlayerController();
 	if (PC==None || PC.PlayerReplicationInfo!=OwnerPRI || KFExtendedHUD(PC.MyHUD)==None)
 		return;

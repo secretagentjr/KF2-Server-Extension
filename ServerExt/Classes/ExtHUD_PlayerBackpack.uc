@@ -14,7 +14,7 @@ function UpdateGrenades()
 	if (ExtPlayerController(MyKFPC)!=None)
 	{
 		PM = ExtPlayerController(MyKFPC).ActivePerkManager;
-		
+
 		if (PM!=None && PM.CurrentPerk!=None && EPerkClass!=PM.CurrentPerk.Class)
 		{
 			SetString("backpackGrenadeType", "img://"$PM.CurrentPerk.GrenadeWeaponDef.Static.GetImagePath());
@@ -31,4 +31,5 @@ function UpdateGrenades()
 
 defaultproperties
 {
+
 }

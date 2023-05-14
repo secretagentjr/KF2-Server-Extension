@@ -28,21 +28,21 @@ var localized string EditMotdButtonToolTip;
 function FRowItem newFRowItem(string Text, int Value, bool isSplitter)
 {
 	local FRowItem newItem;
-	
+
 	newItem.Text=Text;
 	newItem.Value=Value;
 	newItem.bSplitter=isSplitter;
-	
+
 	return newItem;
 }
 
 function FColumnItem newFColumnItem(string Text, float Width)
 {
 	local FColumnItem newItem;
-	
+
 	newItem.Text=Text;
 	newItem.Width=Width;
-	
+
 	return newItem;
 }
 
@@ -50,7 +50,7 @@ function InitMenu()
 {
 	PlayersList = KFGUI_ColumnList(FindComponentID('Players'));
 	MotdButton = KFGUI_Button(FindComponentID('MOTD'));
-	
+
 	PlayerContext.ItemRows.AddItem(newFRowItem("",-1,false));
 	PlayerContext.ItemRows.AddItem(newFRowItem(ShowDebugInfo,9,false));
 	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
@@ -68,15 +68,15 @@ function InitMenu()
 	PlayerContext.ItemRows.AddItem(newFRowItem("",0,true));
 	PlayerContext.ItemRows.AddItem(newFRowItem(ResetAllStats,0,false));
 	PlayerContext.ItemRows.AddItem(newFRowItem(ResetCurrentPerkStats,1,false));
-		
+
 	PlayersList.Columns.AddItem(newFColumnItem(ColumnPlayer,0.55));
 	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalKills,0.15));
 	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalExp,0.15));
 	PlayersList.Columns.AddItem(newFColumnItem(ColumnTotalPlayTime,0.15));
-	
+
 	MotdButton.ButtonText=EditMotdButtonText;
 	MotdButton.Tooltip=EditMotdButtonToolTip;
-	
+
 	Super.InitMenu();
 }
 
@@ -134,7 +134,7 @@ defaultproperties
 		OnSelectedItem=SelectedRCItem
 	End Object
 	PlayerContext=PlayerContextMenu
-	
+
 	Begin Object Class=KFGUI_Button Name=EditMOTDButton
 		ID="MOTD"
 		XPosition=0.2
@@ -145,7 +145,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 	End Object
 	Components.Add(EditMOTDButton)
-	
+
 	Begin Object Class=KFGUI_ColumnList Name=PlayerList
 		ID="Players"
 		XPosition=0.05

@@ -5,7 +5,7 @@ function DrawMenu()
 	local float X,Y,YP,Edge,TextScale;
 	local int i;
 	local bool bCheckMouse;
-	
+
 	// Draw background.
 	Edge = EdgeSize;
 	Canvas.SetPos(0.f,0.f);
@@ -18,9 +18,9 @@ function DrawMenu()
 	// While rendering, figure out mouse focus row.
 	X = Owner.MousePosition.X - Canvas.OrgX;
 	Y = Owner.MousePosition.Y - Canvas.OrgY;
-	
+
 	bCheckMouse = (X>0.f && X<CompPos[2] && Y>0.f && Y<CompPos[3]);
-	
+
 	Canvas.Font = Owner.CurrentStyle.PickFont(Owner.CurrentStyle.DefaultFontSize,TextScale);
 
 	YP = Edge;
@@ -51,7 +51,7 @@ function DrawMenu()
 			else Canvas.SetDrawColor(248,248,248,255);
 			Canvas.DrawText(ItemRows[i].Text,,TextScale,TextScale);
 		}
-		
+
 		YP+=Owner.CurrentStyle.DefaultHeight;
 	}
 	Canvas.PopMaskRegion();
@@ -64,4 +64,5 @@ function DrawMenu()
 
 defaultproperties
 {
+
 }

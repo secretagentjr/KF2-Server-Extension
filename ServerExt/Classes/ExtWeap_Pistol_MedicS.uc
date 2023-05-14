@@ -3,14 +3,14 @@ class ExtWeap_Pistol_MedicS extends KFWeap_Pistol_Medic;
 defaultproperties
 {
 	bCanThrow=false
-	
+
 	SpareAmmoCapacity[0]=-1
 	InitialSpareMags[0]=0
 	bInfiniteSpareAmmo=True
 
 	// Remove weight bcs of replacing 9mm
 	InventorySize=0
-	
+
 	InstantHitDamageTypes(DEFAULT_FIREMODE)=class'ExtDT_Ballistic_Pistol_Medic'
 
 	WeaponUpgrades[1]=(Stats=((Stat=EWUS_Damage0, Scale=1.7f), (Stat=EWUS_HealFullRecharge, Scale=0.9f)))

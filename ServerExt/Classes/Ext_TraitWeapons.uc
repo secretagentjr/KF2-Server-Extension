@@ -18,7 +18,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 static final function bool HasMaxCarry(Ext_PerkBase Perk)
 {
 	local int i;
-	
+
 	i = Perk.PerkTraits.Find('TraitType',Class'Ext_TraitCarryCap');
 	return (i==-1 || Perk.PerkTraits[i].CurrentLevel>=3);
 }
@@ -54,7 +54,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		{
 			Inv = Player.CreateInventory(IC,Player.Weapon!=None);
 			if (KFWeapon(Inv)!=None)
-			 	KFWeapon(Inv).bGivenAtStart = true;
+				KFWeapon(Inv).bGivenAtStart = true;
 		}
 	}
 	if (M!=None)

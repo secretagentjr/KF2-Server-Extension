@@ -1,7 +1,7 @@
 class ExtPerksContainer_Header extends KFGFxPerksContainer_Header;
 
 final function ExUpdatePerkHeader(Ext_PerkBase PerkClass)
-{	
+{
 	local GFxObject PerkDataProvider;
 
 	PerkDataProvider = CreateObject("Object");

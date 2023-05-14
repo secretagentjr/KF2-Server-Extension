@@ -78,7 +78,7 @@ function int ReadInt(optional byte MaxVal)
 function SaveStr(string S)
 {
 	local int i;
-	
+
 	if (S=="")
 	{
 		SaveInt(0,1);
@@ -97,7 +97,7 @@ function SaveStr(string S)
 function string ReadStr()
 {
 	local int i;
-	
+
 	i = ReadInt(1);
 	if (i==0 || i>StrMap.Length)
 		return "";
@@ -155,7 +155,7 @@ final function DebugData()
 	local string S,SS;
 	local array<byte> B;
 	local int i;
-	
+
 	GetData(B);
 	`Log("DEBUG DATA: Data size: "$B.Length);
 	for (i=0; i<B.Length; ++i)
@@ -174,7 +174,7 @@ function GetData(out array<byte> Res)
 	Res = Buffer;
 	Res.Insert(0,1);
 	Res[0] = ArVersion;
-	
+
 	// Add string map to start.
 	// Write string map length.
 	Res.Insert(1,2);
@@ -182,7 +182,7 @@ function GetData(out array<byte> Res)
 	Res[1] = l & 255;
 	Res[2] = (l >> 8) & 255;
 	o = 3;
-	
+
 	// write each entry.
 	for (i=0; i<StrMap.Length; ++i)
 	{
@@ -204,7 +204,7 @@ function SetData(out array<byte> S)
 	// read string map length.
 	StrMap.Length = Buffer[1] | (Buffer[2] << 8);
 	o = 3;
-	
+
 	// read each string map entry.
 	for (i=0; i<StrMap.Length; ++i)
 	{
@@ -257,4 +257,5 @@ function SetSaveVersion(int Num)
 
 defaultproperties
 {
+
 }

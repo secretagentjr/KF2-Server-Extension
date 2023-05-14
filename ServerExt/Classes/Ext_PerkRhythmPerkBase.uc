@@ -52,16 +52,16 @@ final function UpdateDmgScale(bool bUp)
 function UpdatePerkHeadShots(ImpactInfo Impact, class<DamageType> DamageType, int NumHit)
 {
 	local int HitZoneIdx;
-   	local KFPawn_Monster KFPM;
+	local KFPawn_Monster KFPM;
 
 	if (MaxRhythmCombo<=0)
 		return;
-   	KFPM = KFPawn_Monster(Impact.HitActor);
-   	if (KFPM==none || KFPM.GetTeamNum()==0)
-   		return;
+	KFPM = KFPawn_Monster(Impact.HitActor);
+	if (KFPM==none || KFPM.GetTeamNum()==0)
+		return;
 
-   	HitZoneIdx = KFPM.HitZones.Find('ZoneName', Impact.HitInfo.BoneName);
-   	if (HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell())
+	HitZoneIdx = KFPM.HitZones.Find('ZoneName', Impact.HitInfo.BoneName);
+	if (HitZoneIdx == HZI_Head && KFPM.IsAliveAndWell())
 	{
 		if (class<KFDamageType>(DamageType)!=None && (class<KFDamageType>(DamageType).Default.ModifierPerkList.Find(BasePerk)>=0))
 			UpdateDmgScale(true);
@@ -87,7 +87,7 @@ reliable client function HeadShotMessage(byte HeadShotNum, bool bMissed, byte Ma
 	else if (HeadShotNum<MaxHits)
 	{
 		if (!bMissed)
-		{				
+		{
 			//PC.ClientSpawnCameraLensEffect(class'KFCameraLensEmit_RackemHeadShot');
 			TempAkEvent = AkEvent'WW_UI_PlayerCharacter.Play_R_Method_Hit';
 		}

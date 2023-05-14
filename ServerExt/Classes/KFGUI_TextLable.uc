@@ -42,7 +42,7 @@ function InitSize()
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	InitFont = Canvas.Font;
 	InitFontScale = TS;
-	
+
 	switch (AlignX)
 	{
 	case 0:

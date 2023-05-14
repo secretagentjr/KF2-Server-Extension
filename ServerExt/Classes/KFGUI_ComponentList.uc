@@ -9,7 +9,7 @@ var array<KFGUI_Base> ItemComponents;
 final function KFGUI_Base AddListComponent(class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	local KFGUI_Base G;
-	
+
 	G = new(Self)CompClass;
 	if (G==None)
 		return None;
@@ -49,7 +49,7 @@ function PreDraw()
 	local float XS,YS;
 
 	ComputeCoords();
-	
+
 	// Update list size
 	i = ItemComponents.Length / NumColumns;
 	if (i!=NumColumns)
@@ -68,7 +68,7 @@ function PreDraw()
 	}
 	ScrollBar.Canvas = Canvas;
 	ScrollBar.PreDraw();
-	
+
 	// Then downscale our selves to give room for scrollbar.
 	CompPos[2] -= ScrollBar.CompPos[2];
 	Canvas.SetOrigin(CompPos[0],CompPos[1]);
@@ -121,7 +121,7 @@ function MouseEnter()
 function bool CaptureMouse()
 {
 	local int i;
-	
+
 	for (i=VisRange[0]; i<VisRange[1] && i<ItemComponents.Length; ++i)
 		if (ItemComponents[i].CaptureMouse())
 		{
@@ -134,7 +134,7 @@ function bool CaptureMouse()
 function CloseMenu()
 {
 	local int i;
-	
+
 	for (i=0; i<ItemComponents.Length; ++i)
 		ItemComponents[i].CloseMenu();
 	Super.CloseMenu();
@@ -143,7 +143,7 @@ function CloseMenu()
 function NotifyLevelChange()
 {
 	local int i;
-	
+
 	for (i=0; i<ItemComponents.Length; ++i)
 		ItemComponents[i].NotifyLevelChange();
 	Super.NotifyLevelChange();

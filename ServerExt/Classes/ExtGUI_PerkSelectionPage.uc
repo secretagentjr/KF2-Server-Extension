@@ -4,10 +4,10 @@ function InitMenu()
 {
 	local byte i;
 	local KFGUI_Button B;
-	
+
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
-	
+
 	for (i=0; i<Pages.Length; ++i)
 	{
 		PageSwitcher.AddPage(Pages[i],B).InitMenu();
@@ -23,9 +23,9 @@ function PreDraw()
 {
 	local GameViewportClient Viewport;
 	local ExtMoviePlayer_Manager MovieManager;
-	
+
 	Super.PreDraw();
-	
+
 	Viewport = LocalPlayer(GetPlayer().Player).ViewportClient;
 	MovieManager = ExtMoviePlayer_Manager(KFPlayerController(GetPlayer()).MyGFxManager);
 	if (CaptureMouse())
@@ -39,7 +39,7 @@ function PreDraw()
 	{
 		Viewport.bDisplayHardwareMouseCursor = false;
 		Viewport.ForceUpdateMouseCursor(true);
-		
+
 		MovieManager.SetMovieCanReceiveInput(true);
 	}
 }
@@ -52,7 +52,7 @@ defaultproperties
 	XPosition=0.01
 	XSize=0.73
 	YSize=0.73
-	
+
 	Pages.Empty
 	Pages.Add(Class'UIP_PerkSelectionLobby')
 }

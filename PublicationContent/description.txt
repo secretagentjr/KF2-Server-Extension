@@ -24,7 +24,7 @@ The full changelog is available [url=https://steamcommunity.com/sharedfiles/file
 [h1]Usage (single player)[/h1]
 [olist]
 [*]Subscribe to this mutator;
-[*]Start KF2; 
+[*]Start KF2;
 [*]Open console (`) and input:
 [code]open KF-BioticsLab?Mutator=ServerExtMut.ServerExtMut[/code]
 (You can add some options or replace KF-BioticsLab with the map you want)
@@ -44,7 +44,7 @@ The full changelog is available [url=https://steamcommunity.com/sharedfiles/file
 [/olist]
 
 [h1]Mutator setup[/h1]
-[url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url] 
+[url=https://steamcommunity.com/workshop/filedetails/discussion/2085786712/4241773359646835902/][u]Look here[/u][/url]
 
 [h1]Is it possible to make the game harder?[/h1]
 It will be more efficient to use ServerExt together with other mutators (which add new zeds or game modes).

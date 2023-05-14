@@ -5,7 +5,7 @@ var array<byte> RegenValues;
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_HealthRegHelp H;
-	
+
 	H = Player.Spawn(class'Ext_T_HealthRegHelp',Player);
 	if (H!=None)
 		H.RegCount = Default.RegenValues[Level-1];

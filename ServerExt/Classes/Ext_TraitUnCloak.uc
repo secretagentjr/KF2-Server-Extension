@@ -5,7 +5,7 @@ var array<float> RadiusValues;
 static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_UnCloakHelper H;
-	
+
 	H = Player.Spawn(class'Ext_T_UnCloakHelper',Player);
 	if (H!=None)
 		H.HandleRadius = Default.RadiusValues[Level-1];

@@ -75,7 +75,7 @@ function Destroyed()
 final function bool HasLiveZeds()
 {
 	local KFPawn_Monster M;
-	
+
 	if (KFGameReplicationInfo(WorldInfo.GRI).WaveNum>=KFGameReplicationInfo(WorldInfo.GRI).WaveMax) // No pets on possible bonus waves.
 		return false;
 
@@ -95,7 +95,7 @@ final function SpawnHelper()
 	local Ext_T_MonsterPRI PRI;
 	local AkBaseSoundObject TempSound;
 	local bool bFinalWave;
-	
+
 	if (PawnOwner.PlayerReplicationInfo==None || !HasLiveZeds())
 	{
 		RespawnHelperTime = 3;
@@ -137,7 +137,7 @@ final function SpawnHelper()
 		// Downscale.
 		LiveHelper.SetDrawScale(LiveHelper.DrawScale*FriendlyScalar);
 		LiveHelper.SetCollisionSize(LiveHelper.GetCollisionRadius()*FriendlyScalar,LiveHelper.GetCollisionHeight()*FriendlyScalar);
-		
+
 		// Setup AI
 		C = Spawn(LiveHelper.ControllerClass);
 		if (KFAIController(C)!=None)
@@ -157,7 +157,7 @@ final function SpawnHelper()
 		LiveHelper.SetWeakGrabCoolDown(28800.f); // Never get grabbed (for 80 hours).
 		LiveHelper.bWeakZedGrab = true;
 		LiveHelper.bCanGrabAttack = false;
-		
+
 		// Scale by previous zed HP.
 		if (PrevMonster!=None)
 		{
@@ -203,14 +203,14 @@ static final function LoadMonsterList()
 	local int i,j;
 	local array<string> SA;
 	local class<KFPawn_Monster> C;
-	
+
 	Default.ZedTypes.Length = class'Ext_TraitZED_Summon'.Default.ZedTypes.Length;
-	
+
 	for (i=0; i<Default.ZedTypes.Length; ++i)
 	{
 		SA.Length = 0;
 		ParseStringIntoArray(class'Ext_TraitZED_Summon'.Default.ZedTypes[i],SA,",",true);
-		
+
 		for (j=0; j<SA.Length; ++j)
 		{
 			C = class<KFPawn_Monster>(DynamicLoadObject(SA[j],Class'Class'));
@@ -227,7 +227,7 @@ static final function class<KFPawn_Monster> PickRandomMonster(byte Level, bool b
 {
 	local byte i;
 	local class<KFPawn_Monster> Res;
-	
+
 	Level = Min(Default.ZedTypes.Length-1,Level);
 	for (i=0; i<5; ++i)
 	{

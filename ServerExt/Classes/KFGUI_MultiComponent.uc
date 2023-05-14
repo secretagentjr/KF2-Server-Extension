@@ -5,7 +5,7 @@ var() export editinline array<KFGUI_Base> Components;
 function InitMenu()
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 	{
 		Components[i].Owner = Owner;
@@ -17,7 +17,7 @@ function InitMenu()
 function ShowMenu()
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 		Components[i].ShowMenu();
 }
@@ -61,7 +61,7 @@ function AddComponent(KFGUI_Base C)
 function CloseMenu()
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 		Components[i].CloseMenu();
 }
@@ -69,7 +69,7 @@ function CloseMenu()
 function bool CaptureMouse()
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 		if (Components[i].CaptureMouse())
 		{
@@ -108,7 +108,7 @@ function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 function RemoveComponent(KFGUI_Base B)
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 		if (Components[i]==B)
 		{
@@ -123,7 +123,7 @@ function RemoveComponent(KFGUI_Base B)
 function NotifyLevelChange()
 {
 	local int i;
-	
+
 	for (i=0; i<Components.Length; ++i)
 		Components[i].NotifyLevelChange();
 }

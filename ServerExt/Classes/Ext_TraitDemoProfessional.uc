@@ -17,14 +17,14 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 
 	if (Perk.CurrentLevel<Default.MinLevel || Perk.CurrentPrestige<3)
 		return false;
-	
+
 	if (Lvl==0)
 	{
 		i = Perk.PerkStats.Find('StatType','Reload');
 		if (i>=0)
 			return (Perk.PerkStats[i].CurrentValue>=30);
 	}
-	
+
 	return true;
 }
 

@@ -49,7 +49,7 @@ final function string GetCurrent()
 final function bool SetValue(string S)
 {
 	local int i;
-	
+
 	i = Values.Find(S);
 	if (i==-1)
 		return false;

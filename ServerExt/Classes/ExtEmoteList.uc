@@ -8,16 +8,16 @@ static final function name GetUnlockedEmote(int ItemId, ExtPlayerController PC)
 	local int i;
 	local name Anim;
 	local ExtPlayerReplicationInfo PRI;
-	
+
 	i = default.Emotes.Find('Id', ItemId);
 	if (i > -1)
 	{
 		Anim = default.Emotes[i].AnimName;
 		PRI = ExtPlayerReplicationInfo(PC.PlayerReplicationInfo);
-		
+
 		if (PRI == None)
 			return Anim;
-			
+
 		else return Anim;
 	}
 
@@ -28,7 +28,7 @@ static final function SaveEquippedEmote(int ItemId, ExtPlayerController PC)
 {
 	if (PC == None)
 		return;
-		
+
 	PC.SelectedEmoteIndex = ItemId;
 	PC.SaveConfig();
 }
@@ -52,7 +52,7 @@ static final function int GetEquippedEmoteId(ExtPlayerController PC)
 {
 	if (PC == None)
 		return -1;
-		
+
 	return PC.SelectedEmoteIndex;
 }
 

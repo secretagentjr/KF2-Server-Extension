@@ -93,7 +93,7 @@ simulated function PostBeginPlay()
 		OnlineSub.AddOnInventoryReadCompleteDelegate(SearchInventoryForNewItem);
 		SetTimer(60,false,'SearchInventoryForNewItem');
 	}
-	
+
 	SetTimer(300 + FRand()*120.f,false,'CheckForItems');
 }
 
@@ -110,7 +110,7 @@ simulated final function NotifyLevelChange(optional bool bMapswitch)
 		OnlineSub.ClearOnInventoryReadCompleteDelegate(SearchInventoryForNewItem);
 		OnlineSub = None;
 	}
-	
+
 	// Send to an empty stage to play the "waiting" game.
 	if (bMapswitch)
 		SetTimer(0.5,false,'PendingMapSwitch');
@@ -130,7 +130,7 @@ final function AddKillMessage(class<Pawn> Victim, int Value, PlayerReplicationIn
 {
 	local int i;
 	local bool bDmg,bLcl;
-	
+
 	bDmg = (Type==2);
 	bLcl = (Type==0);
 	for (i=0; i<KillMessages.Length; ++i)
@@ -141,7 +141,7 @@ final function AddKillMessage(class<Pawn> Victim, int Value, PlayerReplicationIn
 			KillMessages[i].MsgColor = GetMsgColor(bDmg,KillMessages[i].Counter);
 			return;
 		}
-	
+
 	KillMessages.Length = i+1;
 	KillMessages[i].bDamage = bDmg;
 	KillMessages[i].bLocal = bLcl;
@@ -186,7 +186,7 @@ static final function string GetNameOf(class<Pawn> Other)
 
 	if (Class<VSZombie>(Other)!=None)
 		return Class<VSZombie>(Other).Default.ZombieName;
-		
+
 	KFM = class<KFPawn_Monster>(Other);
 	if (KFM!=None && KFM.default.LocalizationKey != '')
 		return Localize("Zeds", string(KFM.default.LocalizationKey), "KFGame");
@@ -219,7 +219,7 @@ static final function string GetNameArticle(string S)
 static final function string StripMsgColors(string S)
 {
 	local int i;
-	
+
 	while (true)
 	{
 		i = InStr(S,Chr(6));
@@ -281,12 +281,12 @@ event PostRender()
 	}
 	GUIStyle.Canvas = Canvas;
 	GUIStyle.PickDefaultFontSize(Canvas.ClipY);
-	
+
 	DrawDamage();
 
 	//RenderKFHUD(); // TODO later...
 	super.PostRender();
-	
+
 	// Camera position.
 	PlayerOwner.GetPlayerViewPoint(PLCameraLoc,PLCameraRot);
 	PLCameraDir = vector(PLCameraRot);
@@ -364,13 +364,13 @@ final function RenderKillMsg()
 	local float Sc,YL,T,X,Y;
 	local string S;
 	local int i;
-	
+
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize,Sc);
 	Canvas.TextSize("A",X,YL,Sc,Sc);
 
 	X = Canvas.ClipX*0.015;
 	Y = Canvas.ClipY*0.24;
-	
+
 	for (i=0; i<KillMessages.Length; ++i)
 	{
 		T = WorldInfo.TimeSeconds-KillMessages[i].MsgTime;
@@ -403,7 +403,7 @@ final function RenderDMMessages()
 
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize+1,Sc);
 	Y = Canvas.ClipY*0.98;
-	
+
 	for (i=0; i<DeathMessages.Length; ++i)
 	{
 		T = WorldInfo.TimeSeconds-DeathMessages[i].MsgTime;
@@ -416,7 +416,7 @@ final function RenderDMMessages()
 		T = (1.f - (T/6.f)) * 255.f;
 		a = Max(T,1);
 		Canvas.SetDrawColor(0,255,0,a);
-		
+
 		// Get text size and setup start position.
 		Canvas.TextSize(DeathMessages[i].SMsg,XL,YL,Sc,Sc);
 		Y-=YL;
@@ -460,7 +460,7 @@ final function RenderProgress()
 {
 	local float Y,XL,YL,Sc;
 	local int i;
-	
+
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize+1,Sc);
 	if (bProgressDC)
 		Canvas.SetDrawColor(255,80,80,255);
@@ -603,12 +603,12 @@ function DrawHUD()
 		foreach WorldInfo.AllPawns(class'KFPawn_Human', KFPH)
 		{
 			PawnLocation = KFPH.Location;
-			
+
 			if (IsZero(PawnLocation))
 			{
 				continue;
 			}
-			
+
 			ThisDot = (PLCameraDir Dot PawnLocation) - PLCameraDot;
 			if (KFPH.IsAliveAndWell() && ThisDot>0.f && ThisDot<10000.f)
 			{
@@ -688,10 +688,10 @@ simulated function DrawFriendlyHUDZ(KFPawn_Monster KFPH)
 	//Draw player name (Top)
 	FontScale = class'KFGameEngine'.Static.GetKFFontScale() * FriendlyHudScale;
 	Canvas.Font = class'KFGameEngine'.Static.GetKFCanvasFont();
-	
+
 	Canvas.DrawColor = PlayerBarTextColor;
 	Canvas.DrawColor.A = FadeAlpha;
-	
+
 	Canvas.SetPos(ScreenPos.X - (BarLength *0.5f), ScreenPos.Y - BarHeight * 2);
 	Canvas.DrawText(KFPH.PlayerReplicationInfo.PlayerName,,FontScale,FontScale, MyFontRenderInfo);
 }
@@ -747,15 +747,15 @@ simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 		TextColor = KFPRI.GetAdminColorC();
 	}
 	else TextColor = PlayerBarTextColor;
-	
+
 	if (bMeAdmin && KFPRI.FixedData>0)
 	{
 		TextColor = MakeColor(255,0,0,255);
 		S @= "-"$KFPRI.GetDesc();
 	}
-	
+
 	TextColor.A = FadeAlpha;
-	
+
 	Canvas.DrawColor = PlayerBarShadowColor;
 	Canvas.DrawColor.A = FadeAlpha;
 	Canvas.SetPos(ScreenPos.X - (BarLength * 0.5f) + 1, ScreenPos.Y + 8);
@@ -834,13 +834,13 @@ simulated final function DrawPlayerInfoBar(KFPawn P, float BarPercentage, float 
 	Canvas.DrawColor.A = FadeAlpha;
 	Canvas.SetPos(XPos, YPos);
 	Canvas.DrawTileStretched(PlayerStatusBarBGTexture, BarLength * BarPercentage, BarHeight, 0, 0, 32, 32);
-	
+
 	if (bDrawingHealth && ExtHumanPawn(P) != None && P.Health<P.HealthMax && ExtHumanPawn(P).RepRegenHP>0)
 	{
 		// Draw to-regen bar.
 		XPos+=(BarLength * BarPercentage);
 		BarPercentage = FMin(float(ExtHumanPawn(P).RepRegenHP) / float(P.HealthMax),1.f-BarPercentage);
-		
+
 		Canvas.DrawColor = MakeColor(255,128,128,FadeAlpha);
 		Canvas.SetPos(XPos, YPos);
 		Canvas.DrawTileStretched(PlayerStatusBarBGTexture, BarLength * BarPercentage, BarHeight, 0, 0, 32, 32);
@@ -960,7 +960,7 @@ simulated function DrawPetInfo()
 	local float X,Y,Sc,XL,YL,YS;
 	local string S;
 	local int i;
-	
+
 	X = Canvas.ClipX*0.165;
 	Y = Canvas.ClipY*0.925;
 	Canvas.Font = GUIStyle.PickFont(GUIStyle.DefaultFontSize,Sc);
@@ -968,17 +968,17 @@ simulated function DrawPetInfo()
 	S = "Current Pet(s)"; // TODO: Localization. (for some reason, if i try to replace this var with localized version - the border around the text disappears)
 	Canvas.TextSize(S,XL,YL,Sc,Sc);
 	Y-=(YS*MyCurrentPet.Length);
-	
+
 	Canvas.SetDrawColor(120,0,0,145);
-	GUIStyle.DrawRectBox(X, Y, BestPetXL * 1.04, YL, 4);	
-	
+	GUIStyle.DrawRectBox(X, Y, BestPetXL * 1.04, YL, 4);
+
 	Canvas.DrawColor = MakeColor(255,255,255,255);
 	Canvas.SetPos(X,Y);
 	Canvas.DrawText(S,,Sc,Sc);
-	
+
 	Canvas.SetDrawColor(8,8,8,145);
 	GUIStyle.DrawRectBox(X, Y + YS, BestPetXL * 1.04, YL * MyCurrentPet.Length, 4);
-	
+
 	Canvas.DrawColor = MakeColor(32,250,32,255);
 	for (i=0; i<MyCurrentPet.Length; ++i)
 	{
@@ -992,7 +992,7 @@ simulated function DrawPetInfo()
 		Canvas.TextSize(S,XL,YL,Sc,Sc);
 		Canvas.SetPos(X,Y);
 		Canvas.DrawText(S,,Sc,Sc);
-		
+
 		if (XL > BestPetXL)
 			BestPetXL = XL;
 		if (YL > BestPetYL)
@@ -1008,7 +1008,7 @@ function byte DrawToDistance(Actor A, optional float StartAlpha=255.f, optional 
 	if (Dist <= HealthBarFullVisDist || PlayerOwner.PlayerReplicationInfo.bOnlySpectator)
 		fZoom = 1.0;
 	else fZoom = FMax(1.0 - (Dist - HealthBarFullVisDist) / (HealthBarCutoffDist - HealthBarFullVisDist), 0.0);
-	
+
 	return Clamp(StartAlpha * fZoom, MinAlpha, StartAlpha);
 }
 
@@ -1029,7 +1029,7 @@ final function AddNumberMsg(int Amount, vector Pos, byte Type)
 		C.R = 220;
 		C.G = 0;
 		C.B = 0;
-	}   
+	}
 	else if (Type == 1) {
 		C.R = 255;
 		C.G = 255;
@@ -1073,17 +1073,17 @@ final function DrawDamage()
 
 	Canvas.Font = class'Engine'.Static.GetMediumFont();
 	Sc = 1;
-	
+
 	KFPlayerController(Owner).GetPlayerViewPoint(CameraLocation, CameraRotation);
 	CamDir = vector(CameraRotation);
-	
-	for (i=0; i < DAMAGEPOPUP_COUNT ; i++) 
+
+	for (i=0; i < DAMAGEPOPUP_COUNT ; i++)
 	{
 		TimeSinceHit = WorldInfo.TimeSeconds - DamagePopups[i].HitTime;
 		if (TimeSinceHit > DamagePopupFadeOutTime
 				|| (Normal(DamagePopups[i].HitLocation - CameraLocation) dot Normal(CamDir) < 0.1)) //don't draw if player faced back to the hit location
 			continue;
-			
+
 		switch (DamagePopups[i].Type)
 		{
 		case 0: // Pawn damage.
@@ -1167,7 +1167,7 @@ simulated final function DrawItemsList()
 {
 	local int i;
 	local float T,FontScale,XS,YS,YSize,XPos,YPos;
-	
+
 	FontScale = Canvas.ClipY / 660.f;
 	Canvas.Font = GetFontSizeIndex(0);
 	Canvas.TextSize("ABC",XS,YSize,FontScale,FontScale);
@@ -1189,7 +1189,7 @@ simulated final function DrawItemsList()
 			Canvas.SetDrawColor(255,255,255,T);
 		}
 		else Canvas.SetDrawColor(255,255,255,255);
-		
+
 		Canvas.TextSize(NewItems[i].Item,XS,YS,FontScale,FontScale);
 
 		/*if (NewItems[i].Icon!=None)
@@ -1199,7 +1199,7 @@ simulated final function DrawItemsList()
 			XS = XPos-(YSize*1.1)-XS;
 		}
 		else */XS = XPos-XS;
-		
+
 		Canvas.SetPos(XS,YPos);
 		Canvas.DrawText(NewItemText,,FontScale,FontScale);
 		Canvas.SetPos(XS,YPos+(YSize*0.5));
@@ -1231,7 +1231,7 @@ defaultproperties
 	RedBGColor=(R=164,G=32,B=32,A=186)
 	HUDTextColor=(R=250,G=250,B=250,A=186)
 	HUDClass=class'ExtMoviePlayer_HUD'
-	
+
 	HealthBarFullVisDist=350
 	HealthBarCutoffDist=3500
 	DamagePopupFadeOutTime=3.000000

@@ -33,7 +33,7 @@ function bool handleQuery(WebAdminQuery q)
 final function IncludeFile(WebAdminQuery q, string file)
 {
 	local string S;
-	
+
 	if (webadmin.HTMLSubDirectory!="")
 	{
 		S = webadmin.Path $ "/" $ webadmin.HTMLSubDirectory $ "/" $ file;
@@ -49,7 +49,7 @@ final function IncludeFile(WebAdminQuery q, string file)
 final function SendHeader(WebAdminQuery q, string Title)
 {
 	local IQueryHandler handler;
-	
+
 	q.response.Subst("page.title", Title);
 	q.response.Subst("page.description", "");
 	foreach webadmin.handlers(handler)
@@ -75,7 +75,7 @@ final function SendFooter(WebAdminQuery q)
 final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, int MaxLen, string ResponseVar, string Tooltip, optional bool bNoTR)
 {
 	local string S;
-	
+
 	S = "<abbr title=\""$Tooltip$"\"><TD>"$InfoStr$":</TD><TD><input class=\"textbox\" class=\"text\" name=\""$ResponseVar$"\" size=\""$Min(100,MaxLen)$"\" value=\""$CurVal$"\" maxlength=\""$MaxLen$"\"></TD></abbr>";
 	if (!bNoTR)
 		S = "<TR>"$S$"</TR>";

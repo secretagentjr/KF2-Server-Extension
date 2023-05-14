@@ -12,23 +12,23 @@ function DrawMenu()
 	else Canvas.SetDrawColor(30, 30, 30, 160);
 
 	Owner.CurrentStyle.DrawRectBox (0.f, 0.f, CompPos[2], CompPos[3], 4);
-	
+
 	if (bDisabled)
 		return;
 
 	if (bVertical)
 		i = 3;
 	else i = 2;
-	
+
 	SliderScale = FMax(PageStep * (CompPos[i] - 32.f) / (MaxRange + PageStep),CalcButtonScale);
-	
+
 	if (bGrabbedScroller)
 	{
 		// Track mouse.
 		if (bVertical)
 			A = Owner.MousePosition.Y - CompPos[1] - GrabbedOffset;
 		else A = Owner.MousePosition.X - CompPos[0] - GrabbedOffset;
-		
+
 		A /= ((CompPos[i]-SliderScale) / float(MaxRange));
 		SetValue(A);
 	}
@@ -49,4 +49,5 @@ function DrawMenu()
 
 defaultproperties
 {
+
 }

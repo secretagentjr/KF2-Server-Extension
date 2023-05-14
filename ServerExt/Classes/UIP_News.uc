@@ -14,16 +14,16 @@ function InitMenu()
 	// Client settings
 	NewsField = KFGUI_TextField(FindComponentID('News'));
 	WebsiteButton = KFGUI_Button(FindComponentID('Website'));
-	
+
 	WebsiteButton.ButtonText=WebSiteButtonText;
-	
+
 	Timer();
 }
 
 function ShowMenu()
 {
 	local KFGameReplicationInfo GRI;
-	
+
 	Super.ShowMenu();
 	GRI = KFGameReplicationInfo(GetPlayer().WorldInfo.GRI);
 	WebsiteButton.SetDisabled(GRI==None || GRI.ServerAdInfo.WebsiteLink=="");

@@ -41,7 +41,7 @@ function bool handleQuery(WebAdminQuery q)
 final function IncludeFile(WebAdminQuery q, string file)
 {
 	local string S;
-	
+
 	if (webadmin.HTMLSubDirectory!="")
 	{
 		S = webadmin.Path $ "/" $ webadmin.HTMLSubDirectory $ "/" $ file;
@@ -57,7 +57,7 @@ final function IncludeFile(WebAdminQuery q, string file)
 final function SendHeader(WebAdminQuery q, string Title)
 {
 	local IQueryHandler handler;
-	
+
 	q.response.Subst("page.title", Title);
 	q.response.Subst("page.description", "");
 	foreach webadmin.handlers(handler)
@@ -83,7 +83,7 @@ final function SendFooter(WebAdminQuery q)
 final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, int MaxLen, string ResponseVar, string Tooltip, optional bool bSkipTrail)
 {
 	local string S;
-	
+
 	S = "<TR><TD><abbr title=\""$Tooltip$"\">"$InfoStr$":</abbr></TD><TD><input class=\"textbox\" class=\"text\" name=\""$ResponseVar$"\" value=\""$CurVal$"\"></TD>";
 	if (!bSkipTrail)
 		S $= "</TR>";
@@ -93,7 +93,7 @@ final function AddConfigEditbox(WebAdminQuery q, string InfoStr, string CurVal, 
 final function AddConfigCheckbox(WebAdminQuery q, string InfoStr, bool bCur, string ResponseVar, string Tooltip)
 {
 	local string S;
-	
+
 	S = bCur ? " checked" : "";
 	S = "<TR><TD><abbr title=\""$Tooltip$"\">"$InfoStr$":</abbr></TD><TD><input type=\"checkbox\" name=\""$ResponseVar$"\" value=\"1\" "$S$"></TD></TR>";
 	q.response.SendText(S);
@@ -102,7 +102,7 @@ final function AddConfigCheckbox(WebAdminQuery q, string InfoStr, bool bCur, str
 final function AddConfigTextbox(WebAdminQuery q, string InfoStr, string CurVal, int Rows, string ResponseVar, string Tooltip)
 {
 	local string S;
-	
+
 	S = "<TR><TD><abbr title=\""$Tooltip$"\">"$InfoStr$":</abbr></TD><TD>";
 	S $= "<textarea name=\""$ResponseVar$"\" rows=\""$Rows$"\" cols=\"80\">"$CurVal$"</textarea></TD></TR>";
 	q.response.SendText(S);
@@ -180,7 +180,7 @@ function handleExtMod(WebAdminQuery q)
 				GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 				SetV = ExtAdminUI.ConfigList[EditPageIndex].SetValue;
 				z = int(GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,-1));
-				
+
 				for (j=z; j>=0; --j)
 				{
 					if (q.request.getVariable("DEL"$j)=="1")
@@ -202,7 +202,7 @@ function handleExtMod(WebAdminQuery q)
 		if (bEditArray)
 		{
 			q.response.SendText("<table id=\"settings\" class=\"grid\"><thead><tr><th><abbr title=\""$ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIDesc$"\">Edit Array "$ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIName$"</abbr></th><th></th><th>Delete Line</th></tr></thead><tbody>");
-			
+
 			GetV = ExtAdminUI.ConfigList[EditPageIndex].GetValue;
 			z = int(GetV(ExtAdminUI.ConfigList[EditPageIndex].Configs[i].PropName,-1));
 
@@ -227,7 +227,7 @@ function handleExtMod(WebAdminQuery q)
 					break;
 				}
 			}
-			
+
 			q.response.SendText("<tr><td></td><td><input class=\"button\" type=\"submit\" name=\"edit"$EditPageIndex$"\" value=\"Submit "$ExtAdminUI.ConfigList[EditPageIndex].Configs[i].UIName$"\"></td></tr></form>");
 		}
 		else
@@ -262,7 +262,7 @@ function handleExtMod(WebAdminQuery q)
 					}
 				}
 			}
-			
+
 			// Submit button
 			q.response.SendText("<tr><td></td><td><input class=\"button\" type=\"submit\" name=\"edit"$EditPageIndex$"\" value=\"Submit\"></td></tr></form>");
 		}

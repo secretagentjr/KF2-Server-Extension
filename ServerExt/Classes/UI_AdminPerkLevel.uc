@@ -22,7 +22,7 @@ function InitMenu()
 	LevelBox = KFGUI_NumericBox(FindComponentID('Edit'));
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
 	NoButton = KFGUI_Button(FindComponentID('No'));
-	
+
 	YesButton.ButtonText=YesButtonText;
 	YesButton.Tooltip=YesButtonToolTip;
 	NoButton.ButtonText=NoButtonText;

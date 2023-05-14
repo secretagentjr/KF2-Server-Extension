@@ -23,7 +23,7 @@ function InitializeMenu(KFGFxMoviePlayer_Manager InManager)
 function InitCharacterMenu()
 {
 	ExtPRI = ExtPlayerReplicationInfo(GetPC().PlayerReplicationInfo);
-	
+
 	if (ExtPRI!=None && ExtPRI.bClientInitChars)
 		CharListRecieved();
 	else if (ExtPRI==None)
@@ -43,7 +43,7 @@ function InitCharacterMenu()
 }
 
 event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
-{	
+{
 	switch (WidgetName)
 	{
 	case 'perkSelectionContainer':
@@ -65,9 +65,9 @@ function OnOpen()
 	PC = GetPC();
 	if (PC == none)
 		return;
-		
+
 	CheckForCustomizationPawn(PC);
-	
+
 	if (PC.PlayerReplicationInfo.bReadyToPlay && PC.WorldInfo.GRI.bMatchHasBegun)
 	{
 		// Players cannot change characters if they are in a game
@@ -87,7 +87,7 @@ function CheckForCustomizationPawn(PlayerController PC)
 		{
 			KFPC.SpawnMidGameCustomizationPawn();
 		}
-	}	
+	}
 }
 
 function LocalizeText()
@@ -114,7 +114,7 @@ function LocalizeText()
 
 simulated function CharListRecieved()
 {
-	UpdateCharacterList();	
+	UpdateCharacterList();
 	UpdateGear();
 }
 
@@ -145,7 +145,7 @@ function UpdateEmoteList()
 			//`log(MyKFPRI.EmoteList[i] @ "is not purchased.");
 		}
 	}
-	
+
 	SetObject("emoteArray", DataProvider);
 }
 
@@ -183,7 +183,7 @@ function UpdateCharacterList()
 			ItemIndex++;
 		}
 	}
-	
+
 	SetObject("characterArray", DataProvider);
 }
 
@@ -202,7 +202,7 @@ function UpdateGear()
 	UpdateMeshList(class'KFGFxMenu_Gear'.Default.HeadMeshKey, class'KFGFxMenu_Gear'.Default.HeadSkinKey, CurrentCharInfo.HeadVariants, "headsArray");
 	// Set the list of usable attachments for this character
 	UpdateAttachmentsList(CurrentCharInfo.CosmeticVariants);
-	
+
 	UpdateEmoteList();
 
 	SetCurrentCharacterButtons();
@@ -216,7 +216,7 @@ final function string GetMenuName(Object Obj)
 final function string GetMenuNameStr(string ObjName)
 {
 	local int i;
-	
+
 	i = InStr(ObjName,".",true);
 	if (i!=-1)
 		ObjName = Mid(ObjName,i+1);
@@ -230,20 +230,20 @@ function UpdateMeshList(string OutfitKey, string SkinKey, array<OutfitVariants> 
 	local string TexturePath, OutfitName;
 	local OutfitVariants Outfit;
 	local SkinVariant FirstSkin;
-	
+
 	ItemIndex = 0;
 	DataProvider = CreateArray();
 	for (i = 0; i < Outfits.Length; i++)
 	{
 		Outfit = Outfits[i];
-		
+
 		OutfitName = Localize(CharInfoPath, OutfitKey$i, class'KFGFxMenu_Gear'.Default.KFCharacterInfoString);
 		if (bIsCustomChar)
 			OutfitName = GetMenuNameStr(Outfit.MeshName);
-			
+
 		if (InStr(OutfitName, "?INT?") != -1)
 			continue;
-		
+
 		SlotObject = CreateObject("Object");
 		SlotObject.SetInt("ItemIndex", i);
 		SlotObject.SetString("label", OutfitName);
@@ -251,14 +251,14 @@ function UpdateMeshList(string OutfitKey, string SkinKey, array<OutfitVariants> 
 		FirstSkin = UpdateOutfitVariants(OutfitKey, SkinKey, Outfit.SkinVariations, i, SlotObject);
 		if (string(FirstSkin.UITexture) == "Bad")
 			continue;
-			
+
 		TexturePath = "img://"$PathName(FirstSkin.UITexture);
 		SlotObject.SetString("source", TexturePath);
 
 		DataProvider.SetElementObject(ItemIndex, SlotObject);
 		ItemIndex++;
 	}
-	
+
 	SetObject(DataArrayString, DataProvider);
 }
 
@@ -274,7 +274,7 @@ function SkinVariant UpdateOutfitVariants(string OutfitKey, string KeyName, out 
 
 	ItemIndex = 0;
 	DataProvider = CreateArray();
-	SectionPath = CharInfoPath$"."$OutfitKey$OutfitIndex;	
+	SectionPath = CharInfoPath$"."$OutfitKey$OutfitIndex;
 
 	for (i = 0; i < SkinVariations.length; i++)
 	{
@@ -308,7 +308,7 @@ function UpdateAttachmentsList(array<AttachmentVariants> Attachments)
 	local Pawn MyPawn;
 	local SkinVariant FirstSkin;
 	local string AttachmentName;
-	
+
 	ItemIndex = 0;
 	DataProvider = CreateArray();
 	MyPawn = GetPC().Pawn;
@@ -335,12 +335,12 @@ function UpdateAttachmentsList(array<AttachmentVariants> Attachments)
 			SlotObject.SetBool("enabled", true);
 			TexturePath = "img://"$PathName(FirstSkin.UITexture);
 			SlotObject.SetString("source", TexturePath);
-			
+
 			DataProvider.SetElementObject(ItemIndex, SlotObject);
 			ItemIndex++;
 		}
 	}
-	
+
 	SetObject("attachmentsArray", DataProvider);
 }
 
@@ -389,7 +389,7 @@ function SetCurrentCharacterButtons()
 
 	bCustom = ExtPRI.UsesCustomChar();
 	DataObject = CreateObject("Object");
-	
+
 	CharacterIndex = ExtPRI.RepCustomizationInfo.CharacterIndex;
 	HeadMeshIndex = ExtPRI.RepCustomizationInfo.HeadMeshIndex;
 	HeadSkinIndex = ExtPRI.RepCustomizationInfo.HeadSkinIndex;
@@ -416,7 +416,7 @@ function SetCurrentCharacterButtons()
 	SetGearButtons(BodyMeshIndex, BodySkinIndex, class'KFGFxMenu_Gear'.Default.BodyMeshKey, class'KFGFxMenu_Gear'.Default.BodySkinKey, class'KFGFxMenu_Gear'.Default.BodyFunctionKey);
 	//set attachments
 	SetAttachmentButtons(class'KFGFxMenu_Gear'.Default.AttachmentKey, class'KFGFxMenu_Gear'.Default.AttachmentFunctionKey);
-	
+
 	SetEmoteButton();
 }
 
@@ -438,7 +438,7 @@ function SetEmoteButton()
 		DataObject.SetString("selectedEmote", Localize(EmoteList[EmoteIndex].ItemName, "EmoteName", class'KFGFxMenu_Gear'.Default.KFCharacterInfoString));
 		DataObject.SetInt("selectedEmoteIndex", 0);
 	}
-	
+
 
 	SetObject("selectedEmote", DataObject);
 }
@@ -472,7 +472,7 @@ function SetGearButtons(int MeshIndex, int SkinIndex, string MeshKey, string Ski
 			SkinName = GetMenuName(CurrentCharInfo.BodyVariants[MeshIndex].SkinVariations[SkinIndex].Skin);
 			MeshName = GetMenuNameStr(CurrentCharInfo.BodyVariants[MeshIndex].MeshName);
 		}
-		
+
 		DataObject.SetString(sectionFunctionName,  MeshName @"\n" @SkinName);
 	}
 	else
@@ -497,16 +497,16 @@ function SetAttachmentButtons(string AttachmentMeshKey, string sectionFunctionNa
 	local GFxObject DataObject;
 	local int i, AttachmentIndex;
 	local bool bCustom;
-	
+
 	if (bWaitingCharList)
 		return;
-	
+
 	bCustom = ExtPRI.UsesCustomChar();
 	DataObject = CreateObject("Object");
 
 	for (i = 0; i < `MAX_COSMETIC_ATTACHMENTS; i++)
 	{
-		AttachmentIndex = bCustom ? ExtPRI.CustomCharacter.AttachmentMeshIndices[i] : ExtPRI.RepCustomizationInfo.AttachmentMeshIndices[i];		
+		AttachmentIndex = bCustom ? ExtPRI.CustomCharacter.AttachmentMeshIndices[i] : ExtPRI.RepCustomizationInfo.AttachmentMeshIndices[i];
 		if (AttachmentIndex == `CLEARED_ATTACHMENT_INDEX)
 		{
 			DataObject.SetString("selectedAttachment_"$i, "----");
@@ -515,7 +515,7 @@ function SetAttachmentButtons(string AttachmentMeshKey, string sectionFunctionNa
 		{
 			DataObject.SetString("selectedAttachment_"$i, bIsCustomChar ? GetMenuNameStr(CurrentCharInfo.CosmeticVariants[AttachmentIndex].MeshName) : Localize(string(CurrentCharInfo.CosmeticVariants[AttachmentIndex].AttachmentItem.Name), AttachmentMeshKey, class'KFGFxMenu_Gear'.default.KFCharacterInfoString));
 		}
-	}	
+	}
 
 	SetObject(sectionFunctionName, DataObject);
 }
@@ -578,7 +578,7 @@ function Callback_Emote(int Index)
 function Callback_RotateCamera(int RotationDirection)
 {
 	local KFPlayerCamera PlayerCamera;
-	
+
 	PlayerCamera = KFPlayerCamera(GetPC().PlayerCamera);
 	if (PlayerCamera != none)
 		PlayerCamera.CustomizationCam.RotatedCamera(RotationDirection);
@@ -632,9 +632,9 @@ function Callback_Body(int MeshIndex, int SkinIndex)
 {
 	if (!ExtPRI.UsesCustomChar()) // Force client to setup custom character now for this server.
 		ExtPRI.ChangeCharacter(ExtPRI.RepCustomizationInfo.CharacterIndex,true);
-	
+
 	ExtPRI.UpdateCustomization(CO_Body, MeshIndex, SkinIndex);
-	
+
 	// When assigning a new body mesh we may need to remove certain attachments
 	// refresh filters, and update the equipped accessories list
 	UpdateAttachmentsList(CurrentCharInfo.CosmeticVariants);
@@ -698,7 +698,7 @@ function Callback_Attachment(int MeshIndex, int SkinIndex)
 			{
 				return;
 			}
-	
+
 			ExtPRI.UpdateCustomization(CO_Attachment, MeshIndex, SkinIndex, SlotIndex);
 		}
 		SetAttachmentButtons(class'KFGFxMenu_Gear'.Default.AttachmentKey, class'KFGFxMenu_Gear'.Default.AttachmentFunctionKey);

@@ -10,11 +10,11 @@ function SetPerkInfo()
 	if (KFPC!=none && KFPC.ActivePerkManager!=None && KFPC.ActivePerkManager.CurrentPerk!=None)
 	{
 		CurrentPerk = KFPC.ActivePerkManager.CurrentPerk;
- 		SetString("perkName", CurrentPerk.PerkName);
- 		SetString("perkIconPath", CurrentPerk.GetPerkIconPath(CurrentPerk.CurrentLevel));
- 		SetInt("perkLevel", CurrentPerk.CurrentLevel);
+		SetString("perkName", CurrentPerk.PerkName);
+		SetString("perkIconPath", CurrentPerk.GetPerkIconPath(CurrentPerk.CurrentLevel));
+		SetInt("perkLevel", CurrentPerk.CurrentLevel);
 		V = CurrentPerk.GetProgressPercent()*100.f;
- 		SetInt("xpBarValue", int(V));
+		SetInt("xpBarValue", int(V));
 	}
 }
 
@@ -52,4 +52,5 @@ function SetPerkList()
 
 defaultproperties
 {
+
 }

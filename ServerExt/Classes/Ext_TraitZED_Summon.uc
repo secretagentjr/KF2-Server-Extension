@@ -74,7 +74,7 @@ static function bool MeetsRequirements(byte Lvl, Ext_PerkBase Perk)
 	// First check level.
 	if (Perk.CurrentLevel<Default.MinLevel || (Lvl>=5 && Perk.CurrentPrestige<Default.FinalLevelPrestige))
 		return false;
-	
+
 	// Then check base trait.
 	if (Lvl==0 && Default.BaseTrait!=None)
 	{
@@ -93,7 +93,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	H = Player.Spawn(class'Ext_T_ZEDHelper',Player);
 	if (H!=None)
 		H.CurLevel = Level-1;
-	
+
 	// Make other traits refresh (apply HP/damage scalers).
 	for (i=0; i<Perk.PerkTraits.Length; ++i)
 		if (Perk.PerkTraits[i].CurrentLevel>0 && Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType)!=None && !Class<Ext_TraitZEDBase>(Perk.PerkTraits[i].TraitType).Default.bIsSummoner)
@@ -113,7 +113,7 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 static function string GetRepData()
 {
 	local string S;
-	
+
 	S = Super.GetRepData();
 	S $= IntToStr(Default.FinalLevelPrestige);
 	return S;
@@ -173,14 +173,14 @@ defaultproperties
 	DefLevelCosts(4)=30
 	DefLevelCosts(5)=100
 	DefMinLevel=20
-	
+
 	DefZedTypes.Add((Zeds=(Class'KFPawn_ZedClot_Alpha',Class'KFPawn_ZedClot_Slasher',Class'KFPawn_ZedClot_Cyst',Class'KFPawn_ZedCrawler')))
 	DefZedTypes.Add((Zeds=(Class'KFPawn_ZedClot_Slasher',Class'KFPawn_ZedGorefast',Class'KFPawn_ZedStalker')))
 	DefZedTypes.Add((Zeds=(Class'KFPawn_ZedBloat',Class'KFPawn_ZedStalker',Class'KFPawn_ZedGorefast')))
 	DefZedTypes.Add((Zeds=(Class'KFPawn_ZedHusk',Class'KFPawn_ZedSirenX',Class'KFPawn_ZedScrake')))
 	DefZedTypes.Add((Zeds=(Class'KFPawn_ZedSirenX',Class'KFPawn_ZedFleshpound',Class'KFPawn_ZedScrake')))
 	DefZedTypes.Add((Zeds=(Class'ExtPawn_ZedHans_Pet')))
-	
+
 	WebConfigs.Add((PropType=2,PropName="ZedTypes",UIName="Zed Types",UIDesc="Type of zeds each level can spawn (separate types with a comma)",NumElements=-1))
 	WebConfigs.Add((PropType=0,PropName="ZedRespawnTime",UIName="Zed RespawnTime",UIDesc="Time in seconds it takes for zeds to respawn"))
 	WebConfigs.Add((PropType=0,PropName="FinalLevelPrestige",UIName="Final Level Prestige",UIDesc="Prestige level required for this perks final level"))

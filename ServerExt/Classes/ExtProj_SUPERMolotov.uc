@@ -9,10 +9,10 @@ defaultproperties
 
 	bCanDisintegrate=false
 	DrawScale=2.5
-	
+
 	NumResidualFlames=10
 	ResidualFlameProjClass=class'ExtProj_SUPERMolotovS'
-	
+
 	// explosion
 	Begin Object Name=ExploTemplate0
 		Damage=750

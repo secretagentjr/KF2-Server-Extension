@@ -2,7 +2,7 @@ class ExtTraderContainer_Filter extends KFGFxTraderContainer_Filter;
 
 function SetPerkFilterData(byte FilterIndex)
 {
- 	local int i;
+	local int i;
 	local GFxObject DataProvider;
 	local GFxObject FilterObject;
 	local ExtPlayerController KFPC;
@@ -31,7 +31,7 @@ function SetPerkFilterData(byte FilterIndex)
 				SetString("filterText", OffPerkString);
 			}
 
-		   	DataProvider = CreateArray();
+			DataProvider = CreateArray();
 			for (i = 0; i < PrM.UserPerks.Length; i++)
 			{
 				FilterObject = CreateObject("Object");

@@ -58,7 +58,7 @@ simulated function HandleDrawMenu()
 	{
 		OrgConsole = ClientViewport.ViewportConsole;
 		ClientViewport.ViewportConsole = HackConsole;
-		
+
 		// Make sure nothing overrides these settings while menu is being open.
 		PlayerOwner.PlayerInput = CustomInput;
 		if (!ClientViewport.bDisplayHardwareMouseCursor)
@@ -111,7 +111,7 @@ simulated function RenderMenu(Canvas C)
 	}
 	C.SetOrigin(OrgX,OrgY);
 	C.SetClip(ClipX,ClipY);
-	
+
 	if (OrgConsole!=None)
 		OrgConsole.PostRender_Console(C);
 	OrgConsole = None;
@@ -194,7 +194,7 @@ simulated function MenuInput(float DeltaTime)
 		InputFocus.MenuTick(DeltaTime);
 	for (i=0; i<ActiveMenus.Length; ++i)
 		ActiveMenus[i].MenuTick(DeltaTime);
-	
+
 	// Check idle.
 	if (Abs(MousePosition.X-OldMousePos.X)>5.f || Abs(MousePosition.Y-OldMousePos.Y)>5.f || (bMouseWasIdle && MousePauseTime<0.5f))
 	{
@@ -223,9 +223,9 @@ simulated function MouseMove(float MouseX, float MouseY)
 	local int i;
 	local KFGUI_Base F;
 
-	// Handle mouse 
-	MousePosition.X = Clamp(MouseX, 0, ScreenSize.X); 
-	MousePosition.Y = Clamp(MouseY, 0, ScreenSize.Y); 
+	// Handle mouse
+	MousePosition.X = Clamp(MouseX, 0, ScreenSize.X);
+	MousePosition.Y = Clamp(MouseY, 0, ScreenSize.Y);
 
 	// Capture mouse for GUI
 	if (InputFocus!=None && InputFocus.bCanFocus)
@@ -280,7 +280,7 @@ simulated function MouseMove(float MouseX, float MouseY)
 simulated final function int GetFreeIndex(bool bNewAlwaysTop) // Find first allowed top index of the stack.
 {
 	local int i;
-	
+
 	for (i=0; i<ActiveMenus.Length; ++i)
 		if (bNewAlwaysTop || !ActiveMenus[i].bAlwaysTop)
 		{
@@ -296,7 +296,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 {
 	local int i;
 	local KFGUI_Page M;
-	
+
 	if (MenuClass==None)
 		return None;
 
@@ -310,7 +310,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 
 	// Enable mouse on UI if disabled.
 	SetMenuState(true);
-	
+
 	// Check if should use pre-excisting menu.
 	if (MenuClass.Default.bUnique)
 	{
@@ -326,7 +326,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 				}
 				return M;
 			}
-		
+
 		if (MenuClass.Default.bPersistant)
 		{
 			for (i=0; i<PersistentMenus.Length; ++i)
@@ -345,7 +345,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 
 	if (M==None) // Probably abstract class.
 		return None;
-	
+
 	i = GetFreeIndex(M.bAlwaysTop);
 	ActiveMenus[i] = M;
 	M.Owner = Self;
@@ -361,7 +361,7 @@ simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAl
 
 	if (!bCloseAll && MenuClass==None)
 		return;
-	
+
 	if (KeyboardFocus!=None)
 		GrabInputFocus(None);
 	if (InputFocus!=None)
@@ -375,7 +375,7 @@ simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAl
 			M = ActiveMenus[i];
 			ActiveMenus.Remove(i,1);
 			M.CloseMenu();
-			
+
 			// Cache menu.
 			if (M.bPersistant && M.bUnique)
 				PersistentMenus[PersistentMenus.Length] = M;
@@ -391,7 +391,7 @@ simulated function PopCloseMenu(KFGUI_Base Item)
 
 	if (Item==None)
 		return;
-	
+
 	if (KeyboardFocus!=None)
 		GrabInputFocus(None);
 	if (InputFocus!=None)
@@ -405,7 +405,7 @@ simulated function PopCloseMenu(KFGUI_Base Item)
 			M = ActiveMenus[i];
 			ActiveMenus.Remove(i,1);
 			M.CloseMenu();
-			
+
 			// Cache menu.
 			if (M.bPersistant && M.bUnique)
 				PersistentMenus[PersistentMenus.Length] = M;
@@ -418,7 +418,7 @@ simulated function PopCloseMenu(KFGUI_Base Item)
 simulated function BringMenuToFront(KFGUI_Page Page)
 {
 	local int i;
-	
+
 	if (ActiveMenus[0].bAlwaysTop && !Page.bAlwaysTop)
 		return; // Can't override this menu.
 
@@ -431,7 +431,7 @@ simulated function BringMenuToFront(KFGUI_Page Page)
 		}
 	if (i==-1)
 		return; // Page isn't open.
-	
+
 	// Put on front of stack.
 	ActiveMenus.Insert(0,1);
 	ActiveMenus[0] = Page;
@@ -440,7 +440,7 @@ simulated function BringMenuToFront(KFGUI_Page Page)
 simulated final function bool MenuIsOpen(optional class<KFGUI_Page> MenuClass)
 {
 	local int i;
-	
+
 	for (i=(ActiveMenus.Length-1); i>=0; --i)
 		if (MenuClass==None || ActiveMenus[i].Class==MenuClass)
 			return true;
@@ -473,7 +473,7 @@ simulated final function GUI_InputMouse(bool bPressed, bool bRight)
 	local byte i;
 
 	MousePauseTime = 0;
-	
+
 	if (bPressed)
 	{
 		if (KeyboardFocus!=None && KeyboardFocus!=MouseFocus)

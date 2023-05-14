@@ -35,7 +35,7 @@ function bool CanAttack(Actor Other)
 function bool IsFiring()
 {
 	local byte i;
-	
+
 	for (i=0; i<ArrayCount(IsFiringMode); ++i)
 		if (IsFiringMode[i]!=0)
 			return true;
@@ -45,7 +45,7 @@ function bool IsFiring()
 function bool StopFiring()
 {
 	local byte i;
-	
+
 	for (i=0; i<ArrayCount(IsFiringMode); ++i)
 		IsFiringMode[i] = 0;
 	return true;
@@ -183,7 +183,7 @@ function bool MeleeDamageTarget(vector pushdir)
 	Start = GetPawnViewLocation();
 	Dir = vector(GetAdjustedAimfor (None,Start));
 	T = GetTeamNum();
-	
+
 	// First try if can hit with a small extent trace.
 	foreach TraceActors(Class'Actor',A,HL,HN,Start+Dir*120.f,Start,vect(8,8,8))
 	{
@@ -405,7 +405,7 @@ function AdjustDamage(out int InDamage, out vector Momentum, Controller Instigat
 	}
 
 	InDamage = FCeil(TempDamage);
-	
+
 	if (InstigatedBy!=None && InstigatedBy!=Controller && InstigatedBy.GetTeamNum()==0)
 	{
 		// Give credits to pets owner.
@@ -472,7 +472,7 @@ defaultproperties
 	InventoryManagerClass=None // No weapons for bots!
 
 	PropDamageScale=0.65
-	
+
 	HitZones(0)=(ZoneName="head",BoneName="head",GoreHealth=20,Limb=BP_Head,DmgScale=2)
 	HitZones(1)=(ZoneName="neck",BoneName="neck",GoreHealth=20,Limb=BP_Head,DmgScale=2)
 	HitZones(2)=(ZoneName="chest",BoneName="Spine2",GoreHealth=150,Limb=BP_Torso)
@@ -491,7 +491,7 @@ defaultproperties
 	HitZones(15)=(ZoneName="rthigh",BoneName="RightUpLeg",GoreHealth=75,Limb=BP_RightLeg,DmgScale=0.75)
 	HitZones(16)=(ZoneName="rcalf",BoneName="RightLeg",GoreHealth=25,Limb=BP_RightLeg,DmgScale=0.7)
 	HitZones(17)=(ZoneName="rfoot",BoneName="RightFoot",GoreHealth=15,Limb=BP_RightLeg,DmgScale=0.7)
-	
+
 	Begin Object Name=KFPawnSkeletalMeshComponent
 		RBChannel=RBCC_Untitled3
 	End Object

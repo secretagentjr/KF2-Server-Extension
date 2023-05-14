@@ -82,12 +82,12 @@ function PostBeginPlay()
 	if (WorldInfo.Game.BaseMutator==None)
 		WorldInfo.Game.BaseMutator = Self;
 	else WorldInfo.Game.BaseMutator.AddMutator(Self);
-	
+
 	if (bDeleteMe) // This was a duplicate instance of the mutator.
 		return;
 
 	SpawnPointer = class'ExtSpawnPointHelper'.Static.FindHelper(WorldInfo); // Start init world pathlist.
-	
+
 	//OnlineSubsystemSteamworks(class'GameEngine'.Static.GetOnlineSubsystem()).Int64ToUniqueNetId("",Id);
 	//`Log("TEST"@class'OnlineSubsystem'.Static.UniqueNetIdToString(Id));
 
@@ -97,7 +97,7 @@ function PostBeginPlay()
 		class'OnlineSubsystem'.Static.StringToUniqueNetId(DevList[i],Id);
 		DevNetID[i] = Id;
 	}
-	
+
 	ServerStatLoader = new (None) class'ExtPlayerStat';
 	WorldInfo.Game.HUDType = class'KFExtendedHUD';
 	WorldInfo.Game.PlayerControllerClass = class'ExtPlayerController';
@@ -105,7 +105,7 @@ function PostBeginPlay()
 	WorldInfo.Game.DefaultPawnClass = class'ExtHumanPawn';
 	KFGameInfo(WorldInfo.Game).CustomizationPawnClass = class'ExtPawn_Customization';
 	KFGameInfo(WorldInfo.Game).KFGFxManagerClass = class'ExtMoviePlayer_Manager';
-	
+
 	KFGIA = new(KFGameInfo(WorldInfo.Game)) class'KFGI_Access';
 
 	if (ServerMOTD=="")
@@ -211,7 +211,7 @@ function PostBeginPlay()
 			}
 		}
 	}
-	
+
 	// Bonus (pong) game contents.
 	if (BonusGameSongs.Length>0)
 	{
@@ -283,7 +283,7 @@ static final function string GetStatFile(const out UniqueNetId UID)
 final function bool IsDev(const out UniqueNetId UID)
 {
 	local int i;
-	
+
 	for (i=(DevNetID.Length-1); i>=0; --i)
 		if (DevNetID[i]==UID)
 			return true;
@@ -314,7 +314,7 @@ function NotifyWaveChange()
 {
 	local ExtPlayerController ExtPC;
 	local KFProj_RicochetStickBullet KFBolt;
-	
+
 	if (bRespawnCheck)
 	{
 		bIsPostGame = (KF.WaveMax<KF.WaveNum);
@@ -327,7 +327,7 @@ function NotifyWaveChange()
 		NumWaveSwitches = 0;
 		SaveAllPerks();
 	}
-	
+
 	if (!KF.bTraderIsOpen)
 	{
 		foreach WorldInfo.AllControllers(class'ExtPlayerController',ExtPC)
@@ -393,10 +393,10 @@ function AddMutator(Mutator M)
 function bool IsFromMod(Object O)
 {
 	local string PackageName;
-	
+
 	if (O == None)
 		return false;
-	
+
 	PackageName = string(O.GetPackageName());
 	if (Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
 	{
@@ -404,7 +404,7 @@ function bool IsFromMod(Object O)
 		if (Len(PackageName)>1 && InStr(Caps(PackageName), "KF") == 0)
 			return false;
 	}
-		
+
 	return true;
 }
 
@@ -412,15 +412,15 @@ function bool HasModsInDamageInfo(DamageInfo DI)
 {
 	local class<Actor>  DamageCauser;
 	local class<KFDamageType> DamageType;
-	
+
 	foreach DI.DamageCausers(DamageCauser)
 		if (IsFromMod(DamageCauser))
 			return true;
-	
+
 	foreach DI.DamageTypes(DamageType)
 		if (IsFromMod(DamageType))
 			return true;
-		
+
 	return false;
 }
 
@@ -434,19 +434,19 @@ function CustomXP(Controller Killer, Controller Killed)
 	local KFPerk InstigatorPerk;
 	local DamageInfo DamageInfo;
 	local class<KFPerk> DamagePerk;
-	
+
 	KFM = KFPawn_Monster(Killed.Pawn);
 	foreach KFM.DamageHistory(DamageInfo)
 	{
 		DamagerKFPRI = KFPlayerReplicationInfo(DamageInfo.DamagerPRI);
 		if (DamagerKFPRI == None) continue;
-		
+
 		// if no mods - exit the loop, the game will add experience by itself
-		if (!HasModsInDamageInfo(DamageInfo) && !KFGIA.IsCustomZed(KFM.class)) continue; 
-		
+		if (!HasModsInDamageInfo(DamageInfo) && !KFGIA.IsCustomZed(KFM.class)) continue;
+
 		KFPC = KFPlayerController(DamagerKFPRI.Owner);
 		if (KFPC == None) continue;
-		
+
 		i = CustomZedXPArray.Find('zedclass', KFM.Class);
 		if (i != INDEX_NONE)
 		{
@@ -456,9 +456,9 @@ function CustomXP(Controller Killer, Controller Killed)
 		{
 			XP = KFM.static.GetXPValue(MyKFGI.GameDifficulty);
 		}
-		
+
 		InstigatorPerk = KFPC.GetPerk();
-		
+
 		// Special for survivalist - he gets experience for everything
 		// and for TF2Sentry - it has no perk in DamageHistory
 		if (InstigatorPerk.ShouldGetAllTheXP() || DamageInfo.DamagePerks.Length == 0)
@@ -466,7 +466,7 @@ function CustomXP(Controller Killer, Controller Killed)
 			KFPC.OnPlayerXPAdded(XP, InstigatorPerk.Class);
 			continue;
 		}
-		
+
 		XP /= DamageInfo.DamagePerks.Length;
 		foreach DamageInfo.DamagePerks(DamagePerk)
 		{
@@ -481,10 +481,10 @@ function ScoreKill(Controller Killer, Controller Killed)
 	local ExtPlayerController ExtPC;
 	local ExtPerkManager      KillersPerk;
 	local KFPawn_Monster      KFPM;
-	
+
 	if (bRespawnCheck && Killed.bIsPlayer)
 		CheckRespawn(Killed);
-	
+
 	KFPM = KFPawn_Monster(Killed.Pawn);
 	if (KFPM != None && Killed.GetTeamNum() != 0
 	&& Killer != None && Killer.bIsPlayer && Killer.GetTeamNum() == 0)
@@ -492,13 +492,13 @@ function ScoreKill(Controller Killer, Controller Killed)
 		ExtPC = ExtPlayerController(Killer);
 		if (ExtPC != None && ExtPC.ActivePerkManager != None)
 			ExtPC.ActivePerkManager.PlayerKilled(KFPM, LastKillDamageType);
-		
+
 		if (bKillMessages && Killer.PlayerReplicationInfo != None)
 			BroadcastKillMessage(Killed.Pawn, Killer);
-		
+
 		CustomXP(Killer, Killed);
 	}
-	
+
 	if (MyKFGI != None && MyKFGI.IsZedTimeActive() && KFPM != None)
 	{
 		KFPC = KFPlayerController(Killer);
@@ -512,11 +512,11 @@ function ScoreKill(Controller Killer, Controller Killed)
 			}
 		}
 	}
-	
+
 	ExtPC = ExtPlayerController(Killed);
 	if (ExtPC != None)
 		CheckPerkChange(ExtPC);
-	
+
 	if (NextMutator != None)
 		NextMutator.ScoreKill(Killer, Killed);
 }
@@ -525,7 +525,7 @@ function bool PreventDeath(Pawn Killed, Controller Killer, class<DamageType> dam
 {
 	if ((KFPawn_Human(Killed)!=None && CheckPreventDeath(KFPawn_Human(Killed),Killer,damageType)) || Super.PreventDeath(Killed,Killer,damageType,HitLocation))
 		return true;
-	
+
 	LastKillDamageType = damageType;
 	if (Killed.Controller!=None && KFPawn_Monster(Killed)!=None)
 	{
@@ -551,7 +551,7 @@ final function GT_PlayerKilled(Controller Killer, Controller Killed, class<Damag
 
 	KFG = KFGameInfo(WorldInfo.Game);
 	ScoreKill(Killer,Killed); // Broadcast kill message.
-	
+
 	KFPC = ExtPlayerController(Killer);
 	MonsterPawn = KFPawn_Monster(Killed.Pawn);
 	if (KFG!=None && KFPC != none && MonsterPawn!=none)
@@ -568,7 +568,7 @@ final function GT_PlayerKilled(Controller Killer, Controller Killed, class<Damag
 final function bool CheckPreventDeath(KFPawn_Human Victim, Controller Killer, class<DamageType> damageType)
 {
 	local ExtPlayerController E;
-	
+
 	if (Victim.IsA('KFPawn_Customization'))
 		return false;
 	E = ExtPlayerController(Victim.Controller);
@@ -598,7 +598,7 @@ final function BroadcastFFDeath(Controller Killer, Pawn Killed, class<DamageType
 	local PlayerReplicationInfo KillerPRI;
 	local string P;
 	local bool bFF;
-	
+
 	P = Killed.PlayerReplicationInfo.PlayerName;
 	if (Killer==None || Killer==Killed.Controller)
 	{
@@ -775,7 +775,7 @@ final function InitializePerks(ExtPlayerController Other)
 	local ExtPerkManager PM;
 	local Ext_PerkBase P;
 	local int i;
-	
+
 	Other.OnChangePerk = PlayerChangePerk;
 	Other.OnBoughtStats = PlayerBuyStats;
 	Other.OnBoughtTrait = PlayerBoughtTrait;
@@ -808,7 +808,7 @@ final function SendMOTD(ExtPlayerController PC)
 {
 	local string S;
 	local int i;
-	
+
 	S = ServerMOTD;
 	while (Len(S)>510)
 	{
@@ -816,7 +816,7 @@ final function SendMOTD(ExtPlayerController PC)
 		S = Mid(S,500);
 	}
 	PC.ReceiveServerMOTD(S,true);
-	
+
 	for (i=0; i<AdminCommands.Length; ++i)
 		PC.AddAdminCmd(AdminCommands[i]);
 }
@@ -838,13 +838,13 @@ final function SavePlayerPerk(ExtPlayerController PC)
 			PC.ClientMessage("Warning: Your stats save data version differs from what is loaded, stat saving disabled to prevent stats loss.",'Priority');
 			return;
 		}
-		
+
 		// Actually save.
 		ServerStatLoader.FlushData();
 		PC.ActivePerkManager.SaveData(ServerStatLoader);
 		ServerStatLoader.SaveStatFile(PC);
 		PC.ActivePerkManager.bStatsDirty = false;
-		
+
 		// Write XML output.
 		if (FileOutput!=None)
 			FileOutput.DumpXML(PC.ActivePerkManager);
@@ -854,7 +854,7 @@ final function SavePlayerPerk(ExtPlayerController PC)
 function SaveAllPerks(optional bool bOnEndGame)
 {
 	local ExtPlayerController PC;
-	
+
 	if (bGameHasEnded)
 		return;
 	foreach WorldInfo.AllControllers(class'ExtPlayerController',PC)
@@ -896,7 +896,7 @@ function RemoveRespawn(Controller PC)
 final function InitPlayer(ExtHumanPawn Other)
 {
 	local ExtPlayerReplicationInfo PRI;
-	
+
 	PRI = ExtPlayerReplicationInfo(Other.PlayerReplicationInfo);
 	if (PRI!=None && PRI.PerkManager!=None && PRI.PerkManager.CurrentPerk!=None)
 		PRI.PerkManager.CurrentPerk.ApplyEffectsTo(Other);
@@ -972,7 +972,7 @@ final function SavePlayerInventory()
 	local int i,j;
 	local Inventory Inv;
 	local KFWeapon K;
-	
+
 	PlayerInv.Length = 0;
 	i = 0;
 	foreach WorldInfo.AllPawns(class'KFPawn_Human',P)
@@ -982,7 +982,7 @@ final function SavePlayerInventory()
 			PlayerInv[i].OwnerPlayer = P.Controller;
 			PlayerInv[i].Gren = KFInventoryManager(P.InvManager).GrenadeCount;
 			j = 0;
-			
+
 			foreach P.InvManager.InventoryActors(class'Inventory',Inv)
 			{
 				if (KFInventory_Money(Inv)!=None)
@@ -1062,7 +1062,7 @@ final function bool RespawnPlayer(Controller NewPlayer)
 	local int Idx;
 	local array<SequenceObject> Events;
 	local SeqEvent_PlayerSpawned SpawnedEvent;
-	local LocalPlayer LP; 
+	local LocalPlayer LP;
 
 	if (NewPlayer.Pawn!=None)
 		NewPlayer.Pawn.Destroy();
@@ -1144,16 +1144,16 @@ final function bool RespawnPlayer(Controller NewPlayer)
 	// To fix custom post processing chain when not running in editor or PIE.
 	if (KFPC != none)
 	{
-		LP = LocalPlayer(KFPC.Player); 
-		if (LP != None) 
-		{ 
-			LP.RemoveAllPostProcessingChains(); 
-			LP.InsertPostProcessingChain(LP.Outer.GetWorldPostProcessChain(),INDEX_NONE,true); 
+		LP = LocalPlayer(KFPC.Player);
+		if (LP != None)
+		{
+			LP.RemoveAllPostProcessingChains();
+			LP.InsertPostProcessingChain(LP.Outer.GetWorldPostProcessChain(),INDEX_NONE,true);
 			if (KFPC.myHUD != None)
 			{
 				KFPC.myHUD.NotifyBindPostProcessEffects();
 			}
-		} 
+		}
 	}
 
 	KFGameInfo(WorldInfo.Game).SetTeam(NewPlayer, KFGameInfo(WorldInfo.Game).Teams[0]);
@@ -1180,7 +1180,7 @@ function PlayerBuyStats(ExtPlayerController PC, class<Ext_PerkBase> Perk, int iS
 
 	if (bGameHasEnded)
 		return;
-	
+
 	P = PC.ActivePerkManager.FindPerk(Perk);
 	if (P==None || !P.bPerkNetReady || iStat>=P.PerkStats.Length)
 		return;
@@ -1248,12 +1248,12 @@ function Tick(float DeltaTime)
 {
 	local bool bCheckedWave;
 	local ExtPlayerController ExtPC;
-	
+
 	if (KFGameReplicationInfo(WorldInfo.GRI).bTraderIsOpen && !bCheckedWave)
 	{
 		foreach WorldInfo.AllControllers(class'ExtPlayerController',ExtPC)
 			CheckPerkChange(ExtPC);
-			
+
 		bCheckedWave = true;
 	}
 	else if (bCheckedWave)
@@ -1267,7 +1267,7 @@ function PlayerBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass
 
 	if (bGameHasEnded)
 		return;
-	
+
 	P = PC.ActivePerkManager.FindPerk(PerkClass);
 	if (P==None || !P.bPerkNetReady)
 		return;
@@ -1281,7 +1281,7 @@ function PlayerBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass
 			cost = Trait.Static.GetTraitCost(P.PerkTraits[i].CurrentLevel);
 			if (cost>P.CurrentSP || !Trait.Static.MeetsRequirements(P.PerkTraits[i].CurrentLevel,P))
 				return;
-			
+
 			PC.ActivePerkManager.bStatsDirty = true;
 			P.CurrentSP-=cost;
 			P.bForceNetUpdate = true;
@@ -1313,7 +1313,7 @@ function PlayerUnloadInfo(ExtPlayerController PC, byte CallID, class<Ext_PerkBas
 	// Verify if client tries to cause errors.
 	if (PC==None || PerkClass==None || PC.ActivePerkManager==None)
 		return;
-	
+
 	// Perk unloading disabled on this server.
 	if (MinUnloadPerkLevel==-1)
 	{
@@ -1321,18 +1321,18 @@ function PlayerUnloadInfo(ExtPlayerController PC, byte CallID, class<Ext_PerkBas
 			PC.ClientGotUnloadInfo(CallID,0);
 		return;
 	}
-	
+
 	P = PC.ActivePerkManager.FindPerk(PerkClass);
 	if (P==None) // More client hack attempts.
 		return;
-	
+
 	if (P.CurrentLevel<MinUnloadPerkLevel) // Verify minimum level.
 	{
 		if (!bUnload)
 			PC.ClientGotUnloadInfo(CallID,1,MinUnloadPerkLevel);
 		return;
 	}
-	
+
 	// Calc how much EXP is lost on this progress.
 	LostExp = Round(float(P.CurrentEXP) * UnloadPerkExpCost);
 
@@ -1363,7 +1363,7 @@ function ResetPlayerPerk(ExtPlayerController PC, class<Ext_PerkBase> PerkClass, 
 
 	if (bGameHasEnded)
 		return;
-	
+
 	P = PC.ActivePerkManager.FindPerk(PerkClass);
 	if (P==None || !P.bPerkNetReady)
 		return;
@@ -1400,7 +1400,7 @@ function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 {
 	local ExtPlayerController E;
 	local int i;
-	
+
 	if (bNoAdminCommands)
 	{
 		PC.ClientMessage("Admin level commands are disabled.",'Priority');
@@ -1411,17 +1411,17 @@ function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 		PC.ClientMessage("You do not have enough admin priveleges.",'Priority');
 		return;
 	}
-	
+
 	foreach WorldInfo.AllControllers(class'ExtPlayerController',E)
 		if (E.PlayerReplicationInfo.PlayerID==PlayerID)
 			break;
-	
+
 	if (E==None)
 	{
 		PC.ClientMessage("Action failed, missing playerID: "$PlayerID,'Priority');
 		return;
 	}
-	
+
 	if (Action>=100) // Set perk level.
 	{
 		if (E.ActivePerkManager.CurrentPerk==None)
@@ -1439,7 +1439,7 @@ function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 			Action = Min(Action-100000,E.ActivePerkManager.CurrentPerk.MaxPrestige);
 			E.ActivePerkManager.CurrentPerk.CurrentPrestige = Action;
 			PC.ClientMessage("Set "$E.PlayerReplicationInfo.PlayerName$"' perk "$E.ActivePerkManager.CurrentPerk.Default.PerkName$" prestige level to "$Action,'Priority');
-			
+
 			E.ActivePerkManager.CurrentPerk.FullReset(true);
 		}
 		else
@@ -1447,7 +1447,7 @@ function AdminCommand(ExtPlayerController PC, int PlayerID, int Action)
 			Action = Clamp(Action-100,E.ActivePerkManager.CurrentPerk.MinimumLevel,E.ActivePerkManager.CurrentPerk.MaximumLevel);
 			E.ActivePerkManager.CurrentPerk.CurrentEXP = E.ActivePerkManager.CurrentPerk.GetNeededExp(Action-1);
 			PC.ClientMessage("Set "$E.PlayerReplicationInfo.PlayerName$"' perk "$E.ActivePerkManager.CurrentPerk.Default.PerkName$" level to "$Action,'Priority');
-			
+
 			E.ActivePerkManager.CurrentPerk.SetInitialLevel();
 			E.ActivePerkManager.CurrentPerk.UpdatePRILevel();
 		}

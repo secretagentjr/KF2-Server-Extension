@@ -29,7 +29,7 @@ static final function bool CheckBestTrack(PlayerReplicationInfo PRI, int Value, 
 	local int i,l;
 
 	S = class'OnlineSubsystem'.Static.UniqueNetIdToString(PRI.UniqueId);
-	
+
 	l = class'ServerExtMut'.Default.MaxTopPlayers;
 	if (V.Length>l) // See if list has overflown incase an admin has changed the max stats value.
 		V.Length = l;
@@ -60,7 +60,7 @@ static final function bool CheckBestTrack(PlayerReplicationInfo PRI, int Value, 
 			return false;
 		}
 	}
-	
+
 	for (i=0; i<l; ++i)
 	{
 		if (i==V.Length || V[i].V<Value) // At final entry, or has higher value then this ranked player.

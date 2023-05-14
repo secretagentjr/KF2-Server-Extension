@@ -8,7 +8,7 @@ var array<Actor> ValidSpawnSpots;
 static final function ExtSpawnPointHelper FindHelper(WorldInfo Level)
 {
 	local ExtSpawnPointHelper H;
-	
+
 	foreach Level.DynamicActors(class'ExtSpawnPointHelper',H)
 		return H;
 	return Level.Spawn(class'ExtSpawnPointHelper');
@@ -20,7 +20,7 @@ final function Actor PickBestSpawn()
 	local KFPawn P;
 	local float Score,BestScore,Dist;
 	local KFPawn_Human H;
-	
+
 	BestN = None;
 	BestScore = 0;
 	foreach ValidSpawnSpots(N)
@@ -132,7 +132,7 @@ final function CheckSpawn(NavigationPoint N)
 		ValidSpawnSpots.AddItem(N);
 	}
 	CheckedList.AddItem(N);
-	
+
 	foreach N.PathList(R)
 	{
 		E = R.GetEnd();

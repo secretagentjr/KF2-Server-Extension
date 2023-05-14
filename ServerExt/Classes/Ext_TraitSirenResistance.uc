@@ -13,5 +13,5 @@ static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_Trai
 defaultproperties
 {
 	DefLevelCosts(0)=50
-	DefMinLevel=75	
+	DefMinLevel=75
 }

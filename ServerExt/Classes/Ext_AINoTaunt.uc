@@ -7,6 +7,7 @@ function SpecialMoveStarted(bool bForced, Name PrevMove)
 
 function SpecialMoveEnded(Name PrevMove, Name NextMove)
 {
+
 }
 
 defaultproperties

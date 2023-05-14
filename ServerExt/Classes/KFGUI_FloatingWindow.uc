@@ -16,7 +16,7 @@ function InitMenu()
 function DrawMenu()
 {
 	Owner.CurrentStyle.RenderFramedWindow(Self);
-	
+
 	if (HeaderComp!=None)
 	{
 		HeaderComp.CompPos[3] = Owner.CurrentStyle.DefaultHeight;
@@ -56,4 +56,5 @@ function PreDraw()
 
 defaultproperties
 {
+
 }

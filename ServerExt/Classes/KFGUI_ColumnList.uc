@@ -5,7 +5,7 @@ struct FColumnItem
 {
 	var() string Text;
 	var() float Width;
-	
+
 	var transient bool bHidden;
 	var transient int X,XSize;
 };
@@ -35,7 +35,7 @@ function KFGUI_ListItem AddLine(string Value, optional int iValue, optional stri
 {
 	local KFGUI_ListItem N,O;
 	local int i;
-	
+
 	// Allocate list item object.
 	if (UnusedItem!=None)
 	{
@@ -44,7 +44,7 @@ function KFGUI_ListItem AddLine(string Value, optional int iValue, optional stri
 		N.Next = None;
 	}
 	else N = new (None) ListItemClass;
-	
+
 	// Setup column text value.
 	N.SetValue(Value,iValue,SortValue);
 
@@ -52,7 +52,7 @@ function KFGUI_ListItem AddLine(string Value, optional int iValue, optional stri
 	if (bShouldSortList && Index==-1)
 	{
 		N.Temp = N.GetSortStr(LastSortedColumn);
-		
+
 		if (ListCount==0) // No sorting needed yet.
 		{
 			N.Next = FirstItem;
@@ -117,17 +117,17 @@ function KFGUI_ListItem AddLine(string Value, optional int iValue, optional stri
 		}
 	}
 	UpdateListSize();
-	
+
 	return N;
 }
 
 final function RemoveLine(KFGUI_ListItem I)
 {
 	local KFGUI_ListItem N;
-	
+
 	if (I.Index==-1)
 		return;
-	
+
 	// Update selected row info.
 	if (SelectedRowIndex==I.Index)
 		SelectedRowIndex = -1;
@@ -146,7 +146,7 @@ final function RemoveLine(KFGUI_ListItem I)
 				break;
 			}
 	}
-	
+
 	// Add to unused list.
 	I.Next = UnusedItem;
 	UnusedItem = I;
@@ -162,7 +162,7 @@ final function EmptyList()
 	for (I=FirstItem; I!=None; I=N)
 	{
 		N = I.Next;
-		
+
 		// Add to unused list.
 		I.Next = UnusedItem;
 		UnusedItem = I;
@@ -190,7 +190,7 @@ function SortColumn(int Column, optional bool bReverse)
 	local array<KFGUI_ListItem> List;
 	local KFGUI_ListItem Sel,N,P;
 	local int i;
-	
+
 	if (!bCanSortColumn || Column<0 || Column>=Columns.Length)
 		return;
 
@@ -201,11 +201,11 @@ function SortColumn(int Column, optional bool bReverse)
 	// Allocate memory space first.
 	List.Length = ListCount;
 	List.Length = 0;
-	
+
 	// Grab current selected line.
 	Sel = GetFromIndex(SelectedRowIndex);
 	SelectedRowIndex = -1;
-	
+
 	// Slow, sort it all.
 	for (N=FirstItem; N!=None; N=N.Next)
 	{
@@ -226,7 +226,7 @@ function SortColumn(int Column, optional bool bReverse)
 		List.Insert(i,1);
 		List[i] = N;
 	}
-	
+
 	// Rebuild list.
 	FirstItem = None;
 	P = None;
@@ -249,7 +249,7 @@ function ChangeListSize(int NewSize);
 final function UpdateListSize()
 {
 	local KFGUI_ListItem N;
-	
+
 	ListCount = 0;
 	for (N=FirstItem; N!=None; N=N.Next)
 		N.Index = ListCount++;
@@ -280,7 +280,7 @@ function DrawMenu()
 	Canvas.DrawColor = BackgroundColor;
 	Canvas.SetPos(0.f,0.f);
 	Owner.CurrentStyle.DrawWhiteBox(CompPos[2],CompPos[3]);
-	
+
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
 	FocusMouseItem = -1;
@@ -307,7 +307,7 @@ function DrawMenu()
 				FocusMouseItem = n;
 			else MouseYHit-=ItemHeight;
 		}
-		
+
 		// Draw selection background.
 		if (SelectedRowIndex==n) // Selected
 		{
@@ -323,7 +323,7 @@ function DrawMenu()
 			Owner.CurrentStyle.DrawWhiteBox(CompPos[2],ItemHeight);
 			Canvas.SetDrawColor(250,250,250,255);
 		}
-		
+
 		// Draw columns of text
 		for (j=0; j<Columns.Length; ++j)
 			if (!Columns[j].bHidden)
@@ -345,17 +345,17 @@ function PreDraw()
 	local float XS,SpaceX;
 
 	ComputeCoords();
-	
+
 	// Check font to use.
 	Canvas.Font = Owner.CurrentStyle.PickFont(Min(FontSize+Owner.CurrentStyle.DefaultFontSize,Owner.CurrentStyle.MaxFontScale),TextScaler);
 	Canvas.TextSize("ABC",XS,TextHeight,TextScaler,TextScaler);
-	
+
 	for (j=0; j<4; ++j)
 	{
 		ScrollBar.InputPos[j] = CompPos[j];
 		ColumnComp.InputPos[j] = CompPos[j];
 	}
-	
+
 	// Setup positioning.
 	// First compute the width scrollbar.
 	if (OldXSize!=InputPos[2])
@@ -373,7 +373,7 @@ function PreDraw()
 	ColumnComp.YSize = (TextHeight*1.05) / CompPos[3];
 	ColumnComp.Canvas = Canvas;
 	ColumnComp.PreDraw();
-	
+
 	// Move down to give space for columns.
 	CompPos[1] += ColumnComp.CompPos[3];
 	CompPos[3] -= ColumnComp.CompPos[3];
@@ -394,12 +394,12 @@ function PreDraw()
 	// Draw vertical scrollbar
 	ScrollBar.Canvas = Canvas;
 	ScrollBar.PreDraw();
-	
+
 	// Draw self.
 	Canvas.SetOrigin(CompPos[0],CompPos[1]);
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
-	
+
 	// Reset scaling to allow mouse to capture input.
 	CompPos[1] -= ColumnComp.CompPos[3];
 	CompPos[2] += SpaceX;
@@ -437,6 +437,6 @@ defaultproperties
 		ID="Columns"
 	End Object
 	Components.Add(ColumnComps)
-	
+
 	LineFontInfo=(bClipText=true,bEnableShadow=false)
 }

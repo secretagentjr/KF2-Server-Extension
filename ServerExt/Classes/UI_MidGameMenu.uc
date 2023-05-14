@@ -1,5 +1,5 @@
 Class UI_MidGameMenu extends KFGUI_FloatingWindow;
-	
+
 var KFGUI_SwitchMenuBar PageSwitcher;
 var array< class<KFGUI_Base> > Pages;
 
@@ -33,7 +33,7 @@ function InitMenu()
 
 	PageSwitcher = KFGUI_SwitchMenuBar(FindComponentID('Pager'));
 	Super(KFGUI_Page).InitMenu();
-	
+
 	AddMenuButton('Mapvote',MapVoteButtonText,MapVoteButtonToolTip);
 	AddMenuButton('Settings',SettingsButtonText,SettingsButtonToolTip);
 	SkipTraderButton = AddMenuButton('SkipTrader',SkipTraderButtonText,SkipTraderButtonToolTip);
@@ -41,7 +41,7 @@ function InitMenu()
 	AddMenuButton('Close',CloseButtonText,CloseButtonToolTip);
 	AddMenuButton('Disconnect',DisconnectButtonText,DisconnectButtonToolTip);
 	AddMenuButton('Exit',ExitButtonText,ExitButtonToolTip);
-	
+
 	for (i=0; i<Pages.Length; ++i)
 	{
 		PageSwitcher.AddPage(Pages[i],B).InitMenu();
@@ -53,7 +53,7 @@ function InitMenu()
 function Timer()
 {
 	local PlayerReplicationInfo PRI;
-	
+
 	PRI = GetPlayer().PlayerReplicationInfo;
 	if (PRI==None)
 		return;
@@ -75,10 +75,10 @@ function bool SkipTraderIsAviable(PlayerReplicationInfo PRI)
 
 	KFPRI = KFPlayerReplicationInfo(PRI);
 	KFGRI = KFGameReplicationInfo(KFPRI.WorldInfo.GRI);
-	
+
 	if (KFGRI == none || KFPRI == none)
 		return false;
-	
+
 	return KFGRI.bMatchHasBegun && KFGRI.bTraderIsOpen && KFPRI.bHasSpawnedIn && !KFPRI.bVotedToSkipTraderTime;
 }
 
@@ -89,7 +89,7 @@ function ShowMenu()
 	SkipTraderButton.SetDisabled(false);
 	if (GetPlayer().WorldInfo.GRI!=None)
 		WindowTitle = GetPlayer().WorldInfo.GRI.ServerName;
-	
+
 	// Update spectate button info text.
 	Timer();
 	SetTimer(0.5,true);
@@ -134,7 +134,7 @@ function ButtonClicked(KFGUI_Button Sender)
 final function OpenUpMapvote()
 {
 	local xVotingReplication R;
-	
+
 	foreach GetPlayer().DynamicActors(class'xVotingReplication',R)
 		R.ClientOpenMapvote();
 }
@@ -142,7 +142,7 @@ final function OpenUpMapvote()
 final function KFGUI_Button AddMenuButton(name ButtonID, string Text, optional string ToolTipStr)
 {
 	local KFGUI_Button B;
-	
+
 	B = new (Self) class'KFGUI_Button';
 	B.ButtonText = Text;
 	B.ToolTip = ToolTipStr;
@@ -173,7 +173,7 @@ defaultproperties
 	YPosition=0.1
 	XSize=0.8
 	YSize=0.8
-	
+
 	Pages.Add(Class'UIP_News')
 	Pages.Add(Class'UIP_PerkSelection')
 	Pages.Add(Class'UIP_Settings')
@@ -191,6 +191,6 @@ defaultproperties
 		BorderWidth=0.04
 		ButtonAxisSize=0.08
 	End Object
-	
+
 	Components.Add(MultiPager)
 }

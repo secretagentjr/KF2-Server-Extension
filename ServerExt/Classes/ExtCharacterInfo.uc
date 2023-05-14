@@ -5,7 +5,7 @@ class ExtCharacterInfo extends Object
 static final function Object SafeLoadObject(string S, Class ObjClass)
 {
 	local Object O;
-	
+
 	O = FindObject(S,ObjClass);
 	return O!=None ? O : DynamicLoadObject(S,ObjClass);
 }
@@ -46,7 +46,7 @@ static function InitCharacterMICs(KFCharacterInfo_Human C, KFPawn P, optional bo
 		{
 			P.CharacterMICs.AddItem(P.ThirdPersonAttachments[i].CreateAndSetMaterialInstanceConstant(0));
 		}
-		
+
 		if (P.FirstPersonAttachments[i] != none)
 		{
 			P.CharacterMICs.AddItem(P.FirstPersonAttachments[i].CreateAndSetMaterialInstanceConstant(0));
@@ -64,7 +64,7 @@ static final function SetCharacterMeshFromArch(KFCharacterInfo_Human C, KFPawn K
 	if (KFPRI == none)
 	{
 		`Warn("Does not have a KFPRI" @ C);
-		 return;
+		return;
 	}
 	EPRI = ExtPlayerReplicationInfo(KFPRI);
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);
@@ -86,7 +86,7 @@ static final function SetCharacterMeshFromArch(KFCharacterInfo_Human C, KFPawn K
 	// skip dedicated for purely cosmetic stuff
 	if (KFP.WorldInfo.NetMode != NM_DedicatedServer)
 	{
-		// Must clear all attachments before trying to attach new ones, 
+		// Must clear all attachments before trying to attach new ones,
 		// otherwise we might accidentally remove things we're not supposed to
 		for (AttachmentIdx=0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 		{
@@ -136,7 +136,7 @@ static final function SetBodyMeshAndSkin(KFCharacterInfo_Human C,
 	{
 		// Assign a skin to the body mesh as a material override
 		CurrentBodyMeshIndex = (CurrentBodyMeshIndex < C.BodyVariants.length) ? CurrentBodyMeshIndex : 0;
-		
+
 		if (KFPRI.StartLoadCosmeticContent(C, ECOSMETICTYPE_Body, CurrentBodyMeshIndex))
 		{
 			return;
@@ -224,7 +224,7 @@ static final function SetHeadMeshAndSkin(KFCharacterInfo_Human C,
 	if (C.HeadVariants.length > 0)
 	{
 		CurrentHeadMeshIndex = (CurrentHeadMeshIndex < C.HeadVariants.length) ? CurrentHeadMeshIndex : 0;
-		
+
 		if (KFPRI.StartLoadCosmeticContent(C, ECOSMETICTYPE_Head, CurrentHeadMeshIndex))
 		{
 			return;
@@ -332,7 +332,7 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 	//DetachConflictingAttachments(CurrentAttachmentMeshIndex, KFP, KFPRI);
 	// Get a slot where this attachment could fit
 	AttachmentSlotIndex = GetAttachmentSlotIndex(C, CurrentAttachmentMeshIndex, KFP, KFPRI);
-	
+
 	if (AttachmentSlotIndex == INDEX_NONE)
 	{
 		return;
@@ -341,13 +341,13 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 	// Since cosmetic attachments are optional, do not choose index 0 if none is
 	// specified unlike the the head and body meshes
 	if (C.CosmeticVariants.Length > 0 &&
-		 CurrentAttachmentMeshIndex < C.CosmeticVariants.Length)
+		CurrentAttachmentMeshIndex < C.CosmeticVariants.Length)
 	{
 		if (KFPRI.StartLoadCosmeticContent(C, ECOSMETICTYPE_Attachment, CurrentAttachmentMeshIndex))
 		{
 			return;
 		}
-		
+
 		// Cache values from character info
 		CharAttachmentMeshName = bIsFirstPerson ? C.Get1pMeshByIndex(CurrentAttachmentMeshIndex) : C.GetMeshByIndex(CurrentAttachmentMeshIndex);
 		CharAttachmentSocketName = bIsFirstPerson ? C.CosmeticVariants[CurrentAttachmentMeshIndex].AttachmentItem.SocketName1p : C.CosmeticVariants[CurrentAttachmentMeshIndex].AttachmentItem.SocketName;
@@ -517,8 +517,8 @@ static final function SetAttachmentMesh(KFCharacterInfo_Human C, int CurrentAtta
 }
 
 /**
- * Removes any attachments that exist in the same socket or have overriding cases 
- * Network: Local Player 
+ * Removes any attachments that exist in the same socket or have overriding cases
+ * Network: Local Player
  */
 static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int NewAttachmentMeshIndex, KFPawn KFP, optional KFPlayerReplicationInfo KFPRI, optional out array<int> out_RemovedAttachments)
 {
@@ -531,7 +531,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 		return;
 
 	if (C.CosmeticVariants.length > 0 &&
-		 NewAttachmentMeshIndex < C.CosmeticVariants.length)
+		NewAttachmentMeshIndex < C.CosmeticVariants.length)
 	{
 		// The socket that this attachment requires
 		NewAttachmentSocketName = C.CosmeticVariants[NewAttachmentMeshIndex].AttachmentItem.SocketName;
@@ -546,7 +546,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 			if (KFP.ThirdPersonAttachmentSocketNames[i] != '' &&
 				KFP.ThirdPersonAttachmentSocketNames[i] == NewAttachmentSocketName)
 			{
-				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);	
+				C.RemoveAttachmentMeshAndSkin(i, KFP, KFPRI);
 				out_RemovedAttachments.AddItem(i);
 				continue;
 			}
@@ -580,19 +580,19 @@ static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn
 	if (KFPRI == none)
 	{
 		`Warn("Does not have a KFPRI" @ C);
-		 return;
+		return;
 	}
 	EPRI = ExtPlayerReplicationInfo(KFPRI);
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);
 
-	// First person arms mesh and skin are based on body mesh & skin. 
+	// First person arms mesh and skin are based on body mesh & skin.
 	// Index of 255 implies use index 0 (default).
 	C.SetArmsMeshAndSkin(
 		bCustom ? EPRI.CustomCharacter.BodyMeshIndex : KFPRI.RepCustomizationInfo.BodyMeshIndex,
 		bCustom ? EPRI.CustomCharacter.BodySkinIndex : KFPRI.RepCustomizationInfo.BodySkinIndex,
 		KFP,
 		KFPRI);
-		
+
 	for (AttachmentIdx = 0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 	{
 		CosmeticMeshIdx = bCustom ? EPRI.CustomCharacter.AttachmentMeshIndices[AttachmentIdx] : KFPRI.RepCustomizationInfo.AttachmentMeshIndices[AttachmentIdx];
@@ -623,10 +623,10 @@ static function int GetAttachmentSlotIndex(
 		`warn("GetAttachmentSlotIndex - NO KFPRI");
 		return INDEX_NONE;
 	}
-	
+
 	EPRI = ExtPlayerReplicationInfo(KFPRI);
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);
-	
+
 	// Return the next available attachment index or the index that matches this mesh
 	for (AttachmentIdx = 0; AttachmentIdx < `MAX_COSMETIC_ATTACHMENTS; AttachmentIdx++)
 	{

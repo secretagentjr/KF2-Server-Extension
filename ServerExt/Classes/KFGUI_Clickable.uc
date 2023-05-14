@@ -90,4 +90,5 @@ function HandleMouseClick(bool bRight);
 
 defaultproperties
 {
+
 }

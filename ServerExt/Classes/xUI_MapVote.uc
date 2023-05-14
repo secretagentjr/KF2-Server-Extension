@@ -43,29 +43,29 @@ function InitMenu()
 	GameModeCombo = KFGUI_ComboBox(FindComponentID('Filter'));
 	MapRClicker = KFGUI_RightClickMenu(FindComponentID('RClick'));
 	CloseButton = KFGUI_Button(FindComponentID('Close'));
-	
+
 	// TODO: i18n this
 	// I don't know why it's not working
 	// MapRClicker.ItemRows.AddItem(newFRowItem("Vote this map", false));
 	// MapRClicker.ItemRows.AddItem(newFRowItem("Admin force this map", true));
-	
+
 	// And this too:
 	// GameModeCombo.LableString="Game mode:";
 	// GameModeCombo.ToolTip="Select game mode to vote for.";
-	
+
 	CloseButton.ButtonText=CloseButtonText;
 	CloseButton.ToolTip=CloseButtonToolTip;
-	
+
 	MapList.Columns.AddItem(newFColumnItem(ColumnMapName,0.5));
 	MapList.Columns.AddItem(newFColumnItem(ColumnSequence,0.18));
 	MapList.Columns.AddItem(newFColumnItem(ColumnPlayCount,0.18));
 	MapList.Columns.AddItem(newFColumnItem(ColumnRating,0.14));
-	
+
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnGame,0.2));
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnMapName,0.5));
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnNumVotes,0.15));
 	CurrentVotes.Columns.AddItem(newFColumnItem(ColumnRating,0.15));
-	
+
 	WindowTitle=Title;
 }
 
@@ -83,7 +83,7 @@ function InitMapvote(xVotingReplication R)
 function DrawMenu()
 {
 	Super.DrawMenu();
-	
+
 	if (RepInfo!=None && RepInfo.bListDirty)
 	{
 		RepInfo.bListDirty = false;
@@ -207,7 +207,7 @@ defaultproperties
 	YPosition=0.1
 	XSize=0.6
 	YSize=0.8
-	
+
 	Begin Object Class=KFGUI_ColumnList Name=CurrentVotesList
 		XPosition=0.015
 		YPosition=0.075
@@ -246,12 +246,12 @@ defaultproperties
 		OnClickLeft=ButtonClicked
 		OnClickRight=ButtonClicked
 	End Object
-	
+
 	Components.Add(CurrentVotesList)
 	Components.Add(MapList)
 	Components.Add(GameModeFilter)
 	Components.Add(CloseButton)
-	
+
 	Begin Object Class=KFGUI_RightClickMenu Name=MapRClicker
 		ID="RClick"
 		ItemRows(0)=(Text="Vote this map")

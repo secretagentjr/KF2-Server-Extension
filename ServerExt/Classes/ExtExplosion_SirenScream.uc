@@ -7,4 +7,5 @@ protected function SpecialCringeEffectsfor (Actor Victim, float VictimDist)
 
 defaultproperties
 {
+
 }

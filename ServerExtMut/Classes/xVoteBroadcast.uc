@@ -34,4 +34,5 @@ event AllowBroadcastLocalizedTeam(int TeamIndex, actor Sender, class<LocalMessag
 
 defaultproperties
 {
+
 }

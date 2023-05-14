@@ -155,7 +155,7 @@ simulated final function bool IsWeaponOnPerk(KFWeapon W)
 
 	//if (W.AllowedForAllPerks())
 	//	return true;
-		
+
 	return W!=None && W.GetWeaponPerkClass(BasePerk)==BasePerk;
 }
 
@@ -186,7 +186,7 @@ simulated function PostBeginPlay()
 			return;
 		}
 		bOwnerNetClient = (PlayerController(Owner)!=None && LocalPlayer(PlayerController(Owner).Player)==None);
-		
+
 		// Load trait classes.
 		j = 0;
 		for (i=0; i<TraitClasses.Length; ++i)
@@ -198,7 +198,7 @@ simulated function PostBeginPlay()
 			PerkTraits[j].TraitType = T;
 			++j;
 		}
-		
+
 		// Setup serverside stat info (for XML log files).
 		for (j=0; j<PerkStats.Length; ++j)
 		{
@@ -327,7 +327,7 @@ reliable client simulated function ClientReceiveTraitLvl(int Index, byte NewLeve
 final function SetPerkStat(name Type, int Value)
 {
 	local int i;
-	
+
 	i = PerkStats.Find('StatType',Type);
 	if (i>=0)
 		PerkStats[i].CurrentValue = Value;
@@ -336,7 +336,7 @@ final function SetPerkStat(name Type, int Value)
 final function int GetPerkStat(name Type)
 {
 	local int i;
-	
+
 	i = PerkStats.Find('StatType',Type);
 	if (i==-1)
 		return 0;
@@ -385,7 +385,7 @@ function OutputXML(ExtStatWriter Data)
 	Data.WriteValue("points",string(CurrentSP));
 	Data.WriteValue("exptilnext",string(NextLevelEXP));
 	Data.WriteValue("exponprev",string(LastLevelEXP));
-	
+
 	for (i=0; i<PerkStats.Length; ++i)
 	{
 		if (PerkStats[i].CurrentValue>0)
@@ -397,7 +397,7 @@ function OutputXML(ExtStatWriter Data)
 			Data.EndIntendent();
 		}
 	}
-	
+
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -416,10 +416,10 @@ function OutputXML(ExtStatWriter Data)
 function SaveData(ExtSaveDataBase Data)
 {
 	local int i,j;
-	
+
 	// Write current EXP.
 	Data.SaveInt(CurrentEXP,3);
-	
+
 	// Write current prestige
 	Data.SaveInt(CurrentPrestige,3);
 
@@ -439,7 +439,7 @@ function SaveData(ExtSaveDataBase Data)
 			Data.SaveInt(PerkStats[i].CurrentValue,1);
 		}
 	}
-	
+
 	// Count bought traits.
 	j = 0;
 	for (i=0; i<PerkTraits.Length; ++i)
@@ -471,7 +471,7 @@ function LoadData(ExtSaveDataBase Data)
 	// 	if (i > CurrentEXP)
 	// 		CurrentEXP = i
 	// }
-	
+
 	if (Data.GetArVer()>=1)
 		CurrentPrestige = Data.ReadInt(3);
 
@@ -487,7 +487,7 @@ function LoadData(ExtSaveDataBase Data)
 				break;
 			}
 	}
-	
+
 	l = Data.ReadInt(); // Traits stats length.
 	for (i=0; i<l; ++i)
 	{
@@ -543,7 +543,7 @@ function SetInitialLevel()
 	CurrentSP = CurrentLevel*(StarPointsPerLevel+CurrentPrestige*PrestigeSPIncrease);
 	NextLevelEXP = GetNeededExp(CurrentLevel);
 	LastLevelEXP = (CurrentLevel>MinimumLevel ? GetNeededExp(CurrentLevel-1) : 0);
-	
+
 	// Now verify the points player used on individual stats.
 	for (i=0; i<PerkStats.Length; ++i)
 	{
@@ -571,7 +571,7 @@ function SetInitialLevel()
 		if (PerkTraits[i].CurrentLevel>0)
 		{
 			PerkTraits[i].CurrentLevel = Min(PerkTraits[i].CurrentLevel,PerkTraits[i].TraitType.Default.NumLevels);
-			
+
 			if (PerkTraits[i].TraitType.Default.LoadPriority>0)
 				MT = Max(MT,PerkTraits[i].TraitType.Default.LoadPriority);
 			else
@@ -596,7 +596,7 @@ function SetInitialLevel()
 		if (PerkTraits[i].CurrentLevel==0 && PerkTraits[i].Data!=None)
 			PerkTraits[i].TraitType.Static.CleanupTrait(ExtPlayerController(Owner),Self,PerkTraits[i].Data);
 	}
-	
+
 	// Delayed loads.
 	for (j=1; j<=MT; ++j)
 	{
@@ -674,14 +674,14 @@ static function UpdateConfigs(int OldVer)
 		Default.MinimumLevel = 0;
 		Default.MaximumLevel = 150;
 		Default.StarPointsPerLevel = 15;
-		
+
 		// Prestige.
 		Default.MinLevelForPrestige = 140;
 		Default.PrestigeSPIncrease = 1;
 		Default.MaxPrestige = 20;
 		Default.MinimalDataLevel = 0;
 		Default.PrestigeXPReduce = 0.05;
-		
+
 		Default.PerkStats.Length = 0;
 		AddStatsCfg(0);
 		Default.TraitClasses.Length = Default.DefTraitList.Length;
@@ -754,7 +754,7 @@ static function InitWebAdmin(ExtWebAdmin_UI UI)
 	local int i;
 
 	UI.AddSettingsPage("Perk "$Default.PerkName,Default.Class,Default.WebConfigs,GetValue,ApplyValue);
-	
+
 	for (i=0; i<Default.TraitClasses.Length; ++i)
 	{
 		T = class<Ext_TraitBase>(DynamicLoadObject(Default.TraitClasses[i],Class'Class'));
@@ -887,7 +887,7 @@ function bool IncrementStat(int iStat, int Amount)
 simulated function ApplyEffects()
 {
 	local int i;
-	
+
 	for (i=0; i<PerkStats.Length; ++i)
 	{
 		if (PerkStats[i].CurrentValue!=PerkStats[i].OldValue)
@@ -903,7 +903,7 @@ function ApplyEffectsTo(KFPawn_Human P)
 {
 	local int i;
 	local bool bSec;
-	
+
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -929,7 +929,7 @@ function ActivateTraits()
 	local int i;
 	local KFPawn_Human KFP;
 	local bool bSec;
-	
+
 	KFP = KFPawn_Human(PlayerOwner.Pawn);
 	if (KFP!=None && !KFP.IsAliveAndWell())
 		KFP = None;
@@ -961,7 +961,7 @@ function ActivateTraits()
 function DeactivateTraits()
 {
 	local int i;
-	
+
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -1114,7 +1114,7 @@ function FullReset(optional bool bNotPrestige)
 	CurrentSP = CurrentLevel*(StarPointsPerLevel+CurrentPrestige*PrestigeSPIncrease);
 	NextLevelEXP = GetNeededExp(CurrentLevel);
 	LastLevelEXP = 0;
-	
+
 	if (PerkManager.CurrentPerk==Self && PerkManager.PRIOwner!=None)
 	{
 		PerkManager.PRIOwner.SetLevelProgress(CurrentLevel,CurrentPrestige,MinimumLevel,MaximumLevel);
@@ -1127,7 +1127,7 @@ function FullReset(optional bool bNotPrestige)
 function bool PreventDeath(KFPawn_Human Player, Controller Killer, Class<DamageType> DamType)
 {
 	local int i;
-	
+
 	// Doing 2 passes of this so that things don't go out of order (spawn retaliation effect when you get redeemed etc)
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
@@ -1160,7 +1160,7 @@ simulated function PlayerDied()
 simulated function float ApplyEffect(name Type, float Value, float Progress)
 {
 	local bool bActivePerk;
-	
+
 	bActivePerk = (PerkManager!=None && PerkManager.CurrentPerk==Self);
 	switch (Type)
 	{
@@ -1243,7 +1243,7 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 		break;
 	case 'Switch':
 		Modifiers[21] = 1.f / (1.f+Value*Progress);
-		break;		
+		break;
 	}
 	return (Value*Progress);
 }
@@ -1301,7 +1301,7 @@ simulated function float GetReloadRateScale(KFWeapon KFW)
 }
 
 simulated function float GetCameraViewShakeModifier(KFWeapon KFW)
-{ 
+{
 	return Modifiers[2];
 }
 
@@ -1341,7 +1341,7 @@ function AddDefaultInventory(KFPawn P)
 	P.DefaultInventory.AddItem(PrimaryMelee);
 	if (KFInventoryManager(P.InvManager)!=None)
 		KFInventoryManager(P.InvManager).MaxCarryBlocks = KFInventoryManager(P.InvManager).Default.MaxCarryBlocks+Modifiers[10];
-	
+
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -1409,7 +1409,7 @@ simulated final function DrawEnemyHealth(Canvas C)
 {
 	local KFPawn_Monster KFPM;
 	local vector X,CameraLocation;
-	
+
 	X = vector(PlayerOwner.Pawn.GetViewRotation());
 	CameraLocation = PlayerOwner.Pawn.GetPawnViewLocation();
 
@@ -1499,7 +1499,7 @@ simulated function float GetZedTimeExtensions(byte Level)
 
 simulated function float GetTightChokeModifier()
 {
-    return Modifiers[3];
+	return Modifiers[3];
 }
 
 defaultproperties
@@ -1515,11 +1515,11 @@ defaultproperties
 	WeldExpUpNum=180
 	ToxicDartDamage=15
 	NetPriority=4
-	
+
 	SecondaryWeaponDef=class'KFWeapDef_9mm'
 	KnifeWeaponDef=class'KFWeapDef_Knife_Commando'
 	GrenadeWeaponDef=class'KFWeapDef_Grenade_Support'
-	
+
 	DefTraitList.Add(class'Ext_TraitGrenadeUpg')
 	DefTraitList.Add(class'Ext_TraitNightvision')
 	DefTraitList.Add(class'Ext_TraitAmmoReg')
@@ -1553,7 +1553,7 @@ defaultproperties
 	WebConfigs.Add((PropType=0,PropName="MaxPrestige",UIName="Max Prestige",UIDesc="Maximum prestige level"))
 	WebConfigs.Add((PropType=0,PropName="PrestigeXPReduce",UIName="Prestige XP Reduce",UIDesc="Percent amount of XP cost is reduced for each prestige (1.0 = 1/2, or 50 % of XP)"))
 	// WebConfigs.Add((PropType=0,PropName="MinimalDataLevel",UIName="Minimal Real Level",UIDesc="Minimal level for new players or who loads from saves"))
-	
+
 	DefPerkStats(0)=(MaxValue=50,CostPerValue=1,StatType="Speed",Progress=0.4)
 	DefPerkStats(1)=(MaxValue=1000,CostPerValue=1,StatType="Damage",Progress=0.5)
 	DefPerkStats(2)=(MaxValue=90,CostPerValue=1,StatType="Recoil",Progress=1)
@@ -1599,7 +1599,7 @@ defaultproperties
 	Modifiers.Add(0.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
-	
+
 	EnemyDistDraw.Add(500)
 	EnemyDistDraw.Add(700)
 	EnemyDistDraw.Add(1000)

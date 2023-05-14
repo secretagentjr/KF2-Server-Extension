@@ -9,7 +9,7 @@ struct FCustomCharEntry
 struct FMyCustomChar // Now without constant.
 {
 	var int CharacterIndex,HeadMeshIndex,HeadSkinIndex,BodyMeshIndex,BodySkinIndex,AttachmentMeshIndices[`MAX_COSMETIC_ATTACHMENTS],AttachmentSkinIndices[`MAX_COSMETIC_ATTACHMENTS];
-	
+
 	structdefaultproperties
 	{
 		AttachmentMeshIndices[0]=`CLEARED_ATTACHMENT_INDEX
@@ -101,7 +101,7 @@ simulated function ClientInitialize(Controller C)
 	local ExtPlayerReplicationInfo PRI;
 
 	Super.ClientInitialize(C);
-	
+
 	if (WorldInfo.NetMode!=NM_DedicatedServer)
 	{
 		LocalOwnerPRI = Self;
@@ -189,7 +189,7 @@ simulated final function color PickPerkColor()
 {
 	local float P;
 	local byte i;
-	
+
 	if (RepLevelProgress==0)
 		return MakeColor(255,255,255,255);
 	P = float(RepLevelProgress) / 255.f;
@@ -331,7 +331,7 @@ function ClearFixed()
 simulated final function string GetDesc()
 {
 	local string S;
-	
+
 	if ((FixedData & 1)!=0)
 		S = "A.";
 	if ((FixedData & 2)!=0)
@@ -595,13 +595,13 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 	Data.SaveStr(S);
 	if (S=="")
 		return;
-	
+
 	// Write selected accessories.
 	Data.SaveInt(CustomCharacter.HeadMeshIndex);
 	Data.SaveInt(CustomCharacter.HeadSkinIndex);
 	Data.SaveInt(CustomCharacter.BodyMeshIndex);
 	Data.SaveInt(CustomCharacter.BodySkinIndex);
-	
+
 	c = 0;
 	for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 	{
@@ -611,7 +611,7 @@ final function SaveCustomCharacter(ExtSaveDataBase Data)
 
 	// Write attachments count.
 	Data.SaveInt(c);
-	
+
 	// Write attachments.
 	for (i=0; i<`MAX_COSMETIC_ATTACHMENTS; ++i)
 	{
@@ -639,7 +639,7 @@ final function LoadCustomCharacter(ExtSaveDataBase Data)
 		if (string(CharacterArchetypes[i].Name)~=S)
 			break;
 	}
-	
+
 	if (i==CharacterArchetypes.Length)
 	{
 		for (i=0; i<CustomCharList.Length; ++i)

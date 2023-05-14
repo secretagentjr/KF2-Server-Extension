@@ -4,7 +4,7 @@ defaultproperties
 {
 	SpareAmmoCapacity[0]=-1
 	InitialSpareMags[0]=0
-	
+
 	bInfiniteSpareAmmo=True
 
 	// DualClass=class'ServerExt.ExtWeap_Pistol_MedicS'

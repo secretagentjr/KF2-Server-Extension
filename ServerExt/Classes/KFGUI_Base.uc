@@ -120,7 +120,7 @@ function bool CaptureMouse()
 final function KFGUI_Base GetMouseFocus()
 {
 	local KFGUI_Base M;
-	
+
 	for (M=Self; M.MouseArea!=None; M=M.MouseArea)
 	{}
 	return M;
@@ -160,7 +160,7 @@ final function bool IsTopMenu()
 final function KFGUI_Page GetPageTop()
 {
 	local KFGUI_Base M;
-	
+
 	for (M=Self; M.ParentComponent!=None; M=M.ParentComponent)
 	{}
 	return KFGUI_Page(M);
@@ -244,7 +244,7 @@ final function GetRealtivePos(out float X, out float Y)
 simulated final function PlayMenuSound(EMenuSound Slot)
 {
 	/*local SoundCue S;
-	
+
 	switch (Slot)
 	{
 	case MN_Focus:
@@ -288,7 +288,7 @@ static final function string MakeSortStr(int Value)
 {
 	local string S;
 	local int i;
-	
+
 	// Prefix with zeroes to properly sort this string.
 	S = string(Value);
 	i = Len(S);

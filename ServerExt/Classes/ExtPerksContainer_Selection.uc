@@ -4,29 +4,29 @@ var localized string PerkChangeWarning;
 
 function UpdatePerkSelection(byte SelectedPerkIndex)
 {
- 	local int i;
+	local int i;
 	local GFxObject DataProvider;
 	local GFxObject TempObj;
 	local ExtPlayerController KFPC;
-	local Ext_PerkBase PerkClass;	
+	local Ext_PerkBase PerkClass;
 
 	KFPC = ExtPlayerController(GetPC());
 
 	if (KFPC!=none && KFPC.ActivePerkManager!=None)
 	{
-	   	DataProvider = CreateArray();
+		DataProvider = CreateArray();
 
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{
 			PerkClass = KFPC.ActivePerkManager.UserPerks[i];
 			TempObj = CreateObject("Object");
 			TempObj.SetInt("PerkLevel", PerkClass.CurrentLevel);
-			TempObj.SetString("Title",  PerkClass.PerkName);	
+			TempObj.SetString("Title",  PerkClass.PerkName);
 			TempObj.SetString("iconSource",  PerkClass.GetPerkIconPath(PerkClass.CurrentLevel));
 			TempObj.SetBool("bTierUnlocked", true);
-			
+
 			DataProvider.SetElementObject(i, TempObj);
-		}	
+		}
 		SetObject("perkData", DataProvider);
 		SetInt("SelectedIndex", SelectedPerkIndex);
 

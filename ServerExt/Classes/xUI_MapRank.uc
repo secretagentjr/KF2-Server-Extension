@@ -15,11 +15,11 @@ var localized string NoButtonToolTip;
 function InitMenu()
 {
 	Super.InitMenu();
-	
+
 	YesButton = KFGUI_Button(FindComponentID('Yes'));
 	NoButton = KFGUI_Button(FindComponentID('No'));
 	InfoLabel = KFGUI_TextLable(FindComponentID('Info'));
-	
+
 	InfoLabel.SetText(InfoText);
 	YesButton.ButtonText=YesButtonText;
 	YesButton.ToolTip=YesButtonToolTip;
@@ -57,7 +57,7 @@ defaultproperties
 	YPosition=0.4
 	XSize=0.3
 	YSize=0.2
-	
+
 	Begin Object Class=KFGUI_TextLable Name=InfoLabel
 		ID="Info"
 		XPosition=0.1
@@ -88,7 +88,7 @@ defaultproperties
 		OnClickRight=ButtonClicked
 		TextColor=(R=255,G=128,B=128,A=255)
 	End Object
-	
+
 	Components.Add(InfoLabel)
 	Components.Add(YesButton)
 	Components.Add(NoButton)

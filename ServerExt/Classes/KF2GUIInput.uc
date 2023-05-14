@@ -21,7 +21,7 @@ function PlayerInput(float DeltaTime)
 {
 	// Do not move.
 	ControllerOwner.MenuInput(DeltaTime);
-	
+
 	if (!ControllerOwner.bAbsorbInput)
 	{
 		aMouseX = 0;
@@ -59,4 +59,5 @@ function PreClientTravel(string PendingURL, ETravelType TravelType, bool bIsSeam
 
 defaultproperties
 {
+
 }

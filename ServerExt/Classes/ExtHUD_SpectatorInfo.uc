@@ -19,10 +19,10 @@ function UpdatePlayerInfo(optional bool bForceUpdate)
 {
 	local GFxObject TempObject;
 	local ExtPlayerReplicationInfo E;
-	
+
 	if (SpectatedKFPRI == None)
 		return;
-	
+
 	E = ExtPlayerReplicationInfo(SpectatedKFPRI);
 
 	if (LastPerkLevel != E.ECurrentPerkLevel || LastPerkLevel != E.ECurrentPerkLevel || bForceUpdate)
@@ -44,4 +44,5 @@ function UpdatePlayerInfo(optional bool bForceUpdate)
 
 defaultproperties
 {
+
 }

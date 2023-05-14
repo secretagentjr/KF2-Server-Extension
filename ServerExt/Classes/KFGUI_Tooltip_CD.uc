@@ -4,7 +4,7 @@ function PreDraw()
 {
 	local int i;
 	local float X,Y,XS,YS,TX,TY,TS;
-	
+
 	if (Owner.CurrentStyle == None)
 		return;
 
@@ -19,7 +19,7 @@ function PreDraw()
 		TX = FMax(XS,TX);
 	}
 	TX*=TS;
-	
+
 	// Give some borders.
 	TX += KF2Style(Owner.CurrentStyle).TOOLTIP_BORDER*2;
 	TY += KF2Style(Owner.CurrentStyle).TOOLTIP_BORDER*2;
@@ -32,7 +32,7 @@ function PreDraw()
 		X = Owner.ScreenSize.X-TX;
 	if ((Y+TY)>Owner.ScreenSize.Y)
 		Y = CompPos[1]-TY;
-	
+
 	if (CurrentAlpha<255)
 		CurrentAlpha = Min(CurrentAlpha+25,255);
 
@@ -64,4 +64,5 @@ function PreDraw()
 
 defaultproperties
 {
+
 }

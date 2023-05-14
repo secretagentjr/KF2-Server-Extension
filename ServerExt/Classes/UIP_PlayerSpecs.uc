@@ -47,23 +47,23 @@ function InitMenu()
 	TopPlayers[1] = KFGUI_ColumnList(FindComponentID('Kills'));
 	TopPlayers[2] = KFGUI_ColumnList(FindComponentID('EXP'));
 	MultiPager = KFGUI_SwitchComponent(FindComponentID('Pager'));
-	
+
 	TopPlaytimeButton=KFGUI_Button(FindComponentID('BPlaytime'));
 	TopKillsButton=KFGUI_Button(FindComponentID('BKills'));
 	TopExpButton=KFGUI_Button(FindComponentID('BExp'));
-	
+
 	PreviousButton.ButtonText=ShowStatsButtonText;
 	PreviousButton.Tooltip=ShowStatsButtonToolTip;
-	
+
 	TopPlaytimeButton.ButtonText=TopPlaytimeButtonText;
 	TopPlaytimeButton.Tooltip=TopPlaytimeButtonToolTip;
-	
+
 	TopKillsButton.ButtonText=TopKillsButtonText;
 	TopKillsButton.Tooltip=TopKillsButtonToolTip;
-	
+
 	TopExpButton.ButtonText=TopExpButtonText;
 	TopExpButton.Tooltip=TopExpButtonToolTip;
-	
+
 	PlayersList.Columns.AddItem(NewFColumnItem(PlayerColumnText,0.55));
 	PlayersList.Columns.AddItem(NewFColumnItem(TotalKillsColumnText,0.15));
 	PlayersList.Columns.AddItem(NewFColumnItem(TotalExpColumnText,0.15));
@@ -72,11 +72,11 @@ function InitMenu()
 	TopPlayers[0].Columns.AddItem(NewFColumnItem("#",0.05));
 	TopPlayers[0].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
 	TopPlayers[0].Columns.AddItem(NewFColumnItem(TotalPlaytimeColumnText,0.25));
-	
+
 	TopPlayers[1].Columns.AddItem(NewFColumnItem("#",0.05));
 	TopPlayers[1].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
 	TopPlayers[1].Columns.AddItem(NewFColumnItem(TotalKillsColumnText,0.25));
-	
+
 	TopPlayers[2].Columns.AddItem(NewFColumnItem("#",0.05));
 	TopPlayers[2].Columns.AddItem(NewFColumnItem(PlayerColumnText,0.7));
 	TopPlayers[2].Columns.AddItem(NewFColumnItem(TotalExpColumnText,0.25));
@@ -160,7 +160,7 @@ static final function string FormatTimeSMH(float Sec)
 
 	Hours = Minutes/60;
 	Minutes-=(Hours*60);
-	
+
 	Days = Hours/24;
 	Hours-=(Days*24);
 

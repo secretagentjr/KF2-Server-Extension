@@ -9,7 +9,7 @@ var bool bTeleporting,bIsDelayed;
 function bool CanResPlayer(KFPawn_Human Other, byte Level)
 {
 	local Actor SpawnPoint;
-	
+
 	if (bTeleporting)
 	{
 		if (LastDied!=None)
@@ -27,14 +27,14 @@ function bool CanResPlayer(KFPawn_Human Other, byte Level)
 
 	if (SpawnPointer==None)
 		SpawnPointer = class'ExtSpawnPointHelper'.Static.FindHelper(WorldInfo);
-	
+
 	SpawnPoint = SpawnPointer.PickBestSpawn();
 	if (SpawnPoint == None)
 		return false;
-	
+
 	LastDied = Other;
 	bTeleporting = true;
-	
+
 	ResPoint = SpawnPoint.Location;
 	LastDied.FindSpot(vect(36,36,86),ResPoint);
 	if (VSizeSq(LastDied.Location-ResPoint)<1.f) // Prevent division by zero errors in future.
@@ -49,7 +49,7 @@ final function StartResurrect()
 	TeleStartPoint = LastDied.Location;
 	LastDied.Health = 9999;
 	LastDied.LastStartTime = WorldInfo.TimeSeconds;
-	
+
 	if (ExtHumanPawn(LastDied)!=None)
 	{
 		ExtHumanPawn(LastDied).bCanBecomeRagdoll = false;

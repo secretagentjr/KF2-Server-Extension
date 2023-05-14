@@ -19,7 +19,7 @@ function OnOpen()
 	if (ExtPrevPerk==None)
 		ExtPrevPerk = ExtKFPC.ActivePerkManager.CurrentPerk;
 
-	ExUpdateContainers(ExtPrevPerk); 
+	ExUpdateContainers(ExtPrevPerk);
 	SetBool("locked", true);
 }
 
@@ -65,7 +65,7 @@ function Callback_PerkSelected(byte NewPerkIndex, bool bClickedIndex)
 {
 	ExtPrevPerk = ExtKFPC.ActivePerkManager.UserPerks[NewPerkIndex];
 	ExUpdateContainers(ExtPrevPerk);
-	
+
 	ExtKFPC.PendingPerkClass = ExtPrevPerk.Class;
 	ExtKFPC.SwitchToPerk(ExtPrevPerk.Class);
 }
