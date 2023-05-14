@@ -64,7 +64,7 @@ static final function SetCharacterMeshFromArch(KFCharacterInfo_Human C, KFPawn K
 	if (KFPRI == none)
 	{
 		`Warn("Does not have a KFPRI" @ C);
-		 return;
+		return;
 	}
 	EPRI = ExtPlayerReplicationInfo(KFPRI);
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);
@@ -341,7 +341,7 @@ static final function SetAttachmentMeshAndSkin(KFCharacterInfo_Human C,
 	// Since cosmetic attachments are optional, do not choose index 0 if none is
 	// specified unlike the the head and body meshes
 	if (C.CosmeticVariants.Length > 0 &&
-		 CurrentAttachmentMeshIndex < C.CosmeticVariants.Length)
+		CurrentAttachmentMeshIndex < C.CosmeticVariants.Length)
 	{
 		if (KFPRI.StartLoadCosmeticContent(C, ECOSMETICTYPE_Attachment, CurrentAttachmentMeshIndex))
 		{
@@ -531,7 +531,7 @@ static final function DetachConflictingAttachments(KFCharacterInfo_Human C, int 
 		return;
 
 	if (C.CosmeticVariants.length > 0 &&
-		 NewAttachmentMeshIndex < C.CosmeticVariants.length)
+		NewAttachmentMeshIndex < C.CosmeticVariants.length)
 	{
 		// The socket that this attachment requires
 		NewAttachmentSocketName = C.CosmeticVariants[NewAttachmentMeshIndex].AttachmentItem.SocketName;
@@ -580,7 +580,7 @@ static final function SetFirstPersonArmsFromArch(KFCharacterInfo_Human C, KFPawn
 	if (KFPRI == none)
 	{
 		`Warn("Does not have a KFPRI" @ C);
-		 return;
+		return;
 	}
 	EPRI = ExtPlayerReplicationInfo(KFPRI);
 	bCustom = (EPRI!=None ? EPRI.UsesCustomChar() : false);

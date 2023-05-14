@@ -18,7 +18,7 @@ simulated function PostBeginPlay()
 	{
 		InstigatorPerk = InstigatorPawn.GetPerk();
 		if (InstigatorPerk != none)
-			bExplodeOnContact = InstigatorPerk.IsOnContactActive();	
+			bExplodeOnContact = InstigatorPerk.IsOnContactActive();
 	}
 
 	Super.PostBeginPlay();

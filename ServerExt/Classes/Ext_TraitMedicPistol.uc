@@ -15,7 +15,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 	Inv = Player.FindInventoryType(class'ExtWeap_Pistol_9mm');
 	if (Inv!=None)
 		Inv.Destroy();
-			
+
 	if (Player.FindInventoryType(class'ExtWeap_Pistol_MedicS')==None)
 	{
 		Inv = Player.CreateInventory(class'ExtWeap_Pistol_MedicS',Player.Weapon!=None);

@@ -1499,7 +1499,7 @@ simulated function float GetZedTimeExtensions(byte Level)
 
 simulated function float GetTightChokeModifier()
 {
-    return Modifiers[3];
+	return Modifiers[3];
 }
 
 defaultproperties

@@ -13,12 +13,12 @@ final function ExUpdateDetails(Ext_PerkBase PerkClass)
 
 	DetailsProvider = CreateObject("Object");
 
-	KFPC = KFPlayerController(GetPC());  
+	KFPC = KFPlayerController(GetPC());
 
 	if (KFPC != none)
 	{
 		KFGRI = KFGameReplicationInfo(KFPC.WorldInfo.GRI);
-		
+
 		DetailsProvider.SetString("ExperienceMessage", ExperienceString @ PerkClass.CurrentEXP);
 
 		if (KFGRI != none)
@@ -31,12 +31,12 @@ final function ExUpdateDetails(Ext_PerkBase PerkClass)
 
 		for (i = 0; i < WeaponNames.length; i++)
 		{
-			DetailsProvider.SetString("WeaponName" $ i, WeaponNames[i]);		
-			DetailsProvider.SetString("WeaponImage" $ i, "img://"$WeaponSources[i]);			
+			DetailsProvider.SetString("WeaponName" $ i, WeaponNames[i]);
+			DetailsProvider.SetString("WeaponImage" $ i, "img://"$WeaponSources[i]);
 		}
 
 		DetailsProvider.SetString("EXPAction1", "Kill zombies");
-		//DetailsProvider.SetString("EXPAction2", PerkClass.default.EXPAction2);		
+		//DetailsProvider.SetString("EXPAction2", PerkClass.default.EXPAction2);
 
 		SetObject("detailsData", DetailsProvider);
 	}
@@ -53,7 +53,7 @@ final function ExUpdatePassives(Ext_PerkBase PerkClass)
 	{
 		PassiveObject = CreateObject("Object");
 		PassiveObject.SetString("PassiveTitle", PerkClass.GetStatUIStr(i));
-		PassiveObject.SetString("PerkBonusModifier", ""); 
+		PassiveObject.SetString("PerkBonusModifier", "");
 		PassiveObject.SetString("PerkBonusAmount", "");
 		PassivesProvider.SetElementObject(i, PassiveObject);
 	}

@@ -126,8 +126,8 @@ function SellOffPerkWeapons()
 
 function InitializeOwnedItemList()
 {
-   	local Inventory Inv;
-   	local KFWeapon KFW;
+	local Inventory Inv;
+	local KFWeapon KFW;
 	local KFPawn_Human KFP;
 	local Ext_PerkBase EP;
 
@@ -142,14 +142,14 @@ function InitializeOwnedItemList()
 		// init armor purchase values
 		ArmorItem.SpareAmmoCount = KFP.Armor;
 		ArmorItem.MaxSpareAmmo = KFP.GetMaxArmor();
-	   	ArmorItem.AmmoPricePerMagazine = TraderItems.ArmorPrice * ActivePerkManager.GetArmorDiscountMod();
-	   	ArmorItem.DefaultItem.WeaponDef = TraderItems.ArmorDef;
+		ArmorItem.AmmoPricePerMagazine = TraderItems.ArmorPrice * ActivePerkManager.GetArmorDiscountMod();
+		ArmorItem.DefaultItem.WeaponDef = TraderItems.ArmorDef;
 
 		// init grenade purchase values
 		GrenadeItem.SpareAmmoCount = MyKFIM.GrenadeCount;
 		GrenadeItem.MaxSpareAmmo = ActivePerkManager.MaxGrenadeCount;
-	   	GrenadeItem.AmmoPricePerMagazine = TraderItems.GrenadePrice;
-	   	GrenadeItem.DefaultItem.WeaponDef = EP.GrenadeWeaponDef;
+		GrenadeItem.AmmoPricePerMagazine = TraderItems.GrenadePrice;
+		GrenadeItem.DefaultItem.WeaponDef = EP.GrenadeWeaponDef;
 
 		// @temp: fill in stuff that is normally serialized in the archetype
 		GrenadeItem.DefaultItem.AssociatedPerkClasses[0] = CurrentPerk.Class;
@@ -161,7 +161,7 @@ function InitializeOwnedItemList()
 			{
 				// Set the weapon information and add it to the OwnedItemList
 				SetWeaponInformation(KFW);
-		 	}
+			}
 		}
 
 		if (MyGfxManager != none && MyGfxManager.TraderMenu != none)
@@ -217,18 +217,18 @@ function int AddItemByPriority(out SItemInformation WeaponInfo)
 
 	// Add secondary ammo immediately after the main weapon
 	if (WeaponInfo.DefaultItem.WeaponDef.static.UsesSecondaryAmmo())
-   	{
-   		WeaponInfo.bIsSecondaryAmmo = true;
+	{
+		WeaponInfo.bIsSecondaryAmmo = true;
 		WeaponInfo.SellPrice = 0;
 		OwnedItemList.InsertItem(BestIndex + 1, WeaponInfo);
-   	}
+	}
 
 	if (MyGfxManager != none && MyGfxManager.TraderMenu != none)
 	{
 		MyGfxManager.TraderMenu.OwnedItemList = OwnedItemList;
 	}
 
-   	return BestIndex;
+	return BestIndex;
 }
 
 function bool CanCarry(const out STraderItem Item, optional int OverrideLevelValue = INDEX_NONE)

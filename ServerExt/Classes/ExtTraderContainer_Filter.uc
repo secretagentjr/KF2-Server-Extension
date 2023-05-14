@@ -31,7 +31,7 @@ function SetPerkFilterData(byte FilterIndex)
 				SetString("filterText", OffPerkString);
 			}
 
-		   	DataProvider = CreateArray();
+			DataProvider = CreateArray();
 			for (i = 0; i < PrM.UserPerks.Length; i++)
 			{
 				FilterObject = CreateObject("Object");

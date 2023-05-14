@@ -4,7 +4,7 @@ var localized string PerkChangeWarning;
 
 function UpdatePerkSelection(byte SelectedPerkIndex)
 {
- 	local int i;
+	local int i;
 	local GFxObject DataProvider;
 	local GFxObject TempObj;
 	local ExtPlayerController KFPC;
@@ -14,7 +14,7 @@ function UpdatePerkSelection(byte SelectedPerkIndex)
 
 	if (KFPC!=none && KFPC.ActivePerkManager!=None)
 	{
-	   	DataProvider = CreateArray();
+		DataProvider = CreateArray();
 
 		for (i = 0; i < KFPC.ActivePerkManager.UserPerks.Length; i++)
 		{

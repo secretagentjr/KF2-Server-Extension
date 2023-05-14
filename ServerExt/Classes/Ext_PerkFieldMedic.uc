@@ -212,7 +212,7 @@ defaultproperties
 
 	ToxicDmgTypeClass=class'KFDT_Toxic_AcidicRounds'
 
-  	SelfHealingSurgePct=0.1f
+	SelfHealingSurgePct=0.1f
 
 	MaxHealingSpeedBoost=30
 	HealingSpeedBoostDuration=5.f

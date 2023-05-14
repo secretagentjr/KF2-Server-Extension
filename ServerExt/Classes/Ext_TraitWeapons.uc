@@ -54,7 +54,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		{
 			Inv = Player.CreateInventory(IC,Player.Weapon!=None);
 			if (KFWeapon(Inv)!=None)
-			 	KFWeapon(Inv).bGivenAtStart = true;
+				KFWeapon(Inv).bGivenAtStart = true;
 		}
 	}
 	if (M!=None)

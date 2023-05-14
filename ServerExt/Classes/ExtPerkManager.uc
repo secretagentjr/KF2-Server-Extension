@@ -892,7 +892,7 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 
 simulated function float GetTightChokeModifier()
 {
-    return (CurrentPerk!=None ? CurrentPerk.GetTightChokeModifier() : 1.f);
+	return (CurrentPerk!=None ? CurrentPerk.GetTightChokeModifier() : 1.f);
 }
 
 // SwitchSpeed
