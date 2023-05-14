@@ -5,7 +5,7 @@
 [![Steam Workshop](https://img.shields.io/static/v1?message=workshop&logo=steam&labelColor=gray&color=blue&logoColor=white&label=steam%20)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Subscriptions](https://img.shields.io/steam/subscriptions/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
 [![Steam Favorites](https://img.shields.io/steam/favorites/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
-[![Steam Update Date](https://img.shields.io/steam/update-date/2085786712)](https://steamcommunity.com/sharedfiles/filedetails/?id=2085786712)
+[![MegaLinter](https://github.com/GenZmeY/KF2-Server-Extension/actions/workflows/mega-linter.yml/badge.svg?branch=master)](https://github.com/GenZmeY/KF2-Server-Extension/actions/workflows/mega-linter.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/GenZmeY/KF2-Server-Extension)](https://github.com/GenZmeY/KF2-Server-Extension/tags)
 [![GitHub top language](https://img.shields.io/github/languages/top/GenZmeY/KF2-Server-Extension)](https://docs.unrealengine.com/udk/Three/WebHome.html)
 [![GitHub](https://img.shields.io/github/license/GenZmeY/KF2-Server-Extension)](LICENSE)
