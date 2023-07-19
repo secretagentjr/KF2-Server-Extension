@@ -1191,8 +1191,8 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 		}
 		break;
 	case 'KnockDown':
-		Modifiers[7] = FMin(1.f + (Value*Progress),2.f);
-		return (Modifiers[7]-1.f);
+		Modifiers[7] = 1.f + (Value*Progress);
+		break;
 	case 'Welder':
 		Modifiers[8] = 1.f + (Value*Progress);
 		break;
