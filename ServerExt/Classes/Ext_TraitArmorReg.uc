@@ -22,11 +22,15 @@ static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Leve
 defaultproperties
 {
 	TraitGroup=class'Ext_TGroupRegen'
-	NumLevels=3
+	NumLevels=5
 	DefLevelCosts(0)=10
 	DefLevelCosts(1)=20
-	DefLevelCosts(2)=40
-	RegenValues.Add(7)
-	RegenValues.Add(12)
+	DefLevelCosts(2)=30
+	DefLevelCosts(3)=40
+	DefLevelCosts(4)=40
+	RegenValues.Add(5)
+	RegenValues.Add(10)
+	RegenValues.Add(15)
+	RegenValues.Add(20)
 	RegenValues.Add(25)
 }

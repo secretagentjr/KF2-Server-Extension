@@ -9,7 +9,7 @@ function PostBeginPlay()
 	PawnOwner = ExtHumanPawn(Owner);
 	if (PawnOwner==None)
 		Destroy();
-	else SetTimer(9+FRand(),true);
+	else SetTimer(1+FRand(),true);
 }
 
 function Timer()
