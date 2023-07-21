@@ -112,14 +112,14 @@ static function TraitActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitD
 static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
 
 // Called everytime player spawns in on the game (cancel effect is called on level up/level reset/perk change).
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
 
 // Owner died with this trait active.
 static function PlayerDied(Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
 
 // Prevent death.
-static function bool PreventDeath(KFPawn_Human Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
+static function bool PreventDeath(ExtHumanPawn Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);
 
 // Give/modify default inventory.
 static function AddDefaultInventory(KFPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data);

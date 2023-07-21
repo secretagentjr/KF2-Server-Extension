@@ -2,7 +2,7 @@ Class Ext_TraitUnCloak extends Ext_TraitBase;
 
 var array<float> RadiusValues;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_UnCloakHelper H;
 
@@ -11,7 +11,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		H.HandleRadius = Default.RadiusValues[Level-1];
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_UnCloakHelper H;
 

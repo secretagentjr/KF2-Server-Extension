@@ -1,6 +1,6 @@
 Class Ext_TraitZED_SummonExt extends Ext_TraitZEDBase;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local int i;
 	local byte MaxLevel;
@@ -33,7 +33,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 			Perk.PerkTraits[i].TraitType.Static.ApplyEffectOn(Player,Perk,Level,Data);
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ZEDHelper H;
 
@@ -42,7 +42,7 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 			H.Destroy();
 }
 
-static final function AddHelperType(byte Lv, KFPawn_Human Player)
+static final function AddHelperType(byte Lv, ExtHumanPawn Player)
 {
 	local Ext_T_ZEDHelper H;
 

@@ -128,7 +128,7 @@ function InitializeOwnedItemList()
 {
 	local Inventory Inv;
 	local KFWeapon KFW;
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 	local Ext_PerkBase EP;
 
 	EP = GetExtPerk();
@@ -136,11 +136,12 @@ function InitializeOwnedItemList()
 
 	TraderItems = KFGameReplicationInfo(WorldInfo.GRI).TraderItems;
 
-	KFP = KFPawn_Human(Pawn);
+	KFP = ExtHumanPawn(Pawn);
 	if (KFP != none)
 	{
 		// init armor purchase values
-		ArmorItem.SpareAmmoCount = KFP.Armor;
+		// Here Too....
+		ArmorItem.SpareAmmoCount = KFP.NewArmor;
 		ArmorItem.MaxSpareAmmo = KFP.GetMaxArmor();
 		ArmorItem.AmmoPricePerMagazine = TraderItems.ArmorPrice * ActivePerkManager.GetArmorDiscountMod();
 		ArmorItem.DefaultItem.WeaponDef = TraderItems.ArmorDef;

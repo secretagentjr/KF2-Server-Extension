@@ -1,16 +1,28 @@
-Class Ext_T_ArmorRegHelp extends Ext_T_HealthRegHelp
+Class Ext_T_ArmorRegHelp extends Info
 	transient;
+
+var ExtHumanPawn PawnOwner;
+var byte RegCount;
+
+function PostBeginPlay()
+{
+	PawnOwner = ExtHumanPawn(Owner);
+	if (PawnOwner==None)
+		Destroy();
+	else SetTimer(9+FRand(),true);
+}
 
 function Timer()
 {
 	if (PawnOwner==None || PawnOwner.Health<=0)
 		Destroy();
-	else if (PawnOwner.Armor<PawnOwner.MaxArmor)
+	else if (PawnOwner.NewArmor<PawnOwner.NewMaxArmor)
 	{
-		PawnOwner.Armor = Min(PawnOwner.Armor+RegCount,PawnOwner.MaxArmor);
+		PawnOwner.NewArmor = Min(PawnOwner.NewArmor+RegCount,PawnOwner.NewMaxArmor);
 	}
 }
 
 defaultproperties
 {
+
 }

@@ -1,15 +1,15 @@
 Class Ext_TraitKnockback extends Ext_TraitRagdoll;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).KnockbackResist = Default.ChanceValues[Level-1];
+	if (Player!=None)
+		Player.KnockbackResist = Default.ChanceValues[Level-1];
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).KnockbackResist = 1.f;
+	if (Player!=None)
+		Player.KnockbackResist = 1.f;
 }
 
 defaultproperties

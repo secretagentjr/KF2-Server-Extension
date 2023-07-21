@@ -1,12 +1,12 @@
 Class Ext_T_HealthRegHelp extends Info
 	transient;
 
-var KFPawn_Human PawnOwner;
+var ExtHumanPawn PawnOwner;
 var byte RegCount;
 
 function PostBeginPlay()
 {
-	PawnOwner = KFPawn_Human(Owner);
+	PawnOwner = ExtHumanPawn(Owner);
 	if (PawnOwner==None)
 		Destroy();
 	else SetTimer(9+FRand(),true);

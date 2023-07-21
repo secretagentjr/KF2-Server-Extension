@@ -4,6 +4,8 @@ var ExtPlayerController ExPC;
 var class<Ext_PerkBase> ExLastPerkClass;
 var string CurPerkPath;
 
+var ExtHumanPawn                    MyHumanPawnAlt;
+
 function InitializeHUD()
 {
 	Super.InitializeHUD();
@@ -69,6 +71,24 @@ function UpdateHealth()
 	{
 		LastHealth = MyPC.Pawn.Health;
 		SetInt("playerHealth" , LastHealth);
+	}
+}
+
+function UpdateArmor()
+{
+    if( MyPC.Pawn != MyHumanPawnAlt )
+    {
+        MyHumanPawnAlt = ExtHumanPawn( MyPC.Pawn );
+    }
+    if( MyPC.Pawn == none )
+    {
+        LastArmor = 0;
+        SetInt("playerArmor" , LastArmor);
+	}
+	else if( LastArmor != MyHumanPawnAlt.NewArmor )
+	{
+        SetInt("playerArmor" , MyHumanPawnAlt.NewArmor);
+        LastArmor = MyHumanPawnAlt.NewArmor;
 	}
 }
 

@@ -19,7 +19,7 @@ final function Actor PickBestSpawn()
 	local Actor N,BestN;
 	local KFPawn P;
 	local float Score,BestScore,Dist;
-	local KFPawn_Human H;
+	local ExtHumanPawn H;
 
 	BestN = None;
 	BestScore = 0;
@@ -35,7 +35,7 @@ final function Actor PickBestSpawn()
 				Dist = VSize(N.Location-P.Location);
 				if (FastTrace(P.Location,N.Location))
 					Dist*=0.75;
-				if (P.IsA('KFPawn_Human'))
+				if (P.IsA('ExtHumanPawn'))
 					Score+=(3000.f-Dist)/2000.f;
 				else Score-=(3500.f-Dist)/2500.f;
 			}
@@ -48,9 +48,9 @@ final function Actor PickBestSpawn()
 	}
 
 	// See if can spawn ontop of other players.
-	foreach WorldInfo.AllPawns(class'KFPawn_Human',H)
+	foreach WorldInfo.AllPawns(class'ExtHumanPawn',H)
 	{
-		if (!H.IsAliveAndWell() || H.Physics==PHYS_Falling || (ExtHumanPawn(H)!=None && ExtHumanPawn(H).bFeigningDeath))
+		if (!H.IsAliveAndWell() || H.Physics==PHYS_Falling || (H!=None && H.bFeigningDeath))
 			continue;
 		Score = FRand();
 		foreach WorldInfo.AllPawns(class'KFPawn',P,H.Location,2000.f)
@@ -60,7 +60,7 @@ final function Actor PickBestSpawn()
 			Dist = VSize(H.Location-P.Location);
 			if (FastTrace(P.Location,H.Location))
 				Dist*=0.75;
-			if (P.IsA('KFPawn_Human'))
+			if (P.IsA('ExtHumanPawn'))
 				Score+=(3000.f-Dist)/3000.f;
 			else Score-=(3500.f-Dist)/3500.f;
 		}

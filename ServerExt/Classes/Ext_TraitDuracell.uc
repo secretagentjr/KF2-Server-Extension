@@ -2,16 +2,16 @@ Class Ext_TraitDuracell extends Ext_TraitBase;
 
 var array<float> BatteryCharges;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).SetBatteryRate(Default.BatteryCharges[Level-1]);
+	if (Player!=None)
+		Player.SetBatteryRate(Default.BatteryCharges[Level-1]);
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).SetBatteryRate(1.f);
+	if (Player!=None)
+		Player.SetBatteryRate(1.f);
 }
 
 defaultproperties

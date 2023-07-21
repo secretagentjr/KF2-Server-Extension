@@ -7,7 +7,7 @@ struct FActiveUsers
 };
 var array<FActiveUsers> ActiveUsers;
 
-var repnotify KFPawn_Human PlayerOwner;
+var repnotify ExtHumanPawn PlayerOwner;
 var Ext_PerkBase PerkOwner;
 
 var() float ReuseTime;
@@ -35,11 +35,11 @@ simulated function int GetInteractionIndex(Pawn User)
 
 simulated event Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, vector HitNormal)
 {
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 
 	Super.Touch(Other, OtherComp, HitLocation, HitNormal);
 
-	KFP = KFPawn_Human(Other);
+	KFP = ExtHumanPawn(Other);
 	if (KFP != none && KFP.Controller != none && KFP != PlayerOwner)
 	{
 		KFPlayerController(KFP.Controller).SetPendingInteractionMessage();
@@ -48,11 +48,11 @@ simulated event Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocat
 
 simulated event UnTouch(Actor Other)
 {
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 
 	super.UnTouch(Other);
 
-	KFP = KFPawn_Human(Other);
+	KFP = ExtHumanPawn(Other);
 	if (KFP != none && KFP.Controller != none && KFP != PlayerOwner)
 	{
 		KFPlayerController(KFP.Controller).SetPendingInteractionMessage();
@@ -61,10 +61,10 @@ simulated event UnTouch(Actor Other)
 
 simulated function RecheckUser()
 {
-	local KFPawn_Human Toucher;
+	local ExtHumanPawn Toucher;
 
 	// Notify local player owner that this is available again.
-	foreach TouchingActors(class'KFPawn_Human', Toucher)
+	foreach TouchingActors(class'ExtHumanPawn', Toucher)
 	{
 		if (Toucher.IsLocallyControlled())
 			Touch(Toucher,None,Location,vect(1,0,0));
@@ -76,7 +76,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 	local int i;
 	local ExtPlayerReplicationInfo PRI;
 
-	if (PlayerOwner==None || User==PlayerOwner || KFPawn_Human(User)==None || User.Health<=0)
+	if (PlayerOwner==None || User==PlayerOwner || ExtHumanPawn(User)==None || User.Health<=0)
 		return false;
 
 	if (WorldInfo.NetMode==NM_Client)
@@ -115,7 +115,7 @@ simulated function bool GetCanInteract(Pawn User, optional bool bInteractIfTrue 
 
 	if (bInteractIfTrue && WorldInfo.NetMode!=NM_Client)
 	{
-		GiveAmmunition(KFPawn_Human(User));
+		GiveAmmunition(ExtHumanPawn(User));
 	}
 	return true;
 }
@@ -131,7 +131,7 @@ function CleanupUsers()
 		ClearTimer('CleanupUsers');
 }
 
-final function GiveAmmunition(KFPawn_Human Other)
+final function GiveAmmunition(ExtHumanPawn Other)
 {
 	local KFWeapon KFW;
 
@@ -185,10 +185,10 @@ simulated final function UsedOnClient(Pawn User)
 
 simulated function Destroyed()
 {
-	local KFPawn_Human Toucher;
+	local ExtHumanPawn Toucher;
 
 	//notify all touching actors that they are not touching this non existing trigger anymore
-	foreach TouchingActors(class'KFPawn_Human', Toucher)
+	foreach TouchingActors(class'ExtHumanPawn', Toucher)
 	{
 		UnTouch(Toucher);
 	}

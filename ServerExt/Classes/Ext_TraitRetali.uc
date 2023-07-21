@@ -1,6 +1,6 @@
 Class Ext_TraitRetali extends Ext_TraitBase;
 
-static function bool PreventDeath(KFPawn_Human Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function bool PreventDeath(ExtHumanPawn Player, Controller Instigator, Class<DamageType> DamType, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local ExtProj_SUPERGrenade P;
 

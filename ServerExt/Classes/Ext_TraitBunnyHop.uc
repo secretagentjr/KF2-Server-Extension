@@ -1,15 +1,15 @@
 Class Ext_TraitBunnyHop extends Ext_TraitBase;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).bHasBunnyHop = true;
+	if (Player!=None)
+		Player.bHasBunnyHop = true;
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).bHasBunnyHop = false;
+	if (Player!=None)
+		Player.bHasBunnyHop = false;
 }
 
 defaultproperties

@@ -10,6 +10,8 @@ var array<FWebAdminConfigInfo> WebConfigs;
 var ExtPerkManager PerkManager;
 var Controller PlayerOwner;
 
+var ExtHumanPawn PawnOwner;
+
 var() localized string PerkName;
 var() Texture2D PerkIcon;
 var() class<KFPerk> BasePerk; // KF perk that this perk is based on.
@@ -899,11 +901,15 @@ simulated function ApplyEffects()
 }
 
 // Notify that player just spawned.
-function ApplyEffectsTo(KFPawn_Human P)
+function ApplyEffectsTo(ExtHumanPawn P)
 {
 	local int i;
 	local bool bSec;
 
+    if (ExtHumanPawn(PlayerOwner.Pawn)!=None)
+		{
+			ModifyArmorNew(ExtHumanPawn(PlayerOwner.Pawn).NewMaxArmor);
+		}
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -927,13 +933,16 @@ function ApplyEffectsTo(KFPawn_Human P)
 function ActivateTraits()
 {
 	local int i;
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 	local bool bSec;
 
-	KFP = KFPawn_Human(PlayerOwner.Pawn);
+	KFP = ExtHumanPawn(PlayerOwner.Pawn);
 	if (KFP!=None && !KFP.IsAliveAndWell())
 		KFP = None;
-
+    
+	// Forcing an update on these here just so they are entirely accurate.
+	ModifyArmorNew(KFP.NewMaxArmor);
+	if (KFP.NewArmor > KFP.NewMaxArmor) KFP.NewArmor = KFP.NewMaxArmor;
 	for (i=0; i<PerkTraits.Length; ++i)
 	{
 		if (PerkTraits[i].CurrentLevel>0)
@@ -1056,7 +1065,7 @@ simulated function string GetStatUIStr(int iStat)
 final function UnloadStats(optional byte Mode)
 {
 	local int i,j;
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 
 	PerkManager.bStatsDirty = true;
 	if (Mode<=1)
@@ -1076,7 +1085,7 @@ final function UnloadStats(optional byte Mode)
 	}
 	if (Mode==0 || Mode==2)
 	{
-		KFP = KFPawn_Human(PlayerOwner.Pawn);
+		KFP = ExtHumanPawn(PlayerOwner.Pawn);
 		if (KFP!=None && !KFP.IsAliveAndWell())
 			KFP = None;
 
@@ -1124,7 +1133,7 @@ function FullReset(optional bool bNotPrestige)
 	bForceNetUpdate = true;
 }
 
-function bool PreventDeath(KFPawn_Human Player, Controller Killer, Class<DamageType> DamType)
+function bool PreventDeath(ExtHumanPawn Player, Controller Killer, Class<DamageType> DamType)
 {
 	local int i;
 
@@ -1160,7 +1169,7 @@ simulated function PlayerDied()
 simulated function float ApplyEffect(name Type, float Value, float Progress)
 {
 	local bool bActivePerk;
-
+    
 	bActivePerk = (PerkManager!=None && PerkManager.CurrentPerk==Self);
 	switch (Type)
 	{
@@ -1216,13 +1225,13 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 		Modifiers[13] = 1.f / (1.f+Value*Progress);
 		break;
 	case 'Armor':
-		Modifiers[14] = (Value*Progress*100.f);
-		if (bActivePerk && KFPawn_Human(PlayerOwner.Pawn)!=None)
+	    // Start at 0, this has to be multiplied by 100 otherwise the value is off
+		Modifiers[14] = 0.f + (Value*Progress*100.f);
+		if (bActivePerk && ExtHumanPawn(PlayerOwner.Pawn)!=None)
 		{
-			KFPawn_Human(PlayerOwner.Pawn).MaxArmor = KFPawn_Human(PlayerOwner.Pawn).Default.MaxArmor;
-			ModifyArmor(KFPawn_Human(PlayerOwner.Pawn).MaxArmor);
+			ModifyArmorNew(ExtHumanPawn(PlayerOwner.Pawn).NewMaxArmor);
 		}
-		return FMin(Value*Progress,1.55);
+		break;
 	case 'PoisonDmg':
 		Modifiers[15] = 1.f / (1.f+Value*Progress);
 		break;
@@ -1310,9 +1319,13 @@ function ModifyHealth(out int InHealth)
 	InHealth *= Modifiers[6];
 }
 
-function ModifyArmor(out byte MaxArmor)
+// New Function for armor
+function ModifyArmorNew(out int NewMaxArmor)
 {
-	MaxArmor = Min(MaxArmor+Modifiers[14],255);
+	// Reset to default, which is 100
+	NewMaxArmor = 100.f;
+	// Add Bonus.
+	NewMaxArmor = NewMaxArmor+Modifiers[14];
 }
 
 function float GetKnockdownPowerModifier()
@@ -1401,7 +1414,7 @@ simulated function ModifyHealerRechargeTime(out float RechargeRate)
 
 simulated function DrawSpecialPerkHUD(Canvas C)
 {
-	if (EnemyHealthRange>0 && PlayerOwner!=None && KFPawn_Human(PlayerOwner.Pawn)!=None)
+	if (EnemyHealthRange>0 && PlayerOwner!=None && ExtHumanPawn(PlayerOwner.Pawn)!=None)
 		DrawEnemyHealth(C);
 }
 

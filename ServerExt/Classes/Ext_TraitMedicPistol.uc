@@ -8,7 +8,7 @@ static function AddDefaultInventory(KFPawn Player, Ext_PerkBase Perk, byte Level
 		Player.DefaultInventory[i] = class'ExtWeap_Pistol_MedicS';
 }
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Inventory Inv;
 

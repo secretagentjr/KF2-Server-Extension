@@ -2,16 +2,16 @@ Class Ext_TraitRagdoll extends Ext_TraitBase;
 
 var float ChanceValues[4];
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).NoRagdollChance = Default.ChanceValues[Level-1];
+	if (Player!=None)
+		Player.NoRagdollChance = Default.ChanceValues[Level-1];
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).NoRagdollChance = 0.f;
+	if (Player!=None)
+		Player.NoRagdollChance = 0.f;
 }
 
 defaultproperties

@@ -1,11 +1,11 @@
 Class Ext_TraitMedBoost extends Ext_TraitBase;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkFieldMedic(Perk).HealingSpeedBoostPct = 10.0f + (5.f + ((float(Level) - 1.f) * 5.f));
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	Ext_PerkFieldMedic(Perk).HealingSpeedBoostPct = 10.0f;
 }

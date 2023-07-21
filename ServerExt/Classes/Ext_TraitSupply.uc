@@ -2,12 +2,12 @@ Class Ext_TraitSupply extends Ext_TraitBase;
 
 var() Texture2D SupplyIcon;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	if (Data != None) Ext_TraitSupplyData(Data).SpawnSupplier(Player);
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	if (Data != None) Ext_TraitSupplyData(Data).RemoveSupplier();
 }

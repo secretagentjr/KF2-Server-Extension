@@ -508,11 +508,11 @@ simulated reliable client function AllCharReceived()
 
 simulated final function NotifyCharListDone()
 {
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 	local KFCharacterInfo_Human NewCharArch;
 	local ExtPlayerReplicationInfo EPRI;
 
-	foreach WorldInfo.AllPawns(class'KFPawn_Human', KFP)
+	foreach WorldInfo.AllPawns(class'ExtHumanPawn', KFP)
 	{
 		EPRI = ExtPlayerReplicationInfo(KFP.PlayerReplicationInfo);
 		if (EPRI!=None)
@@ -560,10 +560,10 @@ simulated final function KFCharacterInfo_Human GetSelectedArch()
 
 simulated event CharacterCustomizationChanged()
 {
-	local KFPawn_Human KFP;
+	local ExtHumanPawn KFP;
 	local KFCharacterInfo_Human NewCharArch;
 
-	foreach WorldInfo.AllPawns(class'KFPawn_Human', KFP)
+	foreach WorldInfo.AllPawns(class'ExtHumanPawn', KFP)
 	{
 		if (KFP.PlayerReplicationInfo == self || (KFP.DrivenVehicle != None && KFP.DrivenVehicle.PlayerReplicationInfo == self))
 		{
@@ -751,7 +751,6 @@ function UpdateReplicatedPlayerHealth()
 		}
 	}
 }
-
 
 defaultproperties
 {

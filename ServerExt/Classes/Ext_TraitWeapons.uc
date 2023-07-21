@@ -38,7 +38,7 @@ static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_Trai
 	Perk.PrimaryWeapon = Perk.Default.PrimaryWeapon;
 }
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local class<Inventory> IC;
 	local KFInventoryManager M;
@@ -61,7 +61,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		M.bInfiniteWeight = false;
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local class<Inventory> IC;
 	local Inventory Inv;

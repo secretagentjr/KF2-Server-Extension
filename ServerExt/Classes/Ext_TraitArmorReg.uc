@@ -1,6 +1,8 @@
-Class Ext_TraitArmorReg extends Ext_TraitHealthReg;
+Class Ext_TraitArmorReg extends Ext_TraitBase;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+var array<byte> RegenValues;
+
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ArmorRegHelp H;
 
@@ -9,7 +11,7 @@ static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level
 		H.RegCount = Default.RegenValues[Level-1];
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	local Ext_T_ArmorRegHelp H;
 
@@ -19,7 +21,11 @@ static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Leve
 
 defaultproperties
 {
-	RegenValues.Empty()
+	TraitGroup=class'Ext_TGroupRegen'
+	NumLevels=3
+	DefLevelCosts(0)=10
+	DefLevelCosts(1)=20
+	DefLevelCosts(2)=40
 	RegenValues.Add(7)
 	RegenValues.Add(12)
 	RegenValues.Add(25)

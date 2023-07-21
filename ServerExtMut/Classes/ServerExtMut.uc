@@ -523,7 +523,7 @@ function ScoreKill(Controller Killer, Controller Killed)
 
 function bool PreventDeath(Pawn Killed, Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
-	if ((KFPawn_Human(Killed)!=None && CheckPreventDeath(KFPawn_Human(Killed),Killer,damageType)) || Super.PreventDeath(Killed,Killer,damageType,HitLocation))
+	if ((ExtHumanPawn(Killed)!=None && CheckPreventDeath(ExtHumanPawn(Killed),Killer,damageType)) || Super.PreventDeath(Killed,Killer,damageType,HitLocation))
 		return true;
 
 	LastKillDamageType = damageType;
@@ -565,7 +565,7 @@ final function GT_PlayerKilled(Controller Killer, Controller Killed, class<Damag
 	}
 }
 
-final function bool CheckPreventDeath(KFPawn_Human Victim, Controller Killer, class<DamageType> damageType)
+final function bool CheckPreventDeath(ExtHumanPawn Victim, Controller Killer, class<DamageType> damageType)
 {
 	local ExtPlayerController E;
 
@@ -660,7 +660,7 @@ function NetDamage(int OriginalDamage, out int Damage, Pawn Injured, Controller 
 				Damage = 0;
 			}
 		}
-		else if (bDamageMessages && KFPawn_Human(Injured)!=None && Injured.GetTeamNum()==0 && InstigatedBy.GetTeamNum()!=0 && ExtPlayerController(InstigatedBy)!=None)
+		else if (bDamageMessages && ExtHumanPawn(Injured)!=None && Injured.GetTeamNum()==0 && InstigatedBy.GetTeamNum()!=0 && ExtPlayerController(InstigatedBy)!=None)
 		{
 			LastDamageDealer = ExtPlayerController(InstigatedBy);
 			if (bDamageMessages && !LastDamageDealer.bClientHideNumbers)
@@ -968,14 +968,14 @@ function Timer()
 
 final function SavePlayerInventory()
 {
-	local KFPawn_Human P;
+	local ExtHumanPawn P;
 	local int i,j;
 	local Inventory Inv;
 	local KFWeapon K;
 
 	PlayerInv.Length = 0;
 	i = 0;
-	foreach WorldInfo.AllPawns(class'KFPawn_Human',P)
+	foreach WorldInfo.AllPawns(class'ExtHumanPawn',P)
 		if (P.IsAliveAndWell() && P.InvManager!=None && P.Controller!=None && P.Controller.PlayerReplicationInfo!=None)
 		{
 			PlayerInv.Length = i+1;
@@ -1294,10 +1294,10 @@ function PlayerBoughtTrait(ExtPlayerController PC, class<Ext_PerkBase> PerkClass
 			{
 				Trait.Static.TraitDeActivate(P,P.PerkTraits[i].CurrentLevel-1,P.PerkTraits[i].Data);
 				Trait.Static.TraitActivate(P,P.PerkTraits[i].CurrentLevel,P.PerkTraits[i].Data);
-				if (KFPawn_Human(PC.Pawn)!=None)
+				if (ExtHumanPawn(PC.Pawn)!=None)
 				{
-					Trait.Static.CancelEffectOn(KFPawn_Human(PC.Pawn),P,P.PerkTraits[i].CurrentLevel-1,P.PerkTraits[i].Data);
-					Trait.Static.ApplyEffectOn(KFPawn_Human(PC.Pawn),P,P.PerkTraits[i].CurrentLevel,P.PerkTraits[i].Data);
+					Trait.Static.CancelEffectOn(ExtHumanPawn(PC.Pawn),P,P.PerkTraits[i].CurrentLevel-1,P.PerkTraits[i].Data);
+					Trait.Static.ApplyEffectOn(ExtHumanPawn(PC.Pawn),P,P.PerkTraits[i].CurrentLevel,P.PerkTraits[i].Data);
 				}
 			}
 			break;

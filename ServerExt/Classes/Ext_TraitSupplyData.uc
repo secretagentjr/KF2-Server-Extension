@@ -2,7 +2,7 @@ Class Ext_TraitSupplyData extends Ext_TraitDataStore;
 
 var Ext_T_SupplierInteract SupplyInteraction;
 
-final function SpawnSupplier(KFPawn_Human H, optional bool bGrenades)
+final function SpawnSupplier(ExtHumanPawn H, optional bool bGrenades)
 {
 	if (SupplyInteraction!=None)
 		SupplyInteraction.Destroy();

@@ -1,12 +1,12 @@
 Class Ext_T_GhostHelper extends Ext_TraitDataStore;
 
-var KFPawn_Human LastDied;
+var ExtHumanPawn LastDied;
 var float LastDiedTimer,TeleTime;
 var vector ResPoint,TeleStartPoint;
 var ExtSpawnPointHelper SpawnPointer;
 var bool bTeleporting,bIsDelayed;
 
-function bool CanResPlayer(KFPawn_Human Other, byte Level)
+function bool CanResPlayer(ExtHumanPawn Other, byte Level)
 {
 	local Actor SpawnPoint;
 
@@ -50,10 +50,10 @@ final function StartResurrect()
 	LastDied.Health = 9999;
 	LastDied.LastStartTime = WorldInfo.TimeSeconds;
 
-	if (ExtHumanPawn(LastDied)!=None)
+	if (LastDied!=None)
 	{
-		ExtHumanPawn(LastDied).bCanBecomeRagdoll = false;
-		if (!ExtHumanPawn(LastDied).CanBeRedeemed())
+		LastDied.bCanBecomeRagdoll = false;
+		if (!LastDied.CanBeRedeemed())
 		{
 			bIsDelayed = true;
 			return;
@@ -117,8 +117,8 @@ final function EndGhostTeleport()
 	if (LastDied.IsDoingSpecialMove()) // Stop any grabbing zeds.
 		LastDied.EndSpecialMove();
 
-	if (ExtHumanPawn(LastDied)!=None)
-		ExtHumanPawn(LastDied).bCanBecomeRagdoll = true;
+	if (LastDied!=None)
+		LastDied.bCanBecomeRagdoll = true;
 }
 
 function Destroyed()

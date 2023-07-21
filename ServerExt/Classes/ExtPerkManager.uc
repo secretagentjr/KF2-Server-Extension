@@ -87,11 +87,11 @@ function bool ApplyPerkName(string S)
 
 function ApplyPerk(Ext_PerkBase P)
 {
-	local KFPawn_Human HP;
+	local ExtHumanPawn HP;
 	local KFInventoryManager InvMan;
 	local Ext_T_ZEDHelper H;
 	local int i;
-
+	
 	if (P==None)
 		return;
 
@@ -106,7 +106,7 @@ function ApplyPerk(Ext_PerkBase P)
 			H.Destroy();
 		}
 
-		HP = KFPawn_Human(PlayerOwner.Pawn);
+		HP = ExtHumanPawn(PlayerOwner.Pawn);
 		if (HP != None)
 			HP.DefaultInventory = HP.Default.DefaultInventory;
 	}
@@ -117,7 +117,7 @@ function ApplyPerk(Ext_PerkBase P)
 
 		for (i=0; i<CurrentPerk.PerkTraits.Length; ++i)
 		{
-			CurrentPerk.PerkTraits[i].TraitType.Static.CancelEffectOn(KFPawn_Human(PlayerOwner.Pawn),CurrentPerk,CurrentPerk.PerkTraits[i].CurrentLevel,CurrentPerk.PerkTraits[i].Data);
+			CurrentPerk.PerkTraits[i].TraitType.Static.CancelEffectOn(ExtHumanPawn(PlayerOwner.Pawn),CurrentPerk,CurrentPerk.PerkTraits[i].CurrentLevel,CurrentPerk.PerkTraits[i].Data);
 		}
 	}
 
@@ -138,18 +138,17 @@ function ApplyPerk(Ext_PerkBase P)
 
 		if (PlayerOwner.Pawn != None)
 		{
-			HP = KFPawn_Human(PlayerOwner.Pawn);
+			HP = ExtHumanPawn(PlayerOwner.Pawn);
 			if (HP != None)
 			{
 				HP.HealthMax = HP.default.Health;
-				HP.MaxArmor = HP.default.MaxArmor;
-
+				// We just check for max variable and set to whatever it was.
+                HP.NewMaxArmor = HP.NewMaxArmor;
 				ModifyHealth(HP.HealthMax);
-				ModifyArmor(HP.MaxArmor);
 				CurrentPerk.UpdateAmmoStatus(HP.InvManager);
 
 				if (HP.Health > HP.HealthMax) HP.Health = HP.HealthMax;
-				if (HP.Armor > HP.MaxArmor) HP.Armor = HP.MaxArmor;
+				if (HP.NewArmor > HP.NewMaxArmor) HP.NewArmor = HP.NewMaxArmor;
 			}
 		}
 	}
@@ -540,10 +539,11 @@ function ModifyHealth(out int InHealth)
 		CurrentPerk.ModifyHealth(InHealth);
 }
 
-function ModifyArmor(out byte MaxArmor)
+// New Function for armor
+function ModifyArmorNew(out int NewMaxArmor)
 {
-	if (CurrentPerk!=None)
-		CurrentPerk.ModifyArmor(MaxArmor);
+  if (CurrentPerk!=None)
+		CurrentPerk.ModifyArmorNew(NewMaxArmor);
 }
 
 function float GetKnockdownPowerModifier(optional class<DamageType> DamageType, optional byte BodyPart, optional bool bIsSprinting=false)
@@ -762,7 +762,7 @@ simulated function bool ShouldKnockDownOnBump()
 	return (CurrentPerk!=None && CurrentPerk.bHasSWATEnforcer);
 }
 
-simulated function OnBump(Actor BumpedActor, KFPawn_Human BumpInstigator, vector BumpedVelocity, rotator BumpedRotation)
+simulated function OnBumpNew(Actor BumpedActor, ExtHumanPawn BumpInstigator, vector BumpedVelocity, rotator BumpedRotation)
 {
 	local KFPawn_Monster KFPM;
 	local bool CanBump;

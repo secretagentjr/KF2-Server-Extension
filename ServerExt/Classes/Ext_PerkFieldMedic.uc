@@ -34,11 +34,11 @@ simulated function ModifyMagSizeAndNumber(KFWeapon KFW, out int MagazineCapacity
 
 function bool RepairArmor(Pawn HealTarget)
 {
-	local KFPawn_Human KFPH;
+	local ExtHumanPawn KFPH;
 
 	if (RepairArmorRate>0)
 	{
-		KFPH = KFPawn_Human(Healtarget);
+		KFPH = ExtHumanPawn(Healtarget);
 		if (KFPH != none && KFPH.Armor < KFPH.MaxArmor)
 		{
 			KFPH.AddArmor(Round(float(KFPH.MaxArmor) * RepairArmorRate));
@@ -100,9 +100,9 @@ static function int ModifyToxicDmg(int ToxicDamage)
 
 function NotifyZedTimeStarted()
 {
-	local KFPawn_Human HPawn;
+	local ExtHumanPawn HPawn;
 
-	HPawn = KFPawn_Human(PlayerOwner.Pawn);
+	HPawn = ExtHumanPawn(PlayerOwner.Pawn);
 
 	if (bUseAirborneAgent && HPawn != none && HPawn.IsAliveAndWell())
 		HPawn.StartAirBorneAgentEvent();

@@ -1,4 +1,4 @@
-Class ExtHumanPawn extends KFPawn_Human;
+class ExtHumanPawn extends KFPawn_Human;
 
 // Forrests backpack weapon and first person legs.
 var SkeletalMeshComponent AttachedBackItem;
@@ -14,6 +14,12 @@ var byte UnfeignFailedCount,RepRegenHP,BHopAccelSpeed;
 var repnotify bool bFeigningDeath;
 var bool bPlayingFeignDeathRecovery,bRagdollFromFalling,bRagdollFromBackhit,bRagdollFromMomentum,bCanBecomeRagdoll,bRedeadMode,bPendingRedead,bHasBunnyHop,bOnFirstPerson,bFPLegsAttached,bFPLegsInit,bThrowAllWeaponsOnDeath;
 
+var int NewMaxArmor;
+var int NewArmor;
+
+var Ext_PerkBase CurrentPerk;
+var ExtPerkManager ShouldBump;
+
 var byte HealingShieldMod,HealingSpeedBoostMod,HealingDamageBoostMod;
 
 replication
@@ -23,7 +29,225 @@ replication
 	if (bNetOwner)
 		bHasBunnyHop;
 	if (bNetDirty)
-		HealingSpeedBoostMod, HealingDamageBoostMod, HealingShieldMod;
+		NewMaxArmor,NewArmor,HealingSpeedBoostMod, HealingDamageBoostMod, HealingShieldMod;
+}
+
+// Armor Functions
+
+
+function AddArmor( int Amount )
+{
+	NewArmor = Min( NewArmor + Amount, GetMaxArmor() );
+}
+
+function GiveMaxArmor()
+{
+	NewArmor = GetMaxArmor();
+}
+
+function int GetMaxArmor()
+{
+	return NewMaxArmor; //Perk might adjust that later
+}
+
+function ShieldAbsorb( out int InDamage )
+{
+	local float AbsorbedPct;
+	local int AbsorbedDmg;
+	local KFPerk MyPerk;
+
+	MyPerk = GetPerk();
+	if( MyPerk != none && MyPerk.HasHeavyArmor() )
+	{
+		AbsorbedDmg = Min(InDamage, NewArmor);
+		NewArmor -= MyPerk.GetArmorDamageAmount( AbsorbedDmg );
+		InDamage -= AbsorbedDmg;
+		return;
+	}
+
+	// Three levels of armor integrity
+	if( NewArmor >= IntegrityLevel_High )
+	{
+		AbsorbedPct = ArmorAbsorbModifier_High;
+	}
+	else if( NewArmor >= IntegrityLevel_Medium )
+	{
+		AbsorbedPct = ArmorAbsorbModifier_Medium;
+	}
+	else
+	{
+		AbsorbedPct = ArmorAbsorbModifier_Low;
+	}
+
+	AbsorbedDmg = Min(Round(AbsorbedPct * InDamage), NewArmor);
+	// reduce damage and armor
+	NewArmor -= AbsorbedDmg;
+	InDamage -= AbsorbedDmg;
+}
+
+/* AdjustDamage()
+adjust damage based on inventory, other attributes
+*/
+function AdjustDamage(out int InDamage, out vector Momentum, Controller InstigatedBy, vector HitLocation, class<DamageType> DamageType, TraceHitInfo HitInfo, Actor DamageCauser)
+{
+	local KFPerk MyKFPerk;
+	local float TempDamage;
+	local bool bHasSacrificeSkill;
+
+	`log(self @ GetFuncName()@"Adjusted Damage BEFORE =" @ InDamage, bLogTakeDamage);
+	super.AdjustDamage(InDamage, Momentum, InstigatedBy, HitLocation, DamageType, HitInfo, DamageCauser);
+
+	// nullify damage during trader time
+	if (KFGameReplicationInfo(KFGameInfo(WorldInfo.Game).GameReplicationInfo).bTraderIsOpen)
+	{
+		InDamage = 0;
+		return;
+	}
+
+	MyKFPerk = GetPerk();
+	if( MyKFPerk != none )
+	{
+		MyKFPerk.ModifyDamageTaken( InDamage, DamageType, InstigatedBy );
+		bHasSacrificeSkill = MyKFPerk.ShouldSacrifice();
+	}
+
+	TempDamage = InDamage;
+
+	if( TempDamage > 0 && class'KFPerk_Demolitionist'.static.IsDmgTypeExplosiveResistable( DamageType ) && HasExplosiveResistance() )
+	{
+		class'KFPerk_Demolitionist'.static.ModifyExplosiveDamage( TempDamage );
+		TempDamage = TempDamage < 1.f ? 1.f : TempDamage;
+	}
+
+	TempDamage *= GetHealingShieldModifier();
+	InDamage = Round( TempDamage );
+
+	// Reduce damage based on you current armor integrity
+	if( InDamage > 0 && NewArmor > 0 && DamageType.default.bArmorStops )
+	{
+		ShieldAbsorb( InDamage );
+
+		//Shield has taken all the damage.  Setup the HitFXInfo for replication so we can
+		//		respond to hit through the normal hit FX chain.
+		if (InDamage <= 0)
+		{
+			AddHitFX(InDamage, InstigatedBy, GetHitZoneIndex(HitInfo.BoneName), HitLocation, Momentum, class<KFDamageType>(DamageType));
+		}
+	}
+
+	if (KFPlayerController_WeeklySurvival(Controller) != none)
+	{
+		KFPlayerController_WeeklySurvival(Controller).AdjustVIPDamage(InDamage, InstigatedBy);
+	}	
+	else if (KFPlayerController_WeeklySurvival(InstigatedBy) != none)
+	{
+		KFPlayerController_WeeklySurvival(InstigatedBy).AdjustVIPDamage(InDamage, InstigatedBy);
+	}
+
+	if( bHasSacrificeSkill && Health >= 5 && Health - InDamage < 5 )
+	{
+		Health = InDamage + 5;
+		SacrificeExplode();
+	}
+
+	// register damage to divide up score
+	if( InstigatedBy != none )
+	{
+		AddTakenDamage( InstigatedBy, FMin(Health, InDamage), DamageCauser, class<KFDamageType>(DamageType) );
+	}
+
+	`log(self @ GetFuncName()@"Adjusted Damage AFTER =" @ InDamage, bLogTakeDamage);
+
+	// (Cheats) Dont allow dying if demigod mode is enabled
+`if(`__TW_SDK_)
+	if ( Controller != none &&  Controller.bDemiGodMode && InDamage >= Health )
+	{
+		// Increase your health when you are going to get killed... so the amount of damage in semigod is not always just 1...
+		// Some ais do different reactions depending on the amount of damaged caused in the last x seconds...
+		if ( Health == 1 )
+		{
+			Health = HealthMax * 0.25f;
+		}
+		if( InDamage >= Health )
+		{
+			InDamage = Health - 1;
+		}
+	}
+`endif
+
+	if (KFPlayerController_WeeklySurvival(Controller) != none)
+	{
+		KFPlayerController_WeeklySurvival(Controller).UpdateVIPDamage();
+	}
+}
+
+//Regular Functions
+
+
+/**
+ * @brief Checks if we are close to a demo player with explosivbe resistance skill enabled
+ *
+ * @return true if close and enabled
+ */
+protected function bool HasExplosiveResistance()
+{
+	local ExtHumanPawn TestPawn;
+	local KFPerk TestPawnPerk;
+
+	foreach WorldInfo.Allpawns( class'ExtHumanPawn', TestPawn, Location, class'KFPerk_Demolitionist'.static.GetExplosiveResistanceRadius() )
+	{
+		TestPawnPerk = TestPawn.GetPerk();
+		if( TestPawnPerk != none && TestPawnPerk.IsSharedExplosiveResistaneActive() )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function ResetIdleStartTime()
+{
+	local PlayerController PC;
+	local ExtHumanPawn KFPH;
+	local float DistanceToTeammateSq, MaxResetDistanceSq;
+
+	IdleStartTime = WorldInfo.TimeSeconds;
+
+	// reset idle start time for nearby teammates
+	// (i.e. consider them no longer idle if they are close enough to you to need to pay attention and not ramble on about the weather)
+	MaxResetDistanceSq = 3000 * 3000;
+	foreach WorldInfo.AllControllers(Class'PlayerController', PC)
+	{
+		if( PC == Controller )
+		{
+			continue;
+		}
+
+		KFPH = ExtHumanPawn( PC.Pawn );
+		if( KFPH == none || !KFPH.IsAliveAndWell() )
+		{
+			continue;
+		}
+
+		DistanceToTeammateSq = VSizeSq( KFPH.Location - Location );
+		if( DistanceToTeammateSq <= MaxResetDistanceSq )
+		{
+			KFPH.IdleStartTime = WorldInfo.TimeSeconds;
+		}
+	}
+}
+
+simulated event Bump( Actor Other, PrimitiveComponent OtherComp, Vector HitNormal )
+{	
+	if( WorldInfo.TimeDilation < 1.f && !IsZero(Velocity) && Other.GetTeamNum() != GetTeamNum() )
+	{
+	if (CurrentPerk!=None)
+	{
+	  // Update Function so stuff don't break.
+     ShouldBump.OnBumpNew(Other, self, Velocity, Rotation);
+	}
+	}
 }
 
 function TakeDamage(int Damage, Controller InstigatedBy, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
@@ -82,14 +306,6 @@ simulated function bool Died(Controller Killer, class<DamageType> damageType, ve
 
 		if (InvManager != None)
 			InvManager.OwnerDied();
-
-		Health = 1;
-		if (!bFeigningDeath)
-			PlayFeignDeath(true,,true);
-		Health = 0;
-		ClearTimer('UnsetFeignDeath');
-		GoToState('TransformZed');
-		return true;
 	}
 	return Super.Died(Killer, DamageType, HitLocation);
 }
@@ -958,70 +1174,6 @@ ignores FaceRotation, SetMovementPhysics;
 	}
 }
 
-// VS mode.
-state TransformZed extends FeigningDeath
-{
-Ignores FaceRotation, SetMovementPhysics, UnsetFeignDeath, Tick, TakeDamage, Died;
-
-	simulated event BeginState(name PreviousStateName)
-	{
-		bCanPickupInventory = false;
-		bNoWeaponFiring = true;
-		if (ExtPlayerController(Controller)!=None)
-			ExtPlayerController(Controller).EnterRagdollMode(true);
-		else if (Controller!=None)
-			Controller.ReplicatedEvent('RagdollMove');
-
-		SetTimer(2,false,'TransformToZed');
-	}
-	simulated function EndState(name NextStateName)
-	{
-	}
-	function bool CanBeRedeemed()
-	{
-		return false;
-	}
-	function TransformToZed()
-	{
-		local VS_ZedRecentZed Z;
-
-		if (Controller==None)
-		{
-			Destroy();
-			return;
-		}
-		PlayFeignDeath(false);
-		SetCollision(false,false);
-		Z = Spawn(class'VS_ZedRecentZed',,,Location,Rotation,,true);
-		if (Z==None)
-		{
-			Super.Died(None,Class'DamageType',Location);
-			return;
-		}
-		else
-		{
-			Z.SetPhysics(PHYS_Falling);
-			Z.LastStartTime = WorldInfo.TimeSeconds;
-			Controller.Pawn = None;
-			Controller.Possess(Z,false);
-			WorldInfo.Game.ChangeTeam(Controller,255,true);
-			WorldInfo.Game.SetPlayerDefaults(Z);
-			if (ExtPlayerController(Controller)!=None)
-				Controller.GoToState('RagdollMove');
-			else if (Controller!=None)
-				Controller.ReplicatedEvent('RagdollMove');
-			Z.WakeUp();
-			if (ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo)!=None)
-			{
-				ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo).PlayerHealth = Min(Z.Health,255);
-				ExtPlayerReplicationInfo(Controller.PlayerReplicationInfo).PlayerHealthPercent = FloatToByte(float(Z.Health) / float(Z.HealthMax));
-			}
-		}
-		Controller = None;
-		Destroy();
-	}
-}
-
 simulated final function InitFPLegs()
 {
 	local int i;
@@ -1348,6 +1500,10 @@ defaultproperties
 	DefaultInventory.Add(class'KFWeap_Healer_Syringe')
 	DefaultInventory.Add(class'KFWeap_Welder')
 	DefaultInventory.Add(class'KFInventory_Money')
+	Armor=0
+	MaxArmor=0
+	NewArmor=0
+	NewMaxArmor=100
 
 	Begin Object Class=SkeletalMeshComponent Name=FP_BodyComp
 		MinDistFactorForKinematicUpdate=0.0

@@ -478,7 +478,7 @@ final function RenderProgress()
 
 function DrawHUD()
 {
-	local KFPawn_Human KFPH;
+	local ExtHumanPawn KFPH;
 	local KFPawn_Scripted KFPS;
 	local vector ViewLocation, ViewVector, PlayerPartyInfoLocation, PawnLocation;
 	local rotator ViewRotation;
@@ -532,14 +532,14 @@ function DrawHUD()
 			ViewVector = vector(ViewRotation);
 
 			Canvas.EnableStencilTest(true);
-			foreach WorldInfo.AllPawns(class'KFPawn_Human', KFPH)
+			foreach WorldInfo.AllPawns(class'ExtHumanPawn', KFPH)
 			{
 				if (KFPH.IsAliveAndWell() && KFPH != KFPlayerOwner.Pawn && KFPH.Mesh.SkeletalMesh != none && KFPH.Mesh.bAnimTreeInitialised)
 				{
 					PlayerPartyInfoLocation = KFPH.Mesh.GetPosition() + (KFPH.CylinderComponent.CollisionHeight * vect(0,0,1));
 					if (`TimeSince(KFPH.Mesh.LastRenderTime) < 0.2f && Normal(PlayerPartyInfoLocation - ViewLocation) dot ViewVector > 0.f)
 					{
-						if (DrawFriendlyHumanPlayerInfo(KFPH))
+						if (DrawFriendlyHumanPlayerInfoNew(KFPH))
 						{
 							VisibleHumanPlayers.AddItem(KFPH.PlayerReplicationInfo);
 						}
@@ -582,7 +582,7 @@ function DrawHUD()
 					KFGRI.ObjectiveInterface.DrawHUD(self, Canvas);
 
 					TargetLocation = KFGRI.ObjectiveInterface.GetIconLocation();
-					ThisDot = Normal((TargetLocation + (class'KFPawn_Human'.default.CylinderComponent.CollisionHeight * vect(0, 0, 1))) - ViewLocation) dot ViewVector;
+					ThisDot = Normal((TargetLocation + (class'ExtHumanPawn'.default.CylinderComponent.CollisionHeight * vect(0, 0, 1))) - ViewLocation) dot ViewVector;
 
 					if (ThisDot > 0 &&
 						KFGRI.ObjectiveInterface.ShouldShowObjectiveHUD() &&
@@ -600,7 +600,7 @@ function DrawHUD()
 	{
 		// Draw human health auras.
 		DotScale = Canvas.ClipX*0.2f;
-		foreach WorldInfo.AllPawns(class'KFPawn_Human', KFPH)
+		foreach WorldInfo.AllPawns(class'ExtHumanPawn', KFPH)
 		{
 			PawnLocation = KFPH.Location;
 
@@ -696,7 +696,7 @@ simulated function DrawFriendlyHUDZ(KFPawn_Monster KFPH)
 	Canvas.DrawText(KFPH.PlayerReplicationInfo.PlayerName,,FontScale,FontScale, MyFontRenderInfo);
 }
 
-simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
+simulated function bool DrawFriendlyHumanPlayerInfoNew(ExtHumanPawn KFPH)
 {
 	local float Percentage;
 	local float BarHeight, BarLength;
@@ -766,7 +766,7 @@ simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 	Canvas.DrawText(S, , FontScale, FontScale, MyFontRenderInfo);
 
 	//Draw armor bar
-	Percentage = FMin(float(KFPH.Armor) / float(KFPH.MaxArmor), 100);
+	Percentage = FMin(float(KFPH.NewArmor) / float(KFPH.NewMaxArmor), 100);
 	CurrentArmorColor = ClassicPlayerInfo ? ClassicArmorColor : ArmorColor;
 	CurrentArmorColor.A = FadeAlpha;
 	DrawPlayerInfoBar(KFPH, Percentage, BarLength, BarHeight, ScreenPos.X - (BarLength * 0.5f), ScreenPos.Y + BarHeight + (36 * FontScale * ResModifier), CurrentArmorColor, FadeAlpha);
@@ -802,7 +802,7 @@ simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 	PerkIconPosY = ScreenPos.Y + (36 * FontScale * ResModifier) + 1;
 	SupplyIconPosX = ScreenPos.X + (BarLength * 0.5f) + 1;
 	SupplyIconPosY = PerkIconPosY + 4 * ResModifier;
-	DrawPerkIcons(KFPH, PerkIconSize, PerkIconPosX, PerkIconPosY, SupplyIconPosX, SupplyIconPosY, true);
+	DrawPerkIconsNew(KFPH, PerkIconSize, PerkIconPosX, PerkIconPosY, SupplyIconPosX, SupplyIconPosY, true);
 
 	//draw perk icon
 	Canvas.DrawColor = PlayerBarIconColor;
@@ -811,7 +811,7 @@ simulated function bool DrawFriendlyHumanPlayerInfo(KFPawn_Human KFPH)
 	PerkIconPosY = ScreenPos.Y + (36 * FontScale * ResModifier);
 	SupplyIconPosX = ScreenPos.X + (BarLength * 0.5f);
 	SupplyIconPosY = PerkIconPosY + 4 * ResModifier;
-	DrawPerkIcons(KFPH, PerkIconSize, PerkIconPosX, PerkIconPosY, SupplyIconPosX, SupplyIconPosY, false);
+	DrawPerkIconsNew(KFPH, PerkIconSize, PerkIconPosX, PerkIconPosY, SupplyIconPosX, SupplyIconPosY, false);
 
 	return true;
 }
@@ -847,7 +847,7 @@ simulated final function DrawPlayerInfoBar(KFPawn P, float BarPercentage, float 
 	}
 }
 
-simulated function DrawPerkIcons(KFPawn_Human KFPH, float PerkIconSize, float PerkIconPosX, float PerkIconPosY, float SupplyIconPosX, float SupplyIconPosY, bool bDropShadow)
+simulated function DrawPerkIconsNew(ExtHumanPawn KFPH, float PerkIconSize, float PerkIconPosX, float PerkIconPosY, float SupplyIconPosX, float SupplyIconPosY, bool bDropShadow)
 {
 	local byte PrestigeLevel;
 	local ExtPlayerReplicationInfo KFPRI;

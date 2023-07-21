@@ -10,7 +10,7 @@ static function TraitDeActivate(Ext_PerkBase Perk, byte Level, optional Ext_Trai
 	Perk.bHeavyArmor = false;
 }
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
 	if (Level <= 1)
 		return;

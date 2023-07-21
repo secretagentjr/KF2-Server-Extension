@@ -2,17 +2,17 @@ Class Ext_TraitSpartan extends Ext_TraitBase;
 
 var array<float> AtkRates;
 
-static function ApplyEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function ApplyEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).bMovesFastInZedTime = true;
+	if (Player!=None)
+		Player.bMovesFastInZedTime = true;
 	Ext_PerkBerserker(Perk).ZedTimeMeleeAtkRate = 1.f/Default.AtkRates[Level-1];
 }
 
-static function CancelEffectOn(KFPawn_Human Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
+static function CancelEffectOn(ExtHumanPawn Player, Ext_PerkBase Perk, byte Level, optional Ext_TraitDataStore Data)
 {
-	if (ExtHumanPawn(Player)!=None)
-		ExtHumanPawn(Player).bMovesFastInZedTime = false;
+	if (Player!=None)
+		Player.bMovesFastInZedTime = false;
 	Ext_PerkBerserker(Perk).ZedTimeMeleeAtkRate = 1.f;
 }
 
