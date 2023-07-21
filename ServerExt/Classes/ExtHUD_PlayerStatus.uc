@@ -76,19 +76,19 @@ function UpdateHealth()
 
 function UpdateArmor()
 {
-    if( MyPC.Pawn != MyHumanPawnAlt )
-    {
-        MyHumanPawnAlt = ExtHumanPawn( MyPC.Pawn );
-    }
-    if( MyPC.Pawn == none )
-    {
-        LastArmor = 0;
-        SetInt("playerArmor" , LastArmor);
+	if( MyPC.Pawn != MyHumanPawnAlt )
+	{
+		MyHumanPawnAlt = ExtHumanPawn( MyPC.Pawn );
+	}
+	if( MyPC.Pawn == none )
+	{
+		LastArmor = 0;
+		SetInt("playerArmor" , LastArmor);
 	}
 	else if( LastArmor != MyHumanPawnAlt.NewArmor )
 	{
-        SetInt("playerArmor" , MyHumanPawnAlt.NewArmor);
-        LastArmor = MyHumanPawnAlt.NewArmor;
+		SetInt("playerArmor" , MyHumanPawnAlt.NewArmor);
+		LastArmor = MyHumanPawnAlt.NewArmor;
 	}
 }
 

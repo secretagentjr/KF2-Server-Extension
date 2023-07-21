@@ -75,10 +75,10 @@ function ShieldAbsorb( out int InDamage )
 		AbsorbedPct = ArmorAbsorbModifier_Medium;
 	}
 	else
-	{	
+	{
 		AbsorbedPct = ArmorAbsorbModifier_Low;
-	}	
-	
+	}
+
 	AbsorbedDmg = Min(Round(AbsorbedPct * InDamage), NewArmor);
 	// reduce damage and armor
 	NewArmor -= AbsorbedDmg;
