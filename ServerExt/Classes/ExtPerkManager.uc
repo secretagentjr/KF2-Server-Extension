@@ -91,7 +91,7 @@ function ApplyPerk(Ext_PerkBase P)
 	local KFInventoryManager InvMan;
 	local Ext_T_ZEDHelper H;
 	local int i;
-	
+
 	if (P==None)
 		return;
 
@@ -143,7 +143,7 @@ function ApplyPerk(Ext_PerkBase P)
 			{
 				HP.HealthMax = HP.default.Health;
 				// We just check for max variable and set to whatever it was.
-                HP.NewMaxArmor = HP.NewMaxArmor;
+				HP.NewMaxArmor = HP.NewMaxArmor;
 				ModifyHealth(HP.HealthMax);
 				CurrentPerk.UpdateAmmoStatus(HP.InvManager);
 
@@ -542,7 +542,7 @@ function ModifyHealth(out int InHealth)
 // New Function for armor
 function ModifyArmorNew(out int NewMaxArmor)
 {
-  if (CurrentPerk!=None)
+	if (CurrentPerk!=None)
 		CurrentPerk.ModifyArmorNew(NewMaxArmor);
 }
 

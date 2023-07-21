@@ -906,7 +906,7 @@ function ApplyEffectsTo(ExtHumanPawn P)
 	local int i;
 	local bool bSec;
 
-    if (ExtHumanPawn(PlayerOwner.Pawn)!=None)
+	if (ExtHumanPawn(PlayerOwner.Pawn)!=None)
 		{
 			ModifyArmorNew(ExtHumanPawn(PlayerOwner.Pawn).NewMaxArmor);
 		}
@@ -939,7 +939,7 @@ function ActivateTraits()
 	KFP = ExtHumanPawn(PlayerOwner.Pawn);
 	if (KFP!=None && !KFP.IsAliveAndWell())
 		KFP = None;
-    
+
 	// Forcing an update on these here just so they are entirely accurate.
 	ModifyArmorNew(KFP.NewMaxArmor);
 	if (KFP.NewArmor > KFP.NewMaxArmor) KFP.NewArmor = KFP.NewMaxArmor;
@@ -1169,7 +1169,7 @@ simulated function PlayerDied()
 simulated function float ApplyEffect(name Type, float Value, float Progress)
 {
 	local bool bActivePerk;
-    
+
 	bActivePerk = (PerkManager!=None && PerkManager.CurrentPerk==Self);
 	switch (Type)
 	{
@@ -1225,7 +1225,7 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 		Modifiers[13] = 1.f / (1.f+Value*Progress);
 		break;
 	case 'Armor':
-	    // Start at 0, this has to be multiplied by 100 otherwise the value is off
+		// Start at 0, this has to be multiplied by 100 otherwise the value is off
 		Modifiers[14] = 0.f + (Value*Progress*100.f);
 		if (bActivePerk && ExtHumanPawn(PlayerOwner.Pawn)!=None)
 		{

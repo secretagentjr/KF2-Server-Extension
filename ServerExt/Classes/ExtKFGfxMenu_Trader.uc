@@ -9,7 +9,7 @@ function OneSecondLoop()
 
 	if( GameInfoContainer != none )
 	{
-	 	GameInfoContainer.UpdateTraderTimer();
+		GameInfoContainer.UpdateTraderTimer();
 	}
 
 	// update armor amount if pawn gains armor while in trader (e.g. from medic heal skills)

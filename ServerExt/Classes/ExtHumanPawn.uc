@@ -75,10 +75,10 @@ function ShieldAbsorb( out int InDamage )
 		AbsorbedPct = ArmorAbsorbModifier_Medium;
 	}
 	else
-	{
+	{	
 		AbsorbedPct = ArmorAbsorbModifier_Low;
-	}
-
+	}	
+	
 	AbsorbedDmg = Min(Round(AbsorbedPct * InDamage), NewArmor);
 	// reduce damage and armor
 	NewArmor -= AbsorbedDmg;
@@ -138,7 +138,7 @@ function AdjustDamage(out int InDamage, out vector Momentum, Controller Instigat
 	if (KFPlayerController_WeeklySurvival(Controller) != none)
 	{
 		KFPlayerController_WeeklySurvival(Controller).AdjustVIPDamage(InDamage, InstigatedBy);
-	}	
+	}
 	else if (KFPlayerController_WeeklySurvival(InstigatedBy) != none)
 	{
 		KFPlayerController_WeeklySurvival(InstigatedBy).AdjustVIPDamage(InDamage, InstigatedBy);
@@ -239,13 +239,13 @@ function ResetIdleStartTime()
 }
 
 simulated event Bump( Actor Other, PrimitiveComponent OtherComp, Vector HitNormal )
-{	
+{
 	if( WorldInfo.TimeDilation < 1.f && !IsZero(Velocity) && Other.GetTeamNum() != GetTeamNum() )
 	{
 	if (CurrentPerk!=None)
 	{
-	  // Update Function so stuff don't break.
-     ShouldBump.OnBumpNew(Other, self, Velocity, Rotation);
+	// Update Function so stuff don't break.
+	ShouldBump.OnBumpNew(Other, self, Velocity, Rotation);
 	}
 	}
 }
