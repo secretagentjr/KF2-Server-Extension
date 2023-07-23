@@ -886,10 +886,12 @@ simulated function bool CanRepairDoors()
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).CanRepairDoors() : false);
 }
 
+/*
 simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
 {
 	return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
+*/
 
 simulated function float GetTightChokeModifier()
 {
@@ -901,6 +903,12 @@ simulated function ModifyWeaponSwitchTime(out float ModifiedSwitchTime)
 {
 	if (CurrentPerk != None)
 		CurrentPerk.ModifyWeaponSwitchTime(ModifiedSwitchTime);
+}
+
+simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
+{
+	//return (Ext_PerkSupport(CurrentPerk)!=None ? Ext_PerkSupport(CurrentPerk).GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
+	return (CurrentPerk!=None ? CurrentPerk.GetPenetrationModifier(Level, DamageType, bForce) : 0.f);
 }
 
 // Other

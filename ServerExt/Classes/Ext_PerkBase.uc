@@ -10,8 +10,6 @@ var array<FWebAdminConfigInfo> WebConfigs;
 var ExtPerkManager PerkManager;
 var Controller PlayerOwner;
 
-var ExtHumanPawn PawnOwner;
-
 var() localized string PerkName;
 var() Texture2D PerkIcon;
 var() class<KFPerk> BasePerk; // KF perk that this perk is based on.
@@ -112,6 +110,7 @@ var localized string StatAllDmg;
 var localized string StatHeadDamage;
 var localized string StatHealRecharge;
 var localized string StatSwitch;
+var localized string StatPenetration;
 
 reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 {
@@ -139,6 +138,7 @@ reliable client simulated function string UIName(FDefPerkStat DefPerkStat)
 		case name("HeadDamage"):   return StatHeadDamage;
 		case name("HealRecharge"): return StatHealRecharge;
 		case name("Switch"): return StatSwitch;
+		case name("Penetration"): return StatPenetration;
 	}
 	return "";
 }
@@ -1253,6 +1253,9 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 	case 'Switch':
 		Modifiers[21] = 1.f / (1.f+Value*Progress);
 		break;
+	case 'Penetration':
+        Modifiers[22] = 1.f + (Value*Progress*2);
+        break;
 	}
 	return (Value*Progress);
 }
@@ -1515,6 +1518,19 @@ simulated function float GetTightChokeModifier()
 	return Modifiers[3];
 }
 
+simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> DamageType, optional bool bForce )
+{
+	local float PenetrationPower;
+	if (!bForce && (DamageType == none || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE)))
+		return 0;
+	
+	// Set to Weapon Default
+	PenetrationPower *= 0.f;
+	// Limit to 255 because the variable being modified is a byte which caps out at 255
+	PenetrationPower = FMin(PenetrationPower*Modifiers[22],255);
+	return PenetrationPower;
+}
+
 defaultproperties
 {
 	CurrentConfigVer=15
@@ -1589,6 +1605,7 @@ defaultproperties
 	DefPerkStats(19)=(MaxValue=500,CostPerValue=1,StatType="HeadDamage",Progress=1,bHiddenConfig=true)
 	DefPerkStats(20)=(MaxValue=200,CostPerValue=1,StatType="HealRecharge",Progress=0.5,bHiddenConfig=true)
 	DefPerkStats(21)=(MaxValue=100,CostPerValue=1,StatType="Switch",Progress=1)
+	DefPerkStats(22)=(MaxValue=500,CostPerValue=1,StatType="Penetration",Progress=1)																								 
 
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
@@ -1612,7 +1629,7 @@ defaultproperties
 	Modifiers.Add(0.f)
 	Modifiers.Add(1.f)
 	Modifiers.Add(1.f)
-
+	Modifiers.Add(1.f)
 	EnemyDistDraw.Add(500)
 	EnemyDistDraw.Add(700)
 	EnemyDistDraw.Add(1000)

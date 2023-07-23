@@ -26,9 +26,14 @@ simulated function float GetPenetrationModifier(byte Level, class<KFDamageType> 
 	if (!bForce && (DamageType == none || (DamageType!=None && DamageType.Default.ModifierPerkList.Find(BasePerk) == INDEX_NONE)))
 		return 0;
 
+	// Set to Weapon Default
+	PenetrationPower *= 0.f;
+	// Multiply or don't
 	PenetrationPower = bUseAPShot ? APShotMul : 0.f;
+	// Multiply Again if zedtime
 	PenetrationPower = IsPerforateActive() ? 40.f : PenetrationPower;
-
+	// Cap out at 255
+	PenetrationPower = FMin(PenetrationPower*Modifiers[22],255);
 	return PenetrationPower;
 }
 
