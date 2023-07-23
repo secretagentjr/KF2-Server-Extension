@@ -17,9 +17,6 @@ var bool bPlayingFeignDeathRecovery,bRagdollFromFalling,bRagdollFromBackhit,bRag
 var int NewMaxArmor;
 var int NewArmor;
 
-var Ext_PerkBase CurrentPerk;
-var ExtPerkManager ShouldBump;
-
 var byte HealingShieldMod,HealingSpeedBoostMod,HealingDamageBoostMod;
 
 replication
@@ -238,17 +235,6 @@ function ResetIdleStartTime()
 	}
 }
 
-simulated event Bump( Actor Other, PrimitiveComponent OtherComp, Vector HitNormal )
-{
-	if( WorldInfo.TimeDilation < 1.f && !IsZero(Velocity) && Other.GetTeamNum() != GetTeamNum() )
-	{
-	if (CurrentPerk!=None)
-	{
-	// Update Function so stuff don't break.
-	ShouldBump.OnBumpNew(Other, self, Velocity, Rotation);
-	}
-	}
-}
 
 function TakeDamage(int Damage, Controller InstigatedBy, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 {

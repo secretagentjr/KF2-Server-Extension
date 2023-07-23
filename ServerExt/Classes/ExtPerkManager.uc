@@ -762,7 +762,7 @@ simulated function bool ShouldKnockDownOnBump()
 	return (CurrentPerk!=None && CurrentPerk.bHasSWATEnforcer);
 }
 
-simulated function OnBumpNew(Actor BumpedActor, ExtHumanPawn BumpInstigator, vector BumpedVelocity, rotator BumpedRotation)
+simulated function OnBump(Actor BumpedActor, KFPawn_Human BumpInstigator, vector BumpedVelocity, rotator BumpedRotation)
 {
 	local KFPawn_Monster KFPM;
 	local bool CanBump;
@@ -806,6 +806,7 @@ simulated function OnBumpNew(Actor BumpedActor, ExtHumanPawn BumpInstigator, vec
 		}
 	}
 }
+
 
 // DEMO:
 simulated function bool ShouldRandSirenResist()
