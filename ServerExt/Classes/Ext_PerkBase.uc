@@ -1255,7 +1255,9 @@ simulated function float ApplyEffect(name Type, float Value, float Progress)
 		break;
 	case 'Penetration':
         Modifiers[22] = 1.f + (Value*Progress*2);
-        break;
+		// Not really accurate because its based on weapon, but eh
+		return FMin(Value*Progress,255);
+        //break;
 	}
 	return (Value*Progress);
 }
