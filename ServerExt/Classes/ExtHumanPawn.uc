@@ -178,64 +178,6 @@ function AdjustDamage(out int InDamage, out vector Momentum, Controller Instigat
 	}
 }
 
-//Regular Functions
-
-
-/**
- * @brief Checks if we are close to a demo player with explosivbe resistance skill enabled
- *
- * @return true if close and enabled
- */
-protected function bool HasExplosiveResistance()
-{
-	local ExtHumanPawn TestPawn;
-	local KFPerk TestPawnPerk;
-
-	foreach WorldInfo.Allpawns( class'ExtHumanPawn', TestPawn, Location, class'KFPerk_Demolitionist'.static.GetExplosiveResistanceRadius() )
-	{
-		TestPawnPerk = TestPawn.GetPerk();
-		if( TestPawnPerk != none && TestPawnPerk.IsSharedExplosiveResistaneActive() )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function ResetIdleStartTime()
-{
-	local PlayerController PC;
-	local ExtHumanPawn KFPH;
-	local float DistanceToTeammateSq, MaxResetDistanceSq;
-
-	IdleStartTime = WorldInfo.TimeSeconds;
-
-	// reset idle start time for nearby teammates
-	// (i.e. consider them no longer idle if they are close enough to you to need to pay attention and not ramble on about the weather)
-	MaxResetDistanceSq = 3000 * 3000;
-	foreach WorldInfo.AllControllers(Class'PlayerController', PC)
-	{
-		if( PC == Controller )
-		{
-			continue;
-		}
-
-		KFPH = ExtHumanPawn( PC.Pawn );
-		if( KFPH == none || !KFPH.IsAliveAndWell() )
-		{
-			continue;
-		}
-
-		DistanceToTeammateSq = VSizeSq( KFPH.Location - Location );
-		if( DistanceToTeammateSq <= MaxResetDistanceSq )
-		{
-			KFPH.IdleStartTime = WorldInfo.TimeSeconds;
-		}
-	}
-}
-
-
 function TakeDamage(int Damage, Controller InstigatedBy, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 {
 	if (KnockbackResist<1)
