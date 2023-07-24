@@ -1,12 +1,12 @@
 Class Ext_PerkFirebug extends Ext_PerkBase;
 
-var bool bUseInferno,bUsePyromaniac;
+var bool bUseInferno,bUsePyromaniac,bUseGroundFire,bUseHeatWave;
 
 replication
 {
 	// Things the server should send to the client.
 	if (true)
-		bUseInferno,bUsePyromaniac;
+		bUseInferno,bUsePyromaniac,bUseGroundFire,bUseHeatWave;
 }
 
 simulated final private function bool IsInfernoActive()
@@ -33,6 +33,16 @@ simulated function float GetZedTimeModifier(KFWeapon W)
 	return 0.f;
 }
 
+simulated final private function bool IsGroundFireActive()
+{
+	return bUseGroundFire;
+}
+
+simulated final private function bool IsHeatWaveActive()
+{
+	return bUseHeatWave;
+}
+
 defaultproperties
 {
 	PerkIcon=Texture2D'UI_PerkIcons_TEX.UI_PerkIcon_Firebug'
@@ -42,6 +52,8 @@ defaultproperties
 	DefTraitList.Add(class'Ext_TraitFireRange')
 	DefTraitList.Add(class'Ext_TraitInferno')
 	DefTraitList.Add(class'Ext_TraitPyromaniac')
+	DefTraitList.Add(class'Ext_TraitGroundFire')
+	DefTraitList.Add(class'Ext_TraitHeatWave')
 	BasePerk=class'KFPerk_Firebug'
 
 	PrimaryMelee=class'KFWeap_Knife_Firebug'
