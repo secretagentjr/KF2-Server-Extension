@@ -736,22 +736,6 @@ event BeginState(Name N)
 	}
 }
 
-function UpdateReplicatedPlayerHealth()
-{
-	local Pawn OwnerPawn;
-
-	if( KFPlayerOwner != none )
-	{
-		OwnerPawn = KFPlayerOwner.Pawn;
-		if( OwnerPawn != none && OwnerPawn.Health != PlayerHealth )
-		{
-			PlayerHealth = OwnerPawn.Health;
-			PlayerHealthPercent = FloatToByte( float(OwnerPawn.Health) / float(OwnerPawn.HealthMax) );
-		}
-	}
-}
-
-
 defaultproperties
 {
 	RespawnCounter=-1
