@@ -746,8 +746,7 @@ function UpdateReplicatedPlayerHealth()
 		if( OwnerPawn != none && OwnerPawn.Health != PlayerHealth )
 		{
 			PlayerHealth = OwnerPawn.Health;
-			//PlayerHealthPercent = FloatToByte( float(OwnerPawn.Health) / float(OwnerPawn.HealthMax) );
-			PlayerHealthPercent *= float(OwnerPawn.Health) / float(OwnerPawn.HealthMax);
+			PlayerHealthPercent = FloatToByte( float(OwnerPawn.Health) / float(OwnerPawn.HealthMax) );
 		}
 	}
 }
